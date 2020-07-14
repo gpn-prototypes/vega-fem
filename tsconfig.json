@@ -1,0 +1,10 @@
+{
+  "extends": "@gpn-prototypes/frontend-configs/tsconfig",
+  "shouldExtractLiteralValuesFromEnum": true,
+  "files": ["./types/assets.d.ts"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "**/dist/**/*"],
+  "compilerOptions": {
+    "lib": ["dom", "esnext", "es2020"]
+  }
+}
