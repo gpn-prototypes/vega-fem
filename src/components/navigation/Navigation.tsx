@@ -42,6 +42,15 @@ export const Navigation = (): React.ReactElement => {
       path: '/',
     },
   ]);
+  // перемещение по исптории вперед/назад
+  history.listen((location) => {
+    const switchTab = [
+      tabs.find((element) => {
+        return element.path === location.pathname;
+      }),
+    ];
+    setValueTab(switchTab ? (switchTab as NavItem[]) : null);
+  });
 
   return (
     <ChoiceGroup
