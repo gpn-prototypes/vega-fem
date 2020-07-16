@@ -1,17 +1,14 @@
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
 import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
-import rootReducer from '../reducers/rootReducer';
 
+import { MacroparamsAction } from '../actions/macroparameterSetList';
+import rootReducer from '../reducers/rootReducer';
 
 const logger = createLogger();
 
-const store = (preloadedState? : any) => {
-  return createStore(
-    rootReducer,
-    preloadedState,
-    applyMiddleware(thunkMiddleware, logger)
-  )
+const store = (preloadedState?: any): Store<any, MacroparamsAction> => {
+  return createStore(rootReducer, preloadedState, applyMiddleware(thunkMiddleware, logger));
 };
 
 export default store();

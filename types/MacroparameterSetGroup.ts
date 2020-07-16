@@ -1,6 +1,6 @@
 import Macroparameter from './Macroparameter';
 
-export default interface MacroparameterGroup {
+export default interface MacroparameterSetGroup {
   id?: string | number;
   name?: string;
   caption?: string;

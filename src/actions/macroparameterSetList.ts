@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import MacroparameterSet from '../../types/MacroparameterSet';
 
+import MacroparameterSet from '../../types/MacroparameterSet';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
 export const MACROPARAMS_SET_LIST_SUCCESS = 'MACROPARAMS_SET_LIST_SUCCESS';
@@ -12,27 +12,29 @@ export const MACROPARAMS_SET_SELECTED = 'MACROPARAMS_SET_SELECTED';
 export interface MacroparamsAction {
   type: string;
   // TODO: replace any
-  payload: any;
+  payload?: any;
+  errorMessage?: any;
 }
 
-const scenariosFetch = (): MacroparamsAction => ({
+const macroparameterSetListFetch = (): MacroparamsAction => ({
   type: MACROPARAMS_SET_LIST_FETCH,
-  payload: [] as MacroparameterSet[],
 });
 
-const scenariosSuccess = (scenariosList: MacroparameterSet[]): MacroparamsAction => ({
+const macroparameterSetListSuccess = (
+  macroparameterSetList: MacroparameterSet[],
+): MacroparamsAction => ({
   type: MACROPARAMS_SET_LIST_SUCCESS,
-  payload: scenariosList,
+  payload: macroparameterSetList,
 });
 
-const scenariosError = (massage: any): MacroparamsAction => ({
+const macroparameterSetListError = (message: any): MacroparamsAction => ({
   type: MACROPARAMS_SET_LIST_ERROR,
-  payload: massage,
+  errorMessage: message,
 });
 
-export function fetchScenariosList(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(scenariosFetch());
+    dispatch(macroparameterSetListFetch());
 
     try {
       const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
@@ -49,17 +51,17 @@ export function fetchScenariosList(): ThunkAction<Promise<void>, {}, {}, AnyActi
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(scenariosSuccess(body.data?.macroparameterSetList));
+        dispatch(macroparameterSetListSuccess(body.data?.macroparameterSetList));
       } else {
-        dispatch(scenariosError(body.message));
+        dispatch(macroparameterSetListError(body.message));
       }
     } catch (e) {
-      dispatch(scenariosError(e));
+      dispatch(macroparameterSetListError(e));
     }
   };
 }
 
-export const selectScenario = (scenario: MacroparameterSet): MacroparamsAction => ({
+export const selectMacroparameterSet = (MacroparamSet: MacroparameterSet): MacroparamsAction => ({
   type: MACROPARAMS_SET_SELECTED,
-  payload: scenario,
+  payload: MacroparamSet,
 });

@@ -1,6 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 
-import { MacroparamsAction } from '../actions/macroparametersSetList';
+import { MacroparamsAction } from '../actions/macroparameterSetList';
 
 import macroparamsReducer from './macroparamsReducer';
 

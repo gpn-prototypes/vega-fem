@@ -1,4 +1,4 @@
-import MacroparameterGroup from './MacroparameterGroup';
+import MacroparameterSetGroup from './MacroparameterSetGroup';
 
 // interface for scenarios of macroparams
 export default interface MacroparameterSet {
@@ -7,5 +7,5 @@ export default interface MacroparameterSet {
   caption?: string;
   years?: number;
   category?: string;
-  macroparameterGroupList?: MacroparameterGroup[];
+  macroparameterGroupList?: MacroparameterSetGroup[];
 }

@@ -2,7 +2,9 @@ const path = require('path');
 
 const setupTestFile = path.resolve('setup-tests.ts');
 
-const config = require('@gpn-prototypes/frontend-configs/jest/jest.config')({ setupFilesAfterEnv: setupTestFile });
+const config = require('@gpn-prototypes/frontend-configs/jest/jest.config')({
+  setupFilesAfterEnv: setupTestFile,
+});
 
 module.exports = {
   ...config,

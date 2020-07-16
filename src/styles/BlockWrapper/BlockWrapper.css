@@ -1,0 +1,28 @@
+.BlockWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+
+  overflow-y: auto;
+
+  border: 1px solid var(--color-bg-secondary);
+}
+
+.BlockWrapper__title {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 13px;
+
+  color: var(--color-typo-primary);
+  opacity: 0.75;
+  border-bottom: 1px solid var(--color-bg-secondary);
+}
+
+.BlockWrapper__title .Text {
+  margin-right: 7px;
+}
+
+.BlockWrapper__content {
+  padding: 20px 20px 20px 13px;
+}
