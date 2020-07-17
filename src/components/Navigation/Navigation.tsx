@@ -11,7 +11,7 @@ export const Navigation = (): React.ReactElement => {
   const history = useHistory();
   const tabs: Array<NavItem> = [
     {
-      title: 'Макромапарметры',
+      title: 'Макропараметры',
       path: '/',
     },
     {
@@ -38,7 +38,7 @@ export const Navigation = (): React.ReactElement => {
 
   const [valueTab, setValueTab] = useState<Array<NavItem> | null>([
     {
-      title: 'Макромапарметры',
+      title: 'Макропараметры',
       path: '/',
     },
   ]);

@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
+import {authHeader} from '../helpers/authTokenToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -40,13 +41,14 @@ export const updateMacroparameterSet = (
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          ...authHeader()
         },
         body: JSON.stringify({
           query:
-            `'mutation {changeMacroparameterSet(macroparameterSetId:'}${selected.id.toString()},` +
-            `category:${newMacroparameterSet.category},` +
-            `caption: "${newMacroparameterSet.caption}" ,` +
-            `name: "${newMacroparameterSet.name}" ,` +
+            `mutation {changeMacroparameterSet(macroparameterSetId:${selected.id.toString()}, ` +
+            `category:${newMacroparameterSet.category}, ` +
+            `caption: "${newMacroparameterSet.caption}", ` +
+            `name: "${newMacroparameterSet.name}", ` +
             `years:${newMacroparameterSet.years}){ok}}`,
         }),
       });

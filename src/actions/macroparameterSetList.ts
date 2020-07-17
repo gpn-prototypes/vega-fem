@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
+import {authHeader} from '../helpers/authTokenToLocalstorage';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
 export const MACROPARAMS_SET_LIST_SUCCESS = 'MACROPARAMS_SET_LIST_SUCCESS';
@@ -42,6 +43,7 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          ...authHeader()
         },
         body: JSON.stringify({
           query:

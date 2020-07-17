@@ -38,12 +38,14 @@ export const MacroparameterSetWrapper = ({
   const [groups, setGroups] = useState(
     macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[],
   );
+  const [groupsHelper, setGroupsHelper] = useState(false);
 
   useEffect(() => {
     setName(macroparameterSet.caption);
     setYears(macroparameterSet.years);
     setCategory(macroparameterSet.category);
     setGroups(macroparameterSet.macroparameterGroupList ?? []);
+    console.log('macroparameterSetUpdated')
   }, [macroparameterSet]);
 
   const toggleMacroparameterSetGroup = (event: React.MouseEvent) => {
@@ -57,6 +59,7 @@ export const MacroparameterSetWrapper = ({
       name: groupName,
       caption: groupName,
     } as MacroparameterSetGroup);
+    setGroupsHelper(true);
   };
 
   const addGroup = (event: any, groupName: string): void => {
@@ -93,6 +96,14 @@ export const MacroparameterSetWrapper = ({
       setCategoryHelper(false);
     }
   }, [category, categoryHelper, requestSetUpdate]);
+
+  useEffect(() => {
+    if (groupsHelper) {
+      console.log('groupsHelper: ', groupsHelper);
+      setGroups(macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[]);
+      setGroupsHelper(false);
+    }
+  }, [groupsHelper, macroparameterSet]);
 
   return (
     <div className={cnBlockWrapper()}>

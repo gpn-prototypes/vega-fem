@@ -41,9 +41,10 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         ),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
+      state?.selected?.macroparameterGroupList?.push(action.payload);
       return {
         ...state,
-        selected: { ...state.selected },
+        selected: state.selected
       };
     default:
       return state;

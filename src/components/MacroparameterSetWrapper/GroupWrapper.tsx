@@ -73,7 +73,7 @@ export const GroupWrapper = ({
           role="presentation"
         >
           <IconSelect size="xs" />
-          <Text as="span">{group.name}</Text>
+          <Text as="span">{group.caption}</Text>
         </div>
         <div className={cnGroupsContainer('header-actions')}>
           <Button

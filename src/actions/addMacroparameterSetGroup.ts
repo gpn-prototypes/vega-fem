@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
+import {authHeader} from '../helpers/authTokenToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -40,20 +41,27 @@ export const addMacroparameterSetGroup = (
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
+          ...authHeader()
         },
         body: JSON.stringify({
           query:
-            `mutation {createMacroparameterGroup(macroparameterSetId:'${selected.id.toString()},` +
-            `caption: "${newMacroparameterSetGroup.caption}" ,` +
-            `name: "${newMacroparameterSetGroup.name}" ,` +
-            `){ok}}`,
+            `mutation {createMacroparameterGroup(macroparameterSetId:${selected.id.toString()},` +
+            `caption: "${newMacroparameterSetGroup.caption}", ` +
+            `name: "${newMacroparameterSetGroup.name}"` +
+            `){macroparameterGroup{name, id, caption}, ok}}`,
         }),
       });
-      const body = await response.json();
 
-      if (response.ok && body.data.createMacroparameterGroup.ok) {
+      const body = await response.json();
+      const createdMacroparameterGroup = body?.data?.createMacroparameterGroup;
+
+      if (response.ok && createdMacroparameterGroup?.ok) {
+
+        const newGroup = createdMacroparameterGroup?.macroparameterGroup;
+
+        if (newGroup)
         dispatch(
-          macroparameterSetGroupAddSuccess(newMacroparameterSetGroup as MacroparameterSetGroup),
+          macroparameterSetGroupAddSuccess({...newGroup, ...{macroparameterList: []}} as MacroparameterSetGroup),
         );
       } else {
         dispatch(macroparameterSetGroupAddError(body.message));
