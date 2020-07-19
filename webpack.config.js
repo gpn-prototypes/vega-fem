@@ -28,6 +28,7 @@ const commonWebpack = () => {
 
 const femFeWebpack = {
   devServer: {
+    historyApiFallback: true,
     proxy: {
       '/graphql': 'http://localhost:8080',
     },
