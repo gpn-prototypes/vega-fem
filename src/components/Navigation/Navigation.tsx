@@ -35,13 +35,12 @@ export const Navigation = (): React.ReactElement => {
       path: '/mining-profile',
     },
   ];
-
-  const [valueTab, setValueTab] = useState<Array<NavItem> | null>([
-    {
-      title: 'Макропараметры',
-      path: '/',
-    },
-  ]);
+  const currentTab = [
+    tabs.find((element) => {
+      return element.path === history.location.pathname;
+    }) as NavItem,
+  ];
+  const [valueTab, setValueTab] = useState<Array<NavItem> | null>(currentTab);
   // перемещение по исптории вперед/назад
   history.listen((location) => {
     const switchTab = [
