@@ -1,0 +1,6 @@
+.FemCapexTab {
+  display: grid;
+  grid-template-columns: 30%;
+
+  width: 100%;
+}

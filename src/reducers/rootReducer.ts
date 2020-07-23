@@ -1,14 +1,14 @@
-import { combineReducers, Reducer } from 'redux';
+import { combineReducers } from 'redux';
 
-import { MacroparamsAction } from '../actions/macroparameterSetList';
-
+import capexGlobalValuesReducer from './capexGlobalValuesReducer';
+import capexReducer from './capexReducer';
 import macroparamsReducer from './macroparamsReducer';
 
-const rootReducer: Reducer<
-  any,
-  /* TODO: create genaral rootReducesActions type */ MacroparamsAction
-> = combineReducers({
+const rootReducer = combineReducers({
   macroparamsReducer,
+  capexReducer,
+  capexGlobalValuesReducer,
 });
 
+export type RootState = ReturnType<typeof rootReducer>;
 export default rootReducer;
