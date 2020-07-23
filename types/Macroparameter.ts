@@ -2,11 +2,11 @@ export default interface Macroparameter {
   id?: string | number;
   name?: string;
   caption?: string;
-  value?: MacroparameterValues[];
+  value?: MacroparameterValues[] | number;
   unit?: string;
 }
 
 export interface MacroparameterValues {
-  year: number;
+  year?: number;
   value: number;
 }

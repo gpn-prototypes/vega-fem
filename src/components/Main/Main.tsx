@@ -2,9 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { Capex } from '../CAPEX/Capex';
-import { NoPageFound } from '../nopagefound/NoPageFound';
 import { MacroparametersTab } from '../MacroparametersTab/MacroparametersTab';
 import { MiningProfile } from '../MiningProfile/MiningProfile';
+import { NoPageFound } from '../nopagefound/NoPageFound';
 import { Opex } from '../OPEX/Opex';
 import { Prices } from '../Prices/Prices';
 import { TaxEnvironment } from '../TaxEnvironment/TaxEnvironment';

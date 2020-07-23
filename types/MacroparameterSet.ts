@@ -6,6 +6,8 @@ export default interface MacroparameterSet {
   name?: string;
   caption?: string;
   years?: number;
+  yearStart?: number;
+  allProjects?: boolean;
   category?: string;
   macroparameterGroupList?: MacroparameterSetGroup[];
 }

@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
-import {authHeader} from '../helpers/authTokenToLocalstorage';
+import { authHeader } from '../helpers/authTokenToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -36,12 +36,13 @@ export const updateMacroparameterSet = (
     dispatch(macroparameterSetUpdateInitialized());
 
     try {
+      /* TODO: set project id dynamically */
       const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          ...authHeader()
+          ...authHeader(),
         },
         body: JSON.stringify({
           query:
@@ -49,12 +50,16 @@ export const updateMacroparameterSet = (
             `category:${newMacroparameterSet.category}, ` +
             `caption: "${newMacroparameterSet.caption}", ` +
             `name: "${newMacroparameterSet.name}", ` +
-            `years:${newMacroparameterSet.years}){ok}}`,
+            `years:${newMacroparameterSet.years}, ` +
+            `yearStart:${newMacroparameterSet.yearStart}, ` +
+            `allProjects:${newMacroparameterSet.allProjects})` +
+            `{macroparameterSet{category, id, name, caption, years, yearStart, allProjects}, ok}}`,
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeMacroparameterSet;
 
-      if (response.ok) {
+      if (response.ok && responseData.ok) {
         dispatch(
           macroparameterSetUpdateSuccess({
             ...selected,

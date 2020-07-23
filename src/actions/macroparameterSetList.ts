@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
-import {authHeader} from '../helpers/authTokenToLocalstorage';
+import { authHeader } from '../helpers/authTokenToLocalstorage';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
 export const MACROPARAMS_SET_LIST_SUCCESS = 'MACROPARAMS_SET_LIST_SUCCESS';
@@ -38,16 +38,25 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
     dispatch(macroparameterSetListFetch());
 
     try {
+      /* TODO: set project id dynamically */
       const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          ...authHeader()
+          ...authHeader(),
         },
         body: JSON.stringify({
           query:
-            '{macroparameterSetList{id,name,caption,years,category,macroparameterGroupList{id,name,caption,macroparameterList{id,name,caption,value{year,value}}}}}',
+            '{macroparameterSetList{' +
+            'id,' +
+            'name,' +
+            'caption,' +
+            'years,' +
+            'yearStart,' +
+            'category,' +
+            'allProjects,' +
+            'macroparameterGroupList{id,name,caption,macroparameterList{id,name,caption,unit,value{year,value}}}}}',
         }),
       });
       const body = await response.json();

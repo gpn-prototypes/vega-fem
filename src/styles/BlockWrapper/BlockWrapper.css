@@ -1,11 +1,10 @@
 .BlockWrapper {
   display: flex;
   flex-direction: column;
-  height: 90vh;
-
-  overflow-y: auto;
+  height: 89.8vh;
 
   border: 1px solid var(--color-bg-secondary);
+  border-bottom: none;
 }
 
 .BlockWrapper__title {
@@ -24,5 +23,8 @@
 }
 
 .BlockWrapper__content {
-  padding: 20px 20px 20px 13px;
+  display: grid;
+  grid-template-columns: 31% 69%;
+  height: 100%;
+
 }
