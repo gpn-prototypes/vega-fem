@@ -1,4 +1,6 @@
 import MacroparameterSet from '../../types/MacroparameterSet';
+import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
+import { MACROPARAM_ADD_SUCCESS } from '../actions/addMacroparameter';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/addMacroparameterSetGroup';
 import {
   MACROPARAMS_SET_LIST_ERROR,
@@ -41,10 +43,18 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         ),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
-      state?.selected?.macroparameterGroupList?.push(action.payload);
+      /* eslint-disable-line */state?.selected?.macroparameterGroupList?.push(action.payload);
       return {
         ...state,
-        selected: state.selected
+        selected: { ...state.selected },
+      };
+    case MACROPARAM_ADD_SUCCESS:
+      /* eslint-disable-line */state?.selected?.macroparameterGroupList
+        ?.filter((group: MacroparameterSetGroup) => group.id === action.payload.group?.id)[0]
+        ?.macroparameterList?.push(action.payload?.macroparameter);
+      return {
+        ...state,
+        selected: { ...state.selected },
       };
     default:
       return state;

@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
-import { Button, Form, IconClose, TextField } from '@gpn-prototypes/vega-ui';
+import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Macroparameter, { MacroparameterValues } from '../../../types/Macroparameter';
-import { cnGroupsContainer } from '../../styles/GroupsContainer/cn-groups-container';
+import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
+
+import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
 
 import '../../styles/BlockWrapper/BlockWrapper.css';
-import '../../styles/GroupsContainer/GroupsContainer.css';
+import './GroupWrapper/GroupWrapper.css';
 
 interface MacroparameterWrapperProps {
   macroparameter: Macroparameter;
-  removeMacroparameter: (macroparameter: Macroparameter) => void;
+  updateMacroparameterValue: (macroparameter: Macroparameter) => void;
 }
 
 export const MacroparameterWrapper = ({
   macroparameter,
-  removeMacroparameter,
+  updateMacroparameterValue,
 }: MacroparameterWrapperProps) => {
-  const [values, setValues] = useState(macroparameter.value as MacroparameterValues[]);
+  const [values, setValues] = useState(macroparameter?.value as MacroparameterValues[]);
 
   const editValues = (e: any): void => {
-    setValues([{ year: 2020, value: e.e.target.value }]);
+    setValues([{ value: e.e.target.value }]);
   };
 
   return (
-    <Form.Row col="2">
-      <Form.Field className={cnGroupsContainer('body-content')}>
-        <Form.Label>{macroparameter.caption}</Form.Label>
+    <Form.Row className={cnVegaFormCustom('form-row')} space="m">
+      <Form.Field className={cnGroupWrapper('body-content')}>
+        <Form.Label space="2xs">{macroparameter.caption}</Form.Label>
         <TextField
-          id={macroparameter?.caption + values[0]?.year.toString()}
+          size="s"
+          width="full"
+          id={`macroparameter_${macroparameter?.name}`}
           placeholder="Значение"
+          rightSide={macroparameter?.unit}
           value={values[0]?.value.toString()}
+          onBlur={() =>
+            updateMacroparameterValue({ ...macroparameter, ...{ value: +values[0]?.value } })
+          }
           onChange={(e: any) => editValues(e)}
-        />
-      </Form.Field>
-      <Form.Field>
-        <Button
-          onlyIcon
-          style={{ marginBottom: 'var(--space-xs)' }}
-          size="xs"
-          view="clear"
-          iconLeft={IconClose}
-          onClick={() => removeMacroparameter(macroparameter)}
         />
       </Form.Field>
     </Form.Row>

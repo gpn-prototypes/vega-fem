@@ -1,0 +1,81 @@
+.VegaFormCustom {
+  position: sticky;
+
+  padding: var(--space-xs) var(--space-m) var(--space-s) var(--space-s);
+
+  display: grid;
+  overflow-y: auto;
+
+  border-right: 1px solid var(--color-bg-secondary);
+
+  /* height: 100%; */
+  grid-template-rows: 1fr 2fr 1fr;
+}
+
+.VegaFormCustom__form-row {
+  grid-template-columns: 60% 30%;
+  align-content: start;
+}
+
+.VegaFormCustom__label-checkbox {
+  margin-bottom: var(--space-xl);
+}
+
+.VegaFormCustom__label-checkbox .Checkbox-Label {
+  margin-bottom: 3px;
+}
+
+.VegaFormCustom__label-checkbox .Checkbox-Input {
+  width: var(--control-box-size-m);
+  height: var(--control-box-size-m);
+}
+
+.VegaFormCustom .Select {
+  height: var(--control-height-s);
+}
+
+.VegaFormCustom .Select .Select__input {
+  height: var(--control-height-s);
+
+  font-size: var(--size-text-s);
+}
+
+.VegaFormCustom .Select .Select__delimiter {
+  display: none;
+}
+
+.VegaFormCustom__groups-row {
+  align-self: start;
+}
+
+.VegaFormCustom__footer {
+  position: sticky;
+  z-index: 1;
+  bottom: calc(-1 * var(--space-s));
+
+  margin-bottom: calc(-1 * var(--space-s));
+
+  padding-top: var(--space-l);
+  padding-bottom: var(--space-s);
+
+  background: linear-gradient(
+    var(--color-control-bg-secondary),
+    15%,
+    var(--color-bg-default),
+    45%,
+    var(--color-bg-default)
+  );
+  align-self: end;
+}
+
+.VegaFormCustom__footer-text-field {
+  margin-top: var(--space-xs);
+}
+
+.VegaFormCustom__footer-action {
+  margin-top: var(--space-s);
+
+  display: grid;
+  grid-template-columns: 2.9fr 1.6fr 1fr 1fr;
+  grid-column-gap: var(--space-s);
+}

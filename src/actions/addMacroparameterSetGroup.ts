@@ -3,7 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
-import {authHeader} from '../helpers/authTokenToLocalstorage';
+import { authHeader } from '../helpers/authTokenToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -36,12 +36,13 @@ export const addMacroparameterSetGroup = (
     dispatch(macroparameterSetGroupAddInitialized());
 
     try {
+      /* TODO: set project id dynamically */
       const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          ...authHeader()
+          ...authHeader(),
         },
         body: JSON.stringify({
           query:
@@ -53,16 +54,19 @@ export const addMacroparameterSetGroup = (
       });
 
       const body = await response.json();
-      const createdMacroparameterGroup = body?.data?.createMacroparameterGroup;
+      const responseData = body?.data?.createMacroparameterGroup;
 
-      if (response.ok && createdMacroparameterGroup?.ok) {
+      if (response.ok && responseData?.ok) {
+        const newGroup = responseData?.macroparameterGroup;
 
-        const newGroup = createdMacroparameterGroup?.macroparameterGroup;
-
-        if (newGroup)
-        dispatch(
-          macroparameterSetGroupAddSuccess({...newGroup, ...{macroparameterList: []}} as MacroparameterSetGroup),
-        );
+        if (newGroup) {
+          dispatch(
+            macroparameterSetGroupAddSuccess({
+              ...newGroup,
+              ...{ macroparameterList: [] },
+            } as MacroparameterSetGroup),
+          );
+        }
       } else {
         dispatch(macroparameterSetGroupAddError(body.message));
       }

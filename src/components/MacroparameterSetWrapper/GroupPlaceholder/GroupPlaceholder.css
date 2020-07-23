@@ -1,0 +1,11 @@
+.GroupPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.GroupPlaceholder .Text {
+  margin-bottom: var(--space-s);
+
+  text-align: center;
+}

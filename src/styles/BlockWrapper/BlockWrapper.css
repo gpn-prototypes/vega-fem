@@ -1,22 +1,24 @@
 .BlockWrapper {
   display: flex;
   flex-direction: column;
-  height: 90vh;
 
-  overflow-y: auto;
+  height: 89.8vh;
 
   border: 1px solid var(--color-bg-secondary);
+  border-bottom: none;
 }
 
 .BlockWrapper__title {
-  display: flex;
-  align-items: center;
-  height: 20px;
   padding: 0 13px;
 
+  display: flex;
+  align-items: center;
+
+  height: 20px;
+
   color: var(--color-typo-primary);
-  opacity: 0.75;
   border-bottom: 1px solid var(--color-bg-secondary);
+  opacity: 0.75;
 }
 
 .BlockWrapper__title .Text {
@@ -24,5 +26,8 @@
 }
 
 .BlockWrapper__content {
-  padding: 20px 20px 20px 13px;
+  display: grid;
+  grid-template-columns: 31% 69%;
+
+  height: 100%;
 }

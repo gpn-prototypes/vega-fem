@@ -3,32 +3,50 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
+import Macroparameter from '../../../types/Macroparameter';
 import MacroparameterSet from '../../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/MacroparameterSetGroup';
-import macroparameterSetCategoryOptions from '../../constants/MacroparameterSetCategoryOptions';
 import keyGen from '../../helpers/keyGenerator';
+import macroparameterSetCategoryOptions from '../../helpers/MacroparameterSetCategoryOptions';
+import { yearsRangeOptions } from '../../helpers/nearYearsRange';
 import { cnBlockWrapper } from '../../styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
 
-import { GroupWrapper } from './GroupWrapper';
+import { GroupWrapper } from './GroupWrapper/GroupWrapper';
+import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
 
 import '../../styles/BlockWrapper/BlockWrapper.css';
-import '../../styles/GroupsContainer/GroupsContainer.css';
+import '../../styles/VegaFormCustom/VegaFormCustom.css';
+
+const yearsOptions = yearsRangeOptions(5, 10);
 
 interface MacroparameterSetWrapperProps {
   macroparameterSet: MacroparameterSet;
   updateMacroparameterSet: (macroparameterSet: any) => void;
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
+  addMacroparameter: (macroparameter: Macroparameter, group: MacroparameterSetGroup) => void;
+  updateMacroparameterValue: (
+    macroparameter: Macroparameter,
+    group: MacroparameterSetGroup,
+  ) => void;
 }
 
 export const MacroparameterSetWrapper = ({
   macroparameterSet,
   updateMacroparameterSet,
   addMacroparameterSetGroup,
+  addMacroparameter,
+  updateMacroparameterValue,
 }: MacroparameterSetWrapperProps) => {
-  const [asTemplate, setAsTemplate] = useState(false);
+  const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
 
   const [name, setName] = useState(macroparameterSet.caption);
   const [years, setYears] = useState(macroparameterSet.years);
+
+  const [yearStart, setYearStart] = useState(macroparameterSet.yearStart);
+  /* help to call requestSetUpdate with updated yearStart after Select choice */
+  const [yearStartHelper, setYearStartHelper] = useState(false);
+
   const [category, setCategory] = useState(macroparameterSet.category);
   /* help to call requestSetUpdate with updated category after Select choice */
   const [categoryHelper, setCategoryHelper] = useState(false);
@@ -38,14 +56,14 @@ export const MacroparameterSetWrapper = ({
   const [groups, setGroups] = useState(
     macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[],
   );
-  const [groupsHelper, setGroupsHelper] = useState(false);
 
   useEffect(() => {
+    setAllProjects(macroparameterSet.allProjects);
     setName(macroparameterSet.caption);
     setYears(macroparameterSet.years);
+    setYearStart(macroparameterSet.yearStart);
     setCategory(macroparameterSet.category);
     setGroups(macroparameterSet.macroparameterGroupList ?? []);
-    console.log('macroparameterSetUpdated')
   }, [macroparameterSet]);
 
   const toggleMacroparameterSetGroup = (event: React.MouseEvent) => {
@@ -59,18 +77,12 @@ export const MacroparameterSetWrapper = ({
       name: groupName,
       caption: groupName,
     } as MacroparameterSetGroup);
-    setGroupsHelper(true);
   };
 
   const addGroup = (event: any, groupName: string): void => {
     toggleMacroparameterSetGroup(event);
     requestGroupAdd(groupName);
-    // editGroups({name: groupName, caption: groupName, macroparameterList: [] as Macroparameter[]});
   };
-
-  /* const editGroups = (group: MacroparameterSetGroup): void => {
-    setGroups((prevGroups) => [...prevGroups, group]);
-  }; */
 
   const removeGroup = (group: MacroparameterSetGroup): void => {
     setGroups((prevGroups) => prevGroups.filter((prevGroup) => prevGroup.name !== group.name));
@@ -87,23 +99,24 @@ export const MacroparameterSetWrapper = ({
       years,
       category,
       macroparameterGroupList: groups,
+      yearStart,
+      allProjects,
     } as MacroparameterSet);
-  }, [updateMacroparameterSet, name, years, category, groups]);
+  }, [updateMacroparameterSet, name, years, category, groups, yearStart, allProjects]);
 
   useEffect(() => {
     if (categoryHelper) {
       requestSetUpdate();
       setCategoryHelper(false);
     }
-  }, [category, categoryHelper, requestSetUpdate]);
+  }, [categoryHelper, requestSetUpdate]);
 
   useEffect(() => {
-    if (groupsHelper) {
-      console.log('groupsHelper: ', groupsHelper);
-      setGroups(macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[]);
-      setGroupsHelper(false);
+    if (yearStartHelper) {
+      requestSetUpdate();
+      setYearStartHelper(false);
     }
-  }, [groupsHelper, macroparameterSet]);
+  }, [yearStartHelper, setYearStartHelper, requestSetUpdate]);
 
   return (
     <div className={cnBlockWrapper()}>
@@ -116,99 +129,139 @@ export const MacroparameterSetWrapper = ({
         </div>
       </div>
       <div className={cnBlockWrapper('content')}>
-        <Form
-          onSubmit={(e: React.FormEvent) => {
-            e.preventDefault();
-          }}
-        >
-          <Form.Row col="2" gap="m">
-            <Form.Field>
-              <Form.Label>Название сценария</Form.Label>
-              <TextField
-                id="macroparameterSetName"
-                width="full"
-                placeholder="Название сценария"
-                value={name}
-                onBlur={() => requestSetUpdate()}
-                onChange={(e) => onChangeTypoHandler(e, setName)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Количество лет</Form.Label>
-              <TextField
-                id="macroparameterSetYears"
-                width="full"
-                placeholder="Количество лет"
-                value={years?.toString()}
-                onBlur={() => requestSetUpdate()}
-                onChange={(e) => onChangeTypoHandler(e, setYears)}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Form.Label>Вид оценки</Form.Label>
-              <Select
-                options={macroparameterSetCategoryOptions}
-                name="macroparameterSetCategory"
-                value={category}
-                onClearValue={() => null}
-                onChange={(selectValue: any) => {
-                  setCategory(selectValue);
-                  setCategoryHelper(true);
-                }}
-              />
-            </Form.Field>
-            <Form.Field>
-              <Form.Label htmlFor="macroparameterSetIsTemplate">
-                <Checkbox
-                  name="macroparameterSetIsTemplate"
-                  label="Для всех проектов"
-                  checked={asTemplate}
-                  onChange={() => setAsTemplate((prevAsTemplate) => !prevAsTemplate)}
+        {!(Object.keys(macroparameterSet).length === 0) ? (
+          <Form
+            className={cnVegaFormCustom()}
+            onSubmit={(e: React.FormEvent) => {
+              e.preventDefault();
+            }}
+          >
+            <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
+              <Form.Field>
+                <Form.Label space="xs">Название сценария</Form.Label>
+                <TextField
+                  id="macroparameterSetName"
+                  size="s"
+                  width="full"
+                  value={name}
+                  onBlur={() => requestSetUpdate()}
+                  onChange={(e) => onChangeTypoHandler(e, setName)}
                 />
-              </Form.Label>
-            </Form.Field>
-          </Form.Row>
-          <Form.Row col="1" gap="m">
-            {(groups ?? []).length > 0 &&
-              groups.map((group, index) => (
-                <GroupWrapper key={keyGen(index)} group={group} removeGroup={removeGroup} />
-              ))}
-            {!isAddingGroup && (
-              <Button
-                label="Добавить группу статей"
-                iconLeft={IconAdd}
-                view="ghost"
-                onClick={(e) => toggleMacroparameterSetGroup(e)}
-              />
-            )}
-            {isAddingGroup && (
-              <div>
-                <Form.Row col="1" gap="m">
-                  <Form.Field>
-                    <TextField
-                      width="full"
-                      id="macroparameterSetGroupName"
-                      placeholder="Название группы статей"
-                      type="text"
-                      maxLength={150}
-                      value={newGroupName}
-                      onChange={(event: any) => setNewGroupName(event.e.target.value)}
-                    />
-                  </Form.Field>
-                </Form.Row>
-                <Form.Row col="2" gap="m">
-                  <Button
-                    label="Добавить группу"
-                    view="ghost"
-                    disabled={!newGroupName.length}
-                    onClick={(e) => addGroup(e, newGroupName)}
+              </Form.Field>
+              <Form.Field>
+                <Form.Label space="xs">Количество лет</Form.Label>
+                <TextField
+                  id="macroparameterSetYears"
+                  size="s"
+                  width="full"
+                  value={years?.toString()}
+                  onBlur={() => requestSetUpdate()}
+                  onChange={(e) => onChangeTypoHandler(e, setYears)}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Form.Label space="xs">Вид оценки</Form.Label>
+                <Select
+                  options={macroparameterSetCategoryOptions}
+                  name="macroparameterSetCategory"
+                  value={category}
+                  onClearValue={() => null}
+                  onChange={(selectValue: any) => {
+                    setCategory(selectValue);
+                    setCategoryHelper(true);
+                  }}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Form.Label space="xs">Стартовый год</Form.Label>
+                <Select
+                  options={yearsOptions}
+                  name="macroparameterSetCategory"
+                  value={yearStart?.toString()}
+                  onClearValue={() => null}
+                  onChange={(selectValue: any) => {
+                    setYearStart(selectValue);
+                    setYearStartHelper(true);
+                  }}
+                />
+              </Form.Field>
+              <Form.Field>
+                <Form.Label
+                  htmlFor="macroparameterSetIsTemplate"
+                  className={cnVegaFormCustom('label-checkbox')}
+                >
+                  <Checkbox
+                    size="m"
+                    name="macroparameterSetIsTemplate"
+                    label="Для всех проектов"
+                    checked={allProjects}
+                    onChange={() => setAllProjects((prevAllProjects) => !prevAllProjects)}
                   />
-                  <Button label="Отмена" view="clear" onClick={toggleMacroparameterSetGroup} />
-                </Form.Row>
-              </div>
-            )}
-          </Form.Row>
-        </Form>
+                </Form.Label>
+              </Form.Field>
+            </Form.Row>
+            <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
+              {(groups ?? []).length > 0 &&
+                groups.map((group, index) => (
+                  <GroupWrapper
+                    key={keyGen(index)}
+                    group={group}
+                    removeGroup={removeGroup}
+                    requestAddMacroparameter={addMacroparameter}
+                    updateMacroparameterValue={updateMacroparameterValue}
+                  />
+                ))}
+            </Form.Row>
+            <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
+              {!isAddingGroup && (
+                <Button
+                  size="s"
+                  label="Добавить группу статей"
+                  iconLeft={IconAdd}
+                  view="ghost"
+                  onClick={(e) => toggleMacroparameterSetGroup(e)}
+                />
+              )}
+              {isAddingGroup && (
+                <div>
+                  <Text as="span" view="secondary" size="s">
+                    Название группы статей
+                  </Text>
+                  <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
+                    <Form.Field>
+                      <TextField
+                        size="s"
+                        width="full"
+                        id="macroparameterSetGroupName"
+                        type="text"
+                        maxLength={150}
+                        value={newGroupName}
+                        onChange={(event: any) => setNewGroupName(event.e.target.value)}
+                      />
+                    </Form.Field>
+                  </Form.Row>
+                  <Form.Row className={cnVegaFormCustom('footer-action')}>
+                    <Button
+                      size="s"
+                      label="Добавить группу"
+                      view="ghost"
+                      disabled={!newGroupName.length}
+                      onClick={(e) => addGroup(e, newGroupName)}
+                    />
+                    <Button
+                      size="s"
+                      label="Отмена"
+                      view="clear"
+                      onClick={toggleMacroparameterSetGroup}
+                    />
+                  </Form.Row>
+                </div>
+              )}
+            </Form.Row>
+          </Form>
+        ) : (
+          <MacroparameterSetPlaceholder text="Выберите один из макроэкономических сценариев" />
+        )}
       </div>
     </div>
   );
