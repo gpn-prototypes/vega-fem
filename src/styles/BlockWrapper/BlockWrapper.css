@@ -27,7 +27,11 @@
 
 .BlockWrapper__content {
   display: grid;
-  grid-template-columns: 31% 69%;
 
+  grid-template-columns: 3.4fr 6.9fr;
   height: 100%;
+}
+
+.BlockWrapper__content-column {
+  box-sizing: border-box;
 }

@@ -61,10 +61,12 @@ export const requestUpdateMacroparameterValue = (
       const responseData = body?.data?.changeMacroparameter;
 
       if (response.ok && responseData?.ok) {
-        const newMacroparameter = responseData?.macroparameter;
+        const updatedMacroparameter = responseData?.macroparameter;
 
-        if (newMacroparameter) {
-          dispatch(macroparameterUpdateValueSuccess(newMacroparameter as Macroparameter, group));
+        if (updatedMacroparameter) {
+          dispatch(
+            macroparameterUpdateValueSuccess(updatedMacroparameter as Macroparameter, group),
+          );
         }
       } else {
         dispatch(macroparameterUpdateValueError(body.message));
