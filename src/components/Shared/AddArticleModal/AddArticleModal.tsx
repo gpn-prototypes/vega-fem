@@ -8,27 +8,25 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../../types/Macroparameter';
+import { cnAddArticleModal } from './cn-add-article-modal';
 
-import { cnAddMacroparameterModal } from './cn-add-macroparameter-modal';
+import './AddArticleModal.css';
 
-import './AddMacroparameterModal.css';
-
-interface AddMacroparameterModalProps {
-  close: (e: CloseEvent | React.SyntheticEvent) => void;
-  isOpen: boolean;
-  callback: (macroparameter: Macroparameter) => void;
-  macroparameter: Macroparameter;
+export interface Article {
+  caption?: string;
+  unit?: string;
 }
 
-export const AddMacroparameterModal = ({
-  isOpen,
-  close,
-  callback,
-  macroparameter,
-}: AddMacroparameterModalProps) => {
-  const [caption, setCaption] = useState(macroparameter.caption);
-  const [unit, setUnit] = useState(macroparameter.unit);
+interface AddArticleModalProps {
+  close: (e: CloseEvent | React.SyntheticEvent) => void;
+  isOpen: boolean;
+  callback: (article: Article) => void;
+  article: Article;
+}
+
+export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticleModalProps) => {
+  const [caption, setCaption] = useState(article.caption);
+  const [unit, setUnit] = useState(article.unit);
 
   return (
     <Modal
@@ -37,14 +35,14 @@ export const AddMacroparameterModal = ({
       onClose={close}
       isOpen={isOpen}
       rootSelector=".App"
-      className={cnAddMacroparameterModal()}
+      className={cnAddArticleModal()}
     >
-      <Modal.Header className={cnAddMacroparameterModal('header')}>
+      <Modal.Header className={cnAddArticleModal('header')}>
         <Text size="xs">Добавление новой статьи</Text>
       </Modal.Header>
       <Modal.Body>
-        <Form.Row space="none" gap="none" className={cnAddMacroparameterModal('full-width-row')}>
-          <Form.Field className={cnAddMacroparameterModal('full-width-field')}>
+        <Form.Row space="none" gap="none" className={cnAddArticleModal('full-width-row')}>
+          <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <TextField
               id="macroparameterSetName"
@@ -57,7 +55,7 @@ export const AddMacroparameterModal = ({
             />
           </Form.Field>
           <Form.Field>
-            <Form.Label>Еденица измерения</Form.Label>
+            <Form.Label>Единица измерения</Form.Label>
             <TextField
               id="unit"
               size="s"
@@ -71,7 +69,7 @@ export const AddMacroparameterModal = ({
         </Form.Row>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row className={cnAddMacroparameterModal('footer-row')}>
+        <Form.Row className={cnAddArticleModal('footer-row')}>
           <div />
           <div />
           <Button
@@ -79,7 +77,7 @@ export const AddMacroparameterModal = ({
             view="primary"
             label="Добавить"
             onClick={(e) => {
-              callback({ caption, unit } as Macroparameter);
+              callback({ caption, unit } as Article);
               close(e);
             }}
           />
