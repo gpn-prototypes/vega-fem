@@ -1,48 +1,40 @@
 import React, { useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense, { CapexExpenseValues } from '../../../../types/CapexExpense';
-import { cnGroupsContainer } from '../../../styles/GroupsContainer/cn-groups-container';
+import CapexExpense /* ,{CapexExpenseValues} */ from '../../../../types/CapexExpense';
+import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../../styles/GroupsContainer/GroupsContainer.css';
+import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface CapexWrapperProps {
   capex: CapexExpense;
-  //  removeCapex: (capex: CapexExpense) => void;
+  updateCapexValue: (capex: CapexExpense) => void;
 }
 
-export const CapexWrapper = ({
-  capex,
-}: // removeCapex,
-CapexWrapperProps) => {
-  const [values, setValues] = useState(capex.value as CapexExpenseValues[]);
+export const CapexWrapper = ({ capex, updateCapexValue }: CapexWrapperProps) => {
+  const [value, setValue] = useState(capex?.valueTotal);
 
   const editValues = (e: any): void => {
-    setValues([{ year: 2020, value: e.e.target.value }]);
+    setValue(e.e.target.value);
   };
 
   return (
-    <Form.Row col="2">
-      <Form.Field className={cnGroupsContainer('body-content')}>
-        <Form.Label>{capex.caption}</Form.Label>
+    <Form.Row className={cnVegaFormCustom('form-row')} space="m">
+      <Form.Field className={cnGroupWrapper('body-content')}>
+        <Form.Label space="2xs">{capex.caption}</Form.Label>
         <TextField
-          id={capex?.caption + values[0]?.year.toString()}
+          size="s"
+          width="full"
+          id={`capex_${capex?.name}`}
           placeholder="Значение"
-          value={values[0]?.value.toString()}
+          rightSide={capex?.unit}
+          value={value?.toString()}
+          onBlur={() => updateCapexValue({ ...capex, ...{ valueTotal: value } })}
           onChange={(e: any) => editValues(e)}
         />
       </Form.Field>
-      {/* <Form.Field>
-        <Button
-          onlyIcon
-          style={{ marginBottom: 'var(--space-xs)' }}
-          size="xs"
-          view="clear"
-          iconLeft={IconClose}
-          onClick={() => removeCapex(capex)}
-        />
-      </Form.Field> */}
     </Form.Row>
   );
 };

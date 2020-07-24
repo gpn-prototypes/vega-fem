@@ -1,128 +1,89 @@
 import React, { useState } from 'react';
-import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
+import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
+import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense, { CapexExpenseValues } from '../../../../types/CapexExpense';
+import CapexExpense from '../../../../types/CapexExpense';
 import CapexExpenseSetGroup from '../../../../types/CapexExpenseSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { cnGroupsContainer } from '../../../styles/GroupsContainer/cn-groups-container';
+import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
 import { CapexWrapper } from './CapexWrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../../styles/GroupsContainer/GroupsContainer.css';
-
+import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+// import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
-  // removeGroup: (group: CapexExpenseSetGroup) => void;
-  // /!* requestSetUpdate: () => void; *!/
+  requestAddCapex: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  updateCapexValue: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
 }
 
 export const GroupWrapper = ({
   group,
-}: //  removeGroup /* , requestSetUpdate */,
-CapexSetWrapperGroupProps) => {
-  const [isAddingCapex, setIsAddingCapex] = useState(false);
-  const [newCapexName, setNewCapexName] = useState('');
-  const [capexes, setCapexes] = useState(group.capexExpenseList as CapexExpense[]);
+  requestAddCapex,
+  updateCapexValue,
+}: CapexSetWrapperGroupProps) => {
+  const [capexes] = useState(group.capexExpenseList as CapexExpense[]);
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const editCapexes = (capex: CapexExpense): void => {
-    setCapexes((prevCapexes) => [...prevCapexes, capex]);
+  const { isOpen, close, open } = useModal();
+
+  const openAddCapexModal = (): void => {
+    setIsCollapsed(false);
+    open();
   };
 
-  const toggleCapex = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsAddingCapex(!isAddingCapex);
-    setNewCapexName('');
-  };
+  const addCapexToGroup = (capex: CapexExpense): void => requestAddCapex(capex, group);
 
-  const addCapex = (event: any, capexName: string): void => {
-    editCapexes({
-      name: capexName,
-      caption: capexName,
-      value: [] as CapexExpenseValues[],
-    });
-    toggleCapex(event);
-  };
-
-  /*  const removeCapex = (capex: CapexExpense): void => {
-        setCapexes((prevCapexes) =>
-          prevCapexes.filter(
-            (prevCapex) => prevCapex.name !== capex.name,
-          ),
-        );
-      }; */
+  const updateCapexValueWithGroup = (capex: CapexExpense): void => updateCapexValue(capex, group);
 
   return (
-    <div className={cnGroupsContainer()}>
-      <div className={cnGroupsContainer('header')}>
+    <div className={cnGroupWrapper()}>
+      <div className={cnGroupWrapper('header')}>
         <div
-          className={cnGroupsContainer('header-name', { collapse: isCollapsed })}
+          className={cnGroupWrapper('header-name', { collapse: isCollapsed })}
           onClick={() => setIsCollapsed(!isCollapsed)}
           role="presentation"
         >
-          <IconSelect size="xs" />
-          <Text as="span">{group.caption}</Text>
+          <IconArrowDown size="xs" />
+          <Text as="span" size="s">
+            {group.caption}
+          </Text>
         </div>
-        <div className={cnGroupsContainer('header-actions')}>
+        <div className={cnGroupWrapper('header-actions')}>
           <Button
+            title="Добавить статью"
             onlyIcon
-            size="xs"
-            view="ghost"
             iconLeft={IconAdd}
-            // onClick={() => removeGroup(group)}
+            size="s"
+            view="clear"
+            onClick={openAddCapexModal}
           />
         </div>
       </div>
-      {capexes?.length > 0 && (
-        <div className={cnGroupsContainer('body', { hidden: isCollapsed })}>
-          {capexes.map((capex, index) => (
+      <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+        {capexes?.length === 0 && (
+          <GroupPlaceholder text="Пока не добавлена ни одна статья" callback={openAddCapexModal} />
+        )}
+        {capexes?.length > 0 &&
+          capexes.map((capex, index) => (
             <CapexWrapper
               key={keyGen(index)}
               capex={capex}
-              // removeCapex={removeCapex}
+              updateCapexValue={updateCapexValueWithGroup}
             />
           ))}
-        </div>
-      )}
-      <div className={cnGroupsContainer('footer', { hidden: isCollapsed })}>
-        {!isAddingCapex && (
-          <div
-            className={cnGroupsContainer('footer-action')}
-            role="presentation"
-            onClick={toggleCapex}
-          >
-            <IconAdd size="s" />
-            <Text as="span">Добавить статью</Text>
-          </div>
-        )}
-        {isAddingCapex && (
-          <div className={cnGroupsContainer('footer-new-item')}>
-            <Form.Row col="1" gap="m">
-              <Form.Field>
-                <TextField
-                  width="full"
-                  placeholder="Название статьи"
-                  type="text"
-                  maxLength={150}
-                  value={newCapexName}
-                  onChange={(event: any) => setNewCapexName(event.e.target.value)}
-                />
-              </Form.Field>
-            </Form.Row>
-            <Form.Row col="2" gap="m">
-              <Button
-                label="Добавить статью"
-                view="ghost"
-                disabled={!newCapexName.length}
-                onClick={(e) => addCapex(e, newCapexName)}
-              />
-              <Button label="Отмена" view="clear" onClick={toggleCapex} />
-            </Form.Row>
-          </div>
-        )}
       </div>
+      {/* Этот блок вместо всего что ниже */}
+      <AddArticleModal
+        isOpen={isOpen}
+        close={close}
+        article={{ caption: '', unit: '' } as CapexExpense}
+        callback={addCapexToGroup}
+      />
     </div>
   );
 };

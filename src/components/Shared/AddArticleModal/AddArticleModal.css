@@ -1,17 +1,17 @@
-.AddMacroparameterModal__header {
+.AddArticleModal__header {
   border-bottom: 1px solid var(--color-bg-secondary);
 }
 
-.AddMacroparameterModal__full-width-row {
+.AddArticleModal__full-width-row {
   grid-template-columns: 50%;
   grid-row-gap: var(--space-s);
 }
 
-.AddMacroparameterModal__full-width-field {
+.AddArticleModal__full-width-field {
   grid-column-end: span 2;
 }
 
-.AddMacroparameterModal__footer-row {
+.AddArticleModal__footer-row {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 

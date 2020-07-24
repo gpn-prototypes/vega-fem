@@ -8,6 +8,8 @@ import './CapexTab.css';
 
 export const CapexTab = (): React.ReactElement => (
   <div className={cnCapexTab()}>
+    <div />
+    {/* TODO: nav in future */}
     <CapexSetContainer />
   </div>
 );

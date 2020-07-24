@@ -8,6 +8,6 @@ export default interface CapexExpense {
 }
 
 export interface CapexExpenseValues {
-  year: number;
+  year?: number;
   value: number;
 }

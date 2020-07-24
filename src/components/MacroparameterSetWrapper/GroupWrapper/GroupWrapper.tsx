@@ -5,7 +5,7 @@ import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 import Macroparameter from '../../../../types/Macroparameter';
 import MacroparameterSetGroup from '../../../../types/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { AddMacroparameterModal } from '../AddMacroparameterModal/AddMacroparameterModal';
+import { AddArticleModal, Article } from '../../Shared/AddArticleModal/AddArticleModal';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 import { MacroparameterWrapper } from '../MacroparameterWrapper';
 
@@ -86,10 +86,10 @@ export const GroupWrapper = ({
             />
           ))}
       </div>
-      <AddMacroparameterModal
+      <AddArticleModal
         isOpen={isOpen}
         close={close}
-        macroparameter={{ caption: '', unit: '' } as Macroparameter}
+        article={{ caption: '', unit: '' } as Article}
         callback={addMacroparameterToGroup}
       />
     </div>
