@@ -8,13 +8,15 @@ import keyGen from '../../helpers/keyGenerator';
 import { cnFEMTableWrapper } from './cn-FEM-table-wrapper';
 
 import './FEMTableWrapper.css';
+import {FEMTableCell} from './TableCell/FEMTableCell';
 
 interface FEMTableProps {
   macroparameterSet: MacroparameterSet;
   headers: string[];
+  updateValueCallback?: any;
 }
 
-export const FEMTable = ({ macroparameterSet, headers }: FEMTableProps) => {
+export const FEMTable = ({ macroparameterSet, headers, updateValueCallback }: FEMTableProps) => {
   const yearsRange = useCallback((): string[] => {
     const result: string[] = [];
     for (let i = 0; i < (macroparameterSet?.years ?? 0); i += 1) {
@@ -22,6 +24,10 @@ export const FEMTable = ({ macroparameterSet, headers }: FEMTableProps) => {
     }
     return result;
   }, [macroparameterSet]);
+
+  const updateValue = useCallback((group: MacroparameterSetGroup, macroparameter: Macroparameter, value?: MacroparameterValues) => {
+    updateValueCallback(macroparameter, group, value);
+  }, []);
 
   return (
     <div className={cnFEMTableWrapper()}>
@@ -56,13 +62,11 @@ export const FEMTable = ({ macroparameterSet, headers }: FEMTableProps) => {
                       </td>
                       <td className={cnFEMTableWrapper('value')}>{macroparameter.unit}</td>
                       {yearsRange().map((year) => (
-                        <td key={keyGen(year)} className={cnFEMTableWrapper('value')}>
-                          {
-                            ((macroparameter?.value ?? []) as MacroparameterValues[])?.find(
-                              (value: MacroparameterValues) => value?.year === +year,
-                            )?.value
-                          }
-                        </td>
+                          <FEMTableCell key={keyGen(year)}
+                                        onBlur={(value: string) => updateValue(macroparameter, group, {year: +year, value: +value})}
+                                        value={((macroparameter?.value ?? []) as MacroparameterValues[])?.find(
+                                          (value: MacroparameterValues) => value?.year === +year,
+                                          )?.value.toString() || ''} />
                       ))}
                     </tr>
                   ),

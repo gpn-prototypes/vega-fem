@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexSetGlobalValue from '../../../types/CapexSetGlobalValue';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import {projectIdFromLocalStorage} from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
 
@@ -29,7 +30,7 @@ export function fetchCapexGlobalValueSet(): ThunkAction<Promise<void>, {}, {}, A
     dispatch(capexSetGlobalValueFetch());
 
     try {
-      const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
+      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

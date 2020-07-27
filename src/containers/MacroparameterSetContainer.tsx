@@ -1,13 +1,14 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Macroparameter from '../../types/Macroparameter';
+import Macroparameter, {MacroparameterValues} from '../../types/Macroparameter';
 import MacroparameterSet from '../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../actions/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../actions/addMacroparameterSetGroup';
 import { updateMacroparameterSet as updateSet } from '../actions/updateMacroparameterSet';
 import { requestUpdateMacroparameterValue } from '../actions/updateMacroparameterValue';
+import {requestUpdateMacroparameterYearValue} from '../actions/updateMacroparameterYearValue';
 import { MacroparameterSetWrapper } from '../components/MacroparameterSetWrapper/MacroparameterSetWrapper';
 
 export const MacroparameterSetContainer = () => {
@@ -46,6 +47,13 @@ export const MacroparameterSetContainer = () => {
     [dispatch],
   );
 
+  const updateMacroparameterYearValue = useCallback(
+    (macroparameter: Macroparameter, group: MacroparameterSetGroup, value: MacroparameterValues) => {
+      dispatch(requestUpdateMacroparameterYearValue(macroparameter, group, value));
+    },
+    [dispatch],
+  );
+
   return (
     <MacroparameterSetWrapper
       macroparameterSet={selectedMacroparameterSet}
@@ -53,6 +61,7 @@ export const MacroparameterSetContainer = () => {
       addMacroparameterSetGroup={addMacroparameterSetGroups}
       addMacroparameter={addMacroparameter}
       updateMacroparameterValue={updateMacroparameterValue}
+      updateMacroparameterYearValue={updateMacroparameterYearValue}
     />
   );
 };

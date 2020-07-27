@@ -4,6 +4,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import Macroparameter from '../../types/Macroparameter';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
 import { authHeader } from '../helpers/authTokenToLocalstorage';
+import {projectIdFromLocalStorage} from '../helpers/projectIdToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -39,7 +40,7 @@ export const requestAddMacroparameter = (
 
     try {
       /* TODO: set project id dynamically */
-      const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
+      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

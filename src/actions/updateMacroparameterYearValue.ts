@@ -1,42 +1,44 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../types/Macroparameter';
+import Macroparameter, {MacroparameterValues} from '../../types/Macroparameter';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
 import { authHeader } from '../helpers/authTokenToLocalstorage';
 import {projectIdFromLocalStorage} from '../helpers/projectIdToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
-export const MACROPARAM_UPDATE_VALUE_INIT = 'MACROPARAM_UPDATE_VALUE_INIT';
-export const MACROPARAM_UPDATE_VALUE_SUCCESS = 'MACROPARAM_UPDATE_VALUE_SUCCESS';
-export const MACROPARAM_UPDATE_VALUE_ERROR = 'MACROPARAM_UPDATE_VALUE_ERROR';
+export const MACROPARAM_UPDATE_YEAR_VALUE_INIT = 'MACROPARAM_UPDATE_YEAR_VALUE_INIT';
+export const MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS = 'MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS';
+export const MACROPARAM_UPDATE_YEAR_VALUE_ERROR = 'MACROPARAM_UPDATE_YEAR_VALUE_ERROR';
 
-const macroparameterUpdateValueInitialized = (): MacroparamsAction => ({
-  type: MACROPARAM_UPDATE_VALUE_INIT,
+const macroparameterUpdateYearValueInitialized = (): MacroparamsAction => ({
+  type: MACROPARAM_UPDATE_YEAR_VALUE_INIT,
 });
 
-const macroparameterUpdateValueSuccess = (
+const macroparameterUpdateYearValueSuccess = (
   macroparameter: Macroparameter,
   group: MacroparameterSetGroup,
+  value: MacroparameterValues,
 ): MacroparamsAction => ({
-  type: MACROPARAM_UPDATE_VALUE_SUCCESS,
-  payload: { macroparameter, group },
+  type: MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS,
+  payload: { macroparameter, group, value },
 });
 
-const macroparameterUpdateValueError = (message: any): MacroparamsAction => ({
-  type: MACROPARAM_UPDATE_VALUE_ERROR,
+const macroparameterUpdateYearValueError = (message: any): MacroparamsAction => ({
+  type: MACROPARAM_UPDATE_YEAR_VALUE_ERROR,
   errorMessage: message,
 });
 
-export const requestUpdateMacroparameterValue = (
+export const requestUpdateMacroparameterYearValue = (
   macroparameter: Macroparameter,
   group: MacroparameterSetGroup,
+  value: MacroparameterValues,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>, getState: any): Promise<void> => {
     const { selected } = getState()?.macroparamsReducer;
-    dispatch(macroparameterUpdateValueInitialized());
+    dispatch(macroparameterUpdateYearValueInitialized());
 
     try {
       /* TODO: set project id dynamically */
@@ -49,31 +51,28 @@ export const requestUpdateMacroparameterValue = (
         },
         body: JSON.stringify({
           query:
-            `mutation {changeMacroparameter(` +
+            `mutation {setMacroparameterYearValue(` +
             `macroparameterSetId: ${selected.id.toString()},` +
             `macroparameterGroupId: ${group?.id?.toString()},` +
             `macroparameterId: ${macroparameter.id},` +
-            `value: ${macroparameter.value}` +
-            `){macroparameter{name, id, caption, value{year,value}}, ok}}`,
+            `year: ${value.year},` +
+            `value: ${value.value}` +
+            `){ok}}`,
         }),
       });
 
       const body = await response.json();
-      const responseData = body?.data?.changeMacroparameter;
+      const responseData = body?.data?.setMacroparameterYearValue;
 
       if (response.ok && responseData?.ok) {
-        const updatedMacroparameter = responseData?.macroparameter;
-
-        if (updatedMacroparameter) {
           dispatch(
-            macroparameterUpdateValueSuccess(updatedMacroparameter as Macroparameter, group),
+            macroparameterUpdateYearValueSuccess(macroparameter, group, value),
           );
-        }
       } else {
-        dispatch(macroparameterUpdateValueError(body.message));
+        dispatch(macroparameterUpdateYearValueError(body.message));
       }
     } catch (e) {
-      dispatch(macroparameterUpdateValueError(e));
+      dispatch(macroparameterUpdateYearValueError(e));
     }
   };
 };

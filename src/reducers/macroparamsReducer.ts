@@ -1,4 +1,4 @@
-import Macroparameter from '../../types/Macroparameter';
+import Macroparameter, {MacroparameterValues} from '../../types/Macroparameter';
 import MacroparameterSet from '../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
 import { MACROPARAM_ADD_SUCCESS } from '../actions/addMacroparameter';
@@ -15,11 +15,18 @@ import {
   MACROPARAM_SET_UPDATE_SUCCESS,
 } from '../actions/updateMacroparameterSet';
 import { MACROPARAM_UPDATE_VALUE_SUCCESS } from '../actions/updateMacroparameterValue';
+import {MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS} from '../actions/updateMacroparameterYearValue';
 
 const initialState = {
   macroparameterSetList: [] as MacroparameterSet[],
   selected: {} as MacroparameterSet,
 };
+
+let groupList,
+  group: any,
+  macroparameterList,
+  macr: Macroparameter,
+  value: MacroparameterValues[];
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
@@ -59,13 +66,13 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         selected: { ...state.selected },
       };
     case MACROPARAM_UPDATE_VALUE_SUCCESS:
-      /* eslint-disable-line */const groupList = (state?.selected?.macroparameterGroupList ??
+      /* eslint-disable-line */groupList = (state?.selected?.macroparameterGroupList ??
         []) as MacroparameterSetGroup[];
-      /* eslint-disable-line */const group = (groupList?.find(
+      /* eslint-disable-line */group = (groupList?.find(
         (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
       ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-line */const macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-line */const macr = (macroparameterList?.find(
+      /* eslint-disable-line */macroparameterList = group?.macroparameterList ?? [];
+      /* eslint-disable-line */macr = (macroparameterList?.find(
         (macroparameter: Macroparameter) => macroparameter.id === action.payload.macroparameter?.id,
       ) ?? {}) as Macroparameter;
       return {
@@ -80,8 +87,51 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                   ...group,
                   ...{
                     macroparameterList: [
-                      ...macroparameterList.filter((i) => i.id !== macr.id),
+                      ...macroparameterList.filter((i: Macroparameter) => i.id !== macr.id),
                       ...[{ ...macr, ...action.payload.macroparameter }],
+                    ],
+                  },
+                },
+              ],
+            ],
+          },
+        },
+      };
+    case MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS:
+      groupList = (state?.selected?.macroparameterGroupList ??
+        []) as MacroparameterSetGroup[];
+      group = (groupList?.find(
+        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
+      ) ?? {}) as MacroparameterSetGroup;
+      macroparameterList = group?.macroparameterList ?? [];
+      macr = (macroparameterList?.find(
+        (macroparameter: Macroparameter) => macroparameter.id === action.payload.macroparameter?.id,
+      ) ?? {}) as Macroparameter;
+      value = (macr?.value as MacroparameterValues[]).map(i => {
+        if (i.year  === action.payload.value?.year) {
+          i.value = action.payload.value?.value;
+        }
+        return i;
+      });
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ...{
+            macroparameterGroupList: [
+              ...groupList.filter(i => i.id !== group.id),
+              ...[
+                {
+                  ...group,
+                  ...{
+                    macroparameterList: [
+                      ...macroparameterList.filter((i: Macroparameter) => i.id !== macr.id),
+                      ...[
+                        {
+                          ...macr,
+                          ...{value: value}
+                        },
+                      ],
                     ],
                   },
                 },
