@@ -25,9 +25,10 @@ export const FEMTable = ({ macroparameterSet, headers, updateValueCallback }: FE
     return result;
   }, [macroparameterSet]);
 
-  const updateValue = useCallback((group: MacroparameterSetGroup, macroparameter: Macroparameter, value?: MacroparameterValues) => {
+  const updateValue = (group: MacroparameterSetGroup, macroparameter: Macroparameter, value?: MacroparameterValues) => {
+    console.log(group, macroparameter, value);
     updateValueCallback(macroparameter, group, value);
-  }, []);
+  };
 
   return (
     <div className={cnFEMTableWrapper()}>
@@ -63,7 +64,7 @@ export const FEMTable = ({ macroparameterSet, headers, updateValueCallback }: FE
                       <td className={cnFEMTableWrapper('value')}>{macroparameter.unit}</td>
                       {yearsRange().map((year) => (
                           <FEMTableCell key={keyGen(year)}
-                                        onBlur={(value: string) => updateValue(macroparameter, group, {year: +year, value: +value})}
+                                        onBlur={(value: string) => updateValue(group, macroparameter, {year: +year, value: +value})}
                                         value={((macroparameter?.value ?? []) as MacroparameterValues[])?.find(
                                           (value: MacroparameterValues) => value?.year === +year,
                                           )?.value.toString() || ''} />
