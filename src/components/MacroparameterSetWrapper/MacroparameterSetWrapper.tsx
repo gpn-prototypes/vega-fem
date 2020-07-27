@@ -268,7 +268,8 @@ export const MacroparameterSetWrapper = ({
               </Form.Row>
             </Form>
             <FEMTable
-              macroparameterSet={macroparameterSet}
+              entity={macroparameterSet}
+              secondaryColumn="unit"
               headers={['', 'Заголовок', 'Ед. измерения']}
               updateValueCallback={updateMacroparameterYearValue}
             />

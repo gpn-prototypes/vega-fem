@@ -1,5 +1,6 @@
 .FEMTableCell {
   min-width: calc(var(--space-6xl) - var(--space-xs));
+  max-width: calc(var(--space-6xl) - var(--space-xs));
   padding-right: var(--space-xs);
 
   overflow: hidden;

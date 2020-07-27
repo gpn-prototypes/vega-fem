@@ -8,14 +8,17 @@ import './FEMTableCell.css';
 interface FEMTableCellProps {
   value: string,
   onBlur?: any,
+  editable: boolean,
 }
 
-export const FEMTableCell = ({ value, onBlur }: FEMTableCellProps) => {
+export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [innerValue, setInnerValue] = useState(value);
 
   const editCell = () => {
-    setIsEditing(true);
+    if (editable) {
+      setIsEditing(true);
+    }
   };
 
   const onBlurHandler = () => {

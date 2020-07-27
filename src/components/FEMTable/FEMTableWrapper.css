@@ -98,11 +98,19 @@
   box-shadow: 2px 0 1px rgba(0, 0, 0, 0.25);
 }
 
+.FEMTableWrapper__table tbody tr td:nth-child(3) {
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+  max-width: calc(var(--space-6xl) - var(--space-xs));
+}
+
 .FEMTableWrapper__table tbody tr:nth-child(odd) td:nth-child(n+3){
   background-color: var(--color-bg-stripe);
 }
 
 .FEMTableWrapper__table tr td:first-of-type::before {
+  position: relative;
+  top: 6px;
+
   content: counter(rowNumber);
   counter-increment: rowNumber;
   height: var(--control-height-s);
@@ -124,6 +132,7 @@
 
 .FEMTableWrapper__value {
   min-width: calc(var(--space-6xl) - var(--space-xs));
+  max-width: calc(var(--space-6xl) - var(--space-xs));
   padding-right: var(--space-xs);
 
   border-right: 1px solid var(--color-bg-border);
