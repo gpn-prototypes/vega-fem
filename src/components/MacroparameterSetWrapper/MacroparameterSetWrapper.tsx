@@ -3,7 +3,7 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../types/Macroparameter';
+import Macroparameter, {MacroparameterValues} from '../../../types/Macroparameter';
 import MacroparameterSet from '../../../types/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/MacroparameterSetGroup';
 import keyGen from '../../helpers/keyGenerator';
@@ -30,6 +30,11 @@ interface MacroparameterSetWrapperProps {
     macroparameter: Macroparameter,
     group: MacroparameterSetGroup,
   ) => void;
+  updateMacroparameterYearValue: (
+    macroparameter: Macroparameter,
+    group: MacroparameterSetGroup,
+    value: MacroparameterValues,
+  ) => void;
 }
 
 export const MacroparameterSetWrapper = ({
@@ -38,6 +43,7 @@ export const MacroparameterSetWrapper = ({
   addMacroparameterSetGroup,
   addMacroparameter,
   updateMacroparameterValue,
+  updateMacroparameterYearValue,
 }: MacroparameterSetWrapperProps) => {
   const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
 
@@ -264,6 +270,7 @@ export const MacroparameterSetWrapper = ({
             <FEMTable
               macroparameterSet={macroparameterSet}
               headers={['', 'Заголовок', 'Ед. измерения']}
+              updateValueCallback={updateMacroparameterYearValue}
             />
           </>
         ) : (
