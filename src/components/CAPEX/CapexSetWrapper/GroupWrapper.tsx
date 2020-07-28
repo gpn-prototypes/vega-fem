@@ -25,7 +25,7 @@ export const GroupWrapper = ({
   requestAddCapex,
   updateCapexValue,
 }: CapexSetWrapperGroupProps) => {
-  const [capexes] = useState(group.capexExpenseList as CapexExpense[]);
+  const [capexes] = useState((group?.capexExpenseList ?? []) as CapexExpense[]);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -50,7 +50,7 @@ export const GroupWrapper = ({
         >
           <IconArrowDown size="xs" />
           <Text as="span" size="s">
-            {group.caption}
+            {group?.caption}
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>

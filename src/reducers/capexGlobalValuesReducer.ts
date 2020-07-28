@@ -1,6 +1,5 @@
 import CapexSetGlobalValue from '../../types/CapexSetGlobalValue';
 import { CapexesAction } from '../actions/capex/capexSet';
-// import {CAPEX_SET_GROUP_ADD_SUCCESS} from '../actions/addCapexSetGroup';
 import {
   CAPEX_SET_GLOBAL_VALUE_ERROR,
   CAPEX_SET_GLOBAL_VALUE_FETCH,
@@ -10,7 +9,6 @@ import { CAPEX_SET_UPDATE_ERROR, CAPEX_SET_UPDATE_SUCCESS } from '../actions/cap
 
 const initialState = {
   capexSetGlobalValue: {} as CapexSetGlobalValue,
-  selected: {} as CapexSetGlobalValue,
 };
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
@@ -30,7 +28,6 @@ export default function capexReducer(state = initialState, action: CapexesAction
     case CAPEX_SET_UPDATE_SUCCESS:
       return {
         ...state,
-        selected: action.payload,
         capexSetGlobalValue: action.payload,
       };
     default:

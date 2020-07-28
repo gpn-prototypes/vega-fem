@@ -42,6 +42,7 @@ export const CapexSetContainer = () => {
     },
     [dispatch],
   );
+
   const addCapex = useCallback(
     (newCapex: CapexExpense, group: CapexExpenseSetGroup) => {
       dispatch(requestAddCapex(newCapex, group));

@@ -1,9 +1,14 @@
+import CapexExpenseSetGroup from '../../types/CapexExpenseSetGroup';
 import CapexSet from '../../types/CapexSet';
-import { CAPEX_SET_GROUP_ADD_SUCCESS } from '../actions/capex/addCapexSetGroup';
+import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
+import {
+  CAPEX_EXPENSE_SET_GROUP_ADD_ERROR,
+  CAPEX_EXPENSE_SET_GROUP_ADD_INIT,
+  CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS,
+} from '../actions/capex/addCapexSetGroup';
 import {
   CAPEX_SET_ERROR,
   CAPEX_SET_FETCH,
-  CAPEX_SET_SELECTED,
   CAPEX_SET_SUCCESS,
   CapexesAction,
 } from '../actions/capex/capexSet';
@@ -11,7 +16,6 @@ import { CAPEX_SET_UPDATE_ERROR, CAPEX_SET_UPDATE_SUCCESS } from '../actions/cap
 
 const initialState = {
   capexSet: {} as CapexSet,
-  selected: {} as CapexSet,
 };
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
@@ -28,17 +32,26 @@ export default function capexReducer(state = initialState, action: CapexesAction
         ...state,
         error: action.payload,
       };
-    case CAPEX_SET_SELECTED:
     case CAPEX_SET_UPDATE_SUCCESS:
       return {
         ...state,
-        selected: action.payload,
         capexSet: action.payload,
       };
-    case CAPEX_SET_GROUP_ADD_SUCCESS:
+    case CAPEX_EXPENSE_SET_GROUP_ADD_INIT:
+    case CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS:
+      /* eslint-disable-line */const newCapexSet = {...state.capexSet};
+      /* eslint-disable-line */newCapexSet.capexExpenseGroupList?.push(action.payload);
       return {
         ...state,
-        selected: state.selected,
+        capexSet: newCapexSet,
+      };
+    case CAPEX_EXPENSE_SET_GROUP_ADD_ERROR:
+    case CAPEX_ADD_SUCCESS:
+      /* eslint-disable-line */const newCapex = {...state.capexSet};
+      /* eslint-disable-line */newCapex?.capexExpenseGroupList?.find((group: CapexExpenseSetGroup) => group?.id === action.payload.group?.id)?.capexExpenseList?.push(action.payload.capex);
+      return {
+        ...state,
+        capexSet: newCapex,
       };
     default:
       return state;

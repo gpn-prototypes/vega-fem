@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense /* ,{CapexExpenseValues} */ from '../../../../types/CapexExpense';
+import CapexExpense from '../../../../types/CapexExpense';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 

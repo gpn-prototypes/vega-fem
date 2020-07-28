@@ -4,6 +4,6 @@ export default interface CapexExpenseSetGroup {
   id?: string | number;
   name?: string;
   caption?: string;
-  valueTotal?: string;
+  valueTotal?: number;
   capexExpenseList?: CapexExpense[];
 }

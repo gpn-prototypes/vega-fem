@@ -8,7 +8,7 @@ import CapexSetGlobalValue from '../../../../types/CapexSetGlobalValue';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import {FEMTable} from '../../FEMTable/FEMTable';
+import { FEMTable } from '../../FEMTable/FEMTable';
 
 import { GroupWrapper } from './GroupWrapper';
 
@@ -32,7 +32,7 @@ export const CapexSetWrapper = ({
   addCapex,
   updateCapexValue,
 }: CapexSetWrapperProps) => {
-  const [reserveValue, setReserveValue] = useState(reservedValueSet?.value ?? 20);
+  const [reserveValue, setReserveValue] = useState(20);
   // const [years, setYears] = useState(capexSet.years);
   // const [yearStart,setYearStart]=useState(capexSet.yearStart);
 
@@ -44,8 +44,9 @@ export const CapexSetWrapper = ({
   const [groupsHelper, setGroupsHelper] = useState(false);
 
   useEffect(() => {
+    setReserveValue(reservedValueSet?.value ?? 20);
     setGroups(capexSet?.capexExpenseGroupList ?? []);
-  }, [capexSet]);
+  }, [reservedValueSet, capexSet]);
 
   const toggleCapexSetGroup = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -72,15 +73,11 @@ export const CapexSetWrapper = ({
     () => {
       // TODO: запрос на обновление reservedValue
       /* updateCapexSet({
-      caption: name,
-      name,
-      years,
-      category,
-      capexGroupList: groups,
-    } as CapexSet); */
+        capexExpansionGroupList: groups,
+      } as CapexSet); */
     },
     [
-      /* updateCapexSet, reserveValue */
+      // updateCapexSet
     ],
   );
 

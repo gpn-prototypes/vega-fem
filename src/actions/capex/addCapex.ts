@@ -4,25 +4,25 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import CapexExpense from '../../../types/CapexExpense';
 import CapexExpenseSetGroup from '../../../types/CapexExpenseSetGroup';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
-import {projectIdFromLocalStorage} from '../../helpers/projectIdToLocalstorage';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
 
-export const ADD_CAPEX_INIT = 'ADD_CAPEX_INIT';
-export const ADD_CAPEX_SUCCESS = 'ADD_CAPEX_SUCCESS';
-export const ADD_CAPEX_ERROR = 'ADD_CAPEX_ERROR';
+export const CAPEX_ADD_INIT = 'CAPEX_ADD_INIT';
+export const CAPEX_ADD_SUCCESS = 'CAPEX_ADD_SUCCESS';
+export const CAPEX_ADD_ERROR = 'CAPEX_ADD_ERROR';
 
 const capexAddInitialized = (): CapexesAction => ({
-  type: ADD_CAPEX_INIT,
+  type: CAPEX_ADD_INIT,
 });
 
 const capexAddSuccess = (capex: CapexExpense, group: CapexExpenseSetGroup): CapexesAction => ({
-  type: ADD_CAPEX_SUCCESS,
+  type: CAPEX_ADD_SUCCESS,
   payload: { capex, group },
 });
 
 const capexAddError = (message: any): CapexesAction => ({
-  type: ADD_CAPEX_ERROR,
+  type: CAPEX_ADD_ERROR,
   errorMessage: message,
 });
 
@@ -35,7 +35,7 @@ export const requestAddCapex = (
     dispatch(capexAddInitialized());
 
     try {
-      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,10 +46,10 @@ export const requestAddCapex = (
           query:
             `mutation {` +
             `createCapexExpense(` +
-            `capexExpenseGroupId:"${group.id?.toString()}",` +
+            `capexExpenseGroupId:"${group?.id?.toString()}",` +
             `caption:"${newCapexExpense.caption}",` +
             `unit:"${newCapexExpense.unit}",` +
-            `){capexExpense{id, name, caption, unit, value{year,value}}, ok}}` /* это возвращаемые значения */,
+            `){capexExpense{id, name, caption, unit, value{year,value}}, ok}}`,
         }),
       });
 

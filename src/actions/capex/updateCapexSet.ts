@@ -3,7 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexSet from '../../../types/CapexSet';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
-import {projectIdFromLocalStorage} from '../../helpers/projectIdToLocalstorage';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
 
@@ -31,11 +31,10 @@ export const updateCapexSet = (
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>, getState: any): Promise<void> => {
-    const { selected } = getState()?.capexReducer;
     dispatch(capexSetUpdateInitialized());
 
     try {
-      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +45,7 @@ export const updateCapexSet = (
           query:
             `mutation {` +
             `changeCapexExpenseGroup(` +
-            `capexExpenseGroupId:${selected.id.toString()},` +
+            `capexExpenseGroupId:"${0}",` +
             `caption:""` +
             `){capexExpenseGroup{id,caption}, ok}` +
             `}`,
@@ -57,7 +56,6 @@ export const updateCapexSet = (
       if (response.ok) {
         dispatch(
           capexSetUpdateSuccess({
-            ...selected,
             ...newCapexSet,
           } as CapexSet),
         );
