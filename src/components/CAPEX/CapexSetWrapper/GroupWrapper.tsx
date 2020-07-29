@@ -77,7 +77,6 @@ export const GroupWrapper = ({
             />
           ))}
       </div>
-      {/* Этот блок вместо всего что ниже */}
       <AddArticleModal
         isOpen={isOpen}
         close={close}

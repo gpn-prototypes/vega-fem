@@ -3,7 +3,6 @@ import CapexSet from '../../types/CapexSet';
 import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
 import {
   CAPEX_EXPENSE_SET_GROUP_ADD_ERROR,
-  CAPEX_EXPENSE_SET_GROUP_ADD_INIT,
   CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS,
 } from '../actions/capex/addCapexSetGroup';
 import {
@@ -37,7 +36,6 @@ export default function capexReducer(state = initialState, action: CapexesAction
         ...state,
         capexSet: action.payload,
       };
-    case CAPEX_EXPENSE_SET_GROUP_ADD_INIT:
     case CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS:
       /* eslint-disable-line */const newCapexSet = {...state.capexSet};
       /* eslint-disable-line */newCapexSet.capexExpenseGroupList?.push(action.payload);

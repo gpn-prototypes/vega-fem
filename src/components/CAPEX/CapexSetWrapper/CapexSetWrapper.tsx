@@ -32,6 +32,16 @@ export const CapexSetWrapper = ({
   addCapex,
   updateCapexValue,
 }: CapexSetWrapperProps) => {
+  const initialContribution: CapexExpenseSetGroup = {
+    caption: 'Первоначальный взнос',
+    valueTotal: 0, // TODO:get from back
+    capexExpenseList: [
+      {
+        caption: 'Значение разового платежа',
+        valueTotal: 0,
+      },
+    ],
+  };
   const [reserveValue, setReserveValue] = useState(20);
   // const [years, setYears] = useState(capexSet.years);
   // const [yearStart,setYearStart]=useState(capexSet.yearStart);
@@ -123,6 +133,11 @@ export const CapexSetWrapper = ({
                 </Form.Field>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
+                <GroupWrapper
+                  group={initialContribution}
+                  requestAddCapex={addCapex}
+                  updateCapexValue={updateCapexValue}
+                />
                 {(groups ?? []).length > 0 &&
                   groups.map((group, index) => (
                     <GroupWrapper
