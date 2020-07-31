@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import MacroparameterSet from '../../types/MacroparameterSet';
-import { authHeader } from '../helpers/authTokenToLocalstorage';
-import {projectIdFromLocalStorage} from '../helpers/projectIdToLocalstorage';
+import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
+import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
 export const MACROPARAMS_SET_LIST_SUCCESS = 'MACROPARAMS_SET_LIST_SUCCESS';
@@ -39,8 +39,7 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
     dispatch(macroparameterSetListFetch());
 
     try {
-      /* TODO: set project id dynamically */
-      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

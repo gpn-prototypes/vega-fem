@@ -108,30 +108,37 @@ export const CapexSetWrapper = ({
                 e.preventDefault();
               }}
             >
-              <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
-                <Form.Field>
-                  <Form.Label htmlFor="capexSetName">Величина резерва</Form.Label>
-                  <TextField
-                    id="capexSetName"
-                    size="s"
-                    width="full"
-                    value={reserveValue.toString()}
-                    rightSide="%"
-                    onBlur={() => requestSetUpdate()}
-                    onChange={(e) => onChangeTypoHandler(e, setReserveValue)}
-                  />
-                </Form.Field>
-              </Form.Row>
-              <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
-                {(groups ?? []).length > 0 &&
-                  groups.map((group, index) => (
-                    <GroupWrapper
-                      key={keyGen(index)}
-                      group={group}
-                      requestAddCapex={addCapex}
-                      updateCapexValue={updateCapexValue}
+              <Form.Row gap="m" space="none" className={cnVegaFormCustom('content-body')}>
+                <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
+                  <Form.Field>
+                    <Form.Label htmlFor="capexSetName">Величина резерва</Form.Label>
+                    <TextField
+                      id="capexSetName"
+                      size="s"
+                      width="full"
+                      value={reserveValue.toString()}
+                      rightSide="%"
+                      onBlur={() => requestSetUpdate()}
+                      onChange={(e) => onChangeTypoHandler(e, setReserveValue)}
                     />
-                  ))}
+                  </Form.Field>
+                </Form.Row>
+                <Form.Row
+                  col="1"
+                  gap="none"
+                  space="none"
+                  className={cnVegaFormCustom('groups-row')}
+                >
+                  {(groups ?? []).length > 0 &&
+                    groups.map((group, index) => (
+                      <GroupWrapper
+                        key={keyGen(index)}
+                        group={group}
+                        requestAddCapex={addCapex}
+                        updateCapexValue={updateCapexValue}
+                      />
+                    ))}
+                </Form.Row>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
                 {!isAddingGroup && (

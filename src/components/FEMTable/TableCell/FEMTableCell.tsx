@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { TextField } from '@gpn-prototypes/vega-ui';
 
 import { cnFEMTableCell } from './cn-FEM-table-cell';
@@ -6,9 +6,9 @@ import { cnFEMTableCell } from './cn-FEM-table-cell';
 import './FEMTableCell.css';
 
 interface FEMTableCellProps {
-  value: string,
-  onBlur?: any,
-  editable: boolean,
+  value: string;
+  onBlur?: any;
+  editable: boolean;
 }
 
 export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => {
@@ -29,20 +29,21 @@ export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => 
   };
 
   return (
-      <td className={cnFEMTableCell({ editing: isEditing })}
-          onDoubleClick={editCell}
-          onBlur={onBlurHandler}>
-        {!isEditing &&
-          <React.Fragment>
-            {value}
-          </React.Fragment>
-        }
-        {isEditing && <TextField size="s"
-                                 width="full"
-                                 autoFocus={true}
-                                 value={innerValue}
-                                 onChange={(e: any) => setInnerValue(e.e.target.value)} />
-          }
-      </td>
+    <td
+      className={cnFEMTableCell({ editing: isEditing })}
+      onDoubleClick={editCell}
+      onBlur={onBlurHandler}
+    >
+      {!isEditing && <>{value}</>}
+      {isEditing && (
+        <TextField
+          size="s"
+          width="full"
+          autoFocus
+          value={innerValue}
+          onChange={(e: any) => setInnerValue(e.e.target.value)}
+        />
+      )}
+    </td>
   );
 };

@@ -3,9 +3,11 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter, {MacroparameterValues} from '../../../types/Macroparameter';
-import MacroparameterSet from '../../../types/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/MacroparameterSetGroup';
+import Macroparameter, {
+  MacroparameterValues,
+} from '../../../types/Macroparameters/Macroparameter';
+import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../helpers/keyGenerator';
 import macroparameterSetCategoryOptions from '../../helpers/MacroparameterSetCategoryOptions';
 import { yearsRangeOptions } from '../../helpers/nearYearsRange';
@@ -144,81 +146,83 @@ export const MacroparameterSetWrapper = ({
                 e.preventDefault();
               }}
             >
-              <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
-                <Form.Field>
-                  <Form.Label space="xs">Название сценария</Form.Label>
-                  <TextField
-                    id="macroparameterSetName"
-                    size="s"
-                    width="full"
-                    value={name}
-                    onBlur={() => requestSetUpdate()}
-                    onChange={(e) => onChangeTypoHandler(e, setName)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label space="xs">Количество лет</Form.Label>
-                  <TextField
-                    id="macroparameterSetYears"
-                    size="s"
-                    width="full"
-                    value={years?.toString()}
-                    onBlur={() => requestSetUpdate()}
-                    onChange={(e) => onChangeTypoHandler(e, setYears)}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label space="xs">Вид оценки</Form.Label>
-                  <Select
-                    options={macroparameterSetCategoryOptions}
-                    name="macroparameterSetCategory"
-                    value={category}
-                    onClearValue={() => null}
-                    onChange={(selectValue: any) => {
-                      setCategory(selectValue);
-                      setCategoryHelper(true);
-                    }}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label space="xs">Стартовый год</Form.Label>
-                  <Select
-                    options={yearsOptions}
-                    name="macroparameterSetCategory"
-                    value={yearStart?.toString()}
-                    onClearValue={() => null}
-                    onChange={(selectValue: any) => {
-                      setYearStart(selectValue);
-                      setYearStartHelper(true);
-                    }}
-                  />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Label
-                    htmlFor="macroparameterSetIsTemplate"
-                    className={cnVegaFormCustom('label-checkbox')}
-                  >
-                    <Checkbox
-                      size="m"
-                      name="macroparameterSetIsTemplate"
-                      label="Для всех проектов"
-                      checked={allProjects}
-                      onChange={() => setAllProjects((prevAllProjects) => !prevAllProjects)}
+              <Form.Row gap="none" space="none" className={cnVegaFormCustom('content-body')}>
+                <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
+                  <Form.Field>
+                    <Form.Label space="xs">Название сценария</Form.Label>
+                    <TextField
+                      id="macroparameterSetName"
+                      size="s"
+                      width="full"
+                      value={name}
+                      onBlur={() => requestSetUpdate()}
+                      onChange={(e) => onChangeTypoHandler(e, setName)}
                     />
-                  </Form.Label>
-                </Form.Field>
-              </Form.Row>
-              <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
-                {(groups ?? []).length > 0 &&
-                  groups.map((group, index) => (
-                    <GroupWrapper
-                      key={keyGen(index)}
-                      group={group}
-                      removeGroup={removeGroup}
-                      requestAddMacroparameter={addMacroparameter}
-                      updateMacroparameterValue={updateMacroparameterValue}
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Label space="xs">Количество лет</Form.Label>
+                    <TextField
+                      id="macroparameterSetYears"
+                      size="s"
+                      width="full"
+                      value={years?.toString()}
+                      onBlur={() => requestSetUpdate()}
+                      onChange={(e) => onChangeTypoHandler(e, setYears)}
                     />
-                  ))}
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Label space="xs">Вид оценки</Form.Label>
+                    <Select
+                      options={macroparameterSetCategoryOptions}
+                      name="macroparameterSetCategory"
+                      value={category}
+                      onClearValue={() => null}
+                      onChange={(selectValue: any) => {
+                        setCategory(selectValue);
+                        setCategoryHelper(true);
+                      }}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Label space="xs">Стартовый год</Form.Label>
+                    <Select
+                      options={yearsOptions}
+                      name="macroparameterSetYearStart"
+                      value={yearStart?.toString()}
+                      onClearValue={() => null}
+                      onChange={(selectValue: any) => {
+                        setYearStart(selectValue);
+                        setYearStartHelper(true);
+                      }}
+                    />
+                  </Form.Field>
+                  <Form.Field>
+                    <Form.Label
+                      htmlFor="macroparameterSetIsTemplate"
+                      className={cnVegaFormCustom('label-checkbox')}
+                    >
+                      <Checkbox
+                        size="m"
+                        name="macroparameterSetIsTemplate"
+                        label="Для всех проектов"
+                        checked={allProjects}
+                        onChange={() => setAllProjects((prevAllProjects) => !prevAllProjects)}
+                      />
+                    </Form.Label>
+                  </Form.Field>
+                </Form.Row>
+                <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
+                  {(groups ?? []).length > 0 &&
+                    groups.map((group, index) => (
+                      <GroupWrapper
+                        key={keyGen(index)}
+                        group={group}
+                        removeGroup={removeGroup}
+                        requestAddMacroparameter={addMacroparameter}
+                        updateMacroparameterValue={updateMacroparameterValue}
+                      />
+                    ))}
+                </Form.Row>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
                 {!isAddingGroup && (
@@ -271,7 +275,7 @@ export const MacroparameterSetWrapper = ({
               entity={macroparameterSet}
               secondaryColumn="unit"
               headers={['', 'Заголовок', 'Ед. измерения']}
-              updateValueCallback={updateMacroparameterYearValue}
+              updateArticleValueCallback={updateMacroparameterYearValue}
             />
           </>
         ) : (

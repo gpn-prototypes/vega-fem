@@ -7,9 +7,10 @@
   overflow-y: auto;
 
   border-right: 1px solid var(--color-bg-secondary);
+}
 
-  /* height: 100%; */
-  grid-template-rows: 1fr 2fr 1fr;
+.VegaFormCustom__content-body {
+  align-content: start;
 }
 
 .VegaFormCustom__form-row {
@@ -17,12 +18,17 @@
   align-content: start;
 }
 
-.VegaFormCustom__label-checkbox {
-  margin-bottom: var(--space-xl);
+.VegaFormCustom__form-row_width_full-width {
+  grid-template-columns: 1fr;
+  align-content: start;
 }
 
-.VegaFormCustom__label-checkbox .Checkbox-Label {
-  margin-bottom: 3px;
+.VegaFormCustom__field_middle {
+  width: 60%;
+}
+
+.VegaFormCustom__label-checkbox {
+  margin-bottom: var(--space-xl);
 }
 
 .VegaFormCustom__label-checkbox .Checkbox-Input {
@@ -76,6 +82,6 @@
   margin-top: var(--space-s);
 
   display: grid;
-  grid-template-columns: 2.9fr 1.6fr 1fr 1fr;
+  grid-template-columns: 2.9fr 1.7fr 1fr 1fr;
   grid-column-gap: var(--space-s);
 }

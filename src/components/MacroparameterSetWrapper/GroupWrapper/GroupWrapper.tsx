@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../../types/Macroparameter';
-import MacroparameterSetGroup from '../../../../types/MacroparameterSetGroup';
+import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { AddArticleModal, Article } from '../../Shared/AddArticleModal/AddArticleModal';
+import { ArticleWrapper } from '../ArticleWrapper';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
-import { MacroparameterWrapper } from '../MacroparameterWrapper';
 
 import { cnGroupWrapper } from './cn-group-wrapper';
 
@@ -79,10 +79,10 @@ export const GroupWrapper = ({
         )}
         {macroparameters.length > 0 &&
           macroparameters.map((macroparameter, index) => (
-            <MacroparameterWrapper
+            <ArticleWrapper
               key={keyGen(index)}
-              macroparameter={macroparameter}
-              updateMacroparameterValue={updateMacroparameterValueWithGroup}
+              article={macroparameter}
+              updateArticleValueCallback={updateMacroparameterValueWithGroup}
             />
           ))}
       </div>

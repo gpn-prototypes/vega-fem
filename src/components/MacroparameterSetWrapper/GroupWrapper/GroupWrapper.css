@@ -8,11 +8,17 @@
 }
 
 .GroupWrapper__header {
+  height: 32px;
   margin-top: var(--space-2xs);
   margin-bottom: var(--space-3xs);
 
   display: grid;
   grid-template-columns: 90% 10%;
+}
+
+.GroupWrapper__header_noActions {
+  margin-top: var(--space-s);
+  margin-bottom: var(--space-xs);
 }
 
 .GroupWrapper__header-name {

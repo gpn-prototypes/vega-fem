@@ -1,10 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter, {MacroparameterValues} from '../../types/Macroparameter';
-import MacroparameterSetGroup from '../../types/MacroparameterSetGroup';
-import { authHeader } from '../helpers/authTokenToLocalstorage';
-import {projectIdFromLocalStorage} from '../helpers/projectIdToLocalstorage';
+import Macroparameter, {
+  MacroparameterValues,
+} from '../../../types/Macroparameters/Macroparameter';
+import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
@@ -41,8 +43,7 @@ export const requestUpdateMacroparameterYearValue = (
     dispatch(macroparameterUpdateYearValueInitialized());
 
     try {
-      /* TODO: set project id dynamically */
-      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,9 +66,7 @@ export const requestUpdateMacroparameterYearValue = (
       const responseData = body?.data?.setMacroparameterYearValue;
 
       if (response.ok && responseData?.ok) {
-          dispatch(
-            macroparameterUpdateYearValueSuccess(macroparameter, group, value),
-          );
+        dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
       } else {
         dispatch(macroparameterUpdateYearValueError(body.message));
       }
