@@ -51,7 +51,7 @@ export const requestUpdateCapexValue = (
             `capexExpenseGroupId: ${group?.id?.toString()},` +
             `capexExpenseId: ${capex.id},` +
             `value: ${capex.valueTotal}` +
-            `){capexExpense{name, id, caption, value{year,value}}, ok}}`,
+            `){capexExpense{name, id, caption,valueTotal,unit, value{year,value}}, ok}}`,
         }),
       });
 
@@ -59,7 +59,7 @@ export const requestUpdateCapexValue = (
       const responseData = body?.data?.changeCapexExpense;
 
       if (response.ok && responseData?.ok) {
-        const newCapex = responseData?.capex;
+        const newCapex = responseData?.capexExpense;
 
         if (newCapex) {
           dispatch(capexUpdateValueSuccess(newCapex as CapexExpense, group));
