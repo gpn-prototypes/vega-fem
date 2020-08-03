@@ -11,7 +11,6 @@ import {
   CAPEX_SET_SUCCESS,
   CapexesAction,
 } from '../actions/capex/capexSet';
-import { CAPEX_SET_UPDATE_ERROR, CAPEX_SET_UPDATE_SUCCESS } from '../actions/capex/updateCapexSet';
 
 const initialState = {
   capexSet: {} as CapexSet,
@@ -26,15 +25,9 @@ export default function capexReducer(state = initialState, action: CapexesAction
         capexSet: action.payload,
       };
     case CAPEX_SET_ERROR:
-    case CAPEX_SET_UPDATE_ERROR:
       return {
         ...state,
         error: action.payload,
-      };
-    case CAPEX_SET_UPDATE_SUCCESS:
-      return {
-        ...state,
-        capexSet: action.payload,
       };
     case CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS:
       /* eslint-disable-line */const newCapexSet = {...state.capexSet};

@@ -18,31 +18,22 @@ import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 interface CapexSetWrapperProps {
   capexSet: CapexSet;
   reservedValueSet: CapexSetGlobalValue;
-  updateCapexSet: (capexSet: any) => void;
   addCapexSetGroup: (capexSetGroup: CapexExpenseSetGroup) => void;
   addCapex: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  updateCapexGlobalValue: (reserveValue: CapexSetGlobalValue) => void;
   updateCapexValue: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
 }
 
 export const CapexSetWrapper = ({
   capexSet,
   reservedValueSet,
-  updateCapexSet,
+  updateCapexGlobalValue,
   addCapexSetGroup,
   addCapex,
   updateCapexValue,
 }: CapexSetWrapperProps) => {
-  const initialContribution: CapexExpenseSetGroup = {
-    caption: 'Первоначальный взнос',
-    valueTotal: 0, // TODO:get from back
-    capexExpenseList: [
-      {
-        caption: 'Значение разового платежа',
-        valueTotal: 0,
-      },
-    ],
-  };
-  const [reserveValue, setReserveValue] = useState(20);
+  const [reserveValue, setReserveValue] = useState(reservedValueSet.value);
+  const [reserveValueId, setReserveValueId] = useState(reservedValueSet.id);
   // const [years, setYears] = useState(capexSet.years);
   // const [yearStart,setYearStart]=useState(capexSet.yearStart);
 
@@ -51,12 +42,16 @@ export const CapexSetWrapper = ({
   const [groups, setGroups] = useState(
     (capexSet?.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[],
   );
-  const [groupsHelper, setGroupsHelper] = useState(false);
 
   useEffect(() => {
-    setReserveValue(reservedValueSet?.value ?? 20);
+    if (reservedValueSet?.value) {
+      setReserveValue(reservedValueSet.value);
+    }
+    if (reservedValueSet?.id) {
+      setReserveValueId(reservedValueSet.id);
+    }
     setGroups(capexSet?.capexExpenseGroupList ?? []);
-  }, [reservedValueSet, capexSet]);
+  }, [reserveValueId, reservedValueSet, capexSet]);
 
   const toggleCapexSetGroup = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -79,25 +74,14 @@ export const CapexSetWrapper = ({
     setter(e.e.target.value);
   };
 
-  const requestSetUpdate = useCallback(
-    () => {
-      // TODO: запрос на обновление reservedValue
-      /* updateCapexSet({
-        capexExpansionGroupList: groups,
-      } as CapexSet); */
-    },
-    [
-      // updateCapexSet
-    ],
-  );
-
-  useEffect(() => {
-    // при изменении состояния меняется
-    if (groupsHelper) {
-      setGroups(capexSet.capexExpenseGroupList as CapexExpenseSetGroup[]);
-      setGroupsHelper(false);
-    }
-  }, [groupsHelper, capexSet]);
+  const requestSetGlobalValue = useCallback(() => {
+    // TODO: запрос на обновление reservedValue
+    console.log('reserveValue: ', reserveValue);
+    updateCapexGlobalValue({
+      id: reserveValueId,
+      value: reserveValue,
+    } as CapexSetGlobalValue);
+  }, [updateCapexGlobalValue, reserveValue, reserveValueId]);
 
   return (
     <div className={cnBlockWrapper()}>
@@ -120,24 +104,19 @@ export const CapexSetWrapper = ({
             >
               <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
                 <Form.Field>
-                  <Form.Label htmlFor="capexSetName">Величина резерва</Form.Label>
+                  <Form.Label htmlFor="capexSetReservedValue">Величина резерва</Form.Label>
                   <TextField
-                    id="capexSetName"
+                    id="capexSetReservedValue"
                     size="s"
                     width="full"
-                    value={reserveValue.toString()}
+                    value={reserveValue?.toString()}
                     rightSide="%"
-                    onBlur={() => requestSetUpdate()}
+                    onBlur={() => requestSetGlobalValue()}
                     onChange={(e) => onChangeTypoHandler(e, setReserveValue)}
                   />
                 </Form.Field>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
-                <GroupWrapper
-                  group={initialContribution}
-                  requestAddCapex={addCapex}
-                  updateCapexValue={updateCapexValue}
-                />
                 {(groups ?? []).length > 0 &&
                   groups.map((group, index) => (
                     <GroupWrapper

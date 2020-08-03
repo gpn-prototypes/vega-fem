@@ -9,7 +9,7 @@ import { requestAddCapex } from '../actions/capex/addCapex';
 import { addCapexSetGroup as addGroup } from '../actions/capex/addCapexSetGroup';
 import { fetchCapexSet } from '../actions/capex/capexSet';
 import { fetchCapexGlobalValueSet } from '../actions/capex/capexSetGlobalValue';
-import { updateCapexSet as updateSet } from '../actions/capex/updateCapexSet';
+import { requestUpdateCapexGlobalValue } from '../actions/capex/updateCapexSetGlobalValue';
 import { requestUpdateCapexValue } from '../actions/capex/updateCapexValue';
 import { CapexSetWrapper } from '../components/CAPEX/CapexSetWrapper/CapexSetWrapper';
 
@@ -29,13 +29,6 @@ export const CapexSetContainer = () => {
     dispatch(fetchCapexGlobalValueSet());
   }, [dispatch]);
 
-  const updateCapexSet = useCallback(
-    (updatedCapexSet: CapexSet) => {
-      dispatch(updateSet(updatedCapexSet));
-    },
-    [dispatch],
-  );
-
   const addCapexSetGroups = useCallback(
     (newCapexSetGroups: CapexExpenseSetGroup) => {
       dispatch(addGroup(newCapexSetGroups));
@@ -49,6 +42,13 @@ export const CapexSetContainer = () => {
     },
     [dispatch],
   );
+
+  const updateCapexGlobalValue = useCallback(
+    (reserveValue: CapexSetGlobalValue) => {
+      dispatch(requestUpdateCapexGlobalValue(reserveValue));
+    },
+    [dispatch],
+  );
   const updateCapexValue = useCallback(
     (capex: CapexExpense, group: CapexExpenseSetGroup) => {
       dispatch(requestUpdateCapexValue(capex, group));
@@ -59,7 +59,7 @@ export const CapexSetContainer = () => {
     <CapexSetWrapper
       capexSet={capexSet}
       reservedValueSet={capexSetGlobalValue}
-      updateCapexSet={updateCapexSet}
+      updateCapexGlobalValue={updateCapexGlobalValue}
       addCapexSetGroup={addCapexSetGroups}
       addCapex={addCapex}
       updateCapexValue={updateCapexValue}
