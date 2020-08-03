@@ -12,7 +12,14 @@
   margin-bottom: var(--space-3xs);
 
   display: grid;
+
+  height: 32px;
   grid-template-columns: 90% 10%;
+}
+
+.GroupWrapper__header_noActions {
+  margin-top: var(--space-s);
+  margin-bottom: var(--space-xs);
 }
 
 .GroupWrapper__header-name {

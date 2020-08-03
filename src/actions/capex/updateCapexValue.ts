@@ -4,7 +4,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import CapexExpense from '../../../types/CapexExpense';
 import CapexExpenseSetGroup from '../../../types/CapexExpenseSetGroup';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
-import {projectIdFromLocalStorage} from '../../helpers/projectIdToLocalstorage';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
 
@@ -38,8 +38,7 @@ export const requestUpdateCapexValue = (
     dispatch(capexUpdateValueInitialized());
 
     try {
-      /* TODO: set project id dynamically */
-      const response = await fetch('graphql/' + projectIdFromLocalStorage(), {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

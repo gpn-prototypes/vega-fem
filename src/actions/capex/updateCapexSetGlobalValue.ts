@@ -47,16 +47,16 @@ export const requestUpdateCapexGlobalValue = (
             `updateCapexGlobalValue(` +
             `capexGlobalValueId:"${reserveValue?.id}",` +
             `value: ${reserveValue?.value}` +
-            `){capexGlobalValue{id,name}, ok}` +
+            `){capexGlobalValue{id,name,value}, ok}` +
             `}`,
         }),
       });
 
       const body = await response.json();
-      const responseData = body?.data?.capexGlobalValue;
+      const responseData = body?.data?.updateCapexGlobalValue;
 
       if (response.ok && responseData?.ok) {
-        const newCapex = responseData?.capex;
+        const newCapex = responseData?.capexGlobalValue;
 
         if (newCapex) {
           dispatch(capexUpdateGlobalValueSuccess(newCapex as CapexSetGlobalValue));

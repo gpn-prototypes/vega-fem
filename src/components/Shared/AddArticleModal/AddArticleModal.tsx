@@ -20,13 +20,18 @@ export interface Article {
 interface AddArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
-  callback: (article: Article) => void;
+  callback?: (article: Article) => void;
   article: Article;
 }
 
 export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticleModalProps) => {
   const [caption, setCaption] = useState(article.caption);
   const [unit, setUnit] = useState(article.unit);
+
+  const submitHandle = (e: any) => {
+    if (callback) callback({ caption, unit } as Article);
+    close(e);
+  };
 
   return (
     <Modal
@@ -72,15 +77,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
         <Form.Row className={cnAddArticleModal('footer-row')}>
           <div />
           <div />
-          <Button
-            size="s"
-            view="primary"
-            label="Добавить"
-            onClick={(e) => {
-              callback({ caption, unit } as Article);
-              close(e);
-            }}
-          />
+          <Button size="s" view="primary" label="Добавить" onClick={(e) => submitHandle(e)} />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />
         </Form.Row>
       </Modal.Footer>
