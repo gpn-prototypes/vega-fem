@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 
+import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -31,7 +31,7 @@ const OPEXMKOSChangeExpenseError = (message: any): OPEXAction => ({
 });
 
 export function MKOSChangeExpense(
-  article: Macroparameter
+  article: Macroparameter,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSChangeExpenseInit());

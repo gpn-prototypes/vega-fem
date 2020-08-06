@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
+import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -30,9 +30,7 @@ const OPEXMKOSChangeError = (message: any): OPEXAction => ({
   errorMessage: message,
 });
 
-export function MKOSChange(
-  MKOS: OPEXGroup
-): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSChangeInit());
 

@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
+import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -31,7 +31,7 @@ const OPEXAutoexportChangeError = (message: any): OPEXAction => ({
 });
 
 export function autoexportChange(
-  autoexport: OPEXGroup
+  autoexport: OPEXGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAutoexportChangeInit());

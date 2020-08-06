@@ -3,8 +3,8 @@ import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { IconAdd } from '@gpn-design/uikit/IconAdd';
 import { IconSelect } from '@gpn-design/uikit/IconSelect';
 import { Button, Form, Text, TextField } from '@gpn-prototypes/vega-ui';
-import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
 
+import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
 import Role from '../../../../types/role';
@@ -76,10 +76,9 @@ export const OPEXSetWrapper = ({
 
   const tableData = () => {
     if (isEconomic) {
-      return {...{opexCaseList: OPEXSetInstance.opexCaseList}}
-    } else {
-      return {...{autoexport: OPEXSetInstance.autoexport}, ...{mkos: OPEXSetInstance.mkos}}
+      return { ...{ opexCaseList: OPEXSetInstance.opexCaseList } };
     }
+    return { ...{ autoexport: OPEXSetInstance.autoexport }, ...{ mkos: OPEXSetInstance.mkos } };
   };
 
   return (
@@ -100,23 +99,25 @@ export const OPEXSetWrapper = ({
           }}
         >
           <Form.Row gap="none" space="none" className={cnVegaFormCustom('content-body')}>
-            {isEconomic && <Form.Row
-              gap="m"
-              space="none"
-              className={cnVegaFormCustom('form-row', { width: 'full-width' })}
-            >
-              <Form.Field>
-                <Form.Label htmlFor="OPEXSetSDF" className={cnVegaFormCustom('label-checkbox')}>
-                  <Checkbox
-                    size="m"
-                    name="macroparameterSetIsTemplate"
-                    label="Учитывать в СДФ для калькуляции OPEX водозаб. скважины"
-                    checked={SDF}
-                    onChange={() => setSDF((prevSDF: boolean) => !prevSDF)}
-                  />
-                </Form.Label>
-              </Form.Field>
-            </Form.Row>}
+            {isEconomic && (
+              <Form.Row
+                gap="m"
+                space="none"
+                className={cnVegaFormCustom('form-row', { width: 'full-width' })}
+              >
+                <Form.Field>
+                  <Form.Label htmlFor="OPEXSetSDF" className={cnVegaFormCustom('label-checkbox')}>
+                    <Checkbox
+                      size="m"
+                      name="macroparameterSetIsTemplate"
+                      label="Учитывать в СДФ для калькуляции OPEX водозаб. скважины"
+                      checked={SDF}
+                      onChange={() => setSDF((prevSDF: boolean) => !prevSDF)}
+                    />
+                  </Form.Label>
+                </Form.Field>
+              </Form.Row>
+            )}
             <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
               {!isEconomic && OPEXSetInstance?.hasAutoexport && (
                 <GroupWrapper
@@ -136,61 +137,66 @@ export const OPEXSetWrapper = ({
                   updateArticle={OPEXChangeMKOSExpense}
                 />
               )}
-              {isEconomic && (OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup, index: number) => (
-                <GroupWrapper
-                  key={keyGen(index)}
-                  group={caseItem}
-                  updateArticle={(article: Macroparameter) => OPEXChangeCaseExpense(article, caseItem)}
-                  addArticle={OPEXAddCaseExpense}
-                />
-              ))}
+              {isEconomic &&
+                (OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup, index: number) => (
+                  <GroupWrapper
+                    key={keyGen(index)}
+                    group={caseItem}
+                    updateArticle={(article: Macroparameter) =>
+                      OPEXChangeCaseExpense(article, caseItem)
+                    }
+                    addArticle={OPEXAddCaseExpense}
+                  />
+                ))}
             </Form.Row>
           </Form.Row>
-          {isEconomic && <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
-            {!isAddingGroup && (
-              <Button
-                size="s"
-                label="Добавить кейс"
-                iconLeft={IconAdd}
-                view="ghost"
-                onClick={(e) => toggleGroup(e)}
-              />
-            )}
-            {isAddingGroup && (
-              <div>
-                <Text as="span" view="secondary" size="s">
-                  Название кейса
-                </Text>
-                <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                  <Form.Field>
-                    <TextField
+          {isEconomic && (
+            <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
+              {!isAddingGroup && (
+                <Button
+                  size="s"
+                  label="Добавить кейс"
+                  iconLeft={IconAdd}
+                  view="ghost"
+                  onClick={(e) => toggleGroup(e)}
+                />
+              )}
+              {isAddingGroup && (
+                <div>
+                  <Text as="span" view="secondary" size="s">
+                    Название кейса
+                  </Text>
+                  <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
+                    <Form.Field>
+                      <TextField
+                        size="s"
+                        width="full"
+                        id="macroparameterSetGroupName"
+                        type="text"
+                        maxLength={150}
+                        value={newCaseName}
+                        onChange={(event: any) => setNewCaseName(event.e.target.value)}
+                      />
+                    </Form.Field>
+                  </Form.Row>
+                  <Form.Row className={cnVegaFormCustom('footer-action')}>
+                    <Button
                       size="s"
-                      width="full"
-                      id="macroparameterSetGroupName"
-                      type="text"
-                      maxLength={150}
-                      value={newCaseName}
-                      onChange={(event: any) => setNewCaseName(event.e.target.value)}
+                      label="Добавить кейс"
+                      view="ghost"
+                      disabled={!newCaseName.length}
+                      onClick={(e) => addGroup(e, newCaseName)}
                     />
-                  </Form.Field>
-                </Form.Row>
-                <Form.Row className={cnVegaFormCustom('footer-action')}>
-                  <Button
-                    size="s"
-                    label="Добавить кейс"
-                    view="ghost"
-                    disabled={!newCaseName.length}
-                    onClick={(e) => addGroup(e, newCaseName)}
-                  />
-                  <Button size="s" label="Отмена" view="clear" onClick={toggleGroup} />
-                </Form.Row>
-              </div>
-            )}
-          </Form.Row>}
+                    <Button size="s" label="Отмена" view="clear" onClick={toggleGroup} />
+                  </Form.Row>
+                </div>
+              )}
+            </Form.Row>
+          )}
         </Form>
         <FEMTable
           entity={tableData()}
-          secondaryColumn={isEconomic ? "valueTotal": "unit"}
+          secondaryColumn={isEconomic ? 'valueTotal' : 'unit'}
           headers={isEconomic ? ['', 'Статья', 'Суммарное'] : ['', 'Значение', 'Eд. измерения']}
         />
       </div>

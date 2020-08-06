@@ -1,11 +1,11 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
-import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
 
+import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import {OPEXGroup} from '../../../../types/OPEX/OPEXGroup';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
@@ -65,9 +65,12 @@ export const GroupWrapper = ({
 
   const addArticleHandlerCallback = (article: Article): void => {
     if (addArticle) {
-      addArticle({
-        ...article,
-      } as Macroparameter, group)
+      addArticle(
+        {
+          ...article,
+        } as Macroparameter,
+        group,
+      );
     }
   };
 
@@ -112,10 +115,7 @@ export const GroupWrapper = ({
       </div>
       <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
         {articles.length === 0 && (
-          <GroupPlaceholder
-            text="Пустой кейс"
-            callback={openAddArticleModal}
-          />
+          <GroupPlaceholder text="Пустой кейс" callback={openAddArticleModal} />
         )}
         {isPreset && (
           <Form.Field className={cnVegaFormCustom('field', { middle: true })}>

@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
-import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
+import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -23,7 +23,7 @@ const OPEXCaseChangeExpenseInit = (): OPEXAction => ({
 
 const OPEXCaseChangeExpenseSuccess = (group: OPEXGroup, expense: Macroparameter): OPEXAction => ({
   type: OPEX_CASE_CHANGE_EXPENSE_SUCCESS,
-  payload: {group, expense},
+  payload: { group, expense },
 });
 
 const OPEXCaseChangeExpenseError = (message: any): OPEXAction => ({
@@ -57,7 +57,9 @@ export function caseChangeExpense(
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXCaseChangeExpenseSuccess(group, body.data?.changeOpexCaseExpense?.opexExpense));
+        dispatch(
+          OPEXCaseChangeExpenseSuccess(group, body.data?.changeOpexCaseExpense?.opexExpense),
+        );
       } else {
         dispatch(OPEXCaseChangeExpenseError(body.message));
       }

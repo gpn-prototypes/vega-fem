@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
-import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
+import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -23,7 +23,7 @@ const OPEXAddCaseExpenseInit = (): OPEXAction => ({
 
 const OPEXAddCaseExpenseSuccess = (caseGroup: OPEXGroup, expense: Macroparameter): OPEXAction => ({
   type: OPEX_ADD_CASE_EXPENSE_SUCCESS,
-  payload: {caseGroup, expense},
+  payload: { caseGroup, expense },
 });
 
 const OPEXAddCaseExpenseError = (message: any): OPEXAction => ({
@@ -33,7 +33,7 @@ const OPEXAddCaseExpenseError = (message: any): OPEXAction => ({
 
 export function addCaseExpense(
   article: Macroparameter,
-  caseGroup: OPEXGroup
+  caseGroup: OPEXGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAddCaseExpenseInit());
@@ -54,7 +54,9 @@ export function addCaseExpense(
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXAddCaseExpenseSuccess(caseGroup, body.data?.createOpexCaseExpense?.opexExpense));
+        dispatch(
+          OPEXAddCaseExpenseSuccess(caseGroup, body.data?.createOpexCaseExpense?.opexExpense),
+        );
       } else {
         dispatch(OPEXAddCaseExpenseError(body.message));
       }

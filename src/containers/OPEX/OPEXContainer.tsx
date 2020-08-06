@@ -1,16 +1,16 @@
-import React, {useCallback, useEffect} from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
-import {addCaseExpense} from '../../actions/OPEX/addCaseExpense';
+import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
 import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
-import {autoexportChangeExpense} from '../../actions/OPEX/changeAutoexportExpense';
-import {MKOSChange} from '../../actions/OPEX/changeMKOS';
-import {MKOSChangeExpense} from '../../actions/OPEX/changeMKOSExpense';
-import {caseChangeExpense} from '../../actions/OPEX/changeOpexCaseExpense';
-import {createCase} from '../../actions/OPEX/createCase';
+import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
+import { MKOSChange } from '../../actions/OPEX/changeMKOS';
+import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
+import { caseChangeExpense } from '../../actions/OPEX/changeOpexCaseExpense';
+import { createCase } from '../../actions/OPEX/createCase';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
 import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
 
@@ -76,15 +76,17 @@ export const OPEXContainer = () => {
     [dispatch],
   );
 
-  return <OPEXSetWrapper
-    OPEXSetInstance={OPEXSetInstance}
-    OPEXChangeAutoexport={changeOPEXAutoexport}
-    OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
-    OPEXChangeMKOS={changeMKOS}
-    OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
-    OPEXCreateCase={createOPEXCase}
-    OPEXChangeCaseExpense={changeOPEXCaseExpense}
-    OPEXAddCaseExpense={addOPEXCaseExpense}
-    selectedRole={selectedRole}
-  />;
+  return (
+    <OPEXSetWrapper
+      OPEXSetInstance={OPEXSetInstance}
+      OPEXChangeAutoexport={changeOPEXAutoexport}
+      OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
+      OPEXChangeMKOS={changeMKOS}
+      OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
+      OPEXCreateCase={createOPEXCase}
+      OPEXChangeCaseExpense={changeOPEXCaseExpense}
+      OPEXAddCaseExpense={addOPEXCaseExpense}
+      selectedRole={selectedRole}
+    />
+  );
 };

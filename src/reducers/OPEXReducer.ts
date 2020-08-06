@@ -1,5 +1,5 @@
 import Macroparameter from '../../types/Macroparameters/Macroparameter';
-import {OPEXGroup} from '../../types/OPEX/OPEXGroup';
+import { OPEXGroup } from '../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../types/OPEX/OPEXSetType';
 import Role from '../../types/role';
 import { OPEX_ADD_CASE_EXPENSE_SUCCESS } from '../actions/OPEX/addCaseExpense';
@@ -14,7 +14,7 @@ import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 
 const initialState = {
   opex: {} as OPEXSetType,
-  selectedRole: {name: "Обустройство"} as Role
+  selectedRole: { name: 'Обустройство' } as Role,
 };
 
 let autoexportExpense;
@@ -25,26 +25,32 @@ let caseExpense;
 export default function OPEXReducer(state = initialState, action: OPEXAction) {
   switch (action.type) {
     case OPEX_CREATE_CASE_SUCCESS:
-      state.opex?.opexCaseList?.push(action.payload);
       return {
         ...state,
-        opex: {...state.opex}
+        opex: {
+          ...state.opex,
+          ...{
+            opexCaseList: [...(state.opex?.opexCaseList || []), ...[action.payload]],
+          },
+        },
       };
     case OPEX_ADD_CASE_EXPENSE_SUCCESS:
-      action.payload?.caseGroup?.opexExpenseList?.push(action.payload?.expense);
+      /* eslint-disable-line */action.payload?.caseGroup?.opexExpenseList?.push(action.payload?.expense);
       return {
         ...state,
-        opex: {...state.opex}
+        opex: { ...state.opex },
       };
     case OPEX_AUTOEXPORT_CHANGE_SUCCESS:
       return {
         ...state,
-        opex: {...state.opex, ...{autoexport: action.payload}}
+        opex: { ...state.opex, ...{ autoexport: action.payload } },
       };
     case OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS:
-      autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter((expense: Macroparameter) => {
-        return expense.id === action.payload?.id;
-      })[0];
+      autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter(
+        (expense: Macroparameter) => {
+          return expense.id === action.payload?.id;
+        },
+      )[0];
       return {
         ...state,
         opex: {
@@ -54,13 +60,15 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...state.opex.autoexport,
               ...{
                 opexExpenseList: [
-                  ...(state.opex.autoexport?.opexExpenseList?.filter((i: Macroparameter) => i.id !== action.payload?.id) || []),
-                  ...[{...autoexportExpense, ...action.payload}]
-                ]
-              }
-            }
-          }
-        }
+                  ...(state.opex.autoexport?.opexExpenseList?.filter(
+                    (i: Macroparameter) => i.id !== action.payload?.id,
+                  ) || []),
+                  ...[{ ...autoexportExpense, ...action.payload }],
+                ],
+              },
+            },
+          },
+        },
       };
     case OPEX_MKOS_CHANGE_EXPENSE_SUCCESS:
       mkosExpense = state.opex.mkos?.opexExpenseList?.filter((expense: Macroparameter) => {
@@ -75,13 +83,15 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...state.opex.mkos,
               ...{
                 opexExpenseList: [
-                  ...(state.opex.mkos?.opexExpenseList?.filter((i: Macroparameter) => i.id !== action.payload?.id) || []),
-                  ...[{...mkosExpense, ...action.payload}]
-                ]
-              }
-            }
-          }
-        }
+                  ...(state.opex.mkos?.opexExpenseList?.filter(
+                    (i: Macroparameter) => i.id !== action.payload?.id,
+                  ) || []),
+                  ...[{ ...mkosExpense, ...action.payload }],
+                ],
+              },
+            },
+          },
+        },
       };
     case OPEX_CASE_CHANGE_EXPENSE_SUCCESS:
       caseGroup = state.opex.opexCaseList?.filter((caseGroup_: OPEXGroup) => {
@@ -96,25 +106,36 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
           ...state.opex,
           ...{
             opexCaseList: [
-              ...(state.opex.opexCaseList?.filter((opexCase: OPEXGroup) => opexCase.id !== action.payload?.group?.id) || []),
-              ...[{
-                ...caseGroup,
-                ...{opexExpenseList: [
-                    ...(caseGroup?.opexExpenseList.filter((opexExpense: Macroparameter) => opexExpense.id !== action.payload?.expense?.id) || []),
-                    ...[{
-                      ...caseExpense,
-                      ...action.payload.expense
-                    }]
-                  ]}
-              }]
-            ]
-          }
-        }
+              ...(state.opex.opexCaseList?.filter(
+                (opexCase: OPEXGroup) => opexCase.id !== action.payload?.group?.id,
+              ) || []),
+              ...[
+                {
+                  ...caseGroup,
+                  ...{
+                    opexExpenseList: [
+                      ...(caseGroup?.opexExpenseList.filter(
+                        (opexExpense: Macroparameter) =>
+                          opexExpense.id !== action.payload?.expense?.id,
+                      ) || []),
+                      ...[
+                        {
+                          ...caseExpense,
+                          ...action.payload.expense,
+                        },
+                      ],
+                    ],
+                  },
+                },
+              ],
+            ],
+          },
+        },
       };
     case OPEX_MKOS_CHANGE_SUCCESS:
       return {
         ...state,
-        opex: {...state.opex, ...{mkos: action.payload}}
+        opex: { ...state.opex, ...{ mkos: action.payload } },
       };
     case OPEX_SET_SUCCESS:
       return {
@@ -124,7 +145,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
     case OPEX_ROLE_SELECTED:
       return {
         ...state,
-        selectedRole: {...action.payload},
+        selectedRole: { ...action.payload },
       };
     default:
       return state;

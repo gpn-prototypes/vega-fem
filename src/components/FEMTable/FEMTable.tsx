@@ -51,8 +51,16 @@ export const FEMTable = ({
         (maxYear_: number, opexCase: OPEXGroup) => Math.max(maxYear_, opexCase.yearEnd),
         -Infinity,
       );
-      start = Math.min(minYear || Infinity, entity.autoexport?.yearStart || Infinity, entity.mkos?.yearStart || Infinity);
-      end = Math.max(maxYear || -Infinity, entity.autoexport?.yearEnd || -Infinity, entity.mkos?.yearEnd || -Infinity);
+      start = Math.min(
+        minYear || Infinity,
+        entity.autoexport?.yearStart || Infinity,
+        entity.mkos?.yearStart || Infinity,
+      );
+      end = Math.max(
+        maxYear || -Infinity,
+        entity.autoexport?.yearEnd || -Infinity,
+        entity.mkos?.yearEnd || -Infinity,
+      );
     }
     return calcYearsRange(start, end);
   }, [entity]);

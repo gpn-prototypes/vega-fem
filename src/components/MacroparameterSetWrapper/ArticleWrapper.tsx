@@ -38,17 +38,16 @@ export const ArticleWrapper = ({
       if (valueTotal !== undefined) {
         updateArticleValueCallback({
           ...article,
-          ...{value: +values[0]?.value},
-          ...{valueTotal: valueTotal}
+          ...{ value: +values[0]?.value },
+          ...{ valueTotal },
         });
       } else {
         updateArticleValueCallback({
           ...article,
-          ...{value: +values[0]?.value},
+          ...{ value: +values[0]?.value },
         });
       }
     }
-
   }, [values, valueTotal, updateArticleValueCallback, article]);
 
   return (
