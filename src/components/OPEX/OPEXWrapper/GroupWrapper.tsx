@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
-
 import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
+
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import {OPEXGroup} from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
@@ -21,14 +22,9 @@ interface GroupWrapperProps {
   groupName?: string;
   isPreset?: boolean;
   removeGroup?: (group: MacroparameterSetGroup) => void;
-  requestAddMacroparameter?: (
-    macroparameter: Macroparameter,
-    group: MacroparameterSetGroup,
-  ) => void;
-  updateMacroparameterValue?: (
-    macroparameter: Macroparameter,
-    group: MacroparameterSetGroup,
-  ) => void;
+  updateGroup?: (group: OPEXGroup) => void;
+  addArticle?: (article: Macroparameter, group: OPEXGroup) => void;
+  updateArticle?: (article: Macroparameter) => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -37,10 +33,11 @@ export const GroupWrapper = ({
   group,
   groupName,
   isPreset,
-  requestAddMacroparameter,
-  updateMacroparameterValue,
+  updateGroup,
+  updateArticle,
+  addArticle,
 }: GroupWrapperProps) => {
-  const [articles] = useState(group?.opexExpenseList);
+  const [articles, setArticles] = useState(group?.opexExpenseList);
 
   const [yearEnd, setYearEnd] = useState(group?.yearEnd);
   /* help to call requestSetUpdate with updated yearEnd after Select choice */
@@ -57,10 +54,37 @@ export const GroupWrapper = ({
     }
   }, [yearEndHelper]);
 
-  const openAddMacroparameterModal = (): void => {
+  useEffect(() => {
+    setArticles(group?.opexExpenseList);
+  }, [group]);
+
+  const openAddArticleModal = (): void => {
     setIsCollapsed(false);
     open();
   };
+
+  const addArticleHandlerCallback = (article: Article): void => {
+    if (addArticle) {
+      addArticle({
+        ...article,
+      } as Macroparameter, group)
+    }
+  };
+
+  const requestSetUpdate = useCallback(() => {
+    if (updateGroup) {
+      updateGroup({
+        yearEnd,
+      } as OPEXGroup);
+    }
+  }, [yearEnd, updateGroup]);
+
+  useEffect(() => {
+    if (yearEndHelper) {
+      requestSetUpdate();
+      setYearEndHelper(false);
+    }
+  }, [yearEnd, yearEndHelper, requestSetUpdate]);
 
   return (
     <div className={cnGroupWrapper()}>
@@ -75,26 +99,30 @@ export const GroupWrapper = ({
             {group?.caption ?? groupName}
           </Text>
         </div>
-        {isPreset && (
-          <div className={cnGroupWrapper('header-actions')}>
-            <Button
-              title="Добавить статью"
-              onlyIcon
-              iconLeft={IconAdd}
-              size="s"
-              view="clear"
-              onClick={openAddMacroparameterModal}
-            />
-          </div>
-        )}
+        <div className={cnGroupWrapper('header-actions')}>
+          <Button
+            title="Добавить статью"
+            onlyIcon
+            iconLeft={IconAdd}
+            size="s"
+            view="clear"
+            onClick={openAddArticleModal}
+          />
+        </div>
       </div>
       <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+        {articles.length === 0 && (
+          <GroupPlaceholder
+            text="Пустой кейс"
+            callback={openAddArticleModal}
+          />
+        )}
         {isPreset && (
           <Form.Field className={cnVegaFormCustom('field', { middle: true })}>
             <Form.Label space="xs">Год окончания</Form.Label>
             <Select
               options={yearsOptions}
-              name="macroparameterSetCategory"
+              name="OPEXYearEnd"
               value={yearEnd}
               onClearValue={() => null}
               onChange={(selectValue: any) => {
@@ -104,16 +132,21 @@ export const GroupWrapper = ({
             />
           </Form.Field>
         )}
-        {articles?.length === 0 && <GroupPlaceholder text="Пустой кейс" />}
         {articles?.length > 0 &&
           articles.map((article: any, index: any) => (
-            <ArticleWrapper key={keyGen(index)} article={article} fullWidth />
+            <ArticleWrapper
+              key={keyGen(index)}
+              article={article}
+              fullWidth
+              updateArticleValueCallback={updateArticle}
+            />
           ))}
       </div>
       <AddArticleModal
         isOpen={isOpen}
         close={close}
         article={{ caption: '', unit: '' } as Article}
+        callback={addArticleHandlerCallback}
       />
     </div>
   );

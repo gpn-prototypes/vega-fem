@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CapexExpense from '../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../types/CapexExpenseSetGroup';
-import CapexSet from '../../types/CapexSet';
-import CapexSetGlobalValue from '../../types/CapexSetGlobalValue';
+import CapexExpense from '../../types/CAPEX/CapexExpense';
+import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '../../types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
 import { requestAddCapex } from '../actions/capex/addCapex';
 import { addCapexSetGroup as addGroup } from '../actions/capex/addCapexSetGroup';
 import { fetchCapexSet } from '../actions/capex/capexSet';

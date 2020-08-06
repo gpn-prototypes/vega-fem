@@ -3,6 +3,7 @@ export default interface Macroparameter {
   name?: string;
   caption?: string;
   value?: MacroparameterValues[] | number;
+  valueTotal?: number;
   unit?: string;
 }
 

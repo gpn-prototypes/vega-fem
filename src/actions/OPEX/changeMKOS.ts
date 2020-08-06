@@ -2,13 +2,12 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-export const OPEX_AUTOEXPORT_CHANGE_INIT = 'OPEX_AUTOEXPORT_CHANGE_INIT';
-export const OPEX_AUTOEXPORT_CHANGE_SUCCESS = 'OPEX_AUTOEXPORT_CHANGE_SUCCESS';
-export const OPEX_AUTOEXPORT_CHANGE_ERROR = 'OPEX_AUTOEXPORT_CHANGE_ERROR';
+export const OPEX_MKOS_CHANGE_INIT = 'OPEX_MKOS_CHANGE_INIT';
+export const OPEX_MKOS_CHANGE_SUCCESS = 'OPEX_MKOS_CHANGE_SUCCESS';
+export const OPEX_MKOS_CHANGE_ERROR = 'OPEX_MKOS_CHANGE_ERROR';
 
 export interface OPEXAction {
   type: string;
@@ -17,25 +16,25 @@ export interface OPEXAction {
   errorMessage?: any;
 }
 
-const OPEXAutoexportChangeInit = (): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_INIT,
+const OPEXMKOSChangeInit = (): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_INIT,
 });
 
-const OPEXAutoexportChangeSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_SUCCESS,
-  payload: OPEXSetInstance,
+const OPEXMKOSChangeSuccess = (mkos: OPEXGroup): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_SUCCESS,
+  payload: mkos,
 });
 
-const OPEXAutoexportChangeError = (message: any): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_ERROR,
+const OPEXMKOSChangeError = (message: any): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_ERROR,
   errorMessage: message,
 });
 
-export function autoexportChange(
-  autoexport: OPEXGroup
+export function MKOSChange(
+  MKOS: OPEXGroup
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(OPEXAutoexportChangeInit());
+    dispatch(OPEXMKOSChangeInit());
 
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
@@ -43,20 +42,20 @@ export function autoexportChange(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {changeOpexAutoexport(` +
-            `yearEnd: ${autoexport.yearEnd.toString()},` +
-            `){autoexport{yearStart,yearEnd}, ok}}`,
+            `mutation {changeOpexMkos(` +
+            `yearEnd: ${MKOS.yearEnd.toString()},` +
+            `){mkos{yearStart,yearEnd,opexExpenseList{id,caption,name,value{year,value},valueTotal,unit}}, ok}}`,
         }),
       });
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXAutoexportChangeSuccess(body.data?.opex));
+        dispatch(OPEXMKOSChangeSuccess(body.data?.changeOpexMkos?.mkos));
       } else {
-        dispatch(OPEXAutoexportChangeError(body.message));
+        dispatch(OPEXMKOSChangeError(body.message));
       }
     } catch (e) {
-      dispatch(OPEXAutoexportChangeError(e));
+      dispatch(OPEXMKOSChangeError(e));
     }
   };
 }

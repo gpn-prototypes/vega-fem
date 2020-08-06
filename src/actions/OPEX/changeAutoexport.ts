@@ -1,13 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import {OPEXGroup} from '../../../types/OPEX/OPEXGroup';
 
-import OPEXSet from '../../../types/OPEX/OPEXSet';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-export const OPEX_SET_FETCH = 'OPEX_SET_FETCH';
-export const OPEX_SET_SUCCESS = 'OPEX_SET_SUCCESS';
-export const OPEX_SET_ERROR = 'OPEX_SET_ERROR';
+export const OPEX_AUTOEXPORT_CHANGE_INIT = 'OPEX_AUTOEXPORT_CHANGE_INIT';
+export const OPEX_AUTOEXPORT_CHANGE_SUCCESS = 'OPEX_AUTOEXPORT_CHANGE_SUCCESS';
+export const OPEX_AUTOEXPORT_CHANGE_ERROR = 'OPEX_AUTOEXPORT_CHANGE_ERROR';
 
 export interface OPEXAction {
   type: string;
@@ -16,52 +16,46 @@ export interface OPEXAction {
   errorMessage?: any;
 }
 
-const OPEXSetFetchInit = (): OPEXAction => ({
-  type: OPEX_SET_FETCH,
+const OPEXAutoexportChangeInit = (): OPEXAction => ({
+  type: OPEX_AUTOEXPORT_CHANGE_INIT,
 });
 
-const OPEXSetSuccess = (OPEXSetInstance: OPEXSet): OPEXAction => ({
-  type: OPEX_SET_SUCCESS,
-  payload: OPEXSetInstance,
+const OPEXAutoexportChangeSuccess = (autoexport: OPEXGroup): OPEXAction => ({
+  type: OPEX_AUTOEXPORT_CHANGE_SUCCESS,
+  payload: autoexport,
 });
 
-const OPEXSetError = (message: any): OPEXAction => ({
-  type: OPEX_SET_ERROR,
+const OPEXAutoexportChangeError = (message: any): OPEXAction => ({
+  type: OPEX_AUTOEXPORT_CHANGE_ERROR,
   errorMessage: message,
 });
 
-export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function autoexportChange(
+  autoexport: OPEXGroup
+): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(OPEXSetFetchInit());
+    dispatch(OPEXAutoexportChangeInit());
 
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
-            '{opex{' +
-            'hasAutoexport,' +
-            'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
-            'hasMkos,' +
-            'mkos{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
-            'opexCaseList{yearStart, yearEnd, id, name, caption, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
-            '}}',
+            `mutation {changeOpexAutoexport(` +
+            `yearEnd: ${autoexport.yearEnd.toString()},` +
+            `){autoexport{yearStart,yearEnd,opexExpenseList{id,caption,name,value{year,value},valueTotal,unit}}, ok}}`,
         }),
       });
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXSetSuccess(body.data?.opex));
+        dispatch(OPEXAutoexportChangeSuccess(body.data?.changeOpexAutoexport?.autoexport));
       } else {
-        dispatch(OPEXSetError(body.message));
+        dispatch(OPEXAutoexportChangeError(body.message));
       }
     } catch (e) {
-      dispatch(OPEXSetError(e));
+      dispatch(OPEXAutoexportChangeError(e));
     }
   };
 }

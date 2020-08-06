@@ -13,8 +13,8 @@ import './GroupWrapper/GroupWrapper.css';
 
 interface ArticleWrapperProps {
   article: Macroparameter;
-  updateArticleValueCallback?: (updatedActicle: Macroparameter) => void;
   fullWidth?: boolean;
+  updateArticleValueCallback?: (updatedActicle: Macroparameter) => void;
 }
 
 export const ArticleWrapper = ({
@@ -23,15 +23,33 @@ export const ArticleWrapper = ({
   fullWidth,
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as MacroparameterValues[]);
+  const [valueTotal, setValueTotal] = useState(article?.valueTotal);
 
   const editValues = (e: any): void => {
-    setValues([{ value: e.e.target.value }]);
+    if (valueTotal === undefined) {
+      setValues([{ value: e.e.target.value }]);
+    } else {
+      setValueTotal(e.e.target.value);
+    }
   };
 
   const blurHandle = useCallback(() => {
-    if (updateArticleValueCallback)
-      updateArticleValueCallback({ ...article, ...{ value: +values[0]?.value } });
-  }, [values, updateArticleValueCallback, article]);
+    if (updateArticleValueCallback) {
+      if (valueTotal !== undefined) {
+        updateArticleValueCallback({
+          ...article,
+          ...{value: +values[0]?.value},
+          ...{valueTotal: valueTotal}
+        });
+      } else {
+        updateArticleValueCallback({
+          ...article,
+          ...{value: +values[0]?.value},
+        });
+      }
+    }
+
+  }, [values, valueTotal, updateArticleValueCallback, article]);
 
   return (
     <Form.Row
@@ -46,7 +64,7 @@ export const ArticleWrapper = ({
           id={`article_${article?.name}`}
           placeholder="Значение"
           rightSide={article?.unit}
-          value={values[0]?.value.toString()}
+          value={valueTotal?.toString() || values[0]?.value.toString()}
           onBlur={blurHandle}
           onChange={(e: any) => editValues(e)}
         />

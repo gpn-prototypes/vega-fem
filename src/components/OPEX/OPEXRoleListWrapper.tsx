@@ -1,22 +1,22 @@
 import {NavigationList} from '@gpn-prototypes/vega-navigation-list';
 import React from 'react';
+import Role from '../../../types/role';
+import keyGen from '../../helpers/keyGenerator';
 
-const roleList = [
-  {
-    name: "Обустройство",
-  },
-  {
-    name: "Экономика",
-  }
-];
+interface OPEXRoleListWrapperProps {
+  roleList: any[];
+  selectedRole: Role;
+  selectRole: (role: Role) => void;
+}
 
-export const OPEXRoleList = (): React.ReactElement => (
+export const OPEXRoleListWrapper = ({roleList, selectedRole, selectRole}: OPEXRoleListWrapperProps): React.ReactElement => (
   <NavigationList>
-    {roleList.map(role =>
-      <NavigationList.Item active={true}>
+    {roleList.map((role: Role, index: number) =>
+      <NavigationList.Item key={keyGen(index)} active={selectedRole.name === role.name}>
         {(props) => (
           <button
             type="button"
+            onClick={() => {selectRole(role)}}
             {...props}
           >
             {role.name}

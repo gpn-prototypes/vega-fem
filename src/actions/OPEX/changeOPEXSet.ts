@@ -5,9 +5,9 @@ import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-export const OPEX_SET_FETCH = 'OPEX_SET_FETCH';
-export const OPEX_SET_SUCCESS = 'OPEX_SET_SUCCESS';
-export const OPEX_SET_ERROR = 'OPEX_SET_ERROR';
+export const OPEX_SET_CHANGE_INIT = 'OPEX_SET_CHANGE_INIT';
+export const OPEX_SET_CHANGE_SUCCESS = 'OPEX_SET_CHANGE_SUCCESS';
+export const OPEX_SET_CHANGE_ERROR = 'OPEX_SET_CHANGE_ERROR';
 
 export interface OPEXAction {
   type: string;
@@ -16,23 +16,23 @@ export interface OPEXAction {
   errorMessage?: any;
 }
 
-const OPEXSetFetchInit = (): OPEXAction => ({
-  type: OPEX_SET_FETCH,
+const OPEXSetChangeInit = (): OPEXAction => ({
+  type: OPEX_SET_CHANGE_INIT,
 });
 
-const OPEXSetSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
-  type: OPEX_SET_SUCCESS,
+const OPEXSetChangeSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
+  type: OPEX_SET_CHANGE_SUCCESS,
   payload: OPEXSetInstance,
 });
 
-const OPEXSetError = (message: any): OPEXAction => ({
-  type: OPEX_SET_ERROR,
+const OPEXSetChangeError = (message: any): OPEXAction => ({
+  type: OPEX_SET_CHANGE_ERROR,
   errorMessage: message,
 });
 
-export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(OPEXSetFetchInit());
+    dispatch(OPEXSetChangeInit());
 
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
@@ -52,12 +52,12 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXSetSuccess(body.data?.opex));
+        dispatch(OPEXSetChangeSuccess(body.data?.opex));
       } else {
-        dispatch(OPEXSetError(body.message));
+        dispatch(OPEXSetChangeError(body.message));
       }
     } catch (e) {
-      dispatch(OPEXSetError(e));
+      dispatch(OPEXSetChangeError(e));
     }
   };
 }

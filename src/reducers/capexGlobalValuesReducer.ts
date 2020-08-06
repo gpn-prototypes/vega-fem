@@ -1,4 +1,4 @@
-import CapexSetGlobalValue from '../../types/CapexSetGlobalValue';
+import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
 import { CapexesAction } from '../actions/capex/capexSet';
 import {
   CAPEX_SET_GLOBAL_VALUE_ERROR,

@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexSet from '../../../types/CapexSet';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import CapexSet from '../../../types/CAPEX/CapexSet';
+import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 export const CAPEX_SET_FETCH = 'CAPEX_SET_FETCH';
@@ -37,11 +37,7 @@ export function fetchCapexSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             '{capex{years,yearStart,capexGlobalValueList{id,name,caption,value},capexExpenseGroupList{id,name,caption,' +

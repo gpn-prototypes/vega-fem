@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { MacroparamsAction } from './macroparameterSetList';
@@ -38,11 +38,7 @@ export const addMacroparameterSetGroup = (
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             `mutation {createMacroparameterGroup(macroparameterSetId:${selected.id.toString()},` +

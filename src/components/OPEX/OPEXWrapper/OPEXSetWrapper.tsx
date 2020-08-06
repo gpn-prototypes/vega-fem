@@ -3,9 +3,11 @@ import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { IconAdd } from '@gpn-design/uikit/IconAdd';
 import { IconSelect } from '@gpn-design/uikit/IconSelect';
 import { Button, Form, Text, TextField } from '@gpn-prototypes/vega-ui';
+import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import OPEXSet from '../../../../types/OPEX/OPEXSet';
+import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
+import Role from '../../../../types/role';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
@@ -16,29 +18,69 @@ import { GroupWrapper } from './GroupWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 
 interface OPEXWrapperProps {
-  OPEXSetInstance: OPEXSet;
+  OPEXSetInstance: OPEXSetType;
+  OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
+  OPEXChangeAutoexportExpense: (article: Macroparameter) => void;
+  OPEXChangeMKOS: (OPEXMKOS: OPEXGroup) => void;
+  OPEXChangeMKOSExpense: (article: Macroparameter) => void;
+  OPEXCreateCase: (newCase: OPEXGroup) => void;
+  OPEXChangeCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
+  OPEXAddCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
+  selectedRole: Role;
 }
 
-export const OPEXSetWrapper = ({ OPEXSetInstance }: OPEXWrapperProps) => {
+export const OPEXSetWrapper = ({
+  OPEXSetInstance,
+  OPEXChangeAutoexport,
+  OPEXChangeAutoexportExpense,
+  OPEXChangeMKOS,
+  OPEXChangeMKOSExpense,
+  OPEXCreateCase,
+  OPEXChangeCaseExpense,
+  OPEXAddCaseExpense,
+  selectedRole,
+}: OPEXWrapperProps) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
 
   const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
+  const [newCaseName, setNewCaseName] = useState('');
+  const [isEconomic, setIsEconomic] = useState(selectedRole.name === 'Экономика');
+
+  useEffect(() => {
+    setIsEconomic(selectedRole.name === 'Экономика');
+  }, [selectedRole]);
 
   const toggleGroup = (event: React.MouseEvent) => {
     event.preventDefault();
     setIsAddingGroup(!isAddingGroup);
-    setNewGroupName('');
+    setNewCaseName('');
+  };
+
+  const requestCaseAdd = (groupName: string) => {
+    OPEXCreateCase({
+      yearStart: 2020,
+      yearEnd: 2030,
+      opexExpenseList: [],
+      caption: groupName,
+    } as OPEXGroup);
   };
 
   const addGroup = (event: any, groupName: string): void => {
     toggleGroup(event);
-    // requestGroupAdd(groupName);
+    requestCaseAdd(groupName);
   };
 
   useEffect(() => {
     setSDF(OPEXSetInstance?.sdf);
   }, [OPEXSetInstance]);
+
+  const tableData = () => {
+    if (isEconomic) {
+      return {...{opexCaseList: OPEXSetInstance.opexCaseList}}
+    } else {
+      return {...{autoexport: OPEXSetInstance.autoexport}, ...{mkos: OPEXSetInstance.mkos}}
+    }
+  };
 
   return (
     <div className={cnBlockWrapper()}>
@@ -58,7 +100,7 @@ export const OPEXSetWrapper = ({ OPEXSetInstance }: OPEXWrapperProps) => {
           }}
         >
           <Form.Row gap="none" space="none" className={cnVegaFormCustom('content-body')}>
-            <Form.Row
+            {isEconomic && <Form.Row
               gap="m"
               space="none"
               className={cnVegaFormCustom('form-row', { width: 'full-width' })}
@@ -74,28 +116,37 @@ export const OPEXSetWrapper = ({ OPEXSetInstance }: OPEXWrapperProps) => {
                   />
                 </Form.Label>
               </Form.Field>
-            </Form.Row>
+            </Form.Row>}
             <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
-              {OPEXSetInstance?.hasAutoexport && (
+              {!isEconomic && OPEXSetInstance?.hasAutoexport && (
                 <GroupWrapper
                   group={OPEXSetInstance?.autoexport}
                   groupName="Автовывоз"
                   isPreset={OPEXSetInstance?.hasAutoexport}
+                  updateGroup={OPEXChangeAutoexport}
+                  updateArticle={OPEXChangeAutoexportExpense}
                 />
               )}
-              {OPEXSetInstance?.hasMkos && (
+              {!isEconomic && OPEXSetInstance?.hasMkos && (
                 <GroupWrapper
                   group={OPEXSetInstance?.mkos}
                   groupName="Аренда МКОС"
                   isPreset={OPEXSetInstance?.hasMkos}
+                  updateGroup={OPEXChangeMKOS}
+                  updateArticle={OPEXChangeMKOSExpense}
                 />
               )}
-              {(OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup, index: number) => (
-                <GroupWrapper key={keyGen(index)} group={caseItem} />
+              {isEconomic && (OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup, index: number) => (
+                <GroupWrapper
+                  key={keyGen(index)}
+                  group={caseItem}
+                  updateArticle={(article: Macroparameter) => OPEXChangeCaseExpense(article, caseItem)}
+                  addArticle={OPEXAddCaseExpense}
+                />
               ))}
             </Form.Row>
           </Form.Row>
-          <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
+          {isEconomic && <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
             {!isAddingGroup && (
               <Button
                 size="s"
@@ -118,8 +169,8 @@ export const OPEXSetWrapper = ({ OPEXSetInstance }: OPEXWrapperProps) => {
                       id="macroparameterSetGroupName"
                       type="text"
                       maxLength={150}
-                      value={newGroupName}
-                      onChange={(event: any) => setNewGroupName(event.e.target.value)}
+                      value={newCaseName}
+                      onChange={(event: any) => setNewCaseName(event.e.target.value)}
                     />
                   </Form.Field>
                 </Form.Row>
@@ -128,19 +179,19 @@ export const OPEXSetWrapper = ({ OPEXSetInstance }: OPEXWrapperProps) => {
                     size="s"
                     label="Добавить кейс"
                     view="ghost"
-                    disabled={!newGroupName.length}
-                    onClick={(e) => addGroup(e, newGroupName)}
+                    disabled={!newCaseName.length}
+                    onClick={(e) => addGroup(e, newCaseName)}
                   />
                   <Button size="s" label="Отмена" view="clear" onClick={toggleGroup} />
                 </Form.Row>
               </div>
             )}
-          </Form.Row>
+          </Form.Row>}
         </Form>
         <FEMTable
-          entity={OPEXSetInstance}
-          secondaryColumn="unit"
-          headers={['', 'Статья', 'Eд. измерения']}
+          entity={tableData()}
+          secondaryColumn={isEconomic ? "valueTotal": "unit"}
+          headers={isEconomic ? ['', 'Статья', 'Суммарное'] : ['', 'Значение', 'Eд. измерения']}
         />
       </div>
     </div>

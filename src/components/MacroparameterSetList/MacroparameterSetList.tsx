@@ -5,8 +5,6 @@ import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import keyGen from '../../helpers/keyGenerator';
 
-import { cnMacroparameterSetList } from './cn-macroparameter-set-list';
-
 interface MacroparameterSetListProps {
   macroparameterSetList: MacroparameterSet[];
   chooseMacroparameterSet: (set: any) => void;
@@ -38,7 +36,7 @@ export const MacroparameterSetList = ({
   );
 
   return (
-    <div className={cnMacroparameterSetList()}>
+    <div>
       <NavigationList>{macroparameterSetList?.length > 0 && scenarioList}</NavigationList>
     </div>
   );

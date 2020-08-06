@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpense from '../../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../../types/CapexExpenseSetGroup';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import CapexExpense from '../../../types/CAPEX/CapexExpense';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
@@ -40,11 +40,7 @@ export const requestUpdateCapexValue = (
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             `mutation {changeCapexExpense(` +

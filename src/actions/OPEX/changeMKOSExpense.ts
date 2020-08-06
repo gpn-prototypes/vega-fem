@@ -2,13 +2,12 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-export const OPEX_AUTOEXPORT_CHANGE_EXPENSE_INIT = 'OPEX_AUTOEXPORT_CHANGE_EXPENSE_INIT';
-export const OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS = 'OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS';
-export const OPEX_AUTOEXPORT_CHANGE_EXPENSE_ERROR = 'OPEX_AUTOEXPORT_CHANGE_EXPENSE_ERROR';
+export const OPEX_MKOS_CHANGE_EXPENSE_INIT = 'OPEX_MKOS_CHANGE_EXPENSE_INIT';
+export const OPEX_MKOS_CHANGE_EXPENSE_SUCCESS = 'OPEX_MKOS_CHANGE_EXPENSE_SUCCESS';
+export const OPEX_MKOS_CHANGE_EXPENSE_ERROR = 'OPEX_MKOS_CHANGE_EXPENSE_ERROR';
 
 export interface OPEXAction {
   type: string;
@@ -17,25 +16,25 @@ export interface OPEXAction {
   errorMessage?: any;
 }
 
-const OPEXAutoexportChangeExpenseInit = (): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_EXPENSE_INIT,
+const OPEXMKOSChangeExpenseInit = (): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_EXPENSE_INIT,
 });
 
-const OPEXAutoexportChangeExpenseSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS,
-  payload: OPEXSetInstance,
+const OPEXMKOSChangeExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_EXPENSE_SUCCESS,
+  payload: expense,
 });
 
-const OPEXAutoexportChangeExpenseError = (message: any): OPEXAction => ({
-  type: OPEX_AUTOEXPORT_CHANGE_EXPENSE_ERROR,
+const OPEXMKOSChangeExpenseError = (message: any): OPEXAction => ({
+  type: OPEX_MKOS_CHANGE_EXPENSE_ERROR,
   errorMessage: message,
 });
 
-export function autoexportChangeExpense(
+export function MKOSChangeExpense(
   article: Macroparameter
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(OPEXAutoexportChangeExpenseInit());
+    dispatch(OPEXMKOSChangeExpenseInit());
 
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
@@ -43,7 +42,7 @@ export function autoexportChangeExpense(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {changeOpexAutoexportExpense(` +
+            `mutation {changeOpexMkosExpense(` +
             `expenseId: ${article.id?.toString()},` +
             `name: "${article.name?.toString()}",` +
             `caption: "${article.caption?.toString()}",` +
@@ -55,12 +54,12 @@ export function autoexportChangeExpense(
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXAutoexportChangeExpenseSuccess(body.data?.opex));
+        dispatch(OPEXMKOSChangeExpenseSuccess(body.data?.changeOpexMkosExpense?.opexExpense));
       } else {
-        dispatch(OPEXAutoexportChangeExpenseError(body.message));
+        dispatch(OPEXMKOSChangeExpenseError(body.message));
       }
     } catch (e) {
-      dispatch(OPEXAutoexportChangeExpenseError(e));
+      dispatch(OPEXMKOSChangeExpenseError(e));
     }
   };
 }

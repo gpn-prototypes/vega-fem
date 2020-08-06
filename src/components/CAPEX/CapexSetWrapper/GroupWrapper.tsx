@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../../../types/CapexExpenseSetGroup';
+import CapexExpense from '../../../../types/CAPEX/CapexExpense';
+import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';

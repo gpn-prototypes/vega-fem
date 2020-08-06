@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
 
-import CapexExpenseSetGroup from '../../../types/CapexExpenseSetGroup';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import Macroparameter, {
   MacroparameterValues,
 } from '../../../types/Macroparameters/Macroparameter';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSet from '../../../types/OPEX/OPEXSet';
+import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import keyGen from '../../helpers/keyGenerator';
 
 import { FEMTableCell } from './TableCell/FEMTableCell';
@@ -39,20 +39,20 @@ export const FEMTable = ({
     let end = entity.yearStart + entity.years - 1;
     let start = entity.yearStart;
     if (
-      (entity as OPEXSet).opexCaseList ||
-      (entity as OPEXSet).autoexport ||
-      (entity as OPEXSet).mkos
+      (entity as OPEXSetType).opexCaseList ||
+      (entity as OPEXSetType).autoexport ||
+      (entity as OPEXSetType).mkos
     ) {
       const minYear = entity.opexCaseList?.reduce(
         (minYear_: number, opexCase: OPEXGroup) => Math.min(minYear_, opexCase.yearStart),
         Infinity,
       );
       const maxYear = entity.opexCaseList?.reduce(
-        (maxYear_: number, opexCase: OPEXGroup) => Math.max(maxYear_, opexCase.yearStart),
+        (maxYear_: number, opexCase: OPEXGroup) => Math.max(maxYear_, opexCase.yearEnd),
         -Infinity,
       );
-      start = Math.min(minYear, entity.autoexport?.yearStart, entity.mkos?.yearStart);
-      end = Math.max(maxYear, entity.autoexport?.yearEnd, entity.mkos?.yearEnd);
+      start = Math.min(minYear || Infinity, entity.autoexport?.yearStart || Infinity, entity.mkos?.yearStart || Infinity);
+      end = Math.max(maxYear || -Infinity, entity.autoexport?.yearEnd || -Infinity, entity.mkos?.yearEnd || -Infinity);
     }
     return calcYearsRange(start, end);
   }, [entity]);

@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import OPEXSet from '../../../types/OPEX/OPEXSet';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import OPEXSetType from '../../../types/OPEX/OPEXSetType';
+import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 export const OPEX_SET_FETCH = 'OPEX_SET_FETCH';
@@ -20,7 +20,7 @@ const OPEXSetFetchInit = (): OPEXAction => ({
   type: OPEX_SET_FETCH,
 });
 
-const OPEXSetSuccess = (OPEXSetInstance: OPEXSet): OPEXAction => ({
+const OPEXSetSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
   type: OPEX_SET_SUCCESS,
   payload: OPEXSetInstance,
 });
@@ -37,19 +37,15 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             '{opex{' +
             'hasAutoexport,' +
-            'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
+            'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
             'hasMkos,' +
-            'mkos{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
-            'opexCaseList{yearStart, yearEnd, id, name, caption, opexExpenseList{id, name, caption, unit, value{year, value}}}' +
+            'mkos{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
+            'opexCaseList{yearStart, yearEnd, id, name, caption, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
             '}}',
         }),
       });

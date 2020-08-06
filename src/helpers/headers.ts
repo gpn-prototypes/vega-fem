@@ -1,5 +1,11 @@
-import uniqid from 'uniqid';
+import {authHeader} from './authTokenToLocalstorage';
 
-const keyGen = (key: number | string): string => uniqid(key.toString());
+const headers = (): Headers => {
+  return new Headers({
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    ...authHeader(),
+  })
+};
 
-export default keyGen;
+export default headers;

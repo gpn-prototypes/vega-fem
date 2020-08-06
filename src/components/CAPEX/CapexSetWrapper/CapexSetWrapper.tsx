@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../../../types/CapexExpenseSetGroup';
-import CapexSet from '../../../../types/CapexSet';
-import CapexSetGlobalValue from '../../../../types/CapexSetGlobalValue';
+import CapexExpense from '../../../../types/CAPEX/CapexExpense';
+import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '../../../../types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
@@ -97,7 +97,7 @@ export const CapexSetWrapper = ({
         {capexSet && !(Object.keys(capexSet).length === 0) ? (
           <>
             <Form
-              className={cnVegaFormCustom()}
+              className={`${cnVegaFormCustom()} ${cnBlockWrapper('content-column')}`}
               onSubmit={(e: React.FormEvent) => {
                 e.preventDefault();
               }}
@@ -170,7 +170,7 @@ export const CapexSetWrapper = ({
                         disabled={!newGroupName.length}
                         onClick={(e) => addGroup(e, newGroupName)}
                       />
-                      <Button label="Отмена" view="clear" onClick={toggleCapexSetGroup} />
+                      <Button label="Отмена" size="s" view="clear" onClick={toggleCapexSetGroup} />
                     </Form.Row>
                   </div>
                 )}

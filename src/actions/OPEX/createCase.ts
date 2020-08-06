@@ -44,16 +44,16 @@ export function createCase(
         body: JSON.stringify({
           query:
             `mutation {createOpexCase(` +
-            `caption: "${autoexport.yearEnd.toString()}",` +
+            `caption: "${autoexport.caption}",` +
             `yearStart: ${autoexport.yearStart.toString()},` +
             `yearEnd: ${autoexport.yearEnd.toString()},` +
-            `){opexCase{name,caption,yearStart,yearEnd}, ok}}`,
+            `){opexCase{name,caption,yearStart,yearEnd,opexExpenseList{name,caption,valueTotal}}, ok}}`,
         }),
       });
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXCreateCaseSuccess(body.data?.opex));
+        dispatch(OPEXCreateCaseSuccess(body.data?.createOpexCase?.opexCase));
       } else {
         dispatch(OPEXCreateCaseError(body.message));
       }
