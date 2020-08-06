@@ -1,6 +1,6 @@
-import CapexExpense from '../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../types/CapexExpenseSetGroup';
-import CapexSet from '../../types/CapexSet';
+import CapexExpense from '../../types/CAPEX/CapexExpense';
+import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '../../types/CAPEX/CapexSet';
 import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
 import { CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS } from '../actions/capex/addCapexSetGroup';
 import {

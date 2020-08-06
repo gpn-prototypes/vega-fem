@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexSetGlobalValue from '../../../types/CapexSetGlobalValue';
+import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
