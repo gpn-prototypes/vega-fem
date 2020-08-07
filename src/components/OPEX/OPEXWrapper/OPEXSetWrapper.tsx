@@ -27,6 +27,7 @@ interface OPEXWrapperProps {
   OPEXChangeCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
   OPEXAddCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
   OPEXAddAutoexportExpense: (article: Macroparameter) => void;
+  OPEXAddMKOSExpense: (article: Macroparameter) => void;
   selectedRole: Role;
 }
 
@@ -40,6 +41,7 @@ export const OPEXSetWrapper = ({
   OPEXChangeCaseExpense,
   OPEXAddCaseExpense,
   OPEXAddAutoexportExpense,
+  OPEXAddMKOSExpense,
   selectedRole,
 }: OPEXWrapperProps) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
@@ -138,6 +140,7 @@ export const OPEXSetWrapper = ({
                   isPreset={OPEXSetInstance?.hasMkos}
                   updateGroup={OPEXChangeMKOS}
                   updateArticle={OPEXChangeMKOSExpense}
+                  addArticle={OPEXAddMKOSExpense}
                 />
               )}
               {isEconomic &&

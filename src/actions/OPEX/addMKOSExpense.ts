@@ -5,9 +5,9 @@ import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-export const OPEX_ADD_AUTOEXPORT_EXPENSE_INIT = 'OPEX_ADD_AUTOEXPORT_EXPENSE_INIT';
-export const OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS = 'OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS';
-export const OPEX_ADD_AUTOEXPORT_EXPENSE_ERROR = 'OPEX_ADD_AUTOEXPORT_EXPENSE_ERROR';
+export const OPEX_ADD_MKOS_EXPENSE_INIT = 'OPEX_ADD_MKOS_EXPENSE_INIT';
+export const OPEX_ADD_MKOS_EXPENSE_SUCCESS = 'OPEX_ADD_MKOS_EXPENSE_SUCCESS';
+export const OPEX_ADD_MKOS_EXPENSE_ERROR = 'OPEX_ADD_MKOS_EXPENSE_ERROR';
 
 export interface OPEXAction {
   type: string;
@@ -16,25 +16,25 @@ export interface OPEXAction {
   errorMessage?: any;
 }
 
-const OPEXAddAutoexportExpenseInit = (): OPEXAction => ({
-  type: OPEX_ADD_AUTOEXPORT_EXPENSE_INIT,
+const OPEXAddMKOSExpenseInit = (): OPEXAction => ({
+  type: OPEX_ADD_MKOS_EXPENSE_INIT,
 });
 
-const OPEXAddAutoexportExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
-  type: OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS,
+const OPEXAddMKOSExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+  type: OPEX_ADD_MKOS_EXPENSE_SUCCESS,
   payload: expense,
 });
 
-const OPEXAddAutoexportExpenseError = (message: any): OPEXAction => ({
-  type: OPEX_ADD_AUTOEXPORT_EXPENSE_ERROR,
+const OPEXAddMKOSExpenseError = (message: any): OPEXAction => ({
+  type: OPEX_ADD_MKOS_EXPENSE_ERROR,
   errorMessage: message,
 });
 
-export function addAutoexportExpense(
+export function addMKOSExpense(
   article: Macroparameter
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
-    dispatch(OPEXAddAutoexportExpenseInit());
+    dispatch(OPEXAddMKOSExpenseInit());
 
     try {
       const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
@@ -42,7 +42,7 @@ export function addAutoexportExpense(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {createOpexAutoexportExpense(` +
+            `mutation {createOpexMkosExpense(` +
             `caption: "${article.caption?.toString()}",` +
             `unit: "${article.unit?.toString()}",` +
             `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok}}`,
@@ -51,12 +51,12 @@ export function addAutoexportExpense(
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense));
+        dispatch(OPEXAddMKOSExpenseSuccess(body.data?.createOpexMkosExpense?.opexExpense));
       } else {
-        dispatch(OPEXAddAutoexportExpenseError(body.message));
+        dispatch(OPEXAddMKOSExpenseError(body.message));
       }
     } catch (e) {
-      dispatch(OPEXAddAutoexportExpenseError(e));
+      dispatch(OPEXAddMKOSExpenseError(e));
     }
   };
 }

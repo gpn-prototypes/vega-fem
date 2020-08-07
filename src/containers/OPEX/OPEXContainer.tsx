@@ -6,6 +6,7 @@ import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import { addAutoexportExpense } from '../../actions/OPEX/addAutoexportExpense';
 import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
+import {addMKOSExpense} from '../../actions/OPEX/addMKOSExpense';
 import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
 import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
 import { MKOSChange } from '../../actions/OPEX/changeMKOS';
@@ -84,6 +85,13 @@ export const OPEXContainer = () => {
     [dispatch],
   );
 
+  const addOPEXMKOSExpense = useCallback(
+    (article: Macroparameter) => {
+      dispatch(addMKOSExpense(article));
+    },
+    [dispatch],
+  );
+
   return <OPEXSetWrapper
     OPEXSetInstance={OPEXSetInstance}
     OPEXChangeAutoexport={changeOPEXAutoexport}
@@ -94,6 +102,7 @@ export const OPEXContainer = () => {
     OPEXChangeCaseExpense={changeOPEXCaseExpense}
     OPEXAddCaseExpense={addOPEXCaseExpense}
     OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
+    OPEXAddMKOSExpense={addOPEXMKOSExpense}
     selectedRole={selectedRole}
   />;
 };

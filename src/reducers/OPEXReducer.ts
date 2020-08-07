@@ -4,6 +4,7 @@ import OPEXSetType from '../../types/OPEX/OPEXSetType';
 import Role from '../../types/role';
 import {OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS} from '../actions/OPEX/addAutoexportExpense';
 import { OPEX_ADD_CASE_EXPENSE_SUCCESS } from '../actions/OPEX/addCaseExpense';
+import {OPEX_ADD_MKOS_EXPENSE_SUCCESS} from '../actions/OPEX/addMKOSExpense';
 import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/changeAutoexport';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeAutoexportExpense';
 import { OPEX_MKOS_CHANGE_SUCCESS } from '../actions/OPEX/changeMKOS';
@@ -149,7 +150,23 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
             ...{
               opexExpenseList: [
                 ...(state.opex.autoexport?.opexExpenseList || []),
-                ...action.payload
+                ...[action.payload]
+              ]
+            }
+          }
+        }}
+      };
+    case OPEX_ADD_MKOS_EXPENSE_SUCCESS:
+      return {
+        ...state,
+        opex: {...state.opex,
+          ...{
+          mkos: {
+            ...state.opex.mkos,
+            ...{
+              opexExpenseList: [
+                ...(state.opex.mkos?.opexExpenseList || []),
+                ...[action.payload]
               ]
             }
           }
