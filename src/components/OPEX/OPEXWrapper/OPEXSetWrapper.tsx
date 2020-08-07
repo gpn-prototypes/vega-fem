@@ -26,6 +26,7 @@ interface OPEXWrapperProps {
   OPEXCreateCase: (newCase: OPEXGroup) => void;
   OPEXChangeCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
   OPEXAddCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
+  OPEXAddAutoexportExpense: (article: Macroparameter) => void;
   selectedRole: Role;
 }
 
@@ -38,6 +39,7 @@ export const OPEXSetWrapper = ({
   OPEXCreateCase,
   OPEXChangeCaseExpense,
   OPEXAddCaseExpense,
+  OPEXAddAutoexportExpense,
   selectedRole,
 }: OPEXWrapperProps) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
@@ -126,6 +128,7 @@ export const OPEXSetWrapper = ({
                   isPreset={OPEXSetInstance?.hasAutoexport}
                   updateGroup={OPEXChangeAutoexport}
                   updateArticle={OPEXChangeAutoexportExpense}
+                  addArticle={OPEXAddAutoexportExpense}
                 />
               )}
               {!isEconomic && OPEXSetInstance?.hasMkos && (

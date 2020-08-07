@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
+import { addAutoexportExpense } from '../../actions/OPEX/addAutoexportExpense';
 import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
 import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
 import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
@@ -76,17 +77,23 @@ export const OPEXContainer = () => {
     [dispatch],
   );
 
-  return (
-    <OPEXSetWrapper
-      OPEXSetInstance={OPEXSetInstance}
-      OPEXChangeAutoexport={changeOPEXAutoexport}
-      OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
-      OPEXChangeMKOS={changeMKOS}
-      OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
-      OPEXCreateCase={createOPEXCase}
-      OPEXChangeCaseExpense={changeOPEXCaseExpense}
-      OPEXAddCaseExpense={addOPEXCaseExpense}
-      selectedRole={selectedRole}
-    />
+  const addOPEXAutoexportExpense = useCallback(
+    (article: Macroparameter) => {
+      dispatch(addAutoexportExpense(article));
+    },
+    [dispatch],
   );
+
+  return <OPEXSetWrapper
+    OPEXSetInstance={OPEXSetInstance}
+    OPEXChangeAutoexport={changeOPEXAutoexport}
+    OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
+    OPEXChangeMKOS={changeMKOS}
+    OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
+    OPEXCreateCase={createOPEXCase}
+    OPEXChangeCaseExpense={changeOPEXCaseExpense}
+    OPEXAddCaseExpense={addOPEXCaseExpense}
+    OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
+    selectedRole={selectedRole}
+  />;
 };
