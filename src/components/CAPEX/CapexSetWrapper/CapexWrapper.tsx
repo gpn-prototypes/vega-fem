@@ -20,6 +20,13 @@ export const CapexWrapper = ({ capex, updateCapexValue }: CapexWrapperProps) => 
     setValue(e.e.target.value);
   };
 
+  const loseFocus = (e: any) => {
+    // TODO: change any
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+    }
+  };
+
   return (
     <Form.Row className={cnVegaFormCustom('form-row')} space="m">
       <Form.Field className={cnGroupWrapper('body-content')}>
@@ -33,6 +40,7 @@ export const CapexWrapper = ({ capex, updateCapexValue }: CapexWrapperProps) => 
           value={value?.toString()}
           onBlur={() => updateCapexValue({ ...capex, ...{ valueTotal: value } })}
           onChange={(e: any) => editValues(e)}
+          onKeyDown={(e) => loseFocus(e)}
         />
       </Form.Field>
     </Form.Row>

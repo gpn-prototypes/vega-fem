@@ -33,6 +33,13 @@ export const ArticleWrapper = ({
     }
   };
 
+  const loseFocus = (e: any) => {
+    // TODO: change any
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+    }
+  };
+
   const blurHandle = useCallback(() => {
     if (updateArticleValueCallback) {
       if (valueTotal !== undefined) {
@@ -66,6 +73,7 @@ export const ArticleWrapper = ({
           value={valueTotal?.toString() || values[0]?.value.toString()}
           onBlur={blurHandle}
           onChange={(e: any) => editValues(e)}
+          onKeyDown={(e) => loseFocus(e)}
         />
       </Form.Field>
     </Form.Row>

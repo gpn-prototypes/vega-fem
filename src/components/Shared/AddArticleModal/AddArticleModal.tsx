@@ -32,7 +32,13 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
     if (callback) callback({ caption, unit } as Article);
     close(e);
   };
-
+  const handleArticleEvent = (e: any) => {
+    if (e.key === 'Enter') {
+      submitHandle(e);
+    } else if (e.key === 'Escape') {
+      close(e);
+    }
+  };
   return (
     <Modal
       hasOverlay
@@ -69,6 +75,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
               onChange={(e: any) => {
                 setUnit(e.e.target.value);
               }}
+              onKeyDown={(e) => handleArticleEvent(e)}
             />
           </Form.Field>
         </Form.Row>

@@ -74,6 +74,13 @@ export const CapexSetWrapper = ({
     setter(e.e.target.value);
   };
 
+  const loseFocus = (e: any) => {
+    // TODO: change any
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+    }
+  };
+
   const requestSetGlobalValue = useCallback(() => {
     // TODO: запрос на обновление reservedValue
     console.log('reserveValue: ', reserveValue);
@@ -114,6 +121,7 @@ export const CapexSetWrapper = ({
                       rightSide="%"
                       onBlur={() => requestSetGlobalValue()}
                       onChange={(e) => onChangeTypoHandler(e, setReserveValue)}
+                      onKeyDown={(e) => loseFocus(e)}
                     />
                   </Form.Field>
                 </Form.Row>
@@ -137,6 +145,7 @@ export const CapexSetWrapper = ({
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
                 {!isAddingGroup && (
                   <Button
+                    type="button"
                     size="s"
                     label="Добавить группу затрат"
                     iconLeft={IconAdd}

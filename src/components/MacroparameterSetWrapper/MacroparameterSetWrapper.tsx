@@ -101,6 +101,13 @@ export const MacroparameterSetWrapper = ({
     setter(e.e.target.value);
   };
 
+  const loseFocus = (e: any) => {
+    // TODO: change any
+    if (e.key === 'Enter') {
+      (e.target as HTMLElement).blur();
+    }
+  };
+
   const requestSetUpdate = useCallback(() => {
     updateMacroparameterSet({
       caption: name,
@@ -157,6 +164,7 @@ export const MacroparameterSetWrapper = ({
                       value={name}
                       onBlur={() => requestSetUpdate()}
                       onChange={(e) => onChangeTypoHandler(e, setName)}
+                      onKeyDown={(e) => loseFocus(e)}
                     />
                   </Form.Field>
                   <Form.Field>
@@ -168,6 +176,7 @@ export const MacroparameterSetWrapper = ({
                       value={years?.toString()}
                       onBlur={() => requestSetUpdate()}
                       onChange={(e) => onChangeTypoHandler(e, setYears)}
+                      onKeyDown={(e) => loseFocus(e)}
                     />
                   </Form.Field>
                   <Form.Field>
@@ -227,6 +236,7 @@ export const MacroparameterSetWrapper = ({
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
                 {!isAddingGroup && (
                   <Button
+                    type="button"
                     size="s"
                     label="Добавить группу статей"
                     iconLeft={IconAdd}

@@ -61,6 +61,7 @@ export const GroupWrapper = ({
         </div>
         <div className={cnGroupWrapper('header-actions')}>
           <Button
+            type="button"
             title="Добавить статью"
             onlyIcon
             iconLeft={IconAdd}
