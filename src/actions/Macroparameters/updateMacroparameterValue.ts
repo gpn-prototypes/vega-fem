@@ -49,7 +49,7 @@ export const requestUpdateMacroparameterValue = (
             `macroparameterGroupId: ${group?.id?.toString()},` +
             `macroparameterId: ${macroparameter.id},` +
             `value: ${macroparameter.value}` +
-            `){macroparameter{name, id, caption, value{year,value}}, ok}}`,
+            `){macroparameter{name, id, caption,unit, value{year,value}}, ok}}`,
         }),
       });
 

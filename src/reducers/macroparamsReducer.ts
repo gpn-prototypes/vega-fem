@@ -22,9 +22,9 @@ const initialState = {
   selected: {} as MacroparameterSet,
 };
 
-let groupList;
-let group: any;
-let macroparameterList;
+let groupList: MacroparameterSetGroup[];
+let group: MacroparameterSetGroup;
+let macroparameterList: Array<Macroparameter>;
 let macr: Macroparameter;
 let value: MacroparameterValues[];
 
@@ -81,18 +81,25 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           ...state.selected,
           ...{
             macroparameterGroupList: [
-              ...groupList.filter((i) => i.id !== group.id),
-              ...[
-                {
-                  ...group,
-                  ...{
-                    macroparameterList: [
-                      ...macroparameterList.filter((i: Macroparameter) => i.id !== macr.id),
-                      ...[{ ...macr, ...action.payload.macroparameter }],
-                    ],
-                  },
-                },
-              ],
+              // ...groupList.filter((i) => i.id !== group.id),
+              ...groupList.map((groupItem: MacroparameterSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...{
+                      ...action.payload.group,
+                      macroparameterList: [
+                        ...macroparameterList.map((i: Macroparameter) => {
+                          if (i.id === macr.id) {
+                            return { ...action.payload.macroparameter };
+                          }
+                          return { ...i };
+                        }),
+                      ],
+                    },
+                  };
+                }
+                return { ...groupItem };
+              }),
             ],
           },
         },

@@ -89,30 +89,6 @@ export default function capexReducer(state = initialState, action: CapexesAction
                 return { ...groupItem };
               }),
             ],
-            /* capexExpenseGroupList: [
-              ...groupList.filter((i: CapexExpenseSetGroup) => i.id !== group.id),
-              ...[
-                {
-                  ...group,
-                  ...{
-                    ...state.capexSet.capexExpenseGroupList,
-                    valueTotal: newGroupTotalValue,
-                    capexExpenseList: [
-                      ...capexExpenseList.map((i: CapexExpense) => {
-                        if (i.id === capexExpense.id) {
-                          return {...action.payload.capex};
-                        }
-                        return {...i};
-                      }),
-                    ],
-                    /!*capexExpenseList: [
-                      ...capexExpenseList.filter((i: CapexExpense) => i.id !== capexExpense.id),
-                      ...[{...capexExpense, ...action.payload.capex}],
-                    ],*!/
-                  },
-                },
-              ],
-            ], */
           },
         },
       };
