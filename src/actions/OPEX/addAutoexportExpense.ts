@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 
+import Article from '../../../types/Article';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -20,7 +20,7 @@ const OPEXAddAutoexportExpenseInit = (): OPEXAction => ({
   type: OPEX_ADD_AUTOEXPORT_EXPENSE_INIT,
 });
 
-const OPEXAddAutoexportExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+const OPEXAddAutoexportExpenseSuccess = (expense: Article): OPEXAction => ({
   type: OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS,
   payload: expense,
 });
@@ -31,7 +31,7 @@ const OPEXAddAutoexportExpenseError = (message: any): OPEXAction => ({
 });
 
 export function addAutoexportExpense(
-  article: Macroparameter
+  article: Article,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAddAutoexportExpenseInit());
@@ -51,7 +51,9 @@ export function addAutoexportExpense(
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense));
+        dispatch(
+          OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense),
+        );
       } else {
         dispatch(OPEXAddAutoexportExpenseError(body.message));
       }

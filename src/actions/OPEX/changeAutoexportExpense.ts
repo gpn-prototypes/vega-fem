@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -20,7 +20,7 @@ const OPEXAutoexportChangeExpenseInit = (): OPEXAction => ({
   type: OPEX_AUTOEXPORT_CHANGE_EXPENSE_INIT,
 });
 
-const OPEXAutoexportChangeExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+const OPEXAutoexportChangeExpenseSuccess = (expense: Article): OPEXAction => ({
   type: OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS,
   payload: expense,
 });
@@ -31,7 +31,7 @@ const OPEXAutoexportChangeExpenseError = (message: any): OPEXAction => ({
 });
 
 export function autoexportChangeExpense(
-  article: Macroparameter,
+  article: Article,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAutoexportChangeExpenseInit());

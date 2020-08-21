@@ -3,7 +3,7 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
+import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
@@ -12,7 +12,7 @@ import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-cu
 import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
-import { AddArticleModal, Article } from '../../Shared/AddArticleModal/AddArticleModal';
+import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
@@ -23,8 +23,8 @@ interface GroupWrapperProps {
   isPreset?: boolean;
   removeGroup?: (group: MacroparameterSetGroup) => void;
   updateGroup?: (group: OPEXGroup) => void;
-  addArticle?: (article: Macroparameter, group: OPEXGroup) => void;
-  updateArticle?: (article: Macroparameter) => void;
+  addArticle?: (article: Article, group: OPEXGroup) => void;
+  updateArticle?: (article: Article) => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -68,7 +68,7 @@ export const GroupWrapper = ({
       addArticle(
         {
           ...article,
-        } as Macroparameter,
+        } as Article,
         group,
       );
     }

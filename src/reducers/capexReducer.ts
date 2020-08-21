@@ -1,4 +1,4 @@
-import CapexExpense from '../../types/CAPEX/CapexExpense';
+import Article from '../../types/Article';
 import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../types/CAPEX/CapexSet';
 import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
@@ -16,8 +16,8 @@ const initialState = {
 };
 let groupList: CapexExpenseSetGroup[];
 let group: CapexExpenseSetGroup;
-let capexExpenseList: CapexExpense[];
-let capexExpense: CapexExpense;
+let capexExpenseList: Article[];
+let capexExpense: Article;
 let newGroupTotalValue: number;
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
@@ -54,10 +54,10 @@ export default function capexReducer(state = initialState, action: CapexesAction
       ) ?? {}) as CapexExpenseSetGroup;
       capexExpenseList = group?.capexExpenseList ?? [];
       capexExpense = (capexExpenseList.find(
-        (capex: CapexExpense) => capex.id === action.payload.capex?.id,
-      ) ?? {}) as CapexExpense;
+        (capex: Article) => capex.id === action.payload.capex?.id,
+      ) ?? {}) as Article;
       newGroupTotalValue = 0;
-      /* eslint-disable-line */capexExpenseList.map((capexItem: CapexExpense) => {
+      /* eslint-disable-line */capexExpenseList.map((capexItem: Article) => {
         if (capexItem.id !== action.payload.capex.id) {
           newGroupTotalValue += capexItem?.valueTotal ?? 0;
         } else newGroupTotalValue += action.payload.capex.valueTotal ?? 0;
@@ -76,7 +76,7 @@ export default function capexReducer(state = initialState, action: CapexesAction
                       ...action.payload.group,
                       valueTotal: newGroupTotalValue,
                       capexExpenseList: [
-                        ...capexExpenseList.map((i: CapexExpense) => {
+                        ...capexExpenseList.map((i: Article) => {
                           if (i.id === capexExpense.id) {
                             return { ...action.payload.capex };
                           }

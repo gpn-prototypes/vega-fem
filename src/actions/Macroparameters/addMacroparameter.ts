@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -17,7 +17,7 @@ const macroparameterAddInitialized = (): MacroparamsAction => ({
 });
 
 const macroparameterAddSuccess = (
-  macroparameter: Macroparameter,
+  macroparameter: Article,
   group: MacroparameterSetGroup,
 ): MacroparamsAction => ({
   type: MACROPARAM_ADD_SUCCESS,
@@ -30,7 +30,7 @@ const macroparameterAddError = (message: any): MacroparamsAction => ({
 });
 
 export const requestAddMacroparameter = (
-  newMacroparameter: Macroparameter,
+  newMacroparameter: Article,
   group: MacroparameterSetGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
@@ -60,7 +60,7 @@ export const requestAddMacroparameter = (
         const macroparameter = responseData?.macroparameter;
 
         if (macroparameter) {
-          dispatch(macroparameterAddSuccess(macroparameter as Macroparameter, group));
+          dispatch(macroparameterAddSuccess(macroparameter as Article, group));
         }
       } else {
         dispatch(macroparameterAddError(body.message));

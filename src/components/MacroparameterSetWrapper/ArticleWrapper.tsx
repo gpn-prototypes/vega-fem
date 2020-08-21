@@ -1,9 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
+import Macroparameter, { ArticleValues } from '../../../types/Article';
 import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
@@ -22,7 +20,7 @@ export const ArticleWrapper = ({
   updateArticleValueCallback,
   fullWidth,
 }: ArticleWrapperProps) => {
-  const [values, setValues] = useState(article?.value as MacroparameterValues[]);
+  const [values, setValues] = useState(article?.value as ArticleValues[]);
   const [valueTotal, setValueTotal] = useState(article?.valueTotal);
 
   const editValues = (e: any): void => {

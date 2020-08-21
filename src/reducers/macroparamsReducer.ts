@@ -1,4 +1,4 @@
-import Macroparameter, { MacroparameterValues } from '../../types/Macroparameters/Macroparameter';
+import Article, { ArticleValues } from '../../types/Article';
 import MacroparameterSet from '../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSetGroup';
 import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameter';
@@ -24,9 +24,9 @@ const initialState = {
 
 let groupList: MacroparameterSetGroup[];
 let group: MacroparameterSetGroup;
-let macroparameterList: Array<Macroparameter>;
-let macr: Macroparameter;
-let value: MacroparameterValues[];
+let macroparameterList: Array<Article>;
+let macr: Article;
+let value: ArticleValues[];
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
@@ -73,8 +73,8 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       ) ?? {}) as MacroparameterSetGroup;
       /* eslint-disable-line */macroparameterList = group?.macroparameterList ?? [];
       /* eslint-disable-line */macr = (macroparameterList?.find(
-        (macroparameter: Macroparameter) => macroparameter.id === action.payload.macroparameter?.id,
-      ) ?? {}) as Macroparameter;
+        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
+      ) ?? {}) as Article;
       return {
         ...state,
         selected: {
@@ -88,7 +88,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                     ...{
                       ...action.payload.group,
                       macroparameterList: [
-                        ...macroparameterList.map((i: Macroparameter) => {
+                        ...macroparameterList.map((i: Article) => {
                           if (i.id === macr.id) {
                             return { ...action.payload.macroparameter };
                           }
@@ -111,9 +111,9 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       ) ?? {}) as MacroparameterSetGroup;
       macroparameterList = group?.macroparameterList ?? [];
       macr = (macroparameterList?.find(
-        (macroparameter: Macroparameter) => macroparameter.id === action.payload.macroparameter?.id,
-      ) ?? {}) as Macroparameter;
-      value = (macr?.value as MacroparameterValues[]).map((i) => {
+        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
+      ) ?? {}) as Article;
+      value = (macr?.value as ArticleValues[]).map((i) => {
         const iCopy = i;
         if (iCopy.year === action.payload.value?.year) {
           iCopy.value = action.payload.value?.value;
@@ -132,7 +132,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                   ...group,
                   ...{
                     macroparameterList: [
-                      ...macroparameterList.filter((i: Macroparameter) => i.id !== macr.id),
+                      ...macroparameterList.filter((i: Article) => i.id !== macr.id),
                       ...[
                         {
                           ...macr,

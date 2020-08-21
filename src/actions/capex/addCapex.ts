@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpense from '../../../types/CAPEX/CapexExpense';
+import Article from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -16,7 +16,7 @@ const capexAddInitialized = (): CapexesAction => ({
   type: CAPEX_ADD_INIT,
 });
 
-const capexAddSuccess = (capex: CapexExpense, group: CapexExpenseSetGroup): CapexesAction => ({
+const capexAddSuccess = (capex: Article, group: CapexExpenseSetGroup): CapexesAction => ({
   type: CAPEX_ADD_SUCCESS,
   payload: { capex, group },
 });
@@ -27,7 +27,7 @@ const capexAddError = (message: any): CapexesAction => ({
 });
 
 export const requestAddCapex = (
-  newCapexExpense: CapexExpense,
+  newCapexExpense: Article,
   group: CapexExpenseSetGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
@@ -56,7 +56,7 @@ export const requestAddCapex = (
         const capex = responseData?.capexExpense;
 
         if (capex) {
-          dispatch(capexAddSuccess(capex as CapexExpense, group));
+          dispatch(capexAddSuccess(capex as Article, group));
         }
       } else {
         dispatch(capexAddError(body.message));

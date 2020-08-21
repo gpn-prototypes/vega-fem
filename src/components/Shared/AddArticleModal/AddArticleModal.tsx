@@ -8,14 +8,11 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
+import Article from '../../../../types/Article';
+
 import { cnAddArticleModal } from './cn-add-article-modal';
 
 import './AddArticleModal.css';
-
-export interface Article {
-  caption?: string;
-  unit?: string;
-}
 
 interface AddArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;

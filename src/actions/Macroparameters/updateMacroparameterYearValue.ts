@@ -1,9 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
+import Macroparameter, { ArticleValues } from '../../../types/Article';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -21,7 +19,7 @@ const macroparameterUpdateYearValueInitialized = (): MacroparamsAction => ({
 const macroparameterUpdateYearValueSuccess = (
   macroparameter: Macroparameter,
   group: MacroparameterSetGroup,
-  value: MacroparameterValues,
+  value: ArticleValues,
 ): MacroparamsAction => ({
   type: MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS,
   payload: { macroparameter, group, value },
@@ -35,7 +33,7 @@ const macroparameterUpdateYearValueError = (message: any): MacroparamsAction => 
 export const requestUpdateMacroparameterYearValue = (
   macroparameter: Macroparameter,
   group: MacroparameterSetGroup,
-  value: MacroparameterValues,
+  value: ArticleValues,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>, getState: any): Promise<void> => {

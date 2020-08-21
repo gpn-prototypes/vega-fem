@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -20,7 +20,7 @@ const OPEXMKOSChangeExpenseInit = (): OPEXAction => ({
   type: OPEX_MKOS_CHANGE_EXPENSE_INIT,
 });
 
-const OPEXMKOSChangeExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+const OPEXMKOSChangeExpenseSuccess = (expense: Article): OPEXAction => ({
   type: OPEX_MKOS_CHANGE_EXPENSE_SUCCESS,
   payload: expense,
 });
@@ -30,9 +30,7 @@ const OPEXMKOSChangeExpenseError = (message: any): OPEXAction => ({
   errorMessage: message,
 });
 
-export function MKOSChangeExpense(
-  article: Macroparameter,
-): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSChangeExpenseInit());
 

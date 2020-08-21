@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CAPEX/CapexExpense';
+import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
@@ -16,8 +16,8 @@ import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 // import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
-  requestAddCapex: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
-  updateCapexValue: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
+  updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
 }
 
 export const GroupWrapper = ({
@@ -25,7 +25,7 @@ export const GroupWrapper = ({
   requestAddCapex,
   updateCapexValue,
 }: CapexSetWrapperGroupProps) => {
-  const [capexes] = useState((group?.capexExpenseList ?? []) as CapexExpense[]);
+  const [capexes] = useState((group?.capexExpenseList ?? []) as Article[]);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -36,9 +36,9 @@ export const GroupWrapper = ({
     open();
   };
 
-  const addCapexToGroup = (capex: CapexExpense): void => requestAddCapex(capex, group);
+  const addCapexToGroup = (capex: Article): void => requestAddCapex(capex, group);
 
-  const updateCapexValueWithGroup = (capex: CapexExpense): void => updateCapexValue(capex, group);
+  const updateCapexValueWithGroup = (capex: Article): void => updateCapexValue(capex, group);
 
   return (
     <div className={cnGroupWrapper()}>
@@ -81,7 +81,7 @@ export const GroupWrapper = ({
       <AddArticleModal
         isOpen={isOpen}
         close={close}
-        article={{ caption: '', unit: '' } as CapexExpense}
+        article={{ caption: '', unit: '' } as Article}
         callback={addCapexToGroup}
       />
     </div>

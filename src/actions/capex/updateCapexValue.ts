@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpense from '../../../types/CAPEX/CapexExpense';
+import Article from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -16,10 +16,7 @@ const capexUpdateValueInitialized = (): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_INIT,
 });
 
-const capexUpdateValueSuccess = (
-  capex: CapexExpense,
-  group: CapexExpenseSetGroup,
-): CapexesAction => ({
+const capexUpdateValueSuccess = (capex: Article, group: CapexExpenseSetGroup): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_SUCCESS,
   payload: { capex, group },
 });
@@ -30,7 +27,7 @@ const capexUpdateValueError = (message: any): CapexesAction => ({
 });
 
 export const requestUpdateCapexValue = (
-  capex: CapexExpense,
+  capex: Article,
   group: CapexExpenseSetGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
@@ -58,7 +55,7 @@ export const requestUpdateCapexValue = (
         const newCapex = responseData?.capexExpense;
 
         if (newCapex) {
-          dispatch(capexUpdateValueSuccess(newCapex as CapexExpense, group));
+          dispatch(capexUpdateValueSuccess(newCapex as Article, group));
         }
       } else {
         dispatch(capexUpdateValueError(body.message));

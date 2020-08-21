@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CAPEX/CapexExpense';
+import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
@@ -19,9 +19,9 @@ interface CapexSetWrapperProps {
   capexSet: CapexSet;
   reservedValueSet: CapexSetGlobalValue;
   addCapexSetGroup: (capexSetGroup: CapexExpenseSetGroup) => void;
-  addCapex: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  addCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexGlobalValue: (reserveValue: CapexSetGlobalValue) => void;
-  updateCapexValue: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
 }
 
 export const CapexSetWrapper = ({

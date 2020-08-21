@@ -1,13 +1,13 @@
-export default interface CapexExpense {
+export default interface Article {
   id?: string | number;
   name?: string;
   caption?: string;
   valueTotal?: number;
-  value?: CapexExpenseValues[];
+  value?: ArticleValues[] | number;
   unit?: string;
 }
 
-export interface CapexExpenseValues {
+export interface ArticleValues {
   year?: number;
   value: number;
 }

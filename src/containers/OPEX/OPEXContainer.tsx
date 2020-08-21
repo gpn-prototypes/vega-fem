@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import { addAutoexportExpense } from '../../actions/OPEX/addAutoexportExpense';
 import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
-import {addMKOSExpense} from '../../actions/OPEX/addMKOSExpense';
+import { addMKOSExpense } from '../../actions/OPEX/addMKOSExpense';
 import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
 import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
 import { MKOSChange } from '../../actions/OPEX/changeMKOS';
@@ -37,7 +37,7 @@ export const OPEXContainer = () => {
   );
 
   const changeOPEXAutoexportExpense = useCallback(
-    (article: Macroparameter) => {
+    (article: Article) => {
       dispatch(autoexportChangeExpense(article));
     },
     [dispatch],
@@ -51,7 +51,7 @@ export const OPEXContainer = () => {
   );
 
   const changeOPEXMKOSExpense = useCallback(
-    (article: Macroparameter) => {
+    (article: Article) => {
       dispatch(MKOSChangeExpense(article));
     },
     [dispatch],
@@ -65,44 +65,46 @@ export const OPEXContainer = () => {
   );
 
   const changeOPEXCaseExpense = useCallback(
-    (article: Macroparameter, group: OPEXGroup) => {
+    (article: Article, group: OPEXGroup) => {
       dispatch(caseChangeExpense(article, group));
     },
     [dispatch],
   );
 
   const addOPEXCaseExpense = useCallback(
-    (article: Macroparameter, group: OPEXGroup) => {
+    (article: Article, group: OPEXGroup) => {
       dispatch(addCaseExpense(article, group));
     },
     [dispatch],
   );
 
   const addOPEXAutoexportExpense = useCallback(
-    (article: Macroparameter) => {
+    (article: Article) => {
       dispatch(addAutoexportExpense(article));
     },
     [dispatch],
   );
 
   const addOPEXMKOSExpense = useCallback(
-    (article: Macroparameter) => {
+    (article: Article) => {
       dispatch(addMKOSExpense(article));
     },
     [dispatch],
   );
 
-  return <OPEXSetWrapper
-    OPEXSetInstance={OPEXSetInstance}
-    OPEXChangeAutoexport={changeOPEXAutoexport}
-    OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
-    OPEXChangeMKOS={changeMKOS}
-    OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
-    OPEXCreateCase={createOPEXCase}
-    OPEXChangeCaseExpense={changeOPEXCaseExpense}
-    OPEXAddCaseExpense={addOPEXCaseExpense}
-    OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
-    OPEXAddMKOSExpense={addOPEXMKOSExpense}
-    selectedRole={selectedRole}
-  />;
+  return (
+    <OPEXSetWrapper
+      OPEXSetInstance={OPEXSetInstance}
+      OPEXChangeAutoexport={changeOPEXAutoexport}
+      OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
+      OPEXChangeMKOS={changeMKOS}
+      OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
+      OPEXCreateCase={createOPEXCase}
+      OPEXChangeCaseExpense={changeOPEXCaseExpense}
+      OPEXAddCaseExpense={addOPEXCaseExpense}
+      OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
+      OPEXAddMKOSExpense={addOPEXMKOSExpense}
+      selectedRole={selectedRole}
+    />
+  );
 };

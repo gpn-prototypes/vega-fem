@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -17,7 +17,7 @@ const macroparameterUpdateValueInitialized = (): MacroparamsAction => ({
 });
 
 const macroparameterUpdateValueSuccess = (
-  macroparameter: Macroparameter,
+  macroparameter: Article,
   group: MacroparameterSetGroup,
 ): MacroparamsAction => ({
   type: MACROPARAM_UPDATE_VALUE_SUCCESS,
@@ -30,7 +30,7 @@ const macroparameterUpdateValueError = (message: any): MacroparamsAction => ({
 });
 
 export const requestUpdateMacroparameterValue = (
-  macroparameter: Macroparameter,
+  macroparameter: Article,
   group: MacroparameterSetGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
@@ -60,9 +60,7 @@ export const requestUpdateMacroparameterValue = (
         const updatedMacroparameter = responseData?.macroparameter;
 
         if (updatedMacroparameter) {
-          dispatch(
-            macroparameterUpdateValueSuccess(updatedMacroparameter as Macroparameter, group),
-          );
+          dispatch(macroparameterUpdateValueSuccess(updatedMacroparameter as Article, group));
         }
       } else {
         dispatch(macroparameterUpdateValueError(body.message));

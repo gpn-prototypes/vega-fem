@@ -4,7 +4,7 @@ import { IconAdd } from '@gpn-design/uikit/IconAdd';
 import { IconSelect } from '@gpn-design/uikit/IconSelect';
 import { Button, Form, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
+import Article from '../../../../types/Article';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
 import Role from '../../../../types/role';
@@ -20,14 +20,14 @@ import '../../../styles/BlockWrapper/BlockWrapper.css';
 interface OPEXWrapperProps {
   OPEXSetInstance: OPEXSetType;
   OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
-  OPEXChangeAutoexportExpense: (article: Macroparameter) => void;
+  OPEXChangeAutoexportExpense: (article: Article) => void;
   OPEXChangeMKOS: (OPEXMKOS: OPEXGroup) => void;
-  OPEXChangeMKOSExpense: (article: Macroparameter) => void;
+  OPEXChangeMKOSExpense: (article: Article) => void;
   OPEXCreateCase: (newCase: OPEXGroup) => void;
-  OPEXChangeCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
-  OPEXAddCaseExpense: (article: Macroparameter, group: OPEXGroup) => void;
-  OPEXAddAutoexportExpense: (article: Macroparameter) => void;
-  OPEXAddMKOSExpense: (article: Macroparameter) => void;
+  OPEXChangeCaseExpense: (article: Article, group: OPEXGroup) => void;
+  OPEXAddCaseExpense: (article: Article, group: OPEXGroup) => void;
+  OPEXAddAutoexportExpense: (article: Article) => void;
+  OPEXAddMKOSExpense: (article: Article) => void;
   selectedRole: Role;
 }
 
@@ -148,9 +148,7 @@ export const OPEXSetWrapper = ({
                   <GroupWrapper
                     key={keyGen(index)}
                     group={caseItem}
-                    updateArticle={(article: Macroparameter) =>
-                      OPEXChangeCaseExpense(article, caseItem)
-                    }
+                    updateArticle={(article: Article) => OPEXChangeCaseExpense(article, caseItem)}
                     addArticle={OPEXAddCaseExpense}
                   />
                 ))}

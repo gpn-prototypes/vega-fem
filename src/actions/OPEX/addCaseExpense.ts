@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
+import Article from '../../../types/Article';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -21,7 +21,7 @@ const OPEXAddCaseExpenseInit = (): OPEXAction => ({
   type: OPEX_ADD_CASE_EXPENSE_INIT,
 });
 
-const OPEXAddCaseExpenseSuccess = (caseGroup: OPEXGroup, expense: Macroparameter): OPEXAction => ({
+const OPEXAddCaseExpenseSuccess = (caseGroup: OPEXGroup, expense: Article): OPEXAction => ({
   type: OPEX_ADD_CASE_EXPENSE_SUCCESS,
   payload: { caseGroup, expense },
 });
@@ -32,7 +32,7 @@ const OPEXAddCaseExpenseError = (message: any): OPEXAction => ({
 });
 
 export function addCaseExpense(
-  article: Macroparameter,
+  article: Article,
   caseGroup: OPEXGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {

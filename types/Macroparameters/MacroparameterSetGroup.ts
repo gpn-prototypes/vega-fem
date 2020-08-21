@@ -1,8 +1,8 @@
-import Macroparameter from './Macroparameter';
+import Article from '../Article';
 
 export default interface MacroparameterSetGroup {
   id?: string | number;
   name?: string;
   caption?: string;
-  macroparameterList?: Macroparameter[];
+  macroparameterList?: Article[];
 }

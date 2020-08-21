@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CapexExpense from '../../types/CAPEX/CapexExpense';
+import Article from '../../types/Article';
 import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
@@ -37,7 +37,7 @@ export const CapexSetContainer = () => {
   );
 
   const addCapex = useCallback(
-    (newCapex: CapexExpense, group: CapexExpenseSetGroup) => {
+    (newCapex: Article, group: CapexExpenseSetGroup) => {
       dispatch(requestAddCapex(newCapex, group));
     },
     [dispatch],
@@ -50,7 +50,7 @@ export const CapexSetContainer = () => {
     [dispatch],
   );
   const updateCapexValue = useCallback(
-    (capex: CapexExpense, group: CapexExpenseSetGroup) => {
+    (capex: Article, group: CapexExpenseSetGroup) => {
       dispatch(requestUpdateCapexValue(capex, group));
     },
     [dispatch],

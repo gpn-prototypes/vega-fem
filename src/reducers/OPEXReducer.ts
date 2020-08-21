@@ -1,10 +1,10 @@
-import Macroparameter from '../../types/Macroparameters/Macroparameter';
+import Article from '../../types/Article';
 import { OPEXGroup } from '../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../types/OPEX/OPEXSetType';
 import Role from '../../types/role';
-import {OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS} from '../actions/OPEX/addAutoexportExpense';
+import { OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS } from '../actions/OPEX/addAutoexportExpense';
 import { OPEX_ADD_CASE_EXPENSE_SUCCESS } from '../actions/OPEX/addCaseExpense';
-import {OPEX_ADD_MKOS_EXPENSE_SUCCESS} from '../actions/OPEX/addMKOSExpense';
+import { OPEX_ADD_MKOS_EXPENSE_SUCCESS } from '../actions/OPEX/addMKOSExpense';
 import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/changeAutoexport';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeAutoexportExpense';
 import { OPEX_MKOS_CHANGE_SUCCESS } from '../actions/OPEX/changeMKOS';
@@ -37,7 +37,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_ADD_CASE_EXPENSE_SUCCESS:
-     //TDOD: change implementation
+      // TDOD: change implementation
       /* eslint-disable-line */action.payload?.caseGroup?.opexExpenseList?.push(action.payload?.expense);
       return {
         ...state,
@@ -49,11 +49,9 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         opex: { ...state.opex, ...{ autoexport: action.payload } },
       };
     case OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS:
-      autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter(
-        (expense: Macroparameter) => {
-          return expense.id === action.payload?.id;
-        },
-      )[0];
+      autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter((expense: Article) => {
+        return expense.id === action.payload?.id;
+      })[0];
       return {
         ...state,
         opex: {
@@ -64,7 +62,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...{
                 opexExpenseList: [
                   ...(state.opex.autoexport?.opexExpenseList?.filter(
-                    (i: Macroparameter) => i.id !== action.payload?.id,
+                    (i: Article) => i.id !== action.payload?.id,
                   ) || []),
                   ...[{ ...autoexportExpense, ...action.payload }],
                 ],
@@ -74,7 +72,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_MKOS_CHANGE_EXPENSE_SUCCESS:
-      mkosExpense = state.opex.mkos?.opexExpenseList?.filter((expense: Macroparameter) => {
+      mkosExpense = state.opex.mkos?.opexExpenseList?.filter((expense: Article) => {
         return expense.id === action.payload?.id;
       })[0];
       return {
@@ -87,7 +85,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...{
                 opexExpenseList: [
                   ...(state.opex.mkos?.opexExpenseList?.filter(
-                    (i: Macroparameter) => i.id !== action.payload?.id,
+                    (i: Article) => i.id !== action.payload?.id,
                   ) || []),
                   ...[{ ...mkosExpense, ...action.payload }],
                 ],
@@ -100,7 +98,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
       caseGroup = state.opex.opexCaseList?.filter((caseGroup_: OPEXGroup) => {
         return caseGroup_.id === action.payload?.group.id;
       })[0];
-      caseExpense = caseGroup?.opexExpenseList?.filter((expense: Macroparameter) => {
+      caseExpense = caseGroup?.opexExpenseList?.filter((expense: Article) => {
         return expense.id === action.payload?.expense.id;
       })[0];
       return {
@@ -118,8 +116,7 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
                   ...{
                     opexExpenseList: [
                       ...(caseGroup?.opexExpenseList.filter(
-                        (opexExpense: Macroparameter) =>
-                          opexExpense.id !== action.payload?.expense?.id,
+                        (opexExpense: Article) => opexExpense.id !== action.payload?.expense?.id,
                       ) || []),
                       ...[
                         {
@@ -143,34 +140,35 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
     case OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS:
       return {
         ...state,
-        opex: {...state.opex,
+        opex: {
+          ...state.opex,
           ...{
-          autoexport: {
-            ...state.opex.autoexport,
-            ...{
-              opexExpenseList: [
-                ...(state.opex.autoexport?.opexExpenseList || []),
-                ...[action.payload]
-              ]
-            }
-          }
-        }}
+            autoexport: {
+              ...state.opex.autoexport,
+              ...{
+                opexExpenseList: [
+                  ...(state.opex.autoexport?.opexExpenseList || []),
+                  ...[action.payload],
+                ],
+              },
+            },
+          },
+        },
       };
     case OPEX_ADD_MKOS_EXPENSE_SUCCESS:
       return {
         ...state,
-        opex: {...state.opex,
+        opex: {
+          ...state.opex,
           ...{
-          mkos: {
-            ...state.opex.mkos,
-            ...{
-              opexExpenseList: [
-                ...(state.opex.mkos?.opexExpenseList || []),
-                ...[action.payload]
-              ]
-            }
-          }
-        }}
+            mkos: {
+              ...state.opex.mkos,
+              ...{
+                opexExpenseList: [...(state.opex.mkos?.opexExpenseList || []), ...[action.payload]],
+              },
+            },
+          },
+        },
       };
     case OPEX_SET_SUCCESS:
       return {

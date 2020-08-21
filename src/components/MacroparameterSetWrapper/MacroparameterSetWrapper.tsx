@@ -3,9 +3,7 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
+import Macroparameter, { ArticleValues } from '../../../types/Article';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../helpers/keyGenerator';
@@ -35,7 +33,7 @@ interface MacroparameterSetWrapperProps {
   updateMacroparameterYearValue: (
     macroparameter: Macroparameter,
     group: MacroparameterSetGroup,
-    value: MacroparameterValues,
+    value: ArticleValues,
   ) => void;
 }
 

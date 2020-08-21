@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CAPEX/CapexExpense';
+import Article from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 
@@ -9,8 +9,8 @@ import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface CapexWrapperProps {
-  capex: CapexExpense;
-  updateCapexValue: (capex: CapexExpense) => void;
+  capex: Article;
+  updateCapexValue: (capex: Article) => void;
 }
 
 export const CapexWrapper = ({ capex, updateCapexValue }: CapexWrapperProps) => {

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter from '../../../../types/Macroparameters/Macroparameter';
+import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { AddArticleModal, Article } from '../../Shared/AddArticleModal/AddArticleModal';
+import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 import { ArticleWrapper } from '../ArticleWrapper';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 
@@ -17,11 +17,8 @@ import './GroupWrapper.css';
 interface MacroparameterSetWrapperGroupProps {
   group: MacroparameterSetGroup;
   removeGroup: (group: MacroparameterSetGroup) => void;
-  requestAddMacroparameter: (macroparameter: Macroparameter, group: MacroparameterSetGroup) => void;
-  updateMacroparameterValue: (
-    macroparameter: Macroparameter,
-    group: MacroparameterSetGroup,
-  ) => void;
+  requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
 }
 
 export const GroupWrapper = ({
@@ -29,7 +26,7 @@ export const GroupWrapper = ({
   requestAddMacroparameter,
   updateMacroparameterValue,
 }: MacroparameterSetWrapperGroupProps) => {
-  const [macroparameters] = useState(group.macroparameterList as Macroparameter[]);
+  const [macroparameters] = useState(group.macroparameterList as Article[]);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -40,10 +37,10 @@ export const GroupWrapper = ({
     open();
   };
 
-  const addMacroparameterToGroup = (macroparameter: Macroparameter): void =>
+  const addMacroparameterToGroup = (macroparameter: Article): void =>
     requestAddMacroparameter(macroparameter, group);
 
-  const updateMacroparameterValueWithGroup = (macroparameter: Macroparameter): void =>
+  const updateMacroparameterValueWithGroup = (macroparameter: Article): void =>
     updateMacroparameterValue(macroparameter, group);
 
   return (

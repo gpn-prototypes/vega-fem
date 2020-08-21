@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
-import Macroparameter from '../../../types/Macroparameters/Macroparameter';
 
+import Article from '../../../types/Article';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -20,7 +20,7 @@ const OPEXAddMKOSExpenseInit = (): OPEXAction => ({
   type: OPEX_ADD_MKOS_EXPENSE_INIT,
 });
 
-const OPEXAddMKOSExpenseSuccess = (expense: Macroparameter): OPEXAction => ({
+const OPEXAddMKOSExpenseSuccess = (expense: Article): OPEXAction => ({
   type: OPEX_ADD_MKOS_EXPENSE_SUCCESS,
   payload: expense,
 });
@@ -30,9 +30,7 @@ const OPEXAddMKOSExpenseError = (message: any): OPEXAction => ({
   errorMessage: message,
 });
 
-export function addMKOSExpense(
-  article: Macroparameter
-): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAddMKOSExpenseInit());
 

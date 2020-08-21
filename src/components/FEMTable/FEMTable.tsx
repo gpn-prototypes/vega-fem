@@ -1,9 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 
+import Macroparameter, { ArticleValues } from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
@@ -66,7 +64,7 @@ export const FEMTable = ({
   }, [entity]);
 
   const updateValue = useCallback(
-    (group: MacroparameterSetGroup, article: Macroparameter, value?: MacroparameterValues) => {
+    (group: MacroparameterSetGroup, article: Macroparameter, value?: ArticleValues) => {
       updateArticleValueCallback(article, group, value);
     },
     [updateArticleValueCallback],
@@ -136,8 +134,8 @@ export const FEMTable = ({
                         updateValue(group, article, { year: +year, value: +value })
                       }
                       value={
-                        ((article?.value ?? []) as MacroparameterValues[])
-                          ?.find((value: MacroparameterValues) => value?.year === +year)
+                        ((article?.value ?? []) as ArticleValues[])
+                          ?.find((value: ArticleValues) => value?.year === +year)
                           ?.value.toString() || ''
                       }
                     />
