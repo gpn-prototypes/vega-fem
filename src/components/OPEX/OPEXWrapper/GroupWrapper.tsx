@@ -104,6 +104,7 @@ export const GroupWrapper = ({
         </div>
         <div className={cnGroupWrapper('header-actions')}>
           <Button
+            type="button"
             title="Добавить статью"
             onlyIcon
             iconLeft={IconAdd}
@@ -133,7 +134,7 @@ export const GroupWrapper = ({
           </Form.Field>
         )}
         {articles?.length > 0 &&
-          articles.map((article: any, index: any) => (
+          articles.map((article: Article, index: any) => (
             <ArticleWrapper
               key={keyGen(index)}
               article={article}

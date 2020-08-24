@@ -20,7 +20,7 @@ const initialState = {
 };
 
 let autoexportExpense;
-let mkosExpense;
+// let mkosExpense;
 let caseGroup;
 let caseExpense;
 
@@ -72,9 +72,9 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_MKOS_CHANGE_EXPENSE_SUCCESS:
-      mkosExpense = state.opex.mkos?.opexExpenseList?.filter((expense: Article) => {
+      /* mkosExpense = state.opex.mkos?.opexExpenseList?.filter((expense: Article) => {
         return expense.id === action.payload?.id;
-      })[0];
+      })[0]; */
       return {
         ...state,
         opex: {
@@ -84,10 +84,16 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...state.opex.mkos,
               ...{
                 opexExpenseList: [
-                  ...(state.opex.mkos?.opexExpenseList?.filter(
+                  ...(state.opex.mkos?.opexExpenseList as Array<Article>)?.map((i: Article) => {
+                    if (i.id === action.payload?.id) {
+                      return { ...action.payload };
+                    }
+                    return { ...i };
+                  }),
+                  /* ...(state.opex.mkos?.opexExpenseList?.filter(
                     (i: Article) => i.id !== action.payload?.id,
                   ) || []),
-                  ...[{ ...mkosExpense, ...action.payload }],
+                  ...[{ ...mkosExpense, ...action.payload }], */
                 ],
               },
             },
