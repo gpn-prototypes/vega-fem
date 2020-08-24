@@ -5,6 +5,6 @@ import CapexSetGlobalValue from './CapexSetGlobalValue';
 export default interface CapexSet {
   years?: number;
   yearStart?: number;
-  capexGlobalValueList?: CapexSetGlobalValue[];
+  capexGlobalValueList: CapexSetGlobalValue[];
   capexExpenseGroupList?: CapexExpenseSetGroup[];
 }

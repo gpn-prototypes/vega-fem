@@ -8,7 +8,6 @@ import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
 import { requestAddCapex } from '../actions/capex/addCapex';
 import { addCapexSetGroup as addGroup } from '../actions/capex/addCapexSetGroup';
 import { fetchCapexSet } from '../actions/capex/capexSet';
-import { fetchCapexGlobalValueSet } from '../actions/capex/capexSetGlobalValue';
 import { requestUpdateCapexGlobalValue } from '../actions/capex/updateCapexSetGlobalValue';
 import { requestUpdateCapexValue } from '../actions/capex/updateCapexValue';
 import { CapexSetWrapper } from '../components/CAPEX/CapexSetWrapper/CapexSetWrapper';
@@ -20,13 +19,6 @@ export const CapexSetContainer = () => {
   const capexSet: CapexSet = useSelector(selectorSelectedCapexSet);
   useEffect(() => {
     dispatch(fetchCapexSet());
-  }, [dispatch]);
-
-  const selectorSetGlobalValueSet = (state: any) =>
-    state.capexGlobalValuesReducer.capexSetGlobalValue;
-  const capexSetGlobalValue: CapexSetGlobalValue = useSelector(selectorSetGlobalValueSet);
-  useEffect(() => {
-    dispatch(fetchCapexGlobalValueSet());
   }, [dispatch]);
 
   const addCapexSetGroups = useCallback(
@@ -58,7 +50,6 @@ export const CapexSetContainer = () => {
   return (
     <CapexSetWrapper
       capexSet={capexSet}
-      reservedValueSet={capexSetGlobalValue}
       updateCapexGlobalValue={updateCapexGlobalValue}
       addCapexSetGroup={addCapexSetGroups}
       addCapex={addCapex}

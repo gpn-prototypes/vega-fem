@@ -15,9 +15,9 @@ const capexUpdateGlobalValueInitialized = (): CapexesAction => ({
   type: CAPEX_UPDATE_GLOBAL_VALUE_INIT,
 });
 
-const capexUpdateGlobalValueSuccess = (reserveValue: CapexSetGlobalValue): CapexesAction => ({
+const capexUpdateGlobalValueSuccess = (globalValue: CapexSetGlobalValue): CapexesAction => ({
   type: CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS,
-  payload: reserveValue,
+  payload: globalValue,
 });
 
 const capexUpdateGlobalValueError = (message: any): CapexesAction => ({
@@ -26,7 +26,7 @@ const capexUpdateGlobalValueError = (message: any): CapexesAction => ({
 });
 
 export const requestUpdateCapexGlobalValue = (
-  reserveValue: CapexSetGlobalValue,
+  globalValue: CapexSetGlobalValue,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
@@ -45,8 +45,8 @@ export const requestUpdateCapexGlobalValue = (
           query:
             `mutation {` +
             `updateCapexGlobalValue(` +
-            `capexGlobalValueId:"${reserveValue?.id}",` +
-            `value: ${reserveValue?.value}` +
+            `capexGlobalValueId:"${globalValue?.id}",` +
+            `value: ${globalValue?.value}` +
             `){capexGlobalValue{id,name,value}, ok}` +
             `}`,
         }),

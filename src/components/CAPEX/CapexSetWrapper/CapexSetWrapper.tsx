@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
@@ -10,6 +10,7 @@ import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { FEMTable } from '../../FEMTable/FEMTable';
 
+import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
@@ -17,7 +18,6 @@ import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 
 interface CapexSetWrapperProps {
   capexSet: CapexSet;
-  reservedValueSet: CapexSetGlobalValue;
   addCapexSetGroup: (capexSetGroup: CapexExpenseSetGroup) => void;
   addCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexGlobalValue: (reserveValue: CapexSetGlobalValue) => void;
@@ -26,32 +26,24 @@ interface CapexSetWrapperProps {
 
 export const CapexSetWrapper = ({
   capexSet,
-  reservedValueSet,
   updateCapexGlobalValue,
   addCapexSetGroup,
   addCapex,
   updateCapexValue,
 }: CapexSetWrapperProps) => {
-  const [reserveValue, setReserveValue] = useState(reservedValueSet.value);
-  const [reserveValueId, setReserveValueId] = useState(reservedValueSet.id);
-  // const [years, setYears] = useState(capexSet.years);
-  // const [yearStart,setYearStart]=useState(capexSet.yearStart);
-
   const [isAddingGroup, setIsAddingGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [groups, setGroups] = useState(
     (capexSet?.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[],
   );
+  const [globalValues, setGlobalValues] = useState(
+    (capexSet?.capexGlobalValueList ?? []) as CapexSetGlobalValue[],
+  );
 
   useEffect(() => {
-    if (reservedValueSet?.value) {
-      setReserveValue(reservedValueSet.value);
-    }
-    if (reservedValueSet?.id) {
-      setReserveValueId(reservedValueSet.id);
-    }
     setGroups(capexSet?.capexExpenseGroupList ?? []);
-  }, [reserveValueId, reservedValueSet, capexSet]);
+    setGlobalValues(capexSet?.capexGlobalValueList ?? []);
+  }, [capexSet]);
 
   const toggleCapexSetGroup = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -69,26 +61,6 @@ export const CapexSetWrapper = ({
     toggleCapexSetGroup(event);
     requestGroupAdd(groupName);
   };
-
-  const onChangeTypoHandler = (e: any, setter: (value: any) => void) => {
-    setter(e.e.target.value);
-  };
-
-  const loseFocus = (e: any) => {
-    // TODO: change any
-    if (e.key === 'Enter') {
-      (e.target as HTMLElement).blur();
-    }
-  };
-
-  const requestSetGlobalValue = useCallback(() => {
-    // TODO: запрос на обновление reservedValue
-    console.log('reserveValue: ', reserveValue);
-    updateCapexGlobalValue({
-      id: reserveValueId,
-      value: reserveValue,
-    } as CapexSetGlobalValue);
-  }, [updateCapexGlobalValue, reserveValue, reserveValueId]);
 
   return (
     <div className={cnBlockWrapper()}>
@@ -110,21 +82,18 @@ export const CapexSetWrapper = ({
               }}
             >
               <Form.Row gap="m" space="none" className={cnVegaFormCustom('content-body')}>
-                <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
-                  <Form.Field>
-                    <Form.Label htmlFor="capexSetReservedValue">Величина резерва</Form.Label>
-                    <TextField
-                      id="capexSetReservedValue"
-                      size="s"
-                      width="full"
-                      value={reserveValue?.toString()}
-                      rightSide="%"
-                      onBlur={() => requestSetGlobalValue()}
-                      onChange={(e) => onChangeTypoHandler(e, setReserveValue)}
-                      onKeyDown={(e) => loseFocus(e)}
-                    />
-                  </Form.Field>
-                </Form.Row>
+                {(globalValues ?? []).length > 0 &&
+                  globalValues.map((globalValue: CapexSetGlobalValue, index: number) =>
+                    index < 2 ? (
+                      <CapexGlobalValuesWrapper
+                        key={keyGen(index)}
+                        globalValue={globalValue}
+                        updateCapexGlobalValue={updateCapexGlobalValue}
+                      />
+                    ) : (
+                      <></>
+                    ),
+                  )}
                 <Form.Row
                   col="1"
                   gap="none"
