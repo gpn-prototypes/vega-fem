@@ -43,7 +43,7 @@ export const requestUpdateCapexValue = (
             `mutation {changeCapexExpense(` +
             `capexExpenseGroupId: ${group?.id?.toString()},` +
             `capexExpenseId: ${capex.id},` +
-            `value: ${capex.valueTotal}` +
+            `value: ${capex.value}` +
             `){capexExpense{name, id, caption,valueTotal,unit, value{year,value}}, ok}}`,
         }),
       });

@@ -21,14 +21,9 @@ export const ArticleWrapper = ({
   fullWidth,
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
-  const [valueTotal, setValueTotal] = useState(article?.valueTotal);
 
   const editValues = (e: any): void => {
-    if (valueTotal === undefined) {
-      setValues([{ value: e.e.target.value }]);
-    } else {
-      setValueTotal(e.e.target.value);
-    }
+    setValues([{ value: e.e.target.value }]);
   };
 
   const loseFocus = (e: any) => {
@@ -40,20 +35,12 @@ export const ArticleWrapper = ({
 
   const blurHandle = useCallback(() => {
     if (updateArticleValueCallback) {
-      if (valueTotal !== undefined) {
-        updateArticleValueCallback({
-          ...article,
-          ...{ value: +values[0]?.value },
-          ...{ valueTotal },
-        });
-      } else {
-        updateArticleValueCallback({
-          ...article,
-          ...{ value: +values[0]?.value },
-        });
-      }
+      updateArticleValueCallback({
+        ...article,
+        ...{ value: +values[0]?.value },
+      });
     }
-  }, [values, valueTotal, updateArticleValueCallback, article]);
+  }, [values, updateArticleValueCallback, article]);
 
   return (
     <Form.Row
@@ -68,7 +55,7 @@ export const ArticleWrapper = ({
           id={`article_${article?.name}`}
           placeholder="Значение"
           rightSide={article?.unit}
-          value={valueTotal?.toString() || values[0]?.value.toString()}
+          value={values[0]?.value.toString()}
           onBlur={blurHandle}
           onChange={(e: any) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}

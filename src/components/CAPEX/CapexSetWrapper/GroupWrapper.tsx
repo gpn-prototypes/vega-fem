@@ -5,14 +5,15 @@ import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
+import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
-import { CapexWrapper } from './CapexWrapper';
-
+// import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
 // import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
@@ -70,11 +71,12 @@ export const GroupWrapper = ({
           <GroupPlaceholder text="Пока не добавлена ни одна статья" callback={openAddCapexModal} />
         )}
         {capexes?.length > 0 &&
-          capexes.map((capex, index) => (
-            <CapexWrapper
+          capexes.map((article: Article, index: any) => (
+            <ArticleWrapper
               key={keyGen(index)}
-              capex={capex}
-              updateCapexValue={updateCapexValueWithGroup}
+              article={article}
+              fullWidth
+              updateArticleValueCallback={updateCapexValueWithGroup}
             />
           ))}
       </div>

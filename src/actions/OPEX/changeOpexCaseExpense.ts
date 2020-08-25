@@ -50,7 +50,7 @@ export function caseChangeExpense(
             `name: "${article.name?.toString()}",` +
             `caption: "${article.caption?.toString()}",` +
             `unit: "${article.unit?.toString()}",` +
-            `value: ${article.valueTotal?.toString()}` +
+            `value: ${article.value?.toString()}` +
             `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok}}`,
         }),
       });
