@@ -21,8 +21,8 @@ const initialState = {
 
 /* let autoexportExpense; */
 // let mkosExpense;
-let caseGroup;
-let caseExpense;
+let caseGroup: OPEXGroup | undefined;
+// let caseExpense;
 
 export default function OPEXReducer(state = initialState, action: OPEXAction) {
   switch (action.type) {
@@ -109,19 +109,40 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_CASE_CHANGE_EXPENSE_SUCCESS:
-      caseGroup = state.opex.opexCaseList?.filter((caseGroup_: OPEXGroup) => {
+      caseGroup = state.opex.opexCaseList?.find((caseGroup_: OPEXGroup) => {
         return caseGroup_.id === action.payload?.group.id;
-      })[0];
-      caseExpense = caseGroup?.opexExpenseList?.filter((expense: Article) => {
+      });
+      /* caseExpense = caseGroup?.opexExpenseList?.filter((expense: Article) => {
         return expense.id === action.payload?.expense.id;
-      })[0];
+      })[0]; */
       return {
         ...state,
         opex: {
           ...state.opex,
           ...{
             opexCaseList: [
-              ...(state.opex.opexCaseList?.filter(
+              ...(state.opex.opexCaseList as Array<OPEXGroup>).map((opexCase: OPEXGroup) => {
+                if (opexCase.id === action.payload.group.id) {
+                  return {
+                    ...{
+                      ...action.payload.group,
+                      opexExpenseList: [
+                        ...(caseGroup?.opexExpenseList as Array<Article>)?.map(
+                          (opexExpense: Article) => {
+                            if (opexExpense.id === action.payload?.expense?.id) {
+                              return { ...action.payload.expense };
+                            }
+                            return { ...opexExpense };
+                          },
+                        ),
+                      ],
+                    },
+                  };
+                }
+                return { ...opexCase };
+              }),
+            ],
+            /* ...(state.opex.opexCaseList?.filter(
                 (opexCase: OPEXGroup) => opexCase.id !== action.payload?.group?.id,
               ) || []),
               ...[
@@ -129,20 +150,17 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
                   ...caseGroup,
                   ...{
                     opexExpenseList: [
-                      ...(caseGroup?.opexExpenseList.filter(
-                        (opexExpense: Article) => opexExpense.id !== action.payload?.expense?.id,
-                      ) || []),
-                      ...[
-                        {
-                          ...caseExpense,
-                          ...action.payload.expense,
-                        },
-                      ],
+                      ...(caseGroup?.opexExpenseList as Array<Article>)?.map((opexExpense: Article) => {
+                        if (opexExpense.id === action.payload?.expense?.id) {
+                          return { ...action.payload.expense };
+                        }
+                        return { ...opexExpense };
+                      }),
                     ],
                   },
                 },
               ],
-            ],
+            ], */
           },
         },
       };
