@@ -19,7 +19,7 @@ const initialState = {
   selectedRole: { name: 'Обустройство' } as Role,
 };
 
-let autoexportExpense;
+/* let autoexportExpense; */
 // let mkosExpense;
 let caseGroup;
 let caseExpense;
@@ -49,9 +49,9 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         opex: { ...state.opex, ...{ autoexport: action.payload } },
       };
     case OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS:
-      autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter((expense: Article) => {
+      /* autoexportExpense = state.opex.autoexport?.opexExpenseList?.filter((expense: Article) => {
         return expense.id === action.payload?.id;
-      })[0];
+      })[0]; */
       return {
         ...state,
         opex: {
@@ -61,10 +61,18 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
               ...state.opex.autoexport,
               ...{
                 opexExpenseList: [
-                  ...(state.opex.autoexport?.opexExpenseList?.filter(
+                  ...(state.opex.autoexport?.opexExpenseList as Array<Article>)?.map(
+                    (i: Article) => {
+                      if (i.id === action.payload?.id) {
+                        return { ...action.payload };
+                      }
+                      return { ...i };
+                    },
+                  ),
+                  /* ...(state.opex.autoexport?.opexExpenseList?.filter(
                     (i: Article) => i.id !== action.payload?.id,
                   ) || []),
-                  ...[{ ...autoexportExpense, ...action.payload }],
+                  ...[{ ...autoexportExpense, ...action.payload }], */
                 ],
               },
             },
