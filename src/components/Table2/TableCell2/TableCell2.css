@@ -1,0 +1,92 @@
+.TableCell2 {
+  display: inline-flex;
+
+  height: 100%;
+  width: 88px;
+  min-width: 88px;
+
+  align-items: center;
+  color: var(--alabaster);
+}
+
+.TableCell2__border-bottom {
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.TableCell2__border-right {
+  border-right: 1px solid var(--color-bg-border);
+}
+
+.TableCell2__no-padding {
+  padding: 0 !important;
+}
+
+.TableCell2__first-column {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+
+  height: 100%;
+  width: var(--space-2xl);
+  min-width: 32px;
+
+  /* background-color: var(--color-bg-default); */
+  text-align: right;
+  border-right: 2px solid var(--color-bg-border);
+}
+
+.TableCell2__second-column {
+  width: 420px;
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+
+.TableCell2__second-column * {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.TableCell2__second-column_group {
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--color-control-typo-primary);
+}
+
+.TableCell2__second-column_article {
+  padding-left: var(--space-l);
+  opacity: 0.8;
+}
+
+.TableCell2__empty {
+  border-bottom: none;
+}
+
+.TableCell2__full-width {
+  width: 100%;
+}
+
+.TableCell2__column-header {
+  justify-content: space-between;
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+
+  color: var(--alabaster-light);
+}
+
+.TableCell2__column-header_additionalColumn {
+  padding-right: 0;
+}
+
+.TableCell2__value {
+  justify-content: flex-end;
+  padding-right: var(--space-xs);
+  font-size: var(--size-text-s);
+}
+
+.TableCell2__editable:hover {
+  background-color: var(--color-control-bg-clear-hover) !important;
+  border-bottom: 1px solid var(--color-control-bg-border-focus);
+  cursor: text;
+}

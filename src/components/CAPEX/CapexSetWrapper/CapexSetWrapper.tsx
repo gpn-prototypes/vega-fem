@@ -8,7 +8,7 @@ import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { FEMTable } from '../../FEMTable/FEMTable';
+import { Table } from '../../FEMTable/Table';
 
 import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
@@ -154,7 +154,7 @@ export const CapexSetWrapper = ({
                 )}
               </Form.Row>
             </Form>
-            <FEMTable
+            <Table
               entity={capexSet}
               secondaryColumn="valueTotal"
               headers={['', 'Статья', 'Суммарное']}

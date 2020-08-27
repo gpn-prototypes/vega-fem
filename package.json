@@ -8,6 +8,7 @@
     "node": "^12.16.2",
     "yarn": "^1.22.4"
   },
+  "typings": "dist/index",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"
@@ -45,11 +46,13 @@
     "@types/uniqid": "^5.2.0",
     "bem-cn": "^3.0.1",
     "lodash": "^4.17.19",
+    "re-resizable": "^6.5.4",
     "react": "^16.13.1",
     "react-collapse": "^5.0.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
+    "react-scroll-sync": "^0.8.0",
     "react-textarea-autosize": "^8.2.0",
     "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",

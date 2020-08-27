@@ -1,23 +1,35 @@
 import React, { useState } from 'react';
 import { TextField } from '@gpn-prototypes/vega-ui';
 
-import { cnFEMTableCell } from './cn-FEM-table-cell';
+import { cnTableCell } from './cn-table-cell';
 
-import './FEMTableCell.css';
+import './TableCell.css';
 
-interface FEMTableCellProps {
+interface TableCellProps {
   value: string;
   onBlur?: any;
   editable: boolean;
+  width?: number;
 }
 
-export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => {
+export const TableCell = ({ value, onBlur, editable, width }: TableCellProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [innerValue, setInnerValue] = useState(value);
+  const [isSelected, setIsSelected] = useState(false);
 
   const editCell = () => {
     if (editable) {
       setIsEditing(true);
+    }
+  };
+
+  const selectCell = () => {
+    if (editable) {
+      if (!isSelected) {
+        setIsSelected(true);
+      } else {
+        setIsSelected(false);
+      }
     }
   };
 
@@ -29,10 +41,12 @@ export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => 
   };
 
   return (
-    <td
-      className={cnFEMTableCell({ editing: isEditing })}
+    /* eslint-disable-line */<td
+      className={cnTableCell({ editing: isEditing })}
       onDoubleClick={editCell}
+      onClick={selectCell}
       onBlur={onBlurHandler}
+      style={{ minWidth: `${width}px` }}
     >
       {!isEditing && <>{value}</>}
       {isEditing && (
@@ -43,6 +57,11 @@ export const FEMTableCell = ({ value, onBlur, editable }: FEMTableCellProps) => 
           value={innerValue}
           onChange={(e: any) => setInnerValue(e.e.target.value)}
         />
+      )}
+      {isSelected && (
+        <div className={cnTableCell('selected')}>
+          <div className={cnTableCell('selected-handler')} />
+        </div>
       )}
     </td>
   );

@@ -11,7 +11,7 @@ import Role from '../../../../types/role';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { FEMTable } from '../../FEMTable/FEMTable';
+import { Table } from '../../FEMTable/Table';
 
 import { GroupWrapper } from './GroupWrapper';
 
@@ -198,7 +198,7 @@ export const OPEXSetWrapper = ({
             </Form.Row>
           )}
         </Form>
-        <FEMTable
+        <Table
           entity={tableData()}
           secondaryColumn={isEconomic ? 'valueTotal' : 'unit'}
           headers={isEconomic ? ['', 'Статья', 'Суммарное'] : ['', 'Значение', 'Eд. измерения']}

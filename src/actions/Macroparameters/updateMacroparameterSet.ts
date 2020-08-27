@@ -49,7 +49,9 @@ export const updateMacroparameterSet = (
             `years:${newMacroparameterSet.years}, ` +
             `yearStart:${newMacroparameterSet.yearStart}, ` +
             `allProjects:${newMacroparameterSet.allProjects})` +
-            `{macroparameterSet{category, id, name, caption, years, yearStart, allProjects}, ok}}`,
+            `{macroparameterSet{category, id, name, caption, years, yearStart, allProjects,` +
+            `macroparameterGroupList{id, name, caption,` +
+            `macroparameterList{id, name, caption, unit, value{year, value}}}}, ok}}`,
         }),
       });
       const body = await response.json();
@@ -57,10 +59,7 @@ export const updateMacroparameterSet = (
 
       if (response.ok && responseData.ok) {
         dispatch(
-          macroparameterSetUpdateSuccess({
-            ...selected,
-            ...newMacroparameterSet,
-          } as MacroparameterSet),
+          macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
         );
       } else {
         dispatch(macroparameterSetUpdateError(body.message));

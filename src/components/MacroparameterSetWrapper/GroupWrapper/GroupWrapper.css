@@ -13,7 +13,7 @@
 
   display: grid;
 
-  height: 32px;
+  min-height: 32px;
   grid-template-columns: 90% 10%;
 }
 
@@ -48,6 +48,7 @@
 
 .GroupWrapper__header-name > .Text {
   margin-left: 10px;
+  padding-bottom: 2px;
 
   font-weight: 700;
   line-height: 120%;

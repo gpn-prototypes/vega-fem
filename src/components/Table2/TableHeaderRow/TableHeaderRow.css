@@ -1,0 +1,23 @@
+.TableHeaderRow * {
+  box-sizing: border-box;
+}
+
+.TableHeaderRow {
+  display: inline-flex;
+  height: 30px;
+
+  align-items: center;
+  font-size: var(--size-text-xs);
+}
+
+.TableHeaderRow__full-width {
+  width: max-content;
+}
+
+.TableHeaderRow__header {
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.TableHeaderRow_highlighted {
+  background-color: var(--color-control-bg-active) !important;
+}

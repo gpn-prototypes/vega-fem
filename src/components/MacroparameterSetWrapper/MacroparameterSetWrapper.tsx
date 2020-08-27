@@ -6,12 +6,12 @@ import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototy
 import Macroparameter, { ArticleValues } from '../../../types/Article';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { MacroparameterTableContainer } from '../../containers/Macroparameters/MacroparameterTableContainer';
 import keyGen from '../../helpers/keyGenerator';
 import macroparameterSetCategoryOptions from '../../helpers/MacroparameterSetCategoryOptions';
 import { yearsRangeOptions } from '../../helpers/nearYearsRange';
 import { cnBlockWrapper } from '../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
-import { FEMTable } from '../FEMTable/FEMTable';
 
 import { GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
@@ -30,11 +30,8 @@ interface MacroparameterSetWrapperProps {
     macroparameter: Macroparameter,
     group: MacroparameterSetGroup,
   ) => void;
-  updateMacroparameterYearValue: (
-    macroparameter: Macroparameter,
-    group: MacroparameterSetGroup,
-    value: ArticleValues,
-  ) => void;
+  highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear: () => void;
 }
 
 export const MacroparameterSetWrapper = ({
@@ -43,7 +40,8 @@ export const MacroparameterSetWrapper = ({
   addMacroparameterSetGroup,
   addMacroparameter,
   updateMacroparameterValue,
-  updateMacroparameterYearValue,
+  highlightArticle,
+  highlightArticleClear,
 }: MacroparameterSetWrapperProps) => {
   const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
 
@@ -227,6 +225,8 @@ export const MacroparameterSetWrapper = ({
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
                         updateMacroparameterValue={updateMacroparameterValue}
+                        onArticleFocusCallback={highlightArticle}
+                        highlightArticleClear={highlightArticleClear}
                       />
                     ))}
                 </Form.Row>
@@ -279,12 +279,13 @@ export const MacroparameterSetWrapper = ({
                 )}
               </Form.Row>
             </Form>
-            <FEMTable
+            <MacroparameterTableContainer macroparameterSet={macroparameterSet} />
+            {/* <Table
               entity={macroparameterSet}
               secondaryColumn="unit"
               headers={['', 'Заголовок', 'Ед. измерения']}
               updateArticleValueCallback={updateMacroparameterYearValue}
-            />
+            /> */}
           </>
         ) : (
           <MacroparameterSetPlaceholder text="Выберите один из макроэкономических сценариев" />

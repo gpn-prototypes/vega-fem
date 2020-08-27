@@ -12,13 +12,17 @@ import './GroupWrapper/GroupWrapper.css';
 interface ArticleWrapperProps {
   article: Article;
   fullWidth?: boolean;
-  updateArticleValueCallback?: (updatedActicle: Article) => void;
+  updateArticleValueCallback?: (updatedArticle: Article) => void;
+  onFocusCallback?: (article: Article) => void;
+  highlightArticleClear?: () => void;
 }
 
 export const ArticleWrapper = ({
   article,
   updateArticleValueCallback,
   fullWidth,
+  onFocusCallback,
+  highlightArticleClear,
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
 
@@ -35,12 +39,29 @@ export const ArticleWrapper = ({
 
   const blurHandle = useCallback(() => {
     if (updateArticleValueCallback) {
-      updateArticleValueCallback({
-        ...article,
-        ...{ value: +values[0]?.value },
-      });
+      if (valueTotal !== undefined) {
+        updateArticleValueCallback({
+          ...article,
+          ...{ value: +values[0]?.value },
+          ...{ valueTotal },
+        });
+      } else {
+        updateArticleValueCallback({
+          ...article,
+          ...{ value: +values[0]?.value },
+        });
+      }
     }
-  }, [values, updateArticleValueCallback, article]);
+    if (highlightArticleClear) {
+      highlightArticleClear();
+    }
+  }, [values, valueTotal, updateArticleValueCallback, article, highlightArticleClear]);
+
+  const onFocusHandler = useCallback(() => {
+    if (onFocusCallback) {
+      onFocusCallback(article);
+    }
+  }, [onFocusCallback, article]);
 
   return (
     <Form.Row
@@ -59,6 +80,7 @@ export const ArticleWrapper = ({
           onBlur={blurHandle}
           onChange={(e: any) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}
+          onFocus={onFocusHandler}
         />
       </Form.Field>
     </Form.Row>

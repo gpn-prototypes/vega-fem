@@ -4,6 +4,10 @@ import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSe
 import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameter';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
 import {
+  MACROPARAM_HIGHLIGHT,
+  MACROPARAM_HIGHLIGHT_CLEAR,
+} from '../actions/Macroparameters/highlightMacroparameter';
+import {
   MACROPARAMS_SET_LIST_ERROR,
   MACROPARAMS_SET_LIST_FETCH,
   MACROPARAMS_SET_LIST_SUCCESS,
@@ -20,6 +24,7 @@ import { MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/Macroparameters
 const initialState = {
   macroparameterSetList: [] as MacroparameterSet[],
   selected: {} as MacroparameterSet,
+  focusedArticle: {} as any,
 };
 
 let groupList: MacroparameterSetGroup[];
@@ -27,6 +32,7 @@ let group: MacroparameterSetGroup;
 let macroparameterList: Array<Article>;
 let macr: Article;
 let value: ArticleValues[];
+let isNewYearValue: boolean;
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
@@ -109,6 +115,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       group = (groupList?.find(
         (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
       ) ?? {}) as MacroparameterSetGroup;
+
       macroparameterList = group?.macroparameterList ?? [];
       macr = (macroparameterList?.find(
         (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
@@ -120,6 +127,13 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         }
         return iCopy;
       });
+
+      // обновление значения в ранее незаполненном году
+      isNewYearValue = value.filter((i) => i.year === action.payload.value?.year).length === 0;
+      if (isNewYearValue) {
+        value.push(action.payload.value);
+      }
+
       return {
         ...state,
         selected: {
@@ -146,6 +160,19 @@ export default function macroparamsReducer(state = initialState, action: Macropa
             ],
           },
         },
+      };
+    case MACROPARAM_HIGHLIGHT:
+      return {
+        ...state,
+        focusedArticle: {
+          group: action.payload.group,
+          article: action.payload.article,
+        },
+      };
+    case MACROPARAM_HIGHLIGHT_CLEAR:
+      return {
+        ...state,
+        focusedArticle: {},
       };
     default:
       return state;

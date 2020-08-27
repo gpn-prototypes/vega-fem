@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 
-import Macroparameter, { ArticleValues } from '../../../types/Article';
+import Article, { ArticleValues } from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
@@ -64,7 +64,7 @@ export const FEMTable = ({
   }, [entity]);
 
   const updateValue = useCallback(
-    (group: MacroparameterSetGroup, article: Macroparameter, value?: ArticleValues) => {
+    (group: MacroparameterSetGroup, article: Article, value?: ArticleValues) => {
       updateArticleValueCallback(article, group, value);
     },
     [updateArticleValueCallback],
@@ -91,7 +91,7 @@ export const FEMTable = ({
     if ((group as OPEXGroup).opexExpenseList) {
       return (group as OPEXGroup).opexExpenseList ?? [];
     }
-    return [group] as Macroparameter[];
+    return [group] as Article[];
   };
 
   return (

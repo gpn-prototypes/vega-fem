@@ -6,9 +6,12 @@ import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet'
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
+import {
+  macroparameterClear,
+  macroparameterHighlight,
+} from '../../actions/Macroparameters/highlightMacroparameter';
 import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
 import { requestUpdateMacroparameterValue } from '../../actions/Macroparameters/updateMacroparameterValue';
-import { requestUpdateMacroparameterYearValue } from '../../actions/Macroparameters/updateMacroparameterYearValue';
 import { MacroparameterSetWrapper } from '../../components/MacroparameterSetWrapper/MacroparameterSetWrapper';
 
 export const MacroparameterSetContainer = () => {
@@ -47,12 +50,16 @@ export const MacroparameterSetContainer = () => {
     [dispatch],
   );
 
-  const updateMacroparameterYearValue = useCallback(
-    (macroparameter: Article, group: MacroparameterSetGroup, value: ArticleValues) => {
-      dispatch(requestUpdateMacroparameterYearValue(macroparameter, group, value));
+  const articleHighlight = useCallback(
+    (article: Article, group: MacroparameterSetGroup) => {
+      dispatch(macroparameterHighlight(article, group));
     },
     [dispatch],
   );
+
+  const articleHighlightClear = useCallback(() => {
+    dispatch(macroparameterClear());
+  }, [dispatch]);
 
   return (
     <MacroparameterSetWrapper
@@ -61,7 +68,8 @@ export const MacroparameterSetContainer = () => {
       addMacroparameterSetGroup={addMacroparameterSetGroups}
       addMacroparameter={addMacroparameter}
       updateMacroparameterValue={updateMacroparameterValue}
-      updateMacroparameterYearValue={updateMacroparameterYearValue}
+      highlightArticle={articleHighlight}
+      highlightArticleClear={articleHighlightClear}
     />
   );
 };
