@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
+import Article, { ArticleValues } from '../../../types/Article';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestUpdateMacroparameterYearValue } from '../../actions/Macroparameters/updateMacroparameterYearValue';
@@ -25,7 +23,7 @@ export const MacroparameterTableContainer = ({
   const dispatch = useDispatch();
 
   const focusedArticleSelector = (state: any) => state.macroparamsReducer.focusedArticle;
-  const focusedArticle: { article: Macroparameter; group: MacroparameterSetGroup } = useSelector(
+  const focusedArticle: { article: Article; group: MacroparameterSetGroup } = useSelector(
     focusedArticleSelector,
   );
 
@@ -45,23 +43,20 @@ export const MacroparameterTableContainer = ({
     return result;
   }, []);
 
-  const convertToTableArticles = useCallback(
-    (nonPrepearedArticles: Macroparameter[]): TableArticle[] => {
-      const result: TableArticle[] = [];
-      if (nonPrepearedArticles.length) {
-        nonPrepearedArticles.forEach((article: Macroparameter) => {
-          result.push({
-            id: article.id,
-            caption: article?.caption,
-            value: article.value as TableArticleValue[],
-            unit: article.unit,
-          } as TableArticle);
-        });
-      }
-      return result;
-    },
-    [],
-  );
+  const convertToTableArticles = useCallback((nonPrepearedArticles: Article[]): TableArticle[] => {
+    const result: TableArticle[] = [];
+    if (nonPrepearedArticles.length) {
+      nonPrepearedArticles.forEach((article: Article) => {
+        result.push({
+          id: article.id,
+          caption: article?.caption,
+          value: article.value as TableArticleValue[],
+          unit: article.unit,
+        } as TableArticle);
+      });
+    }
+    return result;
+  }, []);
 
   const convertToTableGroups = useCallback(
     (nonPrepearedGroups: MacroparameterSetGroup[]): TableGroup[] => {
@@ -84,12 +79,12 @@ export const MacroparameterTableContainer = ({
     (article: TableArticle, group: TableGroup, value: TableArticleValue) => {
       dispatch(
         requestUpdateMacroparameterYearValue(
-          { ...article } as Macroparameter,
+          { ...article } as Article,
           {
             macroparameterList: group.articleList,
             id: group.id,
           } as MacroparameterSetGroup,
-          { ...value } as MacroparameterValues,
+          { ...value } as ArticleValues,
         ),
       );
     },

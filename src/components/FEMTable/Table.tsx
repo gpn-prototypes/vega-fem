@@ -3,9 +3,9 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text } from '@gpn-prototypes/vega-ui';
 
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import Macroparameter, {
-  MacroparameterValues,
-} from '../../../types/Macroparameters/Macroparameter';
+import Article, {
+  ArticleValues,
+} from '../../../types/Article';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
@@ -86,7 +86,7 @@ export const Table = ({
   }, [entity, collapseRowData]);
 
   const updateValue = useCallback(
-    (group: MacroparameterSetGroup, article: Macroparameter, value?: MacroparameterValues) => {
+    (group: MacroparameterSetGroup, article: Article, value?: ArticleValues) => {
       updateArticleValueCallback(article, group, value);
     },
     [updateArticleValueCallback],
@@ -114,7 +114,7 @@ export const Table = ({
     if ((group as OPEXGroup).opexExpenseList) {
       return (group as OPEXGroup).opexExpenseList ?? [];
     }
-    return [group] as Macroparameter[];
+    return [group] as Article[];
   };
 
   const bindResizable = (e: any, index: number) => {
@@ -245,8 +245,8 @@ export const Table = ({
                           }
                           // width={columnsWidth[index]}
                           value={
-                            ((article?.value ?? []) as MacroparameterValues[])
-                              ?.find((value: MacroparameterValues) => value?.year === +year)
+                            ((article?.value ?? []) as ArticleValues[])
+                              ?.find((value: ArticleValues) => value?.year === +year)
                               ?.value.toString() || ''
                           }
                         />

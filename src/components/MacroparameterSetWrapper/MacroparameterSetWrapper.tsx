@@ -3,7 +3,7 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Macroparameter, { ArticleValues } from '../../../types/Article';
+import Article from '../../../types/Article';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { MacroparameterTableContainer } from '../../containers/Macroparameters/MacroparameterTableContainer';
@@ -25,11 +25,8 @@ interface MacroparameterSetWrapperProps {
   macroparameterSet: MacroparameterSet;
   updateMacroparameterSet: (macroparameterSet: any) => void;
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
-  addMacroparameter: (macroparameter: Macroparameter, group: MacroparameterSetGroup) => void;
-  updateMacroparameterValue: (
-    macroparameter: Macroparameter,
-    group: MacroparameterSetGroup,
-  ) => void;
+  addMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear: () => void;
 }

@@ -89,7 +89,7 @@ export const Table2 = ({
     [updateValueCallback],
   );
 
-  const onResizeHandler = (delta: number, index: number, ref: HTMLElement) => {
+  const onResizeHandler = useCallback((delta: number, index: number, ref: HTMLElement) => {
     const currentWidth: number = parseInt(ref.style.width, 10);
     const tableArea = ref.parentElement?.parentElement;
     const rows = tableArea?.querySelectorAll('.TableHeaderRow');
@@ -99,7 +99,7 @@ export const Table2 = ({
         cell.style.width = `${currentWidth}px`;
       }
     });
-  };
+  }, []);
 
   return (
     <ScrollSync>

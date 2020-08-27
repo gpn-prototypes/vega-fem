@@ -39,23 +39,15 @@ export const ArticleWrapper = ({
 
   const blurHandle = useCallback(() => {
     if (updateArticleValueCallback) {
-      if (valueTotal !== undefined) {
-        updateArticleValueCallback({
-          ...article,
-          ...{ value: +values[0]?.value },
-          ...{ valueTotal },
-        });
-      } else {
-        updateArticleValueCallback({
-          ...article,
-          ...{ value: +values[0]?.value },
-        });
-      }
+      updateArticleValueCallback({
+        ...article,
+        ...{ value: +values[0]?.value },
+      });
     }
     if (highlightArticleClear) {
       highlightArticleClear();
     }
-  }, [values, valueTotal, updateArticleValueCallback, article, highlightArticleClear]);
+  }, [values, updateArticleValueCallback, article, highlightArticleClear]);
 
   const onFocusHandler = useCallback(() => {
     if (onFocusCallback) {

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
+import Article from '../../../types/Article';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';

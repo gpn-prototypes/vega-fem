@@ -7,10 +7,11 @@ import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import keyGen from '../../helpers/keyGenerator';
 
-import { FEMTableCell } from './TableCell/FEMTableCell';
-import { cnFEMTableWrapper } from './cn-FEM-table-wrapper';
+import { cnTableCell } from './TableCell/cn-table-cell';
+import { cnTableWrapper } from './cn-table-wrapper';
+import { TableCell } from './TableCell';
 
-import './FEMTableWrapper.css';
+import './Table.css';
 
 interface FEMTableProps {
   entity: any;
@@ -95,8 +96,8 @@ export const FEMTable = ({
   };
 
   return (
-    <div className={cnFEMTableWrapper()}>
-      <table className={cnFEMTableWrapper('table')}>
+    <div className={cnTableCell()}>
+      <table className={cnTableWrapper('table')}>
         <thead>
           <tr>
             {headers.concat(yearsRange).map((header: string | number, index: number) => (
@@ -109,25 +110,25 @@ export const FEMTable = ({
             <React.Fragment key={keyGen(indexGroup)}>
               <tr key={keyGen(indexGroup)}>
                 <td />
-                <td title={group.caption} className={cnFEMTableWrapper('node')}>
+                <td title={group.caption} className={cnTableWrapper('node')}>
                   {group.caption}
                 </td>
-                <td className={cnFEMTableWrapper('value')}>
+                <td className={cnTableWrapper('value')}>
                   {(group as CapexExpenseSetGroup)?.valueTotal ?? ''}
                 </td>
                 {yearsRange.map((year) => (
-                  <td key={keyGen(year)} className={cnFEMTableWrapper('value')} />
+                  <td key={keyGen(year)} className={cnTableWrapper('value')} />
                 ))}
               </tr>
               {articleList(group).map((article: any, indexArticle: number) => (
                 <tr key={keyGen(indexArticle)}>
                   <td />
-                  <td className={cnFEMTableWrapper('sub-node')} title={article.caption}>
+                  <td className={cnTableWrapper('sub-node')} title={article.caption}>
                     {article.caption}
                   </td>
-                  <td className={cnFEMTableWrapper('value')}>{article[secondaryColumn]}</td>
+                  <td className={cnTableWrapper('value')}>{article[secondaryColumn]}</td>
                   {yearsRange.map((year) => (
-                    <FEMTableCell
+                    <TableCell
                       key={keyGen(year)}
                       editable={!!updateArticleValueCallback}
                       onBlur={(value: string) =>
