@@ -1,4 +1,4 @@
-import Article from '../Article';
+import Article, { ArticleValues } from '../Article';
 
 export default interface CapexExpenseSetGroup {
   id?: string | number;
@@ -6,4 +6,5 @@ export default interface CapexExpenseSetGroup {
   caption?: string;
   valueTotal?: number;
   capexExpenseList?: Article[];
+  totalValueByYear?: ArticleValues[];
 }

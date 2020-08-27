@@ -1,4 +1,5 @@
 import Article from '../../../types/Article';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 
 import { MacroparamsAction } from './macroparameterSetList';
@@ -8,7 +9,7 @@ export const MACROPARAM_HIGHLIGHT_CLEAR = 'MACROPARAM_HIGHLIGHT_CLEAR';
 
 export const macroparameterHighlight = (
   article: Article,
-  group: MacroparameterSetGroup,
+  group: MacroparameterSetGroup | CapexExpenseSetGroup,
 ): MacroparamsAction => ({
   type: MACROPARAM_HIGHLIGHT,
   payload: { article, group },

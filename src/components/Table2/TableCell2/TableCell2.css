@@ -63,6 +63,11 @@
   border-bottom: none;
 }
 
+.TableCell2_isNull {
+  color: var(--color-typo-ghost) !important;
+  font-weight: 400 !important;
+}
+
 .TableCell2__full-width {
   width: 100%;
 }
@@ -83,6 +88,11 @@
   justify-content: flex-end;
   padding-right: var(--space-xs);
   font-size: var(--size-text-s);
+}
+
+.TableCell2_group-value {
+  font-weight: 500;
+  color: var(--color-typo-primary);
 }
 
 .TableCell2__editable:hover {

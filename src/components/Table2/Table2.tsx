@@ -24,6 +24,7 @@ export interface TableArticle {
   name?: string;
   value?: TableArticleValue[];
   unit?: string;
+  valueTotal?: string;
 }
 
 export interface TableGroup {
@@ -31,24 +32,13 @@ export interface TableGroup {
   caption: string;
   name: string;
   articleList: TableArticle[];
+  valueTotal?: string;
+  totalValueByYear?: TableArticleValue[];
 }
 
 export interface TableAdditionalColumn {
   label: string;
   value: string;
-}
-
-interface Table2Props {
-  leftSideComponent: React.ReactElement;
-  valuesColumns?: string[];
-  groups?: TableGroup[];
-  additionalColumns?: TableAdditionalColumn[];
-  updateValueCallback?: (
-    article: TableArticle,
-    group: TableGroup,
-    value: TableArticleValue,
-  ) => void;
-  containerHeight: number;
 }
 
 const scrollBarHeight = 8;
@@ -64,6 +54,21 @@ export const resizeDirectionOnlyRight = {
   topLeft: false,
 };
 
+interface Table2Props {
+  leftSideComponent: React.ReactElement;
+  valuesColumns?: string[];
+  groups?: TableGroup[];
+  additionalColumns?: TableAdditionalColumn[];
+  updateValueCallback?: (
+    article: TableArticle,
+    group: TableGroup,
+    value: TableArticleValue,
+  ) => void;
+  containerHeight: number;
+  fillGroupsRow?: boolean;
+  fillGroupsRowField?: string;
+}
+
 export const Table2 = ({
   leftSideComponent,
   valuesColumns,
@@ -71,6 +76,8 @@ export const Table2 = ({
   additionalColumns,
   updateValueCallback,
   containerHeight,
+  fillGroupsRow,
+  fillGroupsRowField,
 }: Table2Props) => {
   const [additionalColumnsWidth, setAdditionalColumnsWidth] = useState([minCellWidth] as number[]);
 
@@ -183,17 +190,62 @@ export const Table2 = ({
               <React.Fragment key={keyGen(index)}>
                 <TableHeaderRow className={`${cnTableHeaderRow('full-width')}`}>
                   {additionalColumns?.map(
-                    (column: TableAdditionalColumn, additionalColumnsIndex: number) => (
-                      <TableCell2
-                        key={keyGen(additionalColumnsIndex)}
-                        width={additionalColumnsWidth[additionalColumnsIndex]}
-                        className="additional-column-cell"
-                      />
-                    ),
+                    (column: TableAdditionalColumn, additionalColumnsIndex: number) => {
+                      if (!fillGroupsRow) {
+                        return (
+                          <TableCell2
+                            key={keyGen(additionalColumnsIndex)}
+                            width={additionalColumnsWidth[additionalColumnsIndex]}
+                            className="additional-column-cell"
+                          />
+                        );
+                      }
+                      return (
+                        <TableCell2
+                          key={keyGen(additionalColumnsIndex)}
+                          width={additionalColumnsWidth[additionalColumnsIndex]}
+                          className={`
+                            ${cnTableCell2('value')}
+                            ${cnTableCell2('border-right')}
+                            ${cnTableCell2({ 'group-value': true })}
+                          `}
+                          value={group[column.value as keyof TableGroup]?.toString()}
+                        />
+                      );
+                    },
                   )}
-                  {valuesColumns?.map((year: string, valuesColumnsIndex: number) => (
-                    <TableCell2 key={keyGen(valuesColumnsIndex)} />
-                  ))}
+                  {valuesColumns?.map((year: string, valuesColumnsIndex: number) => {
+                    if (!fillGroupsRow) {
+                      return (
+                        <TableCell2
+                          key={keyGen(valuesColumnsIndex)}
+                          width={additionalColumnsWidth[valuesColumnsIndex]}
+                          className="additional-column-cell"
+                        />
+                      );
+                    }
+                    return (
+                      <TableCell2
+                        key={keyGen(valuesColumnsIndex)}
+                        width={additionalColumnsWidth[valuesColumnsIndex]}
+                        className={`
+                            ${cnTableCell2('value')}
+                            ${cnTableCell2('border-right')}
+                            ${cnTableCell2({ 'group-value': true })}
+                          `}
+                        /* TODO: replace toFixed */
+                        value={(group[
+                          fillGroupsRowField as keyof TableGroup
+                        ] as TableArticleValue[])
+                          ?.find(
+                            (articleItemItem: TableArticleValue) =>
+                              articleItemItem.year?.toString() === year,
+                          )
+                          ?.value?.toFixed(2)
+                          .toString()}
+                      />
+                    );
+                  })}
                 </TableHeaderRow>
                 {group?.articleList?.map((article: TableArticle, groupIndex: number) => (
                   <TableHeaderRow

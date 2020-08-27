@@ -10,9 +10,11 @@ import {
   CapexesAction,
 } from '../actions/capex/capexSet';
 import { CAPEX_UPDATE_VALUE_SUCCESS } from '../actions/capex/updateCapexValue';
+import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
 
 const initialState = {
   capexSet: {} as CapexSet,
+  focusedArticle: {} as any,
 };
 let groupList: CapexExpenseSetGroup[];
 let group: CapexExpenseSetGroup;
@@ -48,6 +50,51 @@ export default function capexReducer(state = initialState, action: CapexesAction
         capexSet: newCapex,
       };
     case CAPEX_UPDATE_VALUE_SUCCESS:
+      groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
+      group = (groupList?.find(
+        (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.group?.id,
+      ) ?? {}) as CapexExpenseSetGroup;
+      capexExpenseList = group?.capexExpenseList ?? [];
+      capexExpense = (capexExpenseList.find(
+        (capex: Article) => capex.id === action.payload.capex?.id,
+      ) ?? {}) as Article;
+      newGroupTotalValue = 0;
+      /* eslint-disable-line */capexExpenseList.map((capexItem: Article) => {
+        if (capexItem.id !== action.payload.capex.id) {
+          newGroupTotalValue += capexItem?.valueTotal ?? 0;
+        } else newGroupTotalValue += action.payload.capex.valueTotal ?? 0;
+      });
+      return {
+        ...state,
+        capexSet: {
+          ...state.capexSet,
+          ...{
+            capexExpenseGroupList: [
+              ...groupList.map((groupItem: CapexExpenseSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...{
+                      // ...state.capexSet.capexExpenseGroupList,
+                      ...action.payload.group,
+                      valueTotal: newGroupTotalValue,
+                      capexExpenseList: [
+                        ...capexExpenseList.map((i: Article) => {
+                          if (i.id === capexExpense.id) {
+                            return { ...action.payload.capex };
+                          }
+                          return { ...i };
+                        }),
+                      ],
+                    },
+                  };
+                }
+                return { ...groupItem };
+              }),
+            ],
+          },
+        },
+      };
+    case CAPEX_UPDATE_YEAR_VALUE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
         (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.group?.id,

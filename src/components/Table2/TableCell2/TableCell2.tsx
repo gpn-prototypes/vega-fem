@@ -44,9 +44,10 @@ export const TableCell2 = ({
     return (
       `${cnTableCell2()} ${className || ''}` +
       ` ${isEditing ? cnTableCell2('no-padding') : ''}` +
+      ` ${value && !isEditing ? cnTableCell2({ isNull: +value === 0 }) : ''}` +
       ` ${editable && !isEditing ? cnTableCell2('editable') : ''}`
     );
-  }, [className, isEditing, editable]);
+  }, [className, isEditing, editable, value]);
 
   const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {

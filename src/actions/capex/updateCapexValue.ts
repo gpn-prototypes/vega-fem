@@ -44,7 +44,7 @@ export const requestUpdateCapexValue = (
             `capexExpenseGroupId: ${group?.id?.toString()},` +
             `capexExpenseId: ${capex.id},` +
             `value: ${capex.value}` +
-            `){capexExpense{name, id, caption,valueTotal,unit, value{year,value}}, ok}}`,
+            `){capexExpense{name, id, caption, valueTotal, unit, value{year,value}}, ok}}`,
         }),
       });
 

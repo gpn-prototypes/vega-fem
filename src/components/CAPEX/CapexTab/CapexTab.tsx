@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CapexSetContainer } from '../../../containers/CapexSetContainer';
+import { CapexSetContainer } from '../../../containers/CAPEX/CapexSetContainer';
 
 import { cnCapexTab } from './cn-capex-tab';
 

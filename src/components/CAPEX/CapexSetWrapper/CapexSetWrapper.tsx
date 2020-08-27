@@ -5,10 +5,10 @@ import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
+import { CapexTableContainer } from '../../../containers/CAPEX/CapexTableContainer';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { Table } from '../../FEMTable/Table';
 
 import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
@@ -154,11 +154,7 @@ export const CapexSetWrapper = ({
                 )}
               </Form.Row>
             </Form>
-            <Table
-              entity={capexSet}
-              secondaryColumn="valueTotal"
-              headers={['', 'Статья', 'Суммарное']}
-            />
+            <CapexTableContainer capexSet={capexSet} />
           </>
         ) : (
           <div />
