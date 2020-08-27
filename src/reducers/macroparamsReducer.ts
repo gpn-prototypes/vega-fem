@@ -140,8 +140,28 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           ...state.selected,
           ...{
             macroparameterGroupList: [
-              ...groupList.filter((i) => i.id !== group.id),
-              ...[
+              // ...groupList.filter((i) => i.id !== group.id),
+              ...groupList.map((groupItem: MacroparameterSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...{
+                      ...group,
+                      ...{
+                        macroparameterList: [
+                          ...macroparameterList.map((article: Article) => {
+                            if (article.id === macr.id) {
+                              return { ...macr, ...{ value } };
+                            }
+                            return { ...article };
+                          }),
+                        ],
+                      },
+                    },
+                  };
+                }
+                return { ...groupItem };
+              }),
+              /* ...[
                 {
                   ...group,
                   ...{
@@ -156,7 +176,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                     ],
                   },
                 },
-              ],
+              ], */
             ],
           },
         },

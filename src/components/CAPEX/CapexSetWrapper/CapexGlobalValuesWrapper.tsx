@@ -44,7 +44,7 @@ export const CapexGlobalValuesWrapper = ({
           size="s"
           width="full"
           value={value?.toString()}
-          rightSide="%"
+          rightSide={`${globalValue.caption === 'Величина резерва' ? '%' : '₽'}`}
           onBlur={() => requestSetGlobalValue()}
           onChange={(e) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}

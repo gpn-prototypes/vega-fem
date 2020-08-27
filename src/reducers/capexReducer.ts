@@ -1,4 +1,4 @@
-import Article from '../../types/Article';
+import Article, { ArticleValues } from '../../types/Article';
 import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../types/CAPEX/CapexSet';
 import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
@@ -20,7 +20,9 @@ let groupList: CapexExpenseSetGroup[];
 let group: CapexExpenseSetGroup;
 let capexExpenseList: Article[];
 let capexExpense: Article;
+let value: ArticleValues[];
 let newGroupTotalValue: number;
+let newCapexValueTotal: number;
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
   switch (action.type) {
@@ -103,11 +105,22 @@ export default function capexReducer(state = initialState, action: CapexesAction
       capexExpense = (capexExpenseList.find(
         (capex: Article) => capex.id === action.payload.capex?.id,
       ) ?? {}) as Article;
+
+      newCapexValueTotal = 0;
+      value = (capexExpense?.value as ArticleValues[]).map((articleValue: ArticleValues) => {
+        const iCopy = articleValue;
+        if (iCopy.year === action.payload.value?.year) {
+          iCopy.value = action.payload.value?.value;
+          newCapexValueTotal += action.payload.value?.value;
+        } else newCapexValueTotal += articleValue.value;
+        return iCopy;
+      });
+
       newGroupTotalValue = 0;
-      /* eslint-disable-line */capexExpenseList.map((capexItem: Article) => {
+      capexExpenseList.forEach((capexItem: Article) => {
         if (capexItem.id !== action.payload.capex.id) {
           newGroupTotalValue += capexItem?.valueTotal ?? 0;
-        } else newGroupTotalValue += action.payload.capex.valueTotal ?? 0;
+        } else newGroupTotalValue += newCapexValueTotal ?? 0;
       });
       return {
         ...state,
@@ -120,16 +133,23 @@ export default function capexReducer(state = initialState, action: CapexesAction
                   return {
                     ...{
                       // ...state.capexSet.capexExpenseGroupList,
-                      ...action.payload.group,
-                      valueTotal: newGroupTotalValue,
-                      capexExpenseList: [
-                        ...capexExpenseList.map((i: Article) => {
-                          if (i.id === capexExpense.id) {
-                            return { ...action.payload.capex };
-                          }
-                          return { ...i };
-                        }),
-                      ],
+                      // ...action.payload.group,
+                      ...group,
+                      ...{ valueTotal: newGroupTotalValue },
+                      ...{
+                        capexExpenseList: [
+                          ...capexExpenseList.map((article: Article) => {
+                            if (article.id === capexExpense.id) {
+                              return {
+                                ...capexExpense,
+                                ...{ value },
+                                ...{ valueTotal: newCapexValueTotal },
+                              };
+                            }
+                            return { ...article };
+                          }),
+                        ],
+                      },
                     },
                   };
                 }

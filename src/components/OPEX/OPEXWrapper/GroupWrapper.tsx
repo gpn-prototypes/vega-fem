@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
+import { Select } from '@gpn-design/uikit/__internal__/src/components/Select/index';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 

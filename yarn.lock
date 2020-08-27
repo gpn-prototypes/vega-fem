@@ -980,10 +980,10 @@
     resolve-from "^5.0.0"
     resolve-global "^1.0.0"
 
-"@gpn-design/uikit@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@gpn-design/uikit/-/uikit-1.1.2.tgz#634fd71208f7e8403f989b37bc6eced0e21407d8"
-  integrity sha512-kwMegeklhVjeqszM1IxiyJLEHy8JZy/X1vpGjgvPURc4IRtL8KFAK1rcC62lIeTHxpMrE4oX3IQeZ3JQ40PY5A==
+"@gpn-design/uikit@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@gpn-design/uikit/-/uikit-1.3.0.tgz#a546fb5b24966f12f81d0059c7680af2f8093177"
+  integrity sha512-p6R3oE/212jmAr5QkWO82ij66X7I43YlRMIvZY7i5+EGuacnX200vIbZJo6S3zRTNxT/Et3pxVvQGy0RCiR5QQ==
   dependencies:
     "@bem-react/classname" "^1.5.8"
     "@bem-react/classnames" "^1.3.9"
@@ -994,10 +994,10 @@
     react-transition-group "^4.4.1"
     tslib "^1.11.1"
 
-"@gpn-design/uikit@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@gpn-design/uikit/-/uikit-1.3.0.tgz#a546fb5b24966f12f81d0059c7680af2f8093177"
-  integrity sha512-p6R3oE/212jmAr5QkWO82ij66X7I43YlRMIvZY7i5+EGuacnX200vIbZJo6S3zRTNxT/Et3pxVvQGy0RCiR5QQ==
+"@gpn-design/uikit@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@gpn-design/uikit/-/uikit-1.1.2.tgz#634fd71208f7e8403f989b37bc6eced0e21407d8"
+  integrity sha512-kwMegeklhVjeqszM1IxiyJLEHy8JZy/X1vpGjgvPURc4IRtL8KFAK1rcC62lIeTHxpMrE4oX3IQeZ3JQ40PY5A==
   dependencies:
     "@bem-react/classname" "^1.5.8"
     "@bem-react/classnames" "^1.3.9"
