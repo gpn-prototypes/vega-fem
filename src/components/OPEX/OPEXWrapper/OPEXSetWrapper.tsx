@@ -28,6 +28,7 @@ interface OPEXWrapperProps {
   OPEXAddCaseExpense: (article: Article, group: OPEXGroup) => void;
   OPEXAddAutoexportExpense: (article: Article) => void;
   OPEXAddMKOSExpense: (article: Article) => void;
+  OPEXUpdateSdf: (sdf: boolean) => void;
   selectedRole: Role;
 }
 
@@ -42,9 +43,11 @@ export const OPEXSetWrapper = ({
   OPEXAddCaseExpense,
   OPEXAddAutoexportExpense,
   OPEXAddMKOSExpense,
+  OPEXUpdateSdf,
   selectedRole,
 }: OPEXWrapperProps) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
+  const [SDFHelper, setSDFHelper] = useState(false);
 
   const [isAddingGroup, setIsAddingGroup] = useState(false);
   const [newCaseName, setNewCaseName] = useState('');
@@ -77,6 +80,13 @@ export const OPEXSetWrapper = ({
   useEffect(() => {
     setSDF(OPEXSetInstance?.sdf);
   }, [OPEXSetInstance]);
+
+  useEffect(() => {
+    if (SDFHelper) {
+      setSDFHelper(false);
+      OPEXUpdateSdf(SDF);
+    }
+  }, [SDF, SDFHelper, OPEXUpdateSdf]);
 
   const tableData = () => {
     if (isEconomic) {
@@ -116,7 +126,10 @@ export const OPEXSetWrapper = ({
                       name="macroparameterSetIsTemplate"
                       label="Учитывать в СДФ для калькуляции OPEX водозаб. скважины"
                       checked={SDF}
-                      onChange={() => setSDF((prevSDF: boolean) => !prevSDF)}
+                      onChange={() => {
+                        setSDF((prevSDF: boolean) => !prevSDF);
+                        setSDFHelper(true);
+                      }}
                     />
                   </Form.Label>
                 </Form.Field>

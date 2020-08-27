@@ -13,6 +13,7 @@ import { OPEX_CASE_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeOpexCase
 import { OPEX_CREATE_CASE_SUCCESS } from '../actions/OPEX/createCase';
 import { OPEX_SET_SUCCESS, OPEXAction } from '../actions/OPEX/fetchOPEXSet';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
+import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
 
 const initialState = {
   opex: {} as OPEXSetType,
@@ -206,6 +207,11 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
       return {
         ...state,
         opex: action.payload,
+      };
+    case OPEX_SET_SDF_SUCCESS:
+      return {
+        ...state,
+        opex: { ...state.opex, sdf: action.payload },
       };
     case OPEX_ROLE_SELECTED:
       return {

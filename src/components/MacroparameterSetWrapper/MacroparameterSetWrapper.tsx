@@ -277,12 +277,6 @@ export const MacroparameterSetWrapper = ({
               </Form.Row>
             </Form>
             <MacroparameterTableContainer macroparameterSet={macroparameterSet} />
-            {/* <Table
-              entity={macroparameterSet}
-              secondaryColumn="unit"
-              headers={['', 'Заголовок', 'Ед. измерения']}
-              updateArticleValueCallback={updateMacroparameterYearValue}
-            /> */}
           </>
         ) : (
           <MacroparameterSetPlaceholder text="Выберите один из макроэкономических сценариев" />

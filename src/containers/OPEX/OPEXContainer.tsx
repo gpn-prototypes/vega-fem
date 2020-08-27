@@ -14,6 +14,7 @@ import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
 import { caseChangeExpense } from '../../actions/OPEX/changeOpexCaseExpense';
 import { createCase } from '../../actions/OPEX/createCase';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
+import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';
 import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
 
 export const OPEXContainer = () => {
@@ -92,6 +93,13 @@ export const OPEXContainer = () => {
     [dispatch],
   );
 
+  const updateOPEXSdfFlag = useCallback(
+    (sdf: boolean) => {
+      dispatch(changeOPEXSdf(sdf));
+    },
+    [dispatch],
+  );
+
   return (
     <OPEXSetWrapper
       OPEXSetInstance={OPEXSetInstance}
@@ -105,6 +113,7 @@ export const OPEXContainer = () => {
       OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
       OPEXAddMKOSExpense={addOPEXMKOSExpense}
       selectedRole={selectedRole}
+      OPEXUpdateSdf={updateOPEXSdfFlag}
     />
   );
 };

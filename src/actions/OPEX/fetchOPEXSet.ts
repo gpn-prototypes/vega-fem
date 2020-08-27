@@ -41,6 +41,7 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         body: JSON.stringify({
           query:
             '{opex{' +
+            'sdf,' +
             'hasAutoexport,' +
             'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
             'hasMkos,' +
