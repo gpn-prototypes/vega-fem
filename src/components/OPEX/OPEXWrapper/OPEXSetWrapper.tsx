@@ -8,10 +8,11 @@ import Article from '../../../../types/Article';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
 import Role from '../../../../types/role';
+import { OPEXArrangementTableContainer } from '../../../containers/OPEX/OPEXArrangementTableContainer';
+import { OPEXEconomyTableContainer } from '../../../containers/OPEX/OPEXEconomyTableContainer';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { Table } from '../../FEMTable/Table';
 
 import { GroupWrapper } from './GroupWrapper';
 
@@ -87,13 +88,6 @@ export const OPEXSetWrapper = ({
       OPEXUpdateSdf(SDF);
     }
   }, [SDF, SDFHelper, OPEXUpdateSdf]);
-
-  const tableData = () => {
-    if (isEconomic) {
-      return { ...{ opexCaseList: OPEXSetInstance.opexCaseList } };
-    }
-    return { ...{ autoexport: OPEXSetInstance.autoexport }, ...{ mkos: OPEXSetInstance.mkos } };
-  };
 
   return (
     <div className={cnBlockWrapper()}>
@@ -211,11 +205,18 @@ export const OPEXSetWrapper = ({
             </Form.Row>
           )}
         </Form>
-        <Table
+        {!isEconomic && (
+          <OPEXArrangementTableContainer
+            autoexport={OPEXSetInstance?.autoexport}
+            mkos={OPEXSetInstance?.mkos}
+          />
+        )}
+        {isEconomic && <OPEXEconomyTableContainer opexCaseList={OPEXSetInstance.opexCaseList} />}
+        {/* <Table
           entity={tableData()}
           secondaryColumn={isEconomic ? 'valueTotal' : 'unit'}
           headers={isEconomic ? ['', 'Статья', 'Суммарное'] : ['', 'Значение', 'Eд. измерения']}
-        />
+        /> */}
       </div>
     </div>
   );

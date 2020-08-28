@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
@@ -19,12 +20,16 @@ interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
   requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
+  onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear?: () => void;
 }
 
 export const GroupWrapper = ({
   group,
   requestAddCapex,
   updateCapexValue,
+  onArticleFocusCallback,
+  highlightArticleClear,
 }: CapexSetWrapperGroupProps) => {
   const [capexes] = useState((group?.capexExpenseList ?? []) as Article[]);
 
@@ -40,6 +45,15 @@ export const GroupWrapper = ({
   const addCapexToGroup = (capex: Article): void => requestAddCapex(capex, group);
 
   const updateCapexValueWithGroup = (capex: Article): void => updateCapexValue(capex, group);
+
+  const articleFocusHandler = useCallback(
+    (article: Article) => {
+      if (onArticleFocusCallback) {
+        onArticleFocusCallback(article, group);
+      }
+    },
+    [onArticleFocusCallback, group],
+  );
 
   return (
     <div className={cnGroupWrapper()}>
@@ -76,6 +90,8 @@ export const GroupWrapper = ({
               key={keyGen(index)}
               article={article}
               fullWidth
+              onFocusCallback={articleFocusHandler}
+              highlightArticleClear={highlightArticleClear}
               updateArticleValueCallback={updateCapexValueWithGroup}
             />
           ))}

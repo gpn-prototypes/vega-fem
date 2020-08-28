@@ -7,8 +7,8 @@ import MacroparameterSetGroup from '../../../types/Macroparameters/Macroparamete
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
 import {
-  macroparameterClear,
   macroparameterHighlight,
+  macroparameterHighlightClear,
 } from '../../actions/Macroparameters/highlightMacroparameter';
 import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
 import { requestUpdateMacroparameterValue } from '../../actions/Macroparameters/updateMacroparameterValue';
@@ -58,7 +58,7 @@ export const MacroparameterSetContainer = () => {
   );
 
   const articleHighlightClear = useCallback(() => {
-    dispatch(macroparameterClear());
+    dispatch(macroparameterHighlightClear());
   }, [dispatch]);
 
   return (

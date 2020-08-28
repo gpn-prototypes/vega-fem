@@ -7,6 +7,13 @@ import { MacroparamsAction } from './macroparameterSetList';
 export const MACROPARAM_HIGHLIGHT = 'MACROPARAM_HIGHLIGHT';
 export const MACROPARAM_HIGHLIGHT_CLEAR = 'MACROPARAM_HIGHLIGHT_CLEAR';
 
+export interface HighlightAction {
+  type: string;
+  // TODO: replace any
+  payload?: any;
+  errorMessage?: any;
+}
+
 export const macroparameterHighlight = (
   article: Article,
   group: MacroparameterSetGroup | CapexExpenseSetGroup,
@@ -15,6 +22,6 @@ export const macroparameterHighlight = (
   payload: { article, group },
 });
 
-export const macroparameterClear = (): MacroparamsAction => ({
+export const macroparameterHighlightClear = (): MacroparamsAction => ({
   type: MACROPARAM_HIGHLIGHT_CLEAR,
 });

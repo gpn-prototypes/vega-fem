@@ -10,6 +10,10 @@ import { addCapexSetGroup as addGroup } from '../../actions/capex/addCapexSetGro
 import { fetchCapexSet } from '../../actions/capex/capexSet';
 import { requestUpdateCapexGlobalValue } from '../../actions/capex/updateCapexSetGlobalValue';
 import { requestUpdateCapexValue } from '../../actions/capex/updateCapexValue';
+import {
+  macroparameterHighlight,
+  macroparameterHighlightClear,
+} from '../../actions/Macroparameters/highlightMacroparameter';
 import { CapexSetWrapper } from '../../components/CAPEX/CapexSetWrapper/CapexSetWrapper';
 
 export const CapexSetContainer = () => {
@@ -47,6 +51,18 @@ export const CapexSetContainer = () => {
     },
     [dispatch],
   );
+
+  const articleHighlight = useCallback(
+    (article: Article, group: CapexExpenseSetGroup) => {
+      dispatch(macroparameterHighlight(article, group));
+    },
+    [dispatch],
+  );
+
+  const articleHighlightClear = useCallback(() => {
+    dispatch(macroparameterHighlightClear());
+  }, [dispatch]);
+
   return (
     <CapexSetWrapper
       capexSet={capexSet}
@@ -54,6 +70,8 @@ export const CapexSetContainer = () => {
       addCapexSetGroup={addCapexSetGroups}
       addCapex={addCapex}
       updateCapexValue={updateCapexValue}
+      highlightArticle={articleHighlight}
+      highlightArticleClear={articleHighlightClear}
     />
   );
 };

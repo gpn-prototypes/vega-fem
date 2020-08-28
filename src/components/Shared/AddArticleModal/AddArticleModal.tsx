@@ -56,6 +56,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
               id="macroparameterSetName"
               size="s"
               width="full"
+              maxLength={256}
               value={caption}
               onChange={(e: any) => {
                 setCaption(e.e.target.value);
@@ -68,6 +69,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
               id="unit"
               size="s"
               width="full"
+              maxLength={50}
               value={unit}
               onChange={(e: any) => {
                 setUnit(e.e.target.value);

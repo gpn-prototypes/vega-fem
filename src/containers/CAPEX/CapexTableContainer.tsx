@@ -20,7 +20,7 @@ interface CapexTableContainerProps {
 export const CapexTableContainer = ({ capexSet }: CapexTableContainerProps) => {
   const dispatch = useDispatch();
 
-  const focusedArticleSelector = (state: any) => state.capexReducer.focusedArticle;
+  const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
   const focusedArticle: { article: Article; group: CapexExpenseSetGroup } = useSelector(
     focusedArticleSelector,
   );

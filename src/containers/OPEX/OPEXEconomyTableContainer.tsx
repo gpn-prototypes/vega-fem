@@ -1,10 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { requestUpdateMacroparameterYearValue } from '../../actions/Macroparameters/updateMacroparameterYearValue';
+import Article from '../../../types/Article';
+import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
 import {
   Table2,
@@ -13,31 +10,29 @@ import {
   TableGroup,
 } from '../../components/Table2/Table2';
 
-interface MacroparameterTableContainerProps {
-  macroparameterSet: MacroparameterSet;
+interface OPEXEconomyTableContainerProps {
+  opexCaseList?: OPEXGroup[];
 }
 
-export const MacroparameterTableContainer = ({
-  macroparameterSet,
-}: MacroparameterTableContainerProps) => {
-  const dispatch = useDispatch();
+export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
+  // const dispatch = useDispatch();
 
-  const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
+  /* const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
   const focusedArticle: { article: Article; group: MacroparameterSetGroup } = useSelector(
     focusedArticleSelector,
-  );
+  ); */
 
   const [yearsColumns, setYearsColumns] = useState([] as string[]);
   const [groupsList, setGroupsList] = useState([] as TableGroup[]);
   const [containerHeight, setContainerHeight] = useState(0);
 
-  const [convertedFocusedArticle, setConvertedFocusedArticle] = useState(
+  /* const [convertedFocusedArticle, setConvertedFocusedArticle] = useState(
     {} as { article: TableArticle; group: TableGroup },
-  );
+  ); */
 
-  const calculateYearsRange = useCallback((start: number, range: number): string[] => {
+  const calculateYearsRange = useCallback((start: number, end: number): string[] => {
     const result: string[] = [];
-    for (let i = start; i < start + range; i += 1) {
+    for (let i = start; i <= end; i += 1) {
       result.push(i.toString());
     }
     return result;
@@ -51,7 +46,7 @@ export const MacroparameterTableContainer = ({
           id: article.id,
           caption: article?.caption,
           value: article.value as TableArticleValue[],
-          unit: article.unit,
+          valueTotal: article.valueTotal,
         } as TableArticle);
       });
     }
@@ -59,23 +54,23 @@ export const MacroparameterTableContainer = ({
   }, []);
 
   const convertToTableGroups = useCallback(
-    (nonPrepearedGroups: MacroparameterSetGroup[]): TableGroup[] => {
+    (nonPrepearedGroups: OPEXGroup[]): TableGroup[] => {
       const result: TableGroup[] = [];
-      if (nonPrepearedGroups.length) {
-        nonPrepearedGroups.forEach((group: MacroparameterSetGroup) => {
-          result.push({
-            id: group?.id,
-            caption: group?.caption,
-            articleList: convertToTableArticles(group?.macroparameterList || []),
-          } as TableGroup);
-        });
-      }
+
+      nonPrepearedGroups.forEach((group: OPEXGroup) => {
+        result.push({
+          id: group?.id,
+          caption: group?.caption,
+          articleList: convertToTableArticles(group?.opexExpenseList || []),
+        } as TableGroup);
+      });
+
       return result;
     },
     [convertToTableArticles],
   );
 
-  const updateMacroparameterYearValue = useCallback(
+  /* const updateMacroparameterYearValue = useCallback(
     (article: TableArticle, group: TableGroup, value: TableArticleValue) => {
       dispatch(
         requestUpdateMacroparameterYearValue(
@@ -89,7 +84,7 @@ export const MacroparameterTableContainer = ({
       );
     },
     [dispatch],
-  );
+  ); */
 
   const calcHeight = useCallback((): number => {
     const rowHeight = 30;
@@ -101,22 +96,34 @@ export const MacroparameterTableContainer = ({
   }, [groupsList]);
 
   useEffect(() => {
-    setYearsColumns(
-      calculateYearsRange(+(macroparameterSet.yearStart || 0), +(macroparameterSet.years || 0)),
-    );
-    setGroupsList(convertToTableGroups(macroparameterSet?.macroparameterGroupList || []));
-  }, [macroparameterSet, calculateYearsRange, convertToTableGroups]);
+    let minYear = Infinity;
+    let maxYear = -Infinity;
+
+    /* eslint-disable-line */opexCaseList?.forEach((opexCaseListItem: OPEXGroup) => {
+      if (opexCaseListItem.yearStart < minYear) {
+        minYear = opexCaseListItem.yearStart;
+      }
+
+      if (opexCaseListItem.yearEnd > maxYear) {
+        maxYear = opexCaseListItem.yearEnd;
+      }
+    });
+
+    setYearsColumns(calculateYearsRange(minYear, maxYear));
+
+    setGroupsList(convertToTableGroups(opexCaseList || []));
+  }, [opexCaseList, calculateYearsRange, convertToTableGroups]);
 
   useEffect(() => {
     setContainerHeight(calcHeight());
   }, [groupsList, calcHeight]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     setConvertedFocusedArticle({
       article: convertToTableArticles([focusedArticle?.article || {}])[0],
       group: convertToTableGroups([focusedArticle?.group || {}])[0],
     });
-  }, [focusedArticle, convertToTableArticles, convertToTableGroups]);
+  }, [focusedArticle, convertToTableArticles, convertToTableGroups]); */
 
   return (
     <Table2
@@ -125,18 +132,18 @@ export const MacroparameterTableContainer = ({
           headerText="Заголовок"
           groups={groupsList}
           containerHeight={containerHeight}
-          focusedArticle={convertedFocusedArticle}
+          // focusedArticle={convertedFocusedArticle}
         />
       }
       valuesColumns={yearsColumns}
       groups={groupsList}
       additionalColumns={[
         {
-          label: 'Ед. измерения',
-          value: 'unit',
+          label: 'Суммарное',
+          value: 'valueTotal',
         },
       ]}
-      updateValueCallback={updateMacroparameterYearValue}
+      // updateValueCallback={updateMacroparameterYearValue}
       containerHeight={containerHeight}
     />
   );

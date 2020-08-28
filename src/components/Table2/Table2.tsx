@@ -3,6 +3,7 @@ import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 import { Resizable } from 're-resizable';
 
 import keyGen from '../../helpers/keyGenerator';
+import { roundDecimal2Digits } from '../../helpers/roundDecimal2Digits';
 import { toLetters } from '../../helpers/toLetters';
 
 import { cnTableCell2 } from './TableCell2/cn-table-cell2';
@@ -206,10 +207,13 @@ export const Table2 = ({
                           width={additionalColumnsWidth[additionalColumnsIndex]}
                           className={`
                             ${cnTableCell2('value')}
+                            ${cnTableCell2('additional-column-cell')}
                             ${cnTableCell2('border-right')}
                             ${cnTableCell2({ 'group-value': true })}
                           `}
-                          value={group[column.value as keyof TableGroup]?.toString()}
+                          value={roundDecimal2Digits(
+                            +(group[column.value as keyof TableGroup] as string),
+                          ).toString()}
                         />
                       );
                     },
@@ -234,15 +238,14 @@ export const Table2 = ({
                             ${cnTableCell2({ 'group-value': true })}
                           `}
                         /* TODO: replace toFixed */
-                        value={(group[
-                          fillGroupsRowField as keyof TableGroup
-                        ] as TableArticleValue[])
-                          ?.find(
+                        value={roundDecimal2Digits(
+                          (group[
+                            fillGroupsRowField as keyof TableGroup
+                          ] as TableArticleValue[])?.find(
                             (articleItemItem: TableArticleValue) =>
                               articleItemItem.year?.toString() === year,
-                          )
-                          ?.value?.toFixed(2)
-                          .toString()}
+                          )?.value || 0,
+                        ).toString()}
                       />
                     );
                   })}
@@ -257,12 +260,17 @@ export const Table2 = ({
                         <TableCell2
                           key={keyGen(additionalColumnsIndex)}
                           className={`
-                              ${cnTableCell2('value')}
-                              ${cnTableCell2('border-right')}
-                            `}
+                            ${cnTableCell2('value')}
+                            ${cnTableCell2('border-right')}
+                          `}
                           width={additionalColumnsWidth[additionalColumnsIndex]}
                         >
-                          {article[column.value as keyof TableArticle]}
+                          {column.value === 'unit' &&
+                            (article[column.value as keyof TableArticle] as string)}
+                          {column.value === 'valueTotal' &&
+                            roundDecimal2Digits(
+                              +(article[column.value as keyof TableArticle] as string),
+                            )}
                         </TableCell2>
                       ),
                     )}

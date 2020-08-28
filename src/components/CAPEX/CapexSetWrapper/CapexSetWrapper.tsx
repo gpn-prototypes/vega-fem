@@ -5,6 +5,7 @@ import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import { CapexTableContainer } from '../../../containers/CAPEX/CapexTableContainer';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
@@ -22,6 +23,8 @@ interface CapexSetWrapperProps {
   addCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexGlobalValue: (reserveValue: CapexSetGlobalValue) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
+  highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear: () => void;
 }
 
 export const CapexSetWrapper = ({
@@ -30,6 +33,8 @@ export const CapexSetWrapper = ({
   addCapexSetGroup,
   addCapex,
   updateCapexValue,
+  highlightArticle,
+  highlightArticleClear,
 }: CapexSetWrapperProps) => {
   const [isAddingGroup, setIsAddingGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
@@ -107,6 +112,8 @@ export const CapexSetWrapper = ({
                         group={group}
                         requestAddCapex={addCapex}
                         updateCapexValue={updateCapexValue}
+                        onArticleFocusCallback={highlightArticle}
+                        highlightArticleClear={highlightArticleClear}
                       />
                     ))}
                 </Form.Row>
