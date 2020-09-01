@@ -41,6 +41,7 @@ export const MacroparameterSetWrapper = ({
   highlightArticleClear,
 }: MacroparameterSetWrapperProps) => {
   const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
+  const [allProjectsHelper, setAllProjectsHelper] = useState(false);
 
   const [name, setName] = useState(macroparameterSet.caption);
   const [years, setYears] = useState(macroparameterSet.years);
@@ -127,6 +128,13 @@ export const MacroparameterSetWrapper = ({
     }
   }, [yearStartHelper, setYearStartHelper, requestSetUpdate]);
 
+  useEffect(() => {
+    if (allProjectsHelper) {
+      setAllProjectsHelper(false);
+      requestSetUpdate();
+    }
+  }, [allProjects, allProjectsHelper, requestSetUpdate]);
+
   return (
     <div className={cnBlockWrapper()}>
       <div className={cnBlockWrapper('title-wrapper')}>
@@ -208,7 +216,10 @@ export const MacroparameterSetWrapper = ({
                         name="macroparameterSetIsTemplate"
                         label="Для всех проектов"
                         checked={allProjects}
-                        onChange={() => setAllProjects((prevAllProjects) => !prevAllProjects)}
+                        onChange={() => {
+                          setAllProjects((prevAllProjects) => !prevAllProjects);
+                          setAllProjectsHelper(true);
+                        }}
                       />
                     </Form.Label>
                   </Form.Field>
