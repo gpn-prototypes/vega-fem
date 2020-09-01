@@ -6,14 +6,14 @@ import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
 // import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 // import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {

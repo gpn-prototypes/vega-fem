@@ -1,12 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
+import Article, { ArticleValues } from '../../../../types/Article';
+import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
 
-import '../../styles/BlockWrapper/BlockWrapper.css';
+import '../../../styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper/GroupWrapper.css';
 
 interface ArticleWrapperProps {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { OPEXContainer } from '../../containers/OPEX/OPEXContainer';
 import { OPEXRoleListContainer } from '../../containers/OPEX/OPEXRoleListContainer';
-import { cnMacroparametersTab } from '../MacroparametersTab/cn-macroparameter-tab';
+import { cnMacroparametersTab } from '../Macroparameters/MacroparametersTab/cn-macroparameter-tab';
 
 export const OPEXTab = (): React.ReactElement => (
   <div className={cnMacroparametersTab()}>

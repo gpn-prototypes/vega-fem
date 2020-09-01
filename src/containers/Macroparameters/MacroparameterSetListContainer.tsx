@@ -6,7 +6,7 @@ import {
   fetchMacroparameterSetList,
   selectMacroparameterSet,
 } from '../../actions/Macroparameters/macroparameterSetList';
-import { MacroparameterSetList } from '../../components/MacroparameterSetList/MacroparameterSetList';
+import { MacroparameterSetList } from '../../components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
 
 export const MacroparameterSetListContainer = () => {
   const dispatch = useDispatch();

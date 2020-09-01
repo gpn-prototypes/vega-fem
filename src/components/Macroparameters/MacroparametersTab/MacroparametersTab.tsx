@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { MacroparameterSetContainer } from '../../containers/Macroparameters/MacroparameterSetContainer';
-import { MacroparameterSetListContainer } from '../../containers/Macroparameters/MacroparameterSetListContainer';
+import { MacroparameterSetContainer } from '../../../containers/Macroparameters/MacroparameterSetContainer';
+import { MacroparameterSetListContainer } from '../../../containers/Macroparameters/MacroparameterSetListContainer';
 
 import { cnMacroparametersTab } from './cn-macroparameter-tab';
 

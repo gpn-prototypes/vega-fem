@@ -9,13 +9,13 @@ import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface GroupWrapperProps {
   group: any;
