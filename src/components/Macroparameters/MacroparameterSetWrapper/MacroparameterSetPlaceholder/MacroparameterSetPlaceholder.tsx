@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Text } from '@gpn-prototypes/vega-ui';
 
-import { cnMacroparameterSetPlaceholder } from '../../../styles/MacroparameterSetPlaceholder/cn-macroparameter-set-placeholder';
+import { cnMacroparameterSetPlaceholder } from '../../../../styles/MacroparameterSetPlaceholder/cn-macroparameter-set-placeholder';
 
 import './MacroparameterSetPlaceholder.css';
 

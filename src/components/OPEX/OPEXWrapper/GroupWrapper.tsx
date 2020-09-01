@@ -9,13 +9,14 @@ import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface GroupWrapperProps {
   group: any;
@@ -25,6 +26,8 @@ interface GroupWrapperProps {
   updateGroup?: (group: OPEXGroup) => void;
   addArticle?: (article: Article, group: OPEXGroup) => void;
   updateArticle?: (article: Article) => void;
+  isCollapsed?: Collapsed;
+  isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -36,6 +39,8 @@ export const GroupWrapper = ({
   updateGroup,
   updateArticle,
   addArticle,
+  isCollapsed,
+  isCollapsedCallback,
 }: GroupWrapperProps) => {
   const [articles, setArticles] = useState(group?.opexExpenseList);
 
@@ -43,7 +48,7 @@ export const GroupWrapper = ({
   /* help to call requestSetUpdate with updated yearEnd after Select choice */
   const [yearEndHelper, setYearEndHelper] = useState(false);
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsedState, setIsCollapsedState] = useState(isCollapsed?.collapsed ?? true);
 
   const { isOpen, close, open } = useModal();
 
@@ -59,7 +64,7 @@ export const GroupWrapper = ({
   }, [group]);
 
   const openAddArticleModal = (): void => {
-    setIsCollapsed(false);
+    setIsCollapsedState(false);
     open();
   };
 
@@ -89,12 +94,19 @@ export const GroupWrapper = ({
     }
   }, [yearEnd, yearEndHelper, requestSetUpdate]);
 
+  const onToggleCollapse = () => {
+    setIsCollapsedState((prev) => !prev);
+    if (isCollapsedCallback) {
+      isCollapsedCallback({ id: isCollapsed?.id, collapsed: !isCollapsed?.collapsed } as Collapsed);
+    }
+  };
+
   return (
     <div className={cnGroupWrapper()}>
       <div className={cnGroupWrapper('header')}>
         <div
-          className={cnGroupWrapper('header-name', { collapse: isCollapsed })}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cnGroupWrapper('header-name', { collapse: isCollapsedState })}
+          onClick={onToggleCollapse}
           role="presentation"
         >
           <IconArrowDown size="xs" />
@@ -114,7 +126,7 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
         {articles.length === 0 && (
           <GroupPlaceholder text="Пустой кейс" callback={openAddArticleModal} />
         )}

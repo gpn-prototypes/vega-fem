@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { CapexTab } from '../CAPEX/CapexTab/CapexTab';
-import { MacroparametersTab } from '../MacroparametersTab/MacroparametersTab';
+import { MacroparametersTab } from '../Macroparameters/MacroparametersTab/MacroparametersTab';
 import { MiningProfile } from '../MiningProfile/MiningProfile';
 import { NoPageFound } from '../nopagefound/NoPageFound';
 import { OPEXTab } from '../OPEX/OPEXTab';

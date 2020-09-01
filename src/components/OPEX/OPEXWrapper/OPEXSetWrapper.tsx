@@ -13,6 +13,7 @@ import { OPEXEconomyTableContainer } from '../../../containers/OPEX/OPEXEconomyT
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 
 import { GroupWrapper } from './GroupWrapper';
 
@@ -54,6 +55,9 @@ export const OPEXSetWrapper = ({
   const [newCaseName, setNewCaseName] = useState('');
   const [isEconomic, setIsEconomic] = useState(selectedRole.name === 'Экономика');
 
+  /* collapse/expand groups state */
+  const [groupsCollapsed, setGroupsCollapsed] = useState([] as Collapsed[]);
+
   useEffect(() => {
     setIsEconomic(selectedRole.name === 'Экономика');
   }, [selectedRole]);
@@ -80,6 +84,15 @@ export const OPEXSetWrapper = ({
 
   useEffect(() => {
     setSDF(OPEXSetInstance?.sdf);
+    setGroupsCollapsed((prev) =>
+      (OPEXSetInstance?.opexCaseList ?? [])?.map(
+        (group) =>
+          ({
+            id: group.id,
+            collapsed: prev.filter((collapsed) => collapsed.id === group.id)[0]?.collapsed ?? true,
+          } as Collapsed),
+      ),
+    );
   }, [OPEXSetInstance]);
 
   useEffect(() => {
@@ -88,6 +101,17 @@ export const OPEXSetWrapper = ({
       OPEXUpdateSdf(SDF);
     }
   }, [SDF, SDFHelper, OPEXUpdateSdf]);
+
+  const isCollapsedCallback = (collapsed: Collapsed) => {
+    setGroupsCollapsed((prev) =>
+      prev?.map((prevCollapsedItem) => {
+        if (prevCollapsedItem.id === collapsed.id) {
+          return { id: prevCollapsedItem.id, collapsed: collapsed.collapsed } as Collapsed;
+        }
+        return prevCollapsedItem;
+      }),
+    );
+  };
 
   return (
     <div className={cnBlockWrapper()}>
@@ -157,6 +181,10 @@ export const OPEXSetWrapper = ({
                     group={caseItem}
                     updateArticle={(article: Article) => OPEXChangeCaseExpense(article, caseItem)}
                     addArticle={OPEXAddCaseExpense}
+                    isCollapsed={
+                      groupsCollapsed.filter((collapsed) => collapsed.id === caseItem.id)[0]
+                    }
+                    isCollapsedCallback={isCollapsedCallback}
                   />
                 ))}
             </Form.Row>
