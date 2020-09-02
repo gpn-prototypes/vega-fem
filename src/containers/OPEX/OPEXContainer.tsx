@@ -13,6 +13,9 @@ import { MKOSChange } from '../../actions/OPEX/changeMKOS';
 import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
 import { caseChangeExpense } from '../../actions/OPEX/changeOpexCaseExpense';
 import { createCase } from '../../actions/OPEX/createCase';
+import { autoexportDeleteExpense } from '../../actions/OPEX/deleteAutoexportExpense';
+import { MKOSDeleteExpense } from '../../actions/OPEX/deleteMKOSExpense';
+import { caseDeleteExpense } from '../../actions/OPEX/deleteOpexCaseExpense';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
 import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';
 import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
@@ -43,6 +46,12 @@ export const OPEXContainer = () => {
     },
     [dispatch],
   );
+  const deleteOPEXAutoexportExpense = useCallback(
+    (article: Article) => {
+      dispatch(autoexportDeleteExpense(article));
+    },
+    [dispatch],
+  );
 
   const changeMKOS = useCallback(
     (OPEXMKOS: OPEXGroup) => {
@@ -57,6 +66,12 @@ export const OPEXContainer = () => {
     },
     [dispatch],
   );
+  const deleteOPEXMKOSExpense = useCallback(
+    (article: Article) => {
+      dispatch(MKOSDeleteExpense(article));
+    },
+    [dispatch],
+  );
 
   const createOPEXCase = useCallback(
     (group: OPEXGroup) => {
@@ -68,6 +83,12 @@ export const OPEXContainer = () => {
   const changeOPEXCaseExpense = useCallback(
     (article: Article, group: OPEXGroup) => {
       dispatch(caseChangeExpense(article, group));
+    },
+    [dispatch],
+  );
+  const deleteOpexCaseExpense = useCallback(
+    (article: Article, group: OPEXGroup) => {
+      dispatch(caseDeleteExpense(article, group));
     },
     [dispatch],
   );
@@ -105,10 +126,13 @@ export const OPEXContainer = () => {
       OPEXSetInstance={OPEXSetInstance}
       OPEXChangeAutoexport={changeOPEXAutoexport}
       OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
+      OPEXDeleteAutoexportExpense={deleteOPEXAutoexportExpense}
       OPEXChangeMKOS={changeMKOS}
       OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
+      OPEXDeleteMKOSExpense={deleteOPEXMKOSExpense}
       OPEXCreateCase={createOPEXCase}
       OPEXChangeCaseExpense={changeOPEXCaseExpense}
+      OPEXDeleteCaseExpense={deleteOpexCaseExpense}
       OPEXAddCaseExpense={addOPEXCaseExpense}
       OPEXAddAutoexportExpense={addOPEXAutoexportExpense}
       OPEXAddMKOSExpense={addOPEXMKOSExpense}

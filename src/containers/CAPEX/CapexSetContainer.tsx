@@ -8,6 +8,7 @@ import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
 import { requestAddCapex } from '../../actions/capex/addCapex';
 import { addCapexSetGroup as addGroup } from '../../actions/capex/addCapexSetGroup';
 import { fetchCapexSet } from '../../actions/capex/capexSet';
+import { requestDeleteCapexExpense } from '../../actions/capex/deleteCapexExpense';
 import { requestUpdateCapexGlobalValue } from '../../actions/capex/updateCapexSetGlobalValue';
 import { requestUpdateCapexValue } from '../../actions/capex/updateCapexValue';
 import {
@@ -51,6 +52,12 @@ export const CapexSetContainer = () => {
     },
     [dispatch],
   );
+  const deleteCapex = useCallback(
+    (capex: Article, group: CapexExpenseSetGroup) => {
+      dispatch(requestDeleteCapexExpense(capex, group));
+    },
+    [dispatch],
+  );
 
   const articleHighlight = useCallback(
     (article: Article, group: CapexExpenseSetGroup) => {
@@ -70,6 +77,7 @@ export const CapexSetContainer = () => {
       addCapexSetGroup={addCapexSetGroups}
       addCapex={addCapex}
       updateCapexValue={updateCapexValue}
+      deleteCapexValue={deleteCapex}
       highlightArticle={articleHighlight}
       highlightArticleClear={articleHighlightClear}
     />

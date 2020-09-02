@@ -19,6 +19,7 @@ interface MacroparameterSetWrapperGroupProps {
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  deleteMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear?: () => void;
 }
@@ -27,6 +28,7 @@ export const GroupWrapper = ({
   group,
   requestAddMacroparameter,
   updateMacroparameterValue,
+  deleteMacroparameterValue,
   onArticleFocusCallback,
   highlightArticleClear,
 }: MacroparameterSetWrapperGroupProps) => {
@@ -46,6 +48,9 @@ export const GroupWrapper = ({
 
   const updateMacroparameterValueWithGroup = (macroparameter: Article): void =>
     updateMacroparameterValue(macroparameter, group);
+
+  const deleteMacroparameterValueWithGroup = (macroparameter: Article): void =>
+    deleteMacroparameterValue(macroparameter, group);
 
   const articleFocusHandler = useCallback(
     (article: Article) => {
@@ -94,6 +99,8 @@ export const GroupWrapper = ({
               key={keyGen(index)}
               article={macroparameter}
               updateArticleValueCallback={updateMacroparameterValueWithGroup}
+              updateArticleCallback={updateMacroparameterValueWithGroup}
+              deleteArticleCallback={deleteMacroparameterValueWithGroup}
               onFocusCallback={articleFocusHandler}
               highlightArticleClear={highlightArticleClear}
             />

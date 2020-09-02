@@ -22,10 +22,13 @@ interface OPEXWrapperProps {
   OPEXSetInstance: OPEXSetType;
   OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
   OPEXChangeAutoexportExpense: (article: Article) => void;
+  OPEXDeleteAutoexportExpense: (article: Article) => void;
   OPEXChangeMKOS: (OPEXMKOS: OPEXGroup) => void;
   OPEXChangeMKOSExpense: (article: Article) => void;
+  OPEXDeleteMKOSExpense: (article: Article) => void;
   OPEXCreateCase: (newCase: OPEXGroup) => void;
   OPEXChangeCaseExpense: (article: Article, group: OPEXGroup) => void;
+  OPEXDeleteCaseExpense: (article: Article, group: OPEXGroup) => void;
   OPEXAddCaseExpense: (article: Article, group: OPEXGroup) => void;
   OPEXAddAutoexportExpense: (article: Article) => void;
   OPEXAddMKOSExpense: (article: Article) => void;
@@ -37,10 +40,13 @@ export const OPEXSetWrapper = ({
   OPEXSetInstance,
   OPEXChangeAutoexport,
   OPEXChangeAutoexportExpense,
+  OPEXDeleteAutoexportExpense,
   OPEXChangeMKOS,
   OPEXChangeMKOSExpense,
+  OPEXDeleteMKOSExpense,
   OPEXCreateCase,
   OPEXChangeCaseExpense,
+  OPEXDeleteCaseExpense,
   OPEXAddCaseExpense,
   OPEXAddAutoexportExpense,
   OPEXAddMKOSExpense,
@@ -137,6 +143,7 @@ export const OPEXSetWrapper = ({
                   isPreset={OPEXSetInstance?.hasAutoexport}
                   updateGroup={OPEXChangeAutoexport}
                   updateArticle={OPEXChangeAutoexportExpense}
+                  deleteArticle={OPEXDeleteAutoexportExpense}
                   addArticle={OPEXAddAutoexportExpense}
                 />
               )}
@@ -147,6 +154,7 @@ export const OPEXSetWrapper = ({
                   isPreset={OPEXSetInstance?.hasMkos}
                   updateGroup={OPEXChangeMKOS}
                   updateArticle={OPEXChangeMKOSExpense}
+                  deleteArticle={OPEXDeleteMKOSExpense}
                   addArticle={OPEXAddMKOSExpense}
                 />
               )}
@@ -156,6 +164,7 @@ export const OPEXSetWrapper = ({
                     key={keyGen(index)}
                     group={caseItem}
                     updateArticle={(article: Article) => OPEXChangeCaseExpense(article, caseItem)}
+                    deleteArticle={(article: Article) => OPEXDeleteCaseExpense(article, caseItem)}
                     addArticle={OPEXAddCaseExpense}
                   />
                 ))}

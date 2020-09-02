@@ -27,6 +27,7 @@ interface MacroparameterSetWrapperProps {
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
   addMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  deleteMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear: () => void;
 }
@@ -37,6 +38,7 @@ export const MacroparameterSetWrapper = ({
   addMacroparameterSetGroup,
   addMacroparameter,
   updateMacroparameterValue,
+  deleteMacroparameterValue,
   highlightArticle,
   highlightArticleClear,
 }: MacroparameterSetWrapperProps) => {
@@ -233,6 +235,7 @@ export const MacroparameterSetWrapper = ({
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
                         updateMacroparameterValue={updateMacroparameterValue}
+                        deleteMacroparameterValue={deleteMacroparameterValue}
                         onArticleFocusCallback={highlightArticle}
                         highlightArticleClear={highlightArticleClear}
                       />

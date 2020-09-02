@@ -6,6 +6,7 @@ import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet'
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
+import { requestDeleteMacroparameter } from '../../actions/Macroparameters/deleteMacroparameter';
 import {
   macroparameterHighlight,
   macroparameterHighlightClear,
@@ -49,6 +50,12 @@ export const MacroparameterSetContainer = () => {
     },
     [dispatch],
   );
+  const deleteMacroparameter = useCallback(
+    (macroparameter: Article, group: MacroparameterSetGroup) => {
+      dispatch(requestDeleteMacroparameter(macroparameter, group));
+    },
+    [dispatch],
+  );
 
   const articleHighlight = useCallback(
     (article: Article, group: MacroparameterSetGroup) => {
@@ -68,6 +75,7 @@ export const MacroparameterSetContainer = () => {
       addMacroparameterSetGroup={addMacroparameterSetGroups}
       addMacroparameter={addMacroparameter}
       updateMacroparameterValue={updateMacroparameterValue}
+      deleteMacroparameterValue={deleteMacroparameter}
       highlightArticle={articleHighlight}
       highlightArticleClear={articleHighlightClear}
     />

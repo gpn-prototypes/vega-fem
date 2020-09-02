@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select/index';
+import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
@@ -24,7 +24,8 @@ interface GroupWrapperProps {
   removeGroup?: (group: MacroparameterSetGroup) => void;
   updateGroup?: (group: OPEXGroup) => void;
   addArticle?: (article: Article, group: OPEXGroup) => void;
-  updateArticle?: (article: Article) => void;
+  deleteArticle: (article: Article, group: OPEXGroup) => void;
+  updateArticle: (article: Article) => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -35,6 +36,7 @@ export const GroupWrapper = ({
   isPreset,
   updateGroup,
   updateArticle,
+  deleteArticle,
   addArticle,
 }: GroupWrapperProps) => {
   const [articles, setArticles] = useState(group?.opexExpenseList);
@@ -66,6 +68,16 @@ export const GroupWrapper = ({
   const addArticleHandlerCallback = (article: Article): void => {
     if (addArticle) {
       addArticle(
+        {
+          ...article,
+        } as Article,
+        group,
+      );
+    }
+  };
+  const deleteArticleHandlerCallback = (article: Article): void => {
+    if (deleteArticle) {
+      deleteArticle(
         {
           ...article,
         } as Article,
@@ -140,6 +152,8 @@ export const GroupWrapper = ({
               article={article}
               fullWidth
               updateArticleValueCallback={updateArticle}
+              updateArticleCallback={updateArticle}
+              deleteArticleCallback={deleteArticleHandlerCallback}
             />
           ))}
       </div>

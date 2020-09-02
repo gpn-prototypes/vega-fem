@@ -9,8 +9,10 @@ import {
   CAPEX_SET_SUCCESS,
   CapexesAction,
 } from '../actions/capex/capexSet';
+import { DELETE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/deleteCapexExpense';
 import { CAPEX_UPDATE_VALUE_SUCCESS } from '../actions/capex/updateCapexValue';
 import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
+// import {DELETE_CAPEX_EXPENSE_SUCCESS} from "../actions/capex/deleteCapexExpense";
 
 const initialState = {
   capexSet: {} as CapexSet,
@@ -96,6 +98,45 @@ export default function capexReducer(state = initialState, action: CapexesAction
           },
         },
       };
+    case DELETE_CAPEX_EXPENSE_SUCCESS:
+      groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
+      group = (groupList?.find(
+        (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.group?.id,
+      ) ?? {}) as CapexExpenseSetGroup;
+      capexExpenseList = group?.capexExpenseList ?? [];
+      capexExpense = (capexExpenseList.find(
+        (capex: Article) => capex.id === action.payload.capex?.id,
+      ) ?? {}) as Article;
+      newGroupTotalValue = 0;
+      /* eslint-disable-line */capexExpenseList.map((capexItem: Article) => {
+        if (capexItem.id !== action.payload.capex.id) {
+          newGroupTotalValue += capexItem?.valueTotal ?? 0;
+        } else newGroupTotalValue += action.payload.capex.valueTotal ?? 0;
+      });
+      return {
+        ...state,
+        capexSet: {
+          ...state.capexSet,
+          ...{
+            capexExpenseGroupList: [
+              ...groupList.map((groupItem: CapexExpenseSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...{
+                      ...action.payload.group,
+                      valueTotal: newGroupTotalValue,
+                      capexExpenseList: [
+                        ...capexExpenseList.filter((i: Article) => i.id !== capexExpense.id),
+                      ],
+                    },
+                  };
+                }
+                return { ...groupItem };
+              }),
+            ],
+          },
+        },
+      };
     case CAPEX_UPDATE_YEAR_VALUE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
@@ -159,6 +200,9 @@ export default function capexReducer(state = initialState, action: CapexesAction
           },
         },
       };
+    /* case DELETE_CAPEX_EXPENSE_SUCCESS:{
+
+    }; */
     default:
       return state;
   }
