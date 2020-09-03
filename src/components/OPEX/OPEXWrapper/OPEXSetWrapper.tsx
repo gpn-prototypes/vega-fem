@@ -210,9 +210,9 @@ export const OPEXSetWrapper = ({
                       <TextField
                         size="s"
                         width="full"
-                        id="macroparameterSetGroupName"
+                        id="OPEXNewGroupName"
                         type="text"
-                        maxLength={150}
+                        maxLength={256}
                         value={newCaseName}
                         onChange={(event: any) => setNewCaseName(event.e.target.value)}
                       />

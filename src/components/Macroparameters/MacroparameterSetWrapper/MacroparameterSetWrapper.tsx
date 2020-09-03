@@ -288,7 +288,7 @@ export const MacroparameterSetWrapper = ({
                           width="full"
                           id="macroparameterSetGroupName"
                           type="text"
-                          maxLength={150}
+                          maxLength={256}
                           value={newGroupName}
                           onChange={(event: any) => setNewGroupName(event.e.target.value)}
                         />
