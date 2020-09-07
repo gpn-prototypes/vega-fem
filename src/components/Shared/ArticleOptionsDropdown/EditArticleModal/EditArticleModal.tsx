@@ -9,6 +9,11 @@ import {
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
+import { cnAddArticleModal } from '../../AddArticleModal/cn-add-article-modal';
+
+import { cnEditArticleModal } from './cn-edit-article-modal';
+
+import './EditArticleModal.css';
 
 interface EditArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
@@ -36,13 +41,20 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
     }
   };
   return (
-    <Modal hasOverlay hasCloseButton onClose={close} isOpen={isOpen} rootSelector=".App">
-      <Modal.Header>
+    <Modal
+      hasOverlay
+      hasCloseButton
+      onClose={close}
+      isOpen={isOpen}
+      rootSelector=".App"
+      className={cnEditArticleModal()}
+    >
+      <Modal.Header className={cnEditArticleModal('header')}>
         <Text size="xs">Редактирование статьи</Text>
       </Modal.Header>
       <Modal.Body>
-        <Form.Row space="none" gap="none">
-          <Form.Field>
+        <Form.Row space="none" gap="none" className={cnAddArticleModal('full-width-row')}>
+          <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <TextField
               id="articleSetName"
@@ -54,7 +66,7 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
               }}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Описание</Form.Label>
             <TextField
               id="articleSetCaption"
@@ -83,7 +95,7 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
         </Form.Row>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row>
+        <Form.Row className={cnAddArticleModal('footer-row')}>
           <div />
           <div />
           <Button size="s" view="primary" label="Сохранить" onClick={(e) => submitHandle(e)} />
