@@ -12,6 +12,10 @@ import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGrou
 import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
 
+import { cnEditGroupModal } from './cn-edit-group-modal';
+
+import './EditGroupModal.css';
+
 interface EditGroupModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
@@ -36,13 +40,20 @@ export const EditGroupModal = ({ isOpen, close, callback, group }: EditGroupModa
     }
   };
   return (
-    <Modal hasOverlay hasCloseButton onClose={close} isOpen={isOpen} rootSelector=".App">
-      <Modal.Header>
+    <Modal
+      hasOverlay
+      hasCloseButton
+      onClose={close}
+      isOpen={isOpen}
+      rootSelector=".App"
+      className={cnEditGroupModal()}
+    >
+      <Modal.Header className={cnEditGroupModal('header')}>
         <Text size="xs">Переименование группы</Text>
       </Modal.Header>
       <Modal.Body>
-        <Form.Row space="none" gap="none">
-          <Form.Field>
+        <Form.Row space="none" gap="none" className={cnEditGroupModal('full-width-row')}>
+          <Form.Field className={cnEditGroupModal('full-width-field')}>
             <Form.Label>Название группы</Form.Label>
             <TextField
               id="groupSetName"
@@ -58,7 +69,7 @@ export const EditGroupModal = ({ isOpen, close, callback, group }: EditGroupModa
         </Form.Row>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row>
+        <Form.Row className={cnEditGroupModal('footer-row')}>
           <div />
           <div />
           <Button size="s" view="primary" label="Сохранить" onClick={(e) => submitHandle(e)} />
