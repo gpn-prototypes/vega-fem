@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
+import { Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
+import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 import { ArticleWrapper } from '../ArticleWrapper';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 
@@ -20,6 +21,8 @@ interface MacroparameterSetWrapperGroupProps {
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   deleteMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  requestChangeMacroparameterGroup: (group: MacroparameterSetGroup) => void;
+  requestDeleteMacroparameterGroup: (group: MacroparameterSetGroup) => void;
   onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear?: () => void;
 }
@@ -29,6 +32,8 @@ export const GroupWrapper = ({
   requestAddMacroparameter,
   updateMacroparameterValue,
   deleteMacroparameterValue,
+  requestChangeMacroparameterGroup,
+  requestDeleteMacroparameterGroup,
   onArticleFocusCallback,
   highlightArticleClear,
 }: MacroparameterSetWrapperGroupProps) => {
@@ -75,14 +80,11 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <Button
-            type="button"
-            title="Добавить статью"
-            onlyIcon
-            iconLeft={IconAdd}
-            size="s"
-            view="clear"
-            onClick={openAddMacroparameterModal}
+          <GroupOptionsDropdown
+            group={group}
+            requestAddArticle={addMacroparameterToGroup}
+            requestChangeGroup={requestChangeMacroparameterGroup}
+            requestDeleteGroup={requestDeleteMacroparameterGroup}
           />
         </div>
       </div>

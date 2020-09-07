@@ -2,11 +2,14 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Article from '../../../types/Article';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
+import { changeMacroparameterSetGroup } from '../../actions/Macroparameters/changeMacroparameterSetGroup';
 import { requestDeleteMacroparameter } from '../../actions/Macroparameters/deleteMacroparameter';
+import { deleteMacroparameterSetGroup } from '../../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
   macroparameterHighlight,
   macroparameterHighlightClear,
@@ -57,6 +60,19 @@ export const MacroparameterSetContainer = () => {
     [dispatch],
   );
 
+  const requestDeleteMacroparameterGroup = useCallback(
+    (group: CapexExpenseSetGroup) => {
+      dispatch(deleteMacroparameterSetGroup(group));
+    },
+    [dispatch],
+  );
+  const requestChangeMacroparameterGroup = useCallback(
+    (group: CapexExpenseSetGroup) => {
+      dispatch(changeMacroparameterSetGroup(group));
+    },
+    [dispatch],
+  );
+
   const articleHighlight = useCallback(
     (article: Article, group: MacroparameterSetGroup) => {
       dispatch(macroparameterHighlight(article, group));
@@ -76,6 +92,8 @@ export const MacroparameterSetContainer = () => {
       addMacroparameter={addMacroparameter}
       updateMacroparameterValue={updateMacroparameterValue}
       deleteMacroparameterValue={deleteMacroparameter}
+      requestDeleteMacroparameterGroup={requestDeleteMacroparameterGroup}
+      requestChangeMacroparameterGroup={requestChangeMacroparameterGroup}
       highlightArticle={articleHighlight}
       highlightArticleClear={articleHighlightClear}
     />

@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
+import { Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
@@ -10,6 +10,7 @@ import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
+import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
 // import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
@@ -21,6 +22,8 @@ interface CapexSetWrapperGroupProps {
   requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
   deleteCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
+  requestChangeCapexGroup: (group: CapexExpenseSetGroup) => void;
+  requestDeleteCapexGroup: (group: CapexExpenseSetGroup) => void;
   onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear?: () => void;
 }
@@ -30,21 +33,20 @@ export const GroupWrapper = ({
   requestAddCapex,
   updateCapexValue,
   deleteCapexValue,
+  requestChangeCapexGroup,
+  requestDeleteCapexGroup,
   onArticleFocusCallback,
   highlightArticleClear,
 }: CapexSetWrapperGroupProps) => {
   const [capexes] = useState((group?.capexExpenseList ?? []) as Article[]);
 
   const [isCollapsed, setIsCollapsed] = useState(true);
-
   const { isOpen, close, open } = useModal();
 
   const openAddCapexModal = (): void => {
     setIsCollapsed(false);
     open();
   };
-
-  const addCapexToGroup = (capex: Article): void => requestAddCapex(capex, group);
 
   const updateCapexValueWithGroup = (capex: Article): void => updateCapexValue(capex, group);
 
@@ -73,14 +75,11 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <Button
-            type="button"
-            title="Добавить статью"
-            onlyIcon
-            iconLeft={IconAdd}
-            size="s"
-            view="clear"
-            onClick={openAddCapexModal}
+          <GroupOptionsDropdown
+            group={group}
+            requestAddArticle={requestAddCapex}
+            requestChangeGroup={requestChangeCapexGroup}
+            requestDeleteGroup={requestDeleteCapexGroup}
           />
         </div>
       </div>
@@ -106,7 +105,7 @@ export const GroupWrapper = ({
         isOpen={isOpen}
         close={close}
         article={{ caption: '', unit: '' } as Article}
-        callback={addCapexToGroup}
+        callback={updateCapexValueWithGroup}
       />
     </div>
   );

@@ -31,7 +31,7 @@ const OPEXCreateCaseError = (message: any): OPEXAction => ({
   errorMessage: message,
 });
 
-export function createCase(autoexport: OPEXGroup): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXCreateCaseInit());
 
@@ -42,9 +42,9 @@ export function createCase(autoexport: OPEXGroup): ThunkAction<Promise<void>, {}
         body: JSON.stringify({
           query:
             `mutation {createOpexCase(` +
-            `caption: "${autoexport.caption}",` +
-            `yearStart: ${autoexport.yearStart.toString()},` +
-            `yearEnd: ${autoexport.yearEnd.toString()},` +
+            `caption: "${opexCase.caption}",` +
+            `yearStart: ${opexCase.yearStart.toString()},` +
+            `yearEnd: ${opexCase.yearEnd.toString()},` +
             `){opexCase{name,caption,yearStart,yearEnd,opexExpenseList{name,caption,valueTotal}}, ok}}`,
         }),
       });

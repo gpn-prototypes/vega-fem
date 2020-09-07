@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Button, Form, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
+import { Form, Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
@@ -13,6 +13,7 @@ import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
+import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
@@ -23,7 +24,8 @@ interface GroupWrapperProps {
   isPreset?: boolean;
   removeGroup?: (group: MacroparameterSetGroup) => void;
   updateGroup?: (group: OPEXGroup) => void;
-  addArticle?: (article: Article, group: OPEXGroup) => void;
+  changeGroupName: (article: Article, group: OPEXGroup) => void;
+  addArticle: (article: Article, group: OPEXGroup) => void;
   deleteArticle: (article: Article, group: OPEXGroup) => void;
   updateArticle: (article: Article) => void;
 }
@@ -35,6 +37,7 @@ export const GroupWrapper = ({
   groupName,
   isPreset,
   updateGroup,
+  changeGroupName,
   updateArticle,
   deleteArticle,
   addArticle,
@@ -115,7 +118,7 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <Button
+          {/* <Button
             type="button"
             title="Добавить статью"
             onlyIcon
@@ -123,6 +126,12 @@ export const GroupWrapper = ({
             size="s"
             view="clear"
             onClick={openAddArticleModal}
+          /> */}
+          <GroupOptionsDropdown
+            group={group}
+            requestAddArticle={addArticle}
+            requestChangeGroup={changeGroupName}
+            requestDeleteGroup={updateGroup /* requestDeleteOPEXGroup */}
           />
         </div>
       </div>

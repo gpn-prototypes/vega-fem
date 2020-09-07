@@ -2,25 +2,22 @@ import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
 import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../types/Article';
+import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
 
-interface DeleteArticleModalProps {
+interface DeleteGroupModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
-  callback?: (article: Article) => void;
-  article: Article;
+  callback?: (group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup) => void;
+  group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup;
 }
 
-export const DeleteArticleModal = ({
-  isOpen,
-  close,
-  callback,
-  article,
-}: DeleteArticleModalProps) => {
-  const [id] = useState(article.id);
+export const DeleteGroupModal = ({ isOpen, close, callback, group }: DeleteGroupModalProps) => {
+  const [id] = useState(group.id);
 
   const submitHandle = (e: any) => {
-    if (callback) callback({ id } as Article);
+    if (callback) callback({ id });
     close(e);
   };
 
@@ -41,7 +38,7 @@ export const DeleteArticleModal = ({
           weight="regular"
           width="default"
         >
-          Вы уверены, что хотите удалить данную статью?
+          Вы уверены, что хотите удалить данную группу?
         </Text>
       </Modal.Body>
       <Modal.Footer>

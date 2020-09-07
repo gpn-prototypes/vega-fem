@@ -24,6 +24,8 @@ interface CapexSetWrapperProps {
   updateCapexGlobalValue: (reserveValue: CapexSetGlobalValue) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
   deleteCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
+  requestChangeCapexGroup: (group: CapexExpenseSetGroup) => void;
+  requestDeleteCapexGroup: (group: CapexExpenseSetGroup) => void;
   highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear: () => void;
 }
@@ -35,6 +37,8 @@ export const CapexSetWrapper = ({
   addCapex,
   updateCapexValue,
   deleteCapexValue,
+  requestChangeCapexGroup,
+  requestDeleteCapexGroup,
   highlightArticle,
   highlightArticleClear,
 }: CapexSetWrapperProps) => {
@@ -115,6 +119,8 @@ export const CapexSetWrapper = ({
                         requestAddCapex={addCapex}
                         updateCapexValue={updateCapexValue}
                         deleteCapexValue={deleteCapexValue}
+                        requestChangeCapexGroup={requestChangeCapexGroup}
+                        requestDeleteCapexGroup={requestDeleteCapexGroup}
                         onArticleFocusCallback={highlightArticle}
                         highlightArticleClear={highlightArticleClear}
                       />

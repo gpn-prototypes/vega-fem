@@ -23,18 +23,6 @@ export const ArticleOptionsDropdown = ({
 
   return (
     <>
-      {/* <Button
-        type="button"
-        size="s"
-        label="Опции"
-        onlyIcon={true}
-        iconLeft={IconKebab}
-        view="ghost"
-        innerRef={buttonRef}
-      />
-      <Popover  direction={'downRight'} anchorRef={buttonRef} isInteractive={true}>
-        <Menu article={article} deleteArticle={deleteArticle} updateArticle={updateArticle} />
-      </Popover> */}
       <Dropdown
         placement="bottom-end"
         isOpen={isOpen}
@@ -58,9 +46,7 @@ export const ArticleOptionsDropdown = ({
         </Dropdown.Trigger>
         <Dropdown.Menu>
           {(): React.ReactNode => (
-            <Menu article={article} deleteArticle={deleteArticle} updateArticle={updateArticle}>
-              Меню
-            </Menu>
+            <Menu article={article} deleteArticle={deleteArticle} updateArticle={updateArticle} />
           )}
         </Dropdown.Menu>
       </Dropdown>
