@@ -52,7 +52,7 @@ export const GroupOptionsDropdown = ({
         {(): React.ReactNode => (
           <GroupMenu
             group={group}
-            requestAddGroup={requestAddArticle}
+            requestAddArticle={requestAddArticle}
             requestChangeGroup={requestChangeGroup}
             requestDeleteGroup={requestDeleteGroup}
           />

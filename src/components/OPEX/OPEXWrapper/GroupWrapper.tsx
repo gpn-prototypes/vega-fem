@@ -13,8 +13,8 @@ import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
-import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
+// import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
@@ -24,7 +24,7 @@ interface GroupWrapperProps {
   isPreset?: boolean;
   removeGroup?: (group: MacroparameterSetGroup) => void;
   updateGroup?: (group: OPEXGroup) => void;
-  changeGroupName: (article: Article, group: OPEXGroup) => void;
+  // changeGroupName: (article: Article, group: OPEXGroup) => void;
   addArticle: (article: Article, group: OPEXGroup) => void;
   deleteArticle: (article: Article, group: OPEXGroup) => void;
   updateArticle: (article: Article) => void;
@@ -37,7 +37,7 @@ export const GroupWrapper = ({
   groupName,
   isPreset,
   updateGroup,
-  changeGroupName,
+  // changeGroupName,
   updateArticle,
   deleteArticle,
   addArticle,
@@ -127,12 +127,12 @@ export const GroupWrapper = ({
             view="clear"
             onClick={openAddArticleModal}
           /> */}
-          <GroupOptionsDropdown
+          {/* <GroupOptionsDropdown
             group={group}
             requestAddArticle={addArticle}
             requestChangeGroup={changeGroupName}
-            requestDeleteGroup={updateGroup /* requestDeleteOPEXGroup */}
-          />
+            requestDeleteGroup={()=>{} }
+          /> */}
         </div>
       </div>
       <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
