@@ -4,6 +4,10 @@ import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-proto
 
 import Article from '../../../../../types/Article';
 
+import { cnDeleteArticleModal } from './cn-delete-article-modal';
+
+import './DeleteArticleModal.css';
+
 interface DeleteArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
@@ -25,17 +29,24 @@ export const DeleteArticleModal = ({
   };
 
   return (
-    <Modal hasOverlay hasCloseButton onClose={close} isOpen={isOpen} rootSelector=".App">
-      <Modal.Header>
+    <Modal
+      hasOverlay
+      hasCloseButton
+      onClose={close}
+      isOpen={isOpen}
+      rootSelector=".App"
+      className={cnDeleteArticleModal()}
+    >
+      <Modal.Header className={cnDeleteArticleModal('header')}>
         <Text size="xs">Предупреждение</Text>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className={cnDeleteArticleModal('body')}>
         <Text
           as="p"
           align="left"
-          lineHeight="xs"
+          // lineHeight="xs"
           size="s"
-          spacing="xs"
+          // spacing="xs"
           type="p"
           view="primary"
           weight="regular"
@@ -45,7 +56,7 @@ export const DeleteArticleModal = ({
         </Text>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row>
+        <Form.Row className={cnDeleteArticleModal('footer-row')}>
           <div />
           <div />
           <Button size="s" view="primary" label="Удалить" onClick={(e) => submitHandle(e)} />

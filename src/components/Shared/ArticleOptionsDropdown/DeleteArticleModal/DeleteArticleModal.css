@@ -1,0 +1,15 @@
+.DeleteArticleModal__header {
+  border-bottom: 1px solid var(--color-bg-secondary);
+}
+
+.DeleteArticleModal__body {
+  justify-content: flex-start;
+}
+
+.DeleteArticleModal__footer-row {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.VegaModal__Overlay {
+  border: none;
+}

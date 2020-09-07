@@ -5,6 +5,7 @@ import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-proto
 import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
+import { cnDeleteArticleModal } from '../../ArticleOptionsDropdown/DeleteArticleModal/cn-delete-article-modal';
 
 interface DeleteGroupModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
@@ -22,17 +23,24 @@ export const DeleteGroupModal = ({ isOpen, close, callback, group }: DeleteGroup
   };
 
   return (
-    <Modal hasOverlay hasCloseButton onClose={close} isOpen={isOpen} rootSelector=".App">
-      <Modal.Header>
+    <Modal
+      hasOverlay
+      hasCloseButton
+      onClose={close}
+      isOpen={isOpen}
+      rootSelector=".App"
+      className={cnDeleteArticleModal()}
+    >
+      <Modal.Header className={cnDeleteArticleModal('header')}>
         <Text size="xs">Предупреждение</Text>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body className={cnDeleteArticleModal('body')}>
         <Text
           as="p"
           align="left"
-          lineHeight="xs"
+          // lineHeight="xs"
           size="s"
-          spacing="xs"
+          // spacing="xs"
           type="p"
           view="primary"
           weight="regular"
@@ -42,7 +50,7 @@ export const DeleteGroupModal = ({ isOpen, close, callback, group }: DeleteGroup
         </Text>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row>
+        <Form.Row className={cnDeleteArticleModal('footer-row')}>
           <div />
           <div />
           <Button size="s" view="primary" label="Удалить" onClick={(e) => submitHandle(e)} />
