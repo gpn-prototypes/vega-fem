@@ -56,7 +56,7 @@ export function opexChangeCaseExpenseYearValue(
             `expenseId: ${article.id},` +
             `year: ${value.year?.toString()},` +
             `value: ${value.value?.toString()}` +
-            `){ok}}`,
+            `){ok, totalValueByYear{year, value}}}`,
         }),
       });
       const body = await response.json();
