@@ -4,6 +4,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import { roundDecimal2Digits } from '../../helpers/roundDecimal2Digits';
 
 import { CapexesAction } from './capexSet';
 
@@ -46,8 +47,8 @@ export const requestUpdateCapexGlobalValue = (
             `mutation {` +
             `updateCapexGlobalValue(` +
             `capexGlobalValueId:"${globalValue?.id}",` +
-            `value: ${globalValue?.value}` +
-            `){capexGlobalValue{id,name,value}, ok}` +
+            `value: ${roundDecimal2Digits(globalValue?.value ?? 0)}` +
+            `){capexGlobalValue{id,name,value,caption}, ok}` +
             `}`,
         }),
       });
@@ -56,10 +57,10 @@ export const requestUpdateCapexGlobalValue = (
       const responseData = body?.data?.updateCapexGlobalValue;
 
       if (response.ok && responseData?.ok) {
-        const newCapex = responseData?.capexGlobalValue;
+        const capexGlobalValue = responseData?.capexGlobalValue;
 
-        if (newCapex) {
-          dispatch(capexUpdateGlobalValueSuccess(newCapex as CapexSetGlobalValue));
+        if (capexGlobalValue) {
+          dispatch(capexUpdateGlobalValueSuccess(capexGlobalValue as CapexSetGlobalValue));
         }
       } else {
         dispatch(capexUpdateGlobalValueError(body.message));

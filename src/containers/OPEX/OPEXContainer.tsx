@@ -11,7 +11,7 @@ import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
 import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
 import { MKOSChange } from '../../actions/OPEX/changeMKOS';
 import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
-import { caseChangeExpense } from '../../actions/OPEX/changeOpexCaseExpense';
+import { caseChangeExpense } from '../../actions/OPEX/changeOPEXCaseExpense';
 import { createCase } from '../../actions/OPEX/createCase';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
 import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';

@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import Article from '../../../types/Article';
+import Article, { ArticleValues } from '../../../types/Article';
 import { OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
+import { autoexportChangeExpenseYearValue } from '../../actions/OPEX/changeAutoexportExpenseYearValue';
+import { MKOSChangeExpenseYearValue } from '../../actions/OPEX/changeMKOSExpenseYearValue';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
 import {
   Table2,
@@ -19,7 +22,7 @@ export const OPEXArrangementTableContainer = ({
   autoexport,
   mkos,
 }: OPEXArrangementTableContainerProps) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   /* const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
   const focusedArticle: { article: Article; group: MacroparameterSetGroup } = useSelector(
@@ -77,6 +80,8 @@ export const OPEXArrangementTableContainer = ({
         result.push({
           caption: 'Аренда МКОС',
           articleList: convertToTableArticles(nonPrepearedGroupsMkos?.opexExpenseList || []),
+          // TODO: change logic
+          useSecondryUpdateMethod: true,
         } as TableGroup);
       }
 
@@ -85,21 +90,23 @@ export const OPEXArrangementTableContainer = ({
     [convertToTableArticles],
   );
 
-  /* const updateMacroparameterYearValue = useCallback(
+  const updateAutoexportExpenseYearValue = useCallback(
     (article: TableArticle, group: TableGroup, value: TableArticleValue) => {
       dispatch(
-        requestUpdateMacroparameterYearValue(
-          { ...article } as Article,
-          {
-            macroparameterList: group.articleList,
-            id: group.id,
-          } as MacroparameterSetGroup,
-          { ...value } as ArticleValues,
-        ),
+        autoexportChangeExpenseYearValue({ ...article } as Article, { ...value } as ArticleValues),
       );
     },
     [dispatch],
-  ); */
+  );
+
+  const updateMKOSExpenseYearValue = useCallback(
+    (article: TableArticle, group: TableGroup, value: TableArticleValue) => {
+      dispatch(
+        MKOSChangeExpenseYearValue({ ...article } as Article, { ...value } as ArticleValues),
+      );
+    },
+    [dispatch],
+  );
 
   const calcHeight = useCallback((): number => {
     const rowHeight = 30;
@@ -156,7 +163,8 @@ export const OPEXArrangementTableContainer = ({
           value: 'unit',
         },
       ]}
-      // updateValueCallback={updateMacroparameterYearValue}
+      updateValueCallback={updateAutoexportExpenseYearValue}
+      secondaryUpdateValueCallback={updateMKOSExpenseYearValue}
       containerHeight={containerHeight}
     />
   );

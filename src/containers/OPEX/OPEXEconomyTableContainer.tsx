@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import Article from '../../../types/Article';
+import Article, { ArticleValues } from '../../../types/Article';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
+import { opexChangeCaseExpenseYearValue } from '../../actions/OPEX/changeOPEXCaseExpenseYearValue';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
 import {
   Table2,
@@ -15,7 +17,7 @@ interface OPEXEconomyTableContainerProps {
 }
 
 export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   /* const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
   const focusedArticle: { article: Article; group: MacroparameterSetGroup } = useSelector(
@@ -72,21 +74,18 @@ export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableCont
     [convertToTableArticles],
   );
 
-  /* const updateMacroparameterYearValue = useCallback(
+  const updateExpenseYearValue = useCallback(
     (article: TableArticle, group: TableGroup, value: TableArticleValue) => {
       dispatch(
-        requestUpdateMacroparameterYearValue(
+        opexChangeCaseExpenseYearValue(
+          { id: group.id } as OPEXGroup,
           { ...article } as Article,
-          {
-            macroparameterList: group.articleList,
-            id: group.id,
-          } as MacroparameterSetGroup,
           { ...value } as ArticleValues,
         ),
       );
     },
     [dispatch],
-  ); */
+  );
 
   const calcHeight = useCallback((): number => {
     const rowHeight = 30;
@@ -145,7 +144,7 @@ export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableCont
           value: 'valueTotal',
         },
       ]}
-      // updateValueCallback={updateMacroparameterYearValue}
+      updateValueCallback={updateExpenseYearValue}
       containerHeight={containerHeight}
     />
   );

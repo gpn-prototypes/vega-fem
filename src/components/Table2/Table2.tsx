@@ -35,6 +35,7 @@ export interface TableGroup {
   articleList: TableArticle[];
   valueTotal?: string;
   totalValueByYear?: TableArticleValue[];
+  useSecondryUpdateMethod?: boolean;
 }
 
 export interface TableAdditionalColumn {
@@ -44,6 +45,7 @@ export interface TableAdditionalColumn {
 
 const scrollBarHeight = 8;
 const minCellWidth = 88;
+
 export const resizeDirectionOnlyRight = {
   top: false,
   right: true,
@@ -65,6 +67,12 @@ interface Table2Props {
     group: TableGroup,
     value: TableArticleValue,
   ) => void;
+  // TODO: change logic
+  secondaryUpdateValueCallback?: (
+    article: TableArticle,
+    group: TableGroup,
+    value: TableArticleValue,
+  ) => void;
   containerHeight: number;
   fillGroupsRow?: boolean;
   fillGroupsRowField?: string;
@@ -76,6 +84,7 @@ export const Table2 = ({
   groups,
   additionalColumns,
   updateValueCallback,
+  secondaryUpdateValueCallback,
   containerHeight,
   fillGroupsRow,
   fillGroupsRowField,
@@ -90,11 +99,16 @@ export const Table2 = ({
 
   const onCellValueUpdate = useCallback(
     (article: TableArticle, group: TableGroup, year: string, value: number) => {
-      if (updateValueCallback) {
+      // TODO: change logic
+      if (group.useSecondryUpdateMethod) {
+        if (secondaryUpdateValueCallback) {
+          secondaryUpdateValueCallback(article, group, { year: +year, value } as TableArticleValue);
+        }
+      } else if (updateValueCallback) {
         updateValueCallback(article, group, { year: +year, value } as TableArticleValue);
       }
     },
-    [updateValueCallback],
+    [updateValueCallback, secondaryUpdateValueCallback],
   );
 
   const onResizeHandler = useCallback((delta: number, index: number, ref: HTMLElement) => {

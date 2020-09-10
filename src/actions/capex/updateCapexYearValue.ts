@@ -20,9 +20,10 @@ const capexUpdateYearValueSuccess = (
   capex: Article,
   group: CapexExpenseSetGroup,
   value: ArticleValues,
+  groupTotalValueByYear: ArticleValues[],
 ): CapexesAction => ({
   type: CAPEX_UPDATE_YEAR_VALUE_SUCCESS,
-  payload: { capex, group, value },
+  payload: { capex, group, value, groupTotalValueByYear },
 });
 
 const capexUpdateYearValueError = (message: any): CapexesAction => ({
@@ -50,15 +51,18 @@ export const requestUpdateCapexYearValue = (
             `capexExpenseId: ${capex.id},` +
             `year: ${value.year},` +
             `value: ${value.value}` +
-            `){ok}}`,
+            `){ok, totalValueByYear{year,value}}}`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.setCapexExpenseYearValue;
+      const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.ok && responseData?.ok) {
-        dispatch(capexUpdateYearValueSuccess(capex as Article, group, value));
+        dispatch(
+          capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
+        );
       } else {
         dispatch(capexUpdateYearValueError(body.message));
       }

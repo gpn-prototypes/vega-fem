@@ -81,8 +81,6 @@ export const CapexSetWrapper = ({
   };
 
   const isCollapsedCallback = (collapsed: Collapsed) => {
-    console.log('collapsed input: ', collapsed);
-    console.log('cgroupsCollapsed: ', groupsCollapsed);
     setGroupsCollapsed((prev) =>
       prev?.map((prevCollapsedItem) => {
         if (prevCollapsedItem.id === collapsed.id) {

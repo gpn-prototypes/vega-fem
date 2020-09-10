@@ -45,7 +45,7 @@ export function createCase(autoexport: OPEXGroup): ThunkAction<Promise<void>, {}
             `caption: "${autoexport.caption}",` +
             `yearStart: ${autoexport.yearStart.toString()},` +
             `yearEnd: ${autoexport.yearEnd.toString()},` +
-            `){opexCase{name,caption,yearStart,yearEnd,opexExpenseList{name,caption,valueTotal}}, ok}}`,
+            `){opexCase{id,name,caption,yearStart,yearEnd,opexExpenseList{name,caption,valueTotal}}, ok}}`,
         }),
       });
       const body = await response.json();
