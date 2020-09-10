@@ -1,0 +1,22 @@
+.FolderComponentWrapper {
+  z-index: 1;
+}
+
+.FolderComponentWrapper__numerable {
+  counter-reset: rowNumber;
+}
+
+.FolderComponentWrapper .TableCell2__first-column_numerable::before {
+  content: counter(rowNumber);
+  counter-increment: rowNumber;
+
+  padding-right: var(--space-xs);
+
+  font-size: var(--size-text-xs);
+
+  color: var(--alabaster-light);
+}
+
+.FolderComponentWrapper .TableHeaderRow:not(:first-of-type) .TableCell2 {
+  border-bottom: none;
+}

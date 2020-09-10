@@ -1,9 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpense from '../../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../../types/CapexExpenseSetGroup';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import Article from '../../../types/Article';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import headers from '../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { CapexesAction } from './capexSet';
 
@@ -15,10 +16,7 @@ const capexUpdateValueInitialized = (): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_INIT,
 });
 
-const capexUpdateValueSuccess = (
-  capex: CapexExpense,
-  group: CapexExpenseSetGroup,
-): CapexesAction => ({
+const capexUpdateValueSuccess = (capex: Article, group: CapexExpenseSetGroup): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_SUCCESS,
   payload: { capex, group },
 });
@@ -29,7 +27,7 @@ const capexUpdateValueError = (message: any): CapexesAction => ({
 });
 
 export const requestUpdateCapexValue = (
-  capex: CapexExpense,
+  capex: Article,
   group: CapexExpenseSetGroup,
 ): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   /* TODO: replace any by defining reducers type */
@@ -37,21 +35,16 @@ export const requestUpdateCapexValue = (
     dispatch(capexUpdateValueInitialized());
 
     try {
-      /* TODO: set project id dynamically */
-      const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             `mutation {changeCapexExpense(` +
             `capexExpenseGroupId: ${group?.id?.toString()},` +
             `capexExpenseId: ${capex.id},` +
-            `value: ${capex.valueTotal}` +
-            `){capexExpense{name, id, caption, value{year,value}}, ok}}`,
+            `value: ${capex.value}` +
+            `){capexExpense{name, id, caption, valueTotal, unit, value{year,value}}, ok}}`,
         }),
       });
 
@@ -59,10 +52,10 @@ export const requestUpdateCapexValue = (
       const responseData = body?.data?.changeCapexExpense;
 
       if (response.ok && responseData?.ok) {
-        const newCapex = responseData?.capex;
+        const newCapex = responseData?.capexExpense;
 
         if (newCapex) {
-          dispatch(capexUpdateValueSuccess(newCapex as CapexExpense, group));
+          dispatch(capexUpdateValueSuccess(newCapex as Article, group));
         }
       } else {
         dispatch(capexUpdateValueError(body.message));

@@ -1,60 +1,88 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import CapexExpense from '../../../../types/CapexExpense';
-import CapexExpenseSetGroup from '../../../../types/CapexExpenseSetGroup';
+import Article from '../../../../types/Article';
+import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
 
-import { CapexWrapper } from './CapexWrapper';
-
+// import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
 // import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
-  requestAddCapex: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
-  updateCapexValue: (capex: CapexExpense, group: CapexExpenseSetGroup) => void;
+  requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
+  updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
+  onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear?: () => void;
+  isCollapsed?: Collapsed;
+  isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
 export const GroupWrapper = ({
   group,
   requestAddCapex,
   updateCapexValue,
+  onArticleFocusCallback,
+  highlightArticleClear,
+  isCollapsed,
+  isCollapsedCallback,
 }: CapexSetWrapperGroupProps) => {
-  const [capexes] = useState(group.capexExpenseList as CapexExpense[]);
+  const [capexes] = useState((group?.capexExpenseList ?? []) as Article[]);
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsedState, setIsCollapsedState] = useState(isCollapsed?.collapsed ?? true);
 
   const { isOpen, close, open } = useModal();
 
   const openAddCapexModal = (): void => {
-    setIsCollapsed(false);
+    setIsCollapsedState(false);
     open();
   };
 
-  const addCapexToGroup = (capex: CapexExpense): void => requestAddCapex(capex, group);
+  const addCapexToGroup = (capex: Article): void => requestAddCapex(capex, group);
 
-  const updateCapexValueWithGroup = (capex: CapexExpense): void => updateCapexValue(capex, group);
+  const updateCapexValueWithGroup = (capex: Article): void => updateCapexValue(capex, group);
+
+  const articleFocusHandler = useCallback(
+    (article: Article) => {
+      if (onArticleFocusCallback) {
+        onArticleFocusCallback(article, group);
+      }
+    },
+    [onArticleFocusCallback, group],
+  );
+
+  const onToggleCollapse = () => {
+    setIsCollapsedState((prev) => !prev);
+    if (isCollapsedCallback) {
+      isCollapsedCallback({ id: isCollapsed?.id, collapsed: !isCollapsed?.collapsed } as Collapsed);
+    }
+  };
 
   return (
     <div className={cnGroupWrapper()}>
       <div className={cnGroupWrapper('header')}>
         <div
-          className={cnGroupWrapper('header-name', { collapse: isCollapsed })}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cnGroupWrapper('header-name', { collapse: isCollapsedState })}
+          onClick={onToggleCollapse}
           role="presentation"
         >
           <IconArrowDown size="xs" />
           <Text as="span" size="s">
-            {group.caption}
+            {group?.caption}
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
           <Button
+            type="button"
             title="Добавить статью"
             onlyIcon
             iconLeft={IconAdd}
@@ -64,24 +92,26 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
         {capexes?.length === 0 && (
           <GroupPlaceholder text="Пока не добавлена ни одна статья" callback={openAddCapexModal} />
         )}
         {capexes?.length > 0 &&
-          capexes.map((capex, index) => (
-            <CapexWrapper
+          capexes.map((article: Article, index: any) => (
+            <ArticleWrapper
               key={keyGen(index)}
-              capex={capex}
-              updateCapexValue={updateCapexValueWithGroup}
+              article={article}
+              fullWidth
+              onFocusCallback={articleFocusHandler}
+              highlightArticleClear={highlightArticleClear}
+              updateArticleValueCallback={updateCapexValueWithGroup}
             />
           ))}
       </div>
-      {/* Этот блок вместо всего что ниже */}
       <AddArticleModal
         isOpen={isOpen}
         close={close}
-        article={{ caption: '', unit: '' } as CapexExpense}
+        article={{ caption: '', unit: '' } as Article}
         callback={addCapexToGroup}
       />
     </div>

@@ -1,75 +1,150 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import Macroparameter, { MacroparameterValues } from '../../../types/Macroparameter';
-import MacroparameterSet from '../../../types/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/MacroparameterSetGroup';
+import Article, { ArticleValues } from '../../../types/Article';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
+import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import keyGen from '../../helpers/keyGenerator';
 
-import { cnFEMTableWrapper } from './cn-FEM-table-wrapper';
+import { cnTableCell } from './TableCell/cn-table-cell';
+import { cnTableWrapper } from './cn-table-wrapper';
+import { TableCell } from './TableCell';
 
-import './FEMTableWrapper.css';
+import './Table.css';
 
 interface FEMTableProps {
-  macroparameterSet: MacroparameterSet;
+  entity: any;
   headers: string[];
+  secondaryColumn: string;
+  updateArticleValueCallback?: any;
 }
 
-export const FEMTable = ({ macroparameterSet, headers }: FEMTableProps) => {
-  const yearsRange = useCallback((): string[] => {
+export const FEMTable = ({
+  entity,
+  headers,
+  updateArticleValueCallback,
+  secondaryColumn,
+}: FEMTableProps) => {
+  const calcYearsRange = (start: number, end: number): string[] => {
     const result: string[] = [];
-    for (let i = 0; i < (macroparameterSet?.years ?? 0); i += 1) {
-      result.push((+(macroparameterSet?.yearStart ?? 0) + i).toString());
+    for (let i = start; i <= end; i += 1) {
+      result.push(i.toString());
     }
     return result;
-  }, [macroparameterSet]);
+  };
+
+  const yearsRange: string[] = useMemo(() => {
+    let end = entity.yearStart + entity.years - 1;
+    let start = entity.yearStart;
+    if (
+      (entity as OPEXSetType).opexCaseList ||
+      (entity as OPEXSetType).autoexport ||
+      (entity as OPEXSetType).mkos
+    ) {
+      const minYear = entity.opexCaseList?.reduce(
+        (minYear_: number, opexCase: OPEXGroup) => Math.min(minYear_, opexCase.yearStart),
+        Infinity,
+      );
+      const maxYear = entity.opexCaseList?.reduce(
+        (maxYear_: number, opexCase: OPEXGroup) => Math.max(maxYear_, opexCase.yearEnd),
+        -Infinity,
+      );
+      start = Math.min(
+        minYear || Infinity,
+        entity.autoexport?.yearStart || Infinity,
+        entity.mkos?.yearStart || Infinity,
+      );
+      end = Math.max(
+        maxYear || -Infinity,
+        entity.autoexport?.yearEnd || -Infinity,
+        entity.mkos?.yearEnd || -Infinity,
+      );
+    }
+    return calcYearsRange(start, end);
+  }, [entity]);
+
+  const updateValue = useCallback(
+    (group: MacroparameterSetGroup, article: Article, value?: ArticleValues) => {
+      updateArticleValueCallback(article, group, value);
+    },
+    [updateArticleValueCallback],
+  );
+
+  const OPEXGroupList = [
+    ...(entity.autoexport?.opexExpenseList ?? []),
+    ...(entity.mkos?.opexExpenseList ?? []),
+    ...(entity.opexCaseList ?? []),
+  ];
+
+  const groupList =
+    entity.macroparameterGroupList ?? entity.capexExpenseGroupList ?? OPEXGroupList ?? [];
+
+  const articleList = (
+    group: MacroparameterSetGroup | CapexExpenseSetGroup | OPEXGroup | OPEXPresetGroup,
+  ) => {
+    if ((group as MacroparameterSetGroup).macroparameterList) {
+      return (group as MacroparameterSetGroup).macroparameterList ?? [];
+    }
+    if ((group as CapexExpenseSetGroup).capexExpenseList) {
+      return (group as CapexExpenseSetGroup).capexExpenseList ?? [];
+    }
+    if ((group as OPEXGroup).opexExpenseList) {
+      return (group as OPEXGroup).opexExpenseList ?? [];
+    }
+    return [group] as Article[];
+  };
 
   return (
-    <div className={cnFEMTableWrapper()}>
-      <table className={cnFEMTableWrapper('table')}>
+    <div className={cnTableCell()}>
+      <table className={cnTableWrapper('table')}>
         <thead>
           <tr>
-            {headers.concat(yearsRange()).map((header: string | number, index: number) => (
+            {headers.concat(yearsRange).map((header: string | number, index: number) => (
               <th key={keyGen(index)}>{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {(macroparameterSet?.macroparameterGroupList ?? []).map(
-            (group: MacroparameterSetGroup, indexGroup: number) => (
-              <React.Fragment key={keyGen(indexGroup)}>
-                <tr key={keyGen(indexGroup)}>
+          {groupList.map((group: any, indexGroup: number) => (
+            <React.Fragment key={keyGen(indexGroup)}>
+              <tr key={keyGen(indexGroup)}>
+                <td />
+                <td title={group.caption} className={cnTableWrapper('node')}>
+                  {group.caption}
+                </td>
+                <td className={cnTableWrapper('value')}>
+                  {(group as CapexExpenseSetGroup)?.valueTotal ?? ''}
+                </td>
+                {yearsRange.map((year) => (
+                  <td key={keyGen(year)} className={cnTableWrapper('value')} />
+                ))}
+              </tr>
+              {articleList(group).map((article: any, indexArticle: number) => (
+                <tr key={keyGen(indexArticle)}>
                   <td />
-                  <td title={group.caption} className={cnFEMTableWrapper('node')}>
-                    {group.caption}
+                  <td className={cnTableWrapper('sub-node')} title={article.caption}>
+                    {article.caption}
                   </td>
-                  <td className={cnFEMTableWrapper('value')} />
-                  {yearsRange().map((year) => (
-                    <td key={keyGen(year)} className={cnFEMTableWrapper('value')} />
+                  <td className={cnTableWrapper('value')}>{article[secondaryColumn]}</td>
+                  {yearsRange.map((year) => (
+                    <TableCell
+                      key={keyGen(year)}
+                      editable={!!updateArticleValueCallback}
+                      onBlur={(value: string) =>
+                        updateValue(group, article, { year: +year, value: +value })
+                      }
+                      value={
+                        ((article?.value ?? []) as ArticleValues[])
+                          ?.find((value: ArticleValues) => value?.year === +year)
+                          ?.value.toString() || ''
+                      }
+                    />
                   ))}
                 </tr>
-                {(group?.macroparameterList ?? []).map(
-                  (macroparameter: Macroparameter, indexMacroparameter: number) => (
-                    <tr key={keyGen(indexMacroparameter)}>
-                      <td />
-                      <td className={cnFEMTableWrapper('sub-node')} title={macroparameter.caption}>
-                        {macroparameter.caption}
-                      </td>
-                      <td className={cnFEMTableWrapper('value')}>{macroparameter.unit}</td>
-                      {yearsRange().map((year) => (
-                        <td key={keyGen(year)} className={cnFEMTableWrapper('value')}>
-                          {
-                            ((macroparameter?.value ?? []) as MacroparameterValues[])?.find(
-                              (value: MacroparameterValues) => value?.year === +year,
-                            )?.value
-                          }
-                        </td>
-                      ))}
-                    </tr>
-                  ),
-                )}
-              </React.Fragment>
-            ),
-          )}
+              ))}
+            </React.Fragment>
+          ))}
         </tbody>
       </table>
     </div>

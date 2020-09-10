@@ -1,0 +1,249 @@
+.TableWrapper * {
+  box-sizing: border-box;
+}
+
+.TableWrapper {
+  overflow: hidden;
+
+  width: 100%;
+  height: 100%;
+}
+
+.TableWrapper__table {
+  counter-reset: rowNumber;
+
+  position: sticky;
+
+  display: block;
+  overflow-x: auto;
+
+  height: 100%;
+
+  border-collapse: collapse;
+
+  font-size: var(--size-text-s);
+}
+
+.TableWrapper__table thead {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+
+  display: block;
+
+  width: fit-content;
+
+  font-size: var(--size-text-xs);
+
+  color: var(--alabaster-light);
+  background-color: var(--color-bg-default);
+}
+
+.TableWrapper__table thead th {
+  height: var(--control-height-s);
+  max-height: var(--control-height-s);
+
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.TableWrapper__table thead tr th:first-of-type,
+.TableWrapper__table tbody tr td:first-of-type {
+  position: sticky;
+  left: 0;
+
+  display: inline-grid;
+
+  width: var(--space-2xl);
+  min-width: var(--space-2xl);
+  height: var(--space-2xl);
+  max-height: var(--space-2xl);
+
+  text-align: right;
+
+  background-color: var(--color-bg-default);
+  border-right: 2px solid var(--color-bg-border);
+}
+
+.TableWrapper__table thead tr th:not(:first-of-type) {
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+
+  text-align: right;
+
+  border-bottom: 1px solid var(--color-bg-border);
+}
+
+.TableWrapper__table thead tr th:nth-child(n + 4) {
+  padding-right: var(--space-xs);
+}
+
+.TableWrapper__table thead tr th:nth-child(3) {
+  border-right: 1px solid var(--color-bg-border);
+}
+
+.TableWrapper__table thead tr th:nth-of-type(1) {
+  z-index: 2;
+}
+
+.TableWrapper__table thead tr th:nth-of-type(2) {
+  position: sticky;
+  z-index: 2;
+  left: var(--control-height-s);
+
+  padding-left: var(--space-s);
+
+  min-width: calc(4 * (var(--space-6xl) - var(--space-xs)));
+
+  text-align: left;
+
+  background-color: var(--color-bg-default);
+  box-shadow: 2px 0 1px rgba(0, 0, 0, 0.25);
+}
+
+.TableWrapper__table tbody tr {
+  position: sticky;
+
+  display: table-row;
+
+  height: var(--control-height-s);
+  max-height: var(--control-height-s);
+}
+
+.TableWrapper__table tbody tr td:nth-child(2) {
+  position: sticky;
+  z-index: 2;
+  left: var(--control-height-s);
+
+  background-color: var(--color-bg-default);
+  box-shadow: 2px 0 1px rgba(0, 0, 0, 0.25);
+}
+
+.TableWrapper__table tbody tr td:nth-child(1) {
+  z-index: 2;
+}
+
+.TableWrapper__table tbody tr td:nth-child(3) {
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+  max-width: calc(var(--space-6xl) - var(--space-xs));
+}
+
+.TableWrapper__table tbody tr:nth-child(odd) td:nth-child(n + 3) {
+  background-color: var(--color-bg-stripe);
+}
+
+.TableWrapper__table tr td:first-of-type::before {
+  content: counter(rowNumber);
+  counter-increment: rowNumber;
+
+  position: relative;
+  top: 6px;
+
+  padding-right: var(--space-xs);
+
+  height: var(--control-height-s);
+  max-height: var(--control-height-s);
+
+  font-size: var(--size-text-xs);
+
+  color: var(--alabaster-light);
+}
+
+.TableWrapper__table
+  tbody
+  tr
+  td:not(:first-of-type)
+  .TableWrapper__table
+  tbody
+  tr
+  td:not(:nth-child(n + 4)) {
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+}
+
+.TableWrapper__table tbody tr td:last-of-type {
+  border-right: none;
+}
+
+.TableWrapper__value {
+  /* max-width: calc(var(--space-6xl) - var(--space-xs)); */
+  padding-right: var(--space-xs);
+
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+
+  text-align: right;
+
+  color: var(--alabaster);
+
+  border-right: 1px solid var(--color-bg-border);
+}
+
+.TableWrapper__table tr td:nth-of-type(2) {
+  padding-left: var(--space-s);
+
+  width: calc(4 * (var(--space-6xl) - var(--space-xs)));
+  min-width: calc(4 * (var(--space-6xl) - var(--space-xs)));
+  max-width: calc(4 * (var(--space-6xl) - var(--space-xs)));
+
+  color: var(--alabaster);
+}
+
+.TableWrapper__node {
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.TableWrapper__sub-node {
+  padding-left: var(--space-l) !important;
+}
+
+.TableWrapper__table tbody tr td:not(:first-of-type) {
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.TableWrapper__resizable-header {
+  position: relative;
+  z-index: 1;
+}
+
+.TableWrapper__resizable-header .Text {
+  position: absolute;
+  left: var(--space-xs);
+
+  display: inline-block;
+
+  cursor: default;
+}
+
+.TableWrapper__resizer-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: inline-block;
+
+  width: 4px;
+  height: 100%;
+
+  cursor: ew-resize;
+}
+
+.TableWrapper__resizer-right.active .TableWrapper__resizer-right-delimiter {
+  background: var(--color-bg-normal);
+}
+
+.TableWrapper__resizer-right-delimiter {
+  position: absolute;
+  top: 0;
+
+  display: inline-block;
+
+  width: 1px;
+  height: 100%;
+
+  cursor: ew-resize;
+
+  background: var(--color-bg-border);
+}

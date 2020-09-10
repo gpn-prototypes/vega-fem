@@ -1,15 +1,11 @@
 const macroparameterSetCategoryOptions = [
   {
-    value: 'SetCategoryPositive',
-    label: 'Позитивная',
-  },
-  {
-    value: 'SetCategoryNegative',
-    label: 'Негативная',
-  },
-  {
-    value: 'SetCategoryBase',
+    value: 'SET_CATEGORY_REAL',
     label: 'Реальная',
+  },
+  {
+    value: 'SET_CATEGORY_NOMINAL',
+    label: 'Номинальная',
   },
 ];
 

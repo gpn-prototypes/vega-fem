@@ -1,14 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexSet from '../../../types/CapexSet';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
+import CapexSet from '../../../types/CAPEX/CapexSet';
+import headers from '../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 export const CAPEX_SET_FETCH = 'CAPEX_SET_FETCH';
 export const CAPEX_SET_SUCCESS = 'CAPEX_SET_SUCCESS';
 export const CAPEX_SET_ERROR = 'CAPEX_SET_ERROR';
-
-export const CAPEX_SET_SELECTED = 'CAPEX_SET_SELECTED';
 
 export interface CapexesAction {
   type: string;
@@ -36,17 +35,13 @@ export function fetchCapexSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     dispatch(capexSetFetch());
 
     try {
-      const response = await fetch('graphql/5edde72c45eb7b93ad30c0c3', {
+      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          ...authHeader(),
-        },
+        headers: headers(),
         body: JSON.stringify({
           query:
             '{capex{years,yearStart,capexGlobalValueList{id,name,caption,value},capexExpenseGroupList{id,name,caption,' +
-            'valueTotal,capexExpenseList{id,name,caption,valueTotal,value{year,value}}}}}',
+            'valueTotal,capexExpenseList{id,name,caption,unit,valueTotal,value{year,value}},totalValueByYear{year, value}}}}',
         }),
       });
       const body = await response.json();
@@ -61,8 +56,3 @@ export function fetchCapexSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     }
   };
 }
-
-export const selectCapexSet = (capexSet: CapexSet): CapexesAction => ({
-  type: CAPEX_SET_SELECTED,
-  payload: capexSet,
-});

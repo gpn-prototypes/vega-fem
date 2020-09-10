@@ -1,13 +1,15 @@
 import { combineReducers } from 'redux';
 
-import capexGlobalValuesReducer from './capexGlobalValuesReducer';
 import capexReducer from './capexReducer';
+import highlightReducer from './highlightReducer';
 import macroparamsReducer from './macroparamsReducer';
+import OPEXReducer from './OPEXReducer';
 
 const rootReducer = combineReducers({
   macroparamsReducer,
   capexReducer,
-  capexGlobalValuesReducer,
+  OPEXReducer,
+  highlightReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

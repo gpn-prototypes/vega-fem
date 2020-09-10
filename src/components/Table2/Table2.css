@@ -1,0 +1,71 @@
+.Table2Wrapper {
+  display: inline-flex;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+.Table2Wrapper__table-area {
+  position: sticky;
+
+  display: inline-flex;
+  flex-flow: column;
+
+  max-height: 100%;
+}
+
+.Table2Wrapper__shadow {
+  z-index: 1;
+
+  box-shadow: 2px 0 1px rgba(0, 0, 0, 0.25);
+}
+
+.Table2Wrapper__scrollable-wrapper {
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: hidden;
+
+  max-height: calc(100% - 8px);
+  flex-flow: column;
+}
+
+.Table2Wrapper__sticky-top {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+
+  background-color: var(--color-bg-default);
+}
+
+.Table2Wrapper__table-area_column {
+  flex-flow: column;
+}
+
+.Table2Wrapper__table-area_scrollable {
+  overflow: auto;
+}
+
+.Table2Wrapper__table-area_striped .TableHeaderRow:nth-child(odd) {
+  background-color: var(--color-bg-default);
+}
+
+.Table2Wrapper__table-area_striped .TableHeaderRow:nth-child(even) {
+  background-color: var(--color-bg-stripe);
+}
+
+.Table2Wrapper__custom-resizer {
+  z-index: 1;
+  right: 0 !important;
+
+  width: 2px !important;
+}
+
+.Table2Wrapper__custom-resizer:hover {
+  background-color: var(--color-control-bg-primary-hover);
+  opacity: 0.5;
+}
+
+.Table2Wrapper__custom-resizer:active {
+  background-color: var(--color-control-bg-primary-hover);
+}
