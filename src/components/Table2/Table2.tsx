@@ -237,7 +237,6 @@ export const Table2 = ({
                             ${cnTableCell2('border-right')}
                             ${cnTableCell2({ 'group-value': true })}
                           `}
-                        /* TODO: replace toFixed */
                         value={roundDecimal2Digits(
                           (group[
                             fillGroupsRowField as keyof TableGroup
@@ -280,9 +279,11 @@ export const Table2 = ({
                         className={`${cnTableCell2('value')} ${cnTableCell2('border-right')}`}
                         editable
                         onBlur={(value: number) => onCellValueUpdate(article, group, year, value)}
-                        value={article?.value
-                          ?.find((value: TableArticleValue) => value.year?.toString() === year)
-                          ?.value.toString()}
+                        value={roundDecimal2Digits(
+                          article?.value?.find(
+                            (value: TableArticleValue) => value.year?.toString() === year,
+                          )?.value || 0,
+                        ).toString()}
                       />
                     ))}
                   </TableHeaderRow>

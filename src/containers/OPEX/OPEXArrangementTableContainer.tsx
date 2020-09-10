@@ -46,12 +46,14 @@ export const OPEXArrangementTableContainer = ({
     const result: TableArticle[] = [];
     if (nonPrepearedArticles.length) {
       nonPrepearedArticles.forEach((article: Article) => {
-        result.push({
-          id: article.id,
-          caption: article?.caption,
-          value: article.value as TableArticleValue[],
-          unit: article.unit,
-        } as TableArticle);
+        if (article) {
+          result.push({
+            id: article.id,
+            caption: article?.caption,
+            value: article.value as TableArticleValue[],
+            unit: article.unit,
+          } as TableArticle);
+        }
       });
     }
     return result;

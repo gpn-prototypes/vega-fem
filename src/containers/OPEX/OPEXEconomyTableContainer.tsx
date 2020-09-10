@@ -42,12 +42,14 @@ export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableCont
     const result: TableArticle[] = [];
     if (nonPrepearedArticles.length) {
       nonPrepearedArticles.forEach((article: Article) => {
-        result.push({
-          id: article.id,
-          caption: article?.caption,
-          value: article.value as TableArticleValue[],
-          valueTotal: article.valueTotal,
-        } as TableArticle);
+        if (article) {
+          result.push({
+            id: article.id,
+            caption: article?.caption,
+            value: article.value as TableArticleValue[],
+            valueTotal: article.valueTotal,
+          } as TableArticle);
+        }
       });
     }
     return result;
