@@ -4,9 +4,11 @@
 
 .TableHeaderRow {
   display: inline-flex;
-  height: 30px;
 
   align-items: center;
+
+  height: 30px;
+
   font-size: var(--size-text-xs);
 }
 

@@ -146,14 +146,17 @@ export const GroupWrapper = ({
           </Form.Field>
         )}
         {articles?.length > 0 &&
-          articles.map((article: Article, index: any) => (
-            <ArticleWrapper
-              key={keyGen(index)}
-              article={article}
-              fullWidth
-              updateArticleValueCallback={updateArticle}
-            />
-          ))}
+          articles.map(
+            (article: Article, index: any) =>
+              article && (
+                <ArticleWrapper
+                  key={keyGen(index)}
+                  article={article}
+                  fullWidth
+                  updateArticleValueCallback={updateArticle}
+                />
+              ),
+          )}
       </div>
       <AddArticleModal
         isOpen={isOpen}

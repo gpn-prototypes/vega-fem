@@ -35,6 +35,7 @@ export interface TableGroup {
   articleList: TableArticle[];
   valueTotal?: string;
   totalValueByYear?: TableArticleValue[];
+  useSecondryUpdateMethod?: boolean;
 }
 
 export interface TableAdditionalColumn {
@@ -44,6 +45,7 @@ export interface TableAdditionalColumn {
 
 const scrollBarHeight = 8;
 const minCellWidth = 88;
+
 export const resizeDirectionOnlyRight = {
   top: false,
   right: true,
@@ -65,6 +67,12 @@ interface Table2Props {
     group: TableGroup,
     value: TableArticleValue,
   ) => void;
+  // TODO: change logic
+  secondaryUpdateValueCallback?: (
+    article: TableArticle,
+    group: TableGroup,
+    value: TableArticleValue,
+  ) => void;
   containerHeight: number;
   fillGroupsRow?: boolean;
   fillGroupsRowField?: string;
@@ -76,6 +84,7 @@ export const Table2 = ({
   groups,
   additionalColumns,
   updateValueCallback,
+  secondaryUpdateValueCallback,
   containerHeight,
   fillGroupsRow,
   fillGroupsRowField,
@@ -90,11 +99,16 @@ export const Table2 = ({
 
   const onCellValueUpdate = useCallback(
     (article: TableArticle, group: TableGroup, year: string, value: number) => {
-      if (updateValueCallback) {
+      // TODO: change logic
+      if (group.useSecondryUpdateMethod) {
+        if (secondaryUpdateValueCallback) {
+          secondaryUpdateValueCallback(article, group, { year: +year, value } as TableArticleValue);
+        }
+      } else if (updateValueCallback) {
         updateValueCallback(article, group, { year: +year, value } as TableArticleValue);
       }
     },
-    [updateValueCallback],
+    [updateValueCallback, secondaryUpdateValueCallback],
   );
 
   const onResizeHandler = useCallback((delta: number, index: number, ref: HTMLElement) => {
@@ -237,7 +251,6 @@ export const Table2 = ({
                             ${cnTableCell2('border-right')}
                             ${cnTableCell2({ 'group-value': true })}
                           `}
-                        /* TODO: replace toFixed */
                         value={roundDecimal2Digits(
                           (group[
                             fillGroupsRowField as keyof TableGroup
@@ -280,9 +293,11 @@ export const Table2 = ({
                         className={`${cnTableCell2('value')} ${cnTableCell2('border-right')}`}
                         editable
                         onBlur={(value: number) => onCellValueUpdate(article, group, year, value)}
-                        value={article?.value
-                          ?.find((value: TableArticleValue) => value.year?.toString() === year)
-                          ?.value.toString()}
+                        value={roundDecimal2Digits(
+                          article?.value?.find(
+                            (value: TableArticleValue) => value.year?.toString() === year,
+                          )?.value || 0,
+                        ).toString()}
                       />
                     ))}
                   </TableHeaderRow>
