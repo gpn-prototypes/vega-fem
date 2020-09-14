@@ -40,7 +40,7 @@ export function fetchCapexSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         headers: headers(),
         body: JSON.stringify({
           query:
-            '{capex{years,yearStart,capexGlobalValueList{id,name,caption,value},capexExpenseGroupList{id,name,caption,' +
+            '{capex{years,yearStart,capexGlobalValueList{ id name unit caption value },capexExpenseGroupList{id,name,caption,' +
             'valueTotal,capexExpenseList{id,name,caption,unit,valueTotal,value{year,value}},totalValueByYear{year, value}}}}',
         }),
       });
