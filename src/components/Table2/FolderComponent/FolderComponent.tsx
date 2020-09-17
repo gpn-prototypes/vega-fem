@@ -28,10 +28,20 @@ export const FolderComponent = ({
   focusedArticle,
 }: FolderComponentProps) => {
   const isSelectedArticle = useCallback(
-    (group: TableGroup, article: TableArticle): boolean => {
-      return group.id === focusedArticle?.group?.id && article.id === focusedArticle?.article?.id;
-    },
+    (article: TableArticle): boolean => article.id === focusedArticle?.article?.id,
     [focusedArticle],
+  );
+
+  const isSelectedGroup = useCallback(
+    (group: TableGroup): boolean => group.id === focusedArticle?.group?.id,
+    [focusedArticle],
+  );
+
+  const isSelectedRow = useCallback(
+    (group: TableGroup, article: TableArticle): boolean => {
+      return isSelectedGroup(group) && isSelectedArticle(article);
+    },
+    [isSelectedGroup, isSelectedArticle],
   );
 
   return (
@@ -75,7 +85,7 @@ export const FolderComponent = ({
               {group.articleList?.map((article: TableArticle, articleIndex: number) => (
                 <TableHeaderRow
                   className={`${cnTableHeaderRow({
-                    highlighted: isSelectedArticle(group, article),
+                    highlighted: isSelectedRow(group, article),
                   })}`}
                   key={keyGen(articleIndex)}
                 >

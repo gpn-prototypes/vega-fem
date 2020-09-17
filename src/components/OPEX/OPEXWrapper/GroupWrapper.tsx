@@ -28,6 +28,8 @@ interface GroupWrapperProps {
   updateArticle?: (article: Article) => void;
   isCollapsed?: Collapsed;
   isCollapsedCallback?: (collapsed: Collapsed) => void;
+  onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear?: () => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -41,6 +43,8 @@ export const GroupWrapper = ({
   addArticle,
   isCollapsed,
   isCollapsedCallback,
+  onArticleFocusCallback,
+  highlightArticleClear,
 }: GroupWrapperProps) => {
   const [articles, setArticles] = useState(group?.opexExpenseList);
 
@@ -101,6 +105,15 @@ export const GroupWrapper = ({
     }
   };
 
+  const articleFocusHandler = useCallback(
+    (article: Article) => {
+      if (onArticleFocusCallback) {
+        onArticleFocusCallback(article, group);
+      }
+    },
+    [onArticleFocusCallback, group],
+  );
+
   return (
     <div className={cnGroupWrapper()}>
       <div className={cnGroupWrapper('header')}>
@@ -127,7 +140,7 @@ export const GroupWrapper = ({
         </div>
       </div>
       <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
-        {articles.length === 0 && (
+        {articles?.length === 0 && (
           <GroupPlaceholder text="Пустой кейс" callback={openAddArticleModal} />
         )}
         {isPreset && (
@@ -154,6 +167,8 @@ export const GroupWrapper = ({
                   article={article}
                   fullWidth
                   updateArticleValueCallback={updateArticle}
+                  onFocusCallback={articleFocusHandler}
+                  highlightArticleClear={highlightArticleClear}
                 />
               ),
           )}

@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Article, { ArticleValues } from '../../../types/Article';
-import { OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
+import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
 import { autoexportChangeExpenseYearValue } from '../../actions/OPEX/changeAutoexportExpenseYearValue';
 import { MKOSChangeExpenseYearValue } from '../../actions/OPEX/changeMKOSExpenseYearValue';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
@@ -24,18 +24,18 @@ export const OPEXArrangementTableContainer = ({
 }: OPEXArrangementTableContainerProps) => {
   const dispatch = useDispatch();
 
-  /* const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
-  const focusedArticle: { article: Article; group: MacroparameterSetGroup } = useSelector(
+  const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
+  const focusedArticle: { article: Article; group: OPEXGroup } = useSelector(
     focusedArticleSelector,
-  ); */
+  );
 
   const [yearsColumns, setYearsColumns] = useState([] as string[]);
   const [groupsList, setGroupsList] = useState([] as TableGroup[]);
   const [containerHeight, setContainerHeight] = useState(0);
 
-  /* const [convertedFocusedArticle, setConvertedFocusedArticle] = useState(
+  const [convertedFocusedArticle, setConvertedFocusedArticle] = useState(
     {} as { article: TableArticle; group: TableGroup },
-  ); */
+  );
 
   const calculateYearsRange = useCallback((start: number, end: number): string[] => {
     const result: string[] = [];
@@ -45,10 +45,10 @@ export const OPEXArrangementTableContainer = ({
     return result;
   }, []);
 
-  const convertToTableArticles = useCallback((nonPrepearedArticles: Article[]): TableArticle[] => {
+  const convertToTableArticles = useCallback((nonPreparedArticles: Article[]): TableArticle[] => {
     const result: TableArticle[] = [];
-    if (nonPrepearedArticles.length) {
-      nonPrepearedArticles.forEach((article: Article) => {
+    if (nonPreparedArticles.length) {
+      nonPreparedArticles.forEach((article: Article) => {
         if (article) {
           result.push({
             id: article.id,
@@ -68,9 +68,9 @@ export const OPEXArrangementTableContainer = ({
       nonPrepearedGroupsMkos?: OPEXPresetGroup,
     ): TableGroup[] => {
       const result: TableGroup[] = [];
-
       if (nonPrepearedGroupsAutoexport) {
         result.push({
+          id: '1',
           caption: 'Автовывоз',
           articleList: convertToTableArticles(nonPrepearedGroupsAutoexport?.opexExpenseList || []),
         } as TableGroup);
@@ -78,13 +78,13 @@ export const OPEXArrangementTableContainer = ({
 
       if (nonPrepearedGroupsMkos) {
         result.push({
+          id: '2',
           caption: 'Аренда МКОС',
           articleList: convertToTableArticles(nonPrepearedGroupsMkos?.opexExpenseList || []),
           // TODO: change logic
-          useSecondryUpdateMethod: true,
+          useSecondaryUpdateMethod: true,
         } as TableGroup);
       }
-
       return result;
     },
     [convertToTableArticles],
@@ -131,19 +131,24 @@ export const OPEXArrangementTableContainer = ({
         Math.max(+autoexportRange[autoexportRange.length - 1], +mkosRange[mkosRange.length - 1]),
       ),
     );
-    setGroupsList(convertToTableGroups(autoexport, mkos));
+    setGroupsList(
+      convertToTableGroups((autoexport ?? {}) as OPEXPresetGroup, (mkos ?? {}) as OPEXPresetGroup),
+    );
   }, [autoexport, mkos, calculateYearsRange, convertToTableGroups]);
 
   useEffect(() => {
     setContainerHeight(calcHeight());
   }, [groupsList, calcHeight]);
 
-  /* useEffect(() => {
+  useEffect(() => {
     setConvertedFocusedArticle({
-      article: convertToTableArticles([focusedArticle?.article || {}])[0],
-      group: convertToTableGroups([focusedArticle?.group || {}])[0],
+      article: convertToTableArticles([focusedArticle?.article])[0],
+      group: convertToTableGroups(
+        focusedArticle?.group?.id === '1' ? focusedArticle?.group : undefined,
+        focusedArticle?.group?.id === '2' ? focusedArticle?.group : undefined,
+      )[0],
     });
-  }, [focusedArticle, convertToTableArticles, convertToTableGroups]); */
+  }, [focusedArticle, convertToTableArticles, convertToTableGroups]);
 
   return (
     <Table2
@@ -152,7 +157,7 @@ export const OPEXArrangementTableContainer = ({
           headerText="Заголовок"
           groups={groupsList}
           containerHeight={containerHeight}
-          // focusedArticle={convertedFocusedArticle}
+          focusedArticle={convertedFocusedArticle}
         />
       }
       valuesColumns={yearsColumns}

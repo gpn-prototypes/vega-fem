@@ -35,7 +35,7 @@ export interface TableGroup {
   articleList: TableArticle[];
   valueTotal?: string;
   totalValueByYear?: TableArticleValue[];
-  useSecondryUpdateMethod?: boolean;
+  useSecondaryUpdateMethod?: boolean;
 }
 
 export interface TableAdditionalColumn {
@@ -100,7 +100,7 @@ export const Table2 = ({
   const onCellValueUpdate = useCallback(
     (article: TableArticle, group: TableGroup, year: string, value: number) => {
       // TODO: change logic
-      if (group.useSecondryUpdateMethod) {
+      if (group.useSecondaryUpdateMethod) {
         if (secondaryUpdateValueCallback) {
           secondaryUpdateValueCallback(article, group, { year: +year, value } as TableArticleValue);
         }

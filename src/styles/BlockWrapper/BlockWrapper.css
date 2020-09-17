@@ -29,6 +29,7 @@
   display: grid;
 
   grid-template-columns: 3.4fr 6.9fr;
+
   height: 100%;
 }
 
