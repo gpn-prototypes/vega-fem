@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { Text, TextField } from '@gpn-prototypes/vega-ui';
 
+import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
+
 import { cnTableCell2 } from './cn-table-cell2';
 
 import './TableCell2.css';
@@ -13,6 +15,8 @@ interface TableCellProps {
   onBlur?: (value: number) => void;
   value?: string;
   width?: number;
+  round?: boolean; // округление до 2х знаков после запятой
+  plainText?: boolean; // отображать переданное значание без дополнительных обработок (# округление и т.п)
 }
 
 export const TableCell2 = ({
@@ -23,6 +27,8 @@ export const TableCell2 = ({
   onBlur,
   value,
   width,
+  round,
+  plainText,
 }: TableCellProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [innerValue, setInnerValue] = useState(value ?? '');
@@ -55,6 +61,19 @@ export const TableCell2 = ({
     }
   };
 
+  const getCellValue = useCallback(
+    (cellValue) => {
+      if (plainText) {
+        return cellValue;
+      }
+      if (round) {
+        return roundDecimal2Digits(+cellValue);
+      }
+      return cellValue;
+    },
+    [round, plainText],
+  );
+
   return (
     <div
       className={getClassName()}
@@ -70,7 +89,7 @@ export const TableCell2 = ({
         </Text>
       )}
       {!isEditing && children && <>{children}</>}
-      {!isEditing && value && <>{value}</>}
+      {!isEditing && value && <>{getCellValue(value)}</>}
       {isEditing && (
         <TextField
           size="s"
