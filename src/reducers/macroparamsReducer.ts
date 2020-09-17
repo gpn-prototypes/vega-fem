@@ -4,8 +4,8 @@ import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSe
 import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameter';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
 import {
-  MACROPARAM_HIGHLIGHT,
-  MACROPARAM_HIGHLIGHT_CLEAR,
+  ARTICLE_HIGHLIGHT,
+  ARTICLE_HIGHLIGHT_CLEAR,
 } from '../actions/Macroparameters/highlightMacroparameter';
 import {
   MACROPARAMS_SET_LIST_ERROR,
@@ -181,7 +181,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           },
         },
       };
-    case MACROPARAM_HIGHLIGHT:
+    case ARTICLE_HIGHLIGHT:
       return {
         ...state,
         focusedArticle: {
@@ -189,7 +189,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           article: action.payload.article,
         },
       };
-    case MACROPARAM_HIGHLIGHT_CLEAR:
+    case ARTICLE_HIGHLIGHT_CLEAR:
       return {
         ...state,
         focusedArticle: {},

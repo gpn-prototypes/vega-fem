@@ -4,8 +4,8 @@ import MacroparameterSetGroup from '../../../types/Macroparameters/Macroparamete
 
 import { MacroparamsAction } from './macroparameterSetList';
 
-export const MACROPARAM_HIGHLIGHT = 'MACROPARAM_HIGHLIGHT';
-export const MACROPARAM_HIGHLIGHT_CLEAR = 'MACROPARAM_HIGHLIGHT_CLEAR';
+export const ARTICLE_HIGHLIGHT = 'ARTICLE_HIGHLIGHT';
+export const ARTICLE_HIGHLIGHT_CLEAR = 'ARTICLE_HIGHLIGHT_CLEAR';
 
 export interface HighlightAction {
   type: string;
@@ -14,14 +14,14 @@ export interface HighlightAction {
   errorMessage?: any;
 }
 
-export const macroparameterHighlight = (
+export const articleHighlight = (
   article: Article,
   group: MacroparameterSetGroup | CapexExpenseSetGroup,
 ): MacroparamsAction => ({
-  type: MACROPARAM_HIGHLIGHT,
+  type: ARTICLE_HIGHLIGHT,
   payload: { article, group },
 });
 
-export const macroparameterHighlightClear = (): MacroparamsAction => ({
-  type: MACROPARAM_HIGHLIGHT_CLEAR,
+export const articleHighlightClear = (): MacroparamsAction => ({
+  type: ARTICLE_HIGHLIGHT_CLEAR,
 });
