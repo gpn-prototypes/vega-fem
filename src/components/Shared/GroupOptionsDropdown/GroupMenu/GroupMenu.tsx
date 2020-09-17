@@ -5,7 +5,7 @@ import Article from '../../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
-import { AddArticleModal } from '../../AddArticleModal/AddArticleModal';
+import { AddArticleModal } from '../AddArticleModal/AddArticleModal';
 import { DeleteGroupModal } from '../DeleteGroupModal/DeleteGroupModal';
 import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
 

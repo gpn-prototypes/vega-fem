@@ -6,15 +6,16 @@ import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
-import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
 // import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 // import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
@@ -26,6 +27,8 @@ interface CapexSetWrapperGroupProps {
   requestDeleteCapexGroup: (group: CapexExpenseSetGroup) => void;
   onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear?: () => void;
+  isCollapsed?: Collapsed;
+  isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
 export const GroupWrapper = ({
@@ -37,14 +40,17 @@ export const GroupWrapper = ({
   requestDeleteCapexGroup,
   onArticleFocusCallback,
   highlightArticleClear,
+  isCollapsed,
+  isCollapsedCallback,
 }: CapexSetWrapperGroupProps) => {
   const [capexes] = useState((group?.capexExpenseList ?? []) as Article[]);
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsedState, setIsCollapsedState] = useState(isCollapsed?.collapsed ?? true);
+
   const { isOpen, close, open } = useModal();
 
   const openAddCapexModal = (): void => {
-    setIsCollapsed(false);
+    setIsCollapsedState(false);
     open();
   };
 
@@ -61,12 +67,19 @@ export const GroupWrapper = ({
     [onArticleFocusCallback, group],
   );
 
+  const onToggleCollapse = () => {
+    setIsCollapsedState((prev) => !prev);
+    if (isCollapsedCallback) {
+      isCollapsedCallback({ id: isCollapsed?.id, collapsed: !isCollapsed?.collapsed } as Collapsed);
+    }
+  };
+
   return (
     <div className={cnGroupWrapper()}>
       <div className={cnGroupWrapper('header')}>
         <div
-          className={cnGroupWrapper('header-name', { collapse: isCollapsed })}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cnGroupWrapper('header-name', { collapse: isCollapsedState })}
+          onClick={onToggleCollapse}
           role="presentation"
         >
           <IconArrowDown size="xs" />
@@ -83,7 +96,7 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
         {capexes?.length === 0 && (
           <GroupPlaceholder text="Пока не добавлена ни одна статья" callback={openAddCapexModal} />
         )}

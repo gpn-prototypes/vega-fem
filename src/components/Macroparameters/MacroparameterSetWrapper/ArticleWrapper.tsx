@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleOptionsDropdown } from '../Shared/ArticleOptionsDropdown/ArticleOptionsDropdowns';
+import Article, { ArticleValues } from '../../../../types/Article';
+import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdowns';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
 
-import '../../styles/BlockWrapper/BlockWrapper.css';
+import '../../../styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper/GroupWrapper.css';
 
 interface ArticleWrapperProps {
@@ -70,10 +70,10 @@ export const ArticleWrapper = ({
         <TextField
           size="s"
           width="full"
-          id={`article_${article?.name}`}
+          id={`article_${article?.name}_${article?.id}`}
           placeholder="Значение"
           rightSide={article?.unit}
-          value={values[0]?.value.toString()}
+          value={values && values.length ? values[0]?.value.toString() : ''}
           onBlur={blurHandle}
           onChange={(e: any) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}

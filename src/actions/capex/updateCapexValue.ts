@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
+import Article, { ArticleValues } from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
@@ -16,9 +16,13 @@ const capexUpdateValueInitialized = (): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_INIT,
 });
 
-const capexUpdateValueSuccess = (capex: Article, group: CapexExpenseSetGroup): CapexesAction => ({
+const capexUpdateValueSuccess = (
+  capex: Article,
+  group: CapexExpenseSetGroup,
+  groupTotalValueByYear: ArticleValues[],
+): CapexesAction => ({
   type: CAPEX_UPDATE_VALUE_SUCCESS,
-  payload: { capex, group },
+  payload: { capex, group, groupTotalValueByYear },
 });
 
 const capexUpdateValueError = (message: any): CapexesAction => ({
@@ -46,18 +50,19 @@ export const requestUpdateCapexValue = (
             `${capex.caption ? `caption:"${capex.caption}",` : ''}` +
             `${capex.unit ? `unit:"${capex.unit}",` : ''}` +
             `${capex.value ? `value:${capex.value},` : ''}` +
-            `){capexExpense{name, id, caption, valueTotal, unit, value{year,value}}, ok}}`,
+            `){capexExpense{name, id, caption, valueTotal, unit, value{year,value}}, ok, totalValueByYear{year,value}}}`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.changeCapexExpense;
+      const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.ok && responseData?.ok) {
         const newCapex = responseData?.capexExpense;
 
         if (newCapex) {
-          dispatch(capexUpdateValueSuccess(newCapex as Article, group));
+          dispatch(capexUpdateValueSuccess(newCapex as Article, group, groupTotalValueByYear));
         }
       } else {
         dispatch(capexUpdateValueError(body.message));

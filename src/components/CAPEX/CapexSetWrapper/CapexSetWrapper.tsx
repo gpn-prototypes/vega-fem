@@ -10,6 +10,7 @@ import { CapexTableContainer } from '../../../containers/CAPEX/CapexTableContain
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 
 import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
@@ -51,9 +52,21 @@ export const CapexSetWrapper = ({
     (capexSet?.capexGlobalValueList ?? []) as CapexSetGlobalValue[],
   );
 
+  /* collapse/expand groups state */
+  const [groupsCollapsed, setGroupsCollapsed] = useState([] as Collapsed[]);
+
   useEffect(() => {
     setGroups(capexSet?.capexExpenseGroupList ?? []);
     setGlobalValues(capexSet?.capexGlobalValueList ?? []);
+    setGroupsCollapsed((prev) =>
+      (capexSet?.capexExpenseGroupList ?? [])?.map(
+        (group) =>
+          ({
+            id: group.id,
+            collapsed: prev.filter((collapsed) => collapsed.id === group.id)[0]?.collapsed ?? true,
+          } as Collapsed),
+      ),
+    );
   }, [capexSet]);
 
   const toggleCapexSetGroup = (event: React.MouseEvent) => {
@@ -71,6 +84,17 @@ export const CapexSetWrapper = ({
   const addGroup = (event: any, groupName: string): void => {
     toggleCapexSetGroup(event);
     requestGroupAdd(groupName);
+  };
+
+  const isCollapsedCallback = (collapsed: Collapsed) => {
+    setGroupsCollapsed((prev) =>
+      prev?.map((prevCollapsedItem) => {
+        if (prevCollapsedItem.id === collapsed.id) {
+          return { id: prevCollapsedItem.id, collapsed: collapsed.collapsed } as Collapsed;
+        }
+        return prevCollapsedItem;
+      }),
+    );
   };
 
   return (
@@ -94,16 +118,15 @@ export const CapexSetWrapper = ({
             >
               <Form.Row gap="m" space="none" className={cnVegaFormCustom('content-body')}>
                 {(globalValues ?? []).length > 0 &&
-                  globalValues.map((globalValue: CapexSetGlobalValue, index: number) =>
-                    index < 2 ? (
-                      <CapexGlobalValuesWrapper
-                        key={keyGen(index)}
-                        globalValue={globalValue}
-                        updateCapexGlobalValue={updateCapexGlobalValue}
-                      />
-                    ) : (
-                      <></>
-                    ),
+                  globalValues.map(
+                    (globalValue: CapexSetGlobalValue, index: number) =>
+                      index < 2 && (
+                        <CapexGlobalValuesWrapper
+                          key={keyGen(index)}
+                          globalValue={globalValue}
+                          updateCapexGlobalValue={updateCapexGlobalValue}
+                        />
+                      ),
                   )}
                 <Form.Row
                   col="1"
@@ -123,6 +146,10 @@ export const CapexSetWrapper = ({
                         requestDeleteCapexGroup={requestDeleteCapexGroup}
                         onArticleFocusCallback={highlightArticle}
                         highlightArticleClear={highlightArticleClear}
+                        isCollapsed={
+                          groupsCollapsed.filter((collapsed) => collapsed.id === group.id)[0]
+                        }
+                        isCollapsedCallback={isCollapsedCallback}
                       />
                     ))}
                 </Form.Row>
@@ -148,9 +175,9 @@ export const CapexSetWrapper = ({
                         <TextField
                           size="s"
                           width="full"
-                          id="capexSetGroupName"
+                          id="capexSetNewGroupName"
                           type="text"
-                          maxLength={150}
+                          maxLength={256}
                           value={newGroupName}
                           onChange={(event: any) => setNewGroupName(event.e.target.value)}
                         />

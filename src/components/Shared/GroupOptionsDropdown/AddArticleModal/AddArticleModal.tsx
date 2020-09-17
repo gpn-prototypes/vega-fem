@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
+import Article from '../../../../../types/Article';
 
 import { cnAddArticleModal } from './cn-add-article-modal';
 
@@ -53,7 +53,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
           <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <TextField
-              id="macroparameterSetName"
+              id="articleModalNewArticleName"
               size="s"
               width="full"
               maxLength={256}
@@ -66,10 +66,10 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
           <Form.Field>
             <Form.Label>Единица измерения</Form.Label>
             <TextField
-              id="unit"
+              id="articleModalUnit"
               size="s"
               width="full"
-              maxLength={50}
+              maxLength={20}
               value={unit}
               onChange={(e: any) => {
                 setUnit(e.e.target.value);

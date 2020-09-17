@@ -1,11 +1,13 @@
 .TableCell2 {
   display: inline-flex;
 
-  height: 100%;
+  align-items: center;
+
   width: 88px;
   min-width: 88px;
 
-  align-items: center;
+  height: 100%;
+
   color: var(--alabaster);
 }
 
@@ -23,39 +25,46 @@
 
 .TableCell2__first-column {
   display: inline-flex;
-  align-items: center;
   justify-content: flex-end;
-  box-sizing: border-box;
+  align-items: center;
 
-  height: 100%;
+  box-sizing: border-box;
   width: var(--space-2xl);
   min-width: 32px;
 
+  height: 100%;
+
   /* background-color: var(--color-bg-default); */
   text-align: right;
+
   border-right: 2px solid var(--color-bg-border);
 }
 
 .TableCell2__second-column {
-  width: 420px;
-  padding-left: var(--space-xs);
   padding-right: var(--space-xs);
+  padding-left: var(--space-xs);
+
+  width: 420px;
 }
 
 .TableCell2__second-column * {
-  white-space: nowrap;
   overflow: hidden;
+
+  white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 .TableCell2__second-column_group {
   font-weight: 600;
+
   cursor: pointer;
+
   color: var(--color-control-typo-primary);
 }
 
 .TableCell2__second-column_article {
   padding-left: var(--space-l);
+
   opacity: 0.8;
 }
 
@@ -64,8 +73,9 @@
 }
 
 .TableCell2_isNull {
-  color: var(--color-typo-ghost) !important;
   font-weight: 400 !important;
+
+  color: var(--color-typo-ghost) !important;
 }
 
 .TableCell2__full-width {
@@ -73,9 +83,10 @@
 }
 
 .TableCell2__column-header {
-  justify-content: space-between;
-  padding-left: var(--space-xs);
   padding-right: var(--space-xs);
+  padding-left: var(--space-xs);
+
+  justify-content: space-between;
 
   color: var(--alabaster-light);
 }
@@ -85,18 +96,22 @@
 }
 
 .TableCell2__value {
-  justify-content: flex-end;
   padding-right: var(--space-xs);
+
+  justify-content: flex-end;
+
   font-size: var(--size-text-s);
 }
 
 .TableCell2_group-value {
   font-weight: 500;
+
   color: var(--color-typo-primary);
 }
 
 .TableCell2__editable:hover {
+  cursor: text;
+
   background-color: var(--color-control-bg-clear-hover) !important;
   border-bottom: 1px solid var(--color-control-bg-border-focus);
-  cursor: text;
 }

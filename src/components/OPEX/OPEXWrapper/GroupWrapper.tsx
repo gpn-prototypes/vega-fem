@@ -9,14 +9,14 @@ import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleWrapper } from '../../MacroparameterSetWrapper/ArticleWrapper';
-import { GroupPlaceholder } from '../../MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
-import { cnGroupWrapper } from '../../MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
-import { AddArticleModal } from '../../Shared/AddArticleModal/AddArticleModal';
+import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
+import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 
-// import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface GroupWrapperProps {
   group: any;
@@ -28,6 +28,8 @@ interface GroupWrapperProps {
   addArticle: (article: Article, group: OPEXGroup) => void;
   deleteArticle: (article: Article, group: OPEXGroup) => void;
   updateArticle: (article: Article) => void;
+  isCollapsed?: Collapsed;
+  isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
 const yearsOptions = yearsRangeOptions(5, 10);
@@ -37,10 +39,11 @@ export const GroupWrapper = ({
   groupName,
   isPreset,
   updateGroup,
-  // changeGroupName,
   updateArticle,
   deleteArticle,
   addArticle,
+  isCollapsed,
+  isCollapsedCallback,
 }: GroupWrapperProps) => {
   const [articles, setArticles] = useState(group?.opexExpenseList);
 
@@ -48,7 +51,7 @@ export const GroupWrapper = ({
   /* help to call requestSetUpdate with updated yearEnd after Select choice */
   const [yearEndHelper, setYearEndHelper] = useState(false);
 
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsedState, setIsCollapsedState] = useState(isCollapsed?.collapsed ?? true);
 
   const { isOpen, close, open } = useModal();
 
@@ -64,7 +67,7 @@ export const GroupWrapper = ({
   }, [group]);
 
   const openAddArticleModal = (): void => {
-    setIsCollapsed(false);
+    setIsCollapsedState(false);
     open();
   };
 
@@ -104,12 +107,19 @@ export const GroupWrapper = ({
     }
   }, [yearEnd, yearEndHelper, requestSetUpdate]);
 
+  const onToggleCollapse = () => {
+    setIsCollapsedState((prev) => !prev);
+    if (isCollapsedCallback) {
+      isCollapsedCallback({ id: isCollapsed?.id, collapsed: !isCollapsed?.collapsed } as Collapsed);
+    }
+  };
+
   return (
     <div className={cnGroupWrapper()}>
       <div className={cnGroupWrapper('header')}>
         <div
-          className={cnGroupWrapper('header-name', { collapse: isCollapsed })}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          className={cnGroupWrapper('header-name', { collapse: isCollapsedState })}
+          onClick={onToggleCollapse}
           role="presentation"
         >
           <IconArrowDown size="xs" />
@@ -135,7 +145,7 @@ export const GroupWrapper = ({
           /> */}
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsed })}>
+      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
         {articles.length === 0 && (
           <GroupPlaceholder text="Пустой кейс" callback={openAddArticleModal} />
         )}
@@ -155,16 +165,19 @@ export const GroupWrapper = ({
           </Form.Field>
         )}
         {articles?.length > 0 &&
-          articles.map((article: Article, index: any) => (
-            <ArticleWrapper
-              key={keyGen(index)}
-              article={article}
-              fullWidth
-              updateArticleValueCallback={updateArticle}
-              updateArticleCallback={updateArticle}
-              deleteArticleCallback={deleteArticleHandlerCallback}
-            />
-          ))}
+          articles.map(
+            (article: Article, index: any) =>
+              article && (
+                <ArticleWrapper
+                  key={keyGen(index)}
+                  article={article}
+                  fullWidth
+                  updateArticleValueCallback={updateArticle}
+                  updateArticleCallback={updateArticle}
+                  deleteArticleCallback={deleteArticleHandlerCallback}
+                />
+              ),
+          )}
       </div>
       <AddArticleModal
         isOpen={isOpen}

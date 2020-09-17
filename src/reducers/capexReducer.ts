@@ -1,6 +1,7 @@
 import Article, { ArticleValues } from '../../types/Article';
 import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
 import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
 import { CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS } from '../actions/capex/addCapexSetGroup';
 import {
@@ -12,9 +13,9 @@ import {
 import { CAPEX_EXPENSE_SET_GROUP_CHANGE_SUCCESS } from '../actions/capex/changeCapexSetGroup';
 import { DELETE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/deleteCapexExpense';
 import { CAPEX_EXPENSE_SET_GROUP_DELETE_SUCCESS } from '../actions/capex/deleteCapexSetGroup';
+import { CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS } from '../actions/capex/updateCapexSetGlobalValue';
 import { CAPEX_UPDATE_VALUE_SUCCESS } from '../actions/capex/updateCapexValue';
 import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
-// import {DELETE_CAPEX_EXPENSE_SUCCESS} from "../actions/capex/deleteCapexExpense";
 
 const initialState = {
   capexSet: {} as CapexSet,
@@ -91,6 +92,21 @@ export default function capexReducer(state = initialState, action: CapexesAction
         ...state,
         capexSet: newCapex,
       };
+    case CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS:
+      return {
+        ...state,
+        capexSet: {
+          ...state.capexSet,
+          capexGlobalValueList: state.capexSet.capexGlobalValueList.map(
+            (capexGlobalValue: CapexSetGlobalValue) => {
+              if (capexGlobalValue.id === action.payload.id) {
+                return action.payload;
+              }
+              return capexGlobalValue;
+            },
+          ),
+        },
+      };
     case CAPEX_UPDATE_VALUE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
@@ -116,8 +132,10 @@ export default function capexReducer(state = initialState, action: CapexesAction
                 if (groupItem.id === group.id) {
                   return {
                     ...{
+                      // ...state.capexSet.capexExpenseGroupList,
                       ...action.payload.group,
                       valueTotal: newGroupTotalValue,
+                      totalValueByYear: action?.payload?.groupTotalValueByYear,
                       capexExpenseList: [
                         ...capexExpenseList.map((i: Article) => {
                           if (i.id === capexExpense.id) {
@@ -210,10 +228,9 @@ export default function capexReducer(state = initialState, action: CapexesAction
                 if (groupItem.id === group.id) {
                   return {
                     ...{
-                      // ...state.capexSet.capexExpenseGroupList,
-                      // ...action.payload.group,
                       ...group,
                       ...{ valueTotal: newGroupTotalValue },
+                      ...{ totalValueByYear: action.payload.groupTotalValueByYear },
                       ...{
                         capexExpenseList: [
                           ...capexExpenseList.map((article: Article) => {
@@ -237,9 +254,6 @@ export default function capexReducer(state = initialState, action: CapexesAction
           },
         },
       };
-    /* case DELETE_CAPEX_EXPENSE_SUCCESS:{
-
-    }; */
     default:
       return state;
   }

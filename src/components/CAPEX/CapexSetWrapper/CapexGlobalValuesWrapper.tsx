@@ -5,7 +5,7 @@ import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface CapexWrapperProps {
   globalValue: CapexSetGlobalValue;
@@ -44,7 +44,7 @@ export const CapexGlobalValuesWrapper = ({
           size="s"
           width="full"
           value={value?.toString()}
-          rightSide={`${globalValue.caption === 'Величина резерва' ? '%' : '₽'}`}
+          rightSide={globalValue.unit ?? ''}
           onBlur={() => requestSetGlobalValue()}
           onChange={(e) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}

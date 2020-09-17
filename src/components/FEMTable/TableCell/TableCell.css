@@ -1,15 +1,19 @@
 .TableCell {
   position: relative;
-  min-width: calc(var(--space-6xl) - var(--space-xs));
 
   /* max-width: calc(var(--space-6xl) - var(--space-xs)); */
   padding-right: var(--space-xs);
 
   overflow: hidden;
-  border-right: 1px solid var(--color-bg-border);
+
+  min-width: calc(var(--space-6xl) - var(--space-xs));
+
   text-align: right;
-  color: var(--alabaster);
+
   cursor: text;
+
+  color: var(--alabaster);
+  border-right: 1px solid var(--color-bg-border);
 }
 
 .TableCell:not(.TableCell_editing):hover {
@@ -25,26 +29,31 @@
 }
 
 .TableCell_editing .TextField {
-  border: none;
   min-height: auto;
+
+  border: none;
 }
 
 .TableCell__selected {
   position: absolute;
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   border: 2px solid var(--color-control-bg-border-focus);
   border-radius: 2px;
 }
 
 .TableCell__selected-handler {
   position: absolute;
-  bottom: -3px;
   right: -3px;
+  bottom: -3px;
+
   width: 6px;
   height: 6px;
+
   background: var(--color-control-bg-border-focus);
   border-radius: 2px;
 }

@@ -16,7 +16,7 @@ import {
 } from '../../actions/Macroparameters/highlightMacroparameter';
 import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
 import { requestUpdateMacroparameterValue } from '../../actions/Macroparameters/updateMacroparameterValue';
-import { MacroparameterSetWrapper } from '../../components/MacroparameterSetWrapper/MacroparameterSetWrapper';
+import { MacroparameterSetWrapper } from '../../components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetWrapper';
 
 export const MacroparameterSetContainer = () => {
   const dispatch = useDispatch();

@@ -3,21 +3,21 @@ import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../types/Article';
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { MacroparameterTableContainer } from '../../containers/Macroparameters/MacroparameterTableContainer';
-import keyGen from '../../helpers/keyGenerator';
-import macroparameterSetCategoryOptions from '../../helpers/MacroparameterSetCategoryOptions';
-import { yearsRangeOptions } from '../../helpers/nearYearsRange';
-import { cnBlockWrapper } from '../../styles/BlockWrapper/cn-block-wrapper';
-import { cnVegaFormCustom } from '../../styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '../../../../types/Article';
+import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import { MacroparameterTableContainer } from '../../../containers/Macroparameters/MacroparameterTableContainer';
+import keyGen from '../../../helpers/keyGenerator';
+import macroparameterSetCategoryOptions from '../../../helpers/MacroparameterSetCategoryOptions';
+import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
+import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 
-import { GroupWrapper } from './GroupWrapper/GroupWrapper';
+import { Collapsed, GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
 
-import '../../styles/BlockWrapper/BlockWrapper.css';
-import '../../styles/VegaFormCustom/VegaFormCustom.css';
+import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 
 const yearsOptions = yearsRangeOptions(5, 10);
 
@@ -66,6 +66,9 @@ export const MacroparameterSetWrapper = ({
     macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[],
   );
 
+  /* collapse/expand groups state */
+  const [groupsCollapsed, setGroupsCollapsed] = useState([] as Collapsed[]);
+
   useEffect(() => {
     setAllProjects(macroparameterSet.allProjects);
     setName(macroparameterSet.caption);
@@ -73,6 +76,15 @@ export const MacroparameterSetWrapper = ({
     setYearStart(macroparameterSet.yearStart);
     setCategory(macroparameterSet.category);
     setGroups(macroparameterSet.macroparameterGroupList ?? []);
+    setGroupsCollapsed((prev) =>
+      (macroparameterSet?.macroparameterGroupList ?? [])?.map(
+        (group) =>
+          ({
+            id: group.id,
+            collapsed: prev.filter((collapsed) => collapsed.id === group.id)[0]?.collapsed ?? true,
+          } as Collapsed),
+      ),
+    );
   }, [macroparameterSet]);
 
   const toggleMacroparameterSetGroup = (event: React.MouseEvent) => {
@@ -101,8 +113,7 @@ export const MacroparameterSetWrapper = ({
     setter(e.e.target.value);
   };
 
-  const loseFocus = (e: any) => {
-    // TODO: change any
+  const loseFocus = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
       (e.target as HTMLElement).blur();
     }
@@ -140,6 +151,17 @@ export const MacroparameterSetWrapper = ({
       requestSetUpdate();
     }
   }, [allProjects, allProjectsHelper, requestSetUpdate]);
+
+  const isCollapsedCallback = (collapsed: Collapsed) => {
+    setGroupsCollapsed((prev) =>
+      prev?.map((prevCollapsedItem) => {
+        if (prevCollapsedItem.id === collapsed.id) {
+          return { id: prevCollapsedItem.id, collapsed: collapsed.collapsed } as Collapsed;
+        }
+        return prevCollapsedItem;
+      }),
+    );
+  };
 
   return (
     <div className={cnBlockWrapper()}>
@@ -244,6 +266,10 @@ export const MacroparameterSetWrapper = ({
                         requestDeleteMacroparameterGroup={requestDeleteMacroparameterGroup}
                         onArticleFocusCallback={highlightArticle}
                         highlightArticleClear={highlightArticleClear}
+                        isCollapsed={
+                          groupsCollapsed.filter((collapsed) => collapsed.id === group.id)[0]
+                        }
+                        isCollapsedCallback={isCollapsedCallback}
                       />
                     ))}
                 </Form.Row>
@@ -271,7 +297,7 @@ export const MacroparameterSetWrapper = ({
                           width="full"
                           id="macroparameterSetGroupName"
                           type="text"
-                          maxLength={150}
+                          maxLength={256}
                           value={newGroupName}
                           onChange={(event: any) => setNewGroupName(event.e.target.value)}
                         />

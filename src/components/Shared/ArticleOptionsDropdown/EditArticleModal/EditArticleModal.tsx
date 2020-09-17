@@ -9,7 +9,7 @@ import {
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
-import { cnAddArticleModal } from '../../AddArticleModal/cn-add-article-modal';
+import { cnAddArticleModal } from '../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 

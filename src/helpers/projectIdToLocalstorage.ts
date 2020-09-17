@@ -3,7 +3,7 @@ const localStorageKey = 'projectId';
 export function projectIdFromLocalStorage() {
   let value = localStorage.getItem(localStorageKey) || '';
   if (!value) {
-    localStorage.setItem(localStorageKey, '5f190a1c0bc84947cad9d7f0');
+    localStorage.setItem(localStorageKey, 'a3333333-b111-c111-d111-e00000000000');
     value = localStorage.getItem(localStorageKey) || '';
   }
 

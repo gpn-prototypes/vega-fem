@@ -3,7 +3,7 @@ export function authHeader() {
   if (!token) {
     localStorage.setItem(
       'token',
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoidGVzdEBncG4ucnUiLCJ1c2VyX2lkIjoiNWYxMTVlNzczYzFkYjUwYWM3YWJlNDdlIn0.lR_Axb6IeKuGaurvx5Zj6ZLDF21GzV2bXZHCJnTBdbM',
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYTExMTExMjNiMTExYzExMWQxMTFlMDAwMDAwMDAwMDAifQ.ugIJES0Ruu9cf5aA6hBPP1MLV1FfyaBV5ISq6EcCPKs',
     );
     token = localStorage.getItem('token') || '';
   }
