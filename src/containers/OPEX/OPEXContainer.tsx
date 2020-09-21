@@ -2,8 +2,13 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Article from '../../../types/Article';
+import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../types/OPEX/OPEXSetType';
+import {
+  articleHighlight,
+  articleHighlightClear,
+} from '../../actions/Macroparameters/highlightMacroparameter';
 import { addAutoexportExpense } from '../../actions/OPEX/addAutoexportExpense';
 import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
 import { addMKOSExpense } from '../../actions/OPEX/addMKOSExpense';
@@ -151,6 +156,17 @@ export const OPEXContainer = () => {
     [dispatch],
   );
 
+  const articleHighlightCallback = useCallback(
+    (article: Article, group: MacroparameterSetGroup) => {
+      dispatch(articleHighlight(article, group));
+    },
+    [dispatch],
+  );
+
+  const articleHighlightClearCallback = useCallback(() => {
+    dispatch(articleHighlightClear());
+  }, [dispatch]);
+
   return (
     <OPEXSetWrapper
       OPEXSetInstance={OPEXSetInstance}
@@ -172,6 +188,8 @@ export const OPEXContainer = () => {
       OPEXAddMKOSExpense={addOPEXMKOSExpense}
       selectedRole={selectedRole}
       OPEXUpdateSdf={updateOPEXSdfFlag}
+      highlightArticle={articleHighlightCallback}
+      highlightArticleClear={articleHighlightClearCallback}
     />
   );
 };

@@ -14,8 +14,8 @@ import { deleteCapexSetGroup } from '../../actions/capex/deleteCapexSetGroup';
 import { requestUpdateCapexGlobalValue } from '../../actions/capex/updateCapexSetGlobalValue';
 import { requestUpdateCapexValue } from '../../actions/capex/updateCapexValue';
 import {
-  macroparameterHighlight,
-  macroparameterHighlightClear,
+  articleHighlight,
+  articleHighlightClear,
 } from '../../actions/Macroparameters/highlightMacroparameter';
 import { CapexSetWrapper } from '../../components/CAPEX/CapexSetWrapper/CapexSetWrapper';
 
@@ -73,15 +73,15 @@ export const CapexSetContainer = () => {
     [dispatch],
   );
 
-  const articleHighlight = useCallback(
+  const articleHighlightCallback = useCallback(
     (article: Article, group: CapexExpenseSetGroup) => {
-      dispatch(macroparameterHighlight(article, group));
+      dispatch(articleHighlight(article, group));
     },
     [dispatch],
   );
 
-  const articleHighlightClear = useCallback(() => {
-    dispatch(macroparameterHighlightClear());
+  const articleHighlightClearCallback = useCallback(() => {
+    dispatch(articleHighlightClear());
   }, [dispatch]);
 
   return (
@@ -94,8 +94,8 @@ export const CapexSetContainer = () => {
       deleteCapexValue={deleteCapex}
       requestDeleteCapexGroup={requestDeleteCapexGroup}
       requestChangeCapexGroup={requestChangeCapexGroup}
-      highlightArticle={articleHighlight}
-      highlightArticleClear={articleHighlightClear}
+      highlightArticle={articleHighlightCallback}
+      highlightArticleClear={articleHighlightClearCallback}
     />
   );
 };

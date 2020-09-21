@@ -43,10 +43,10 @@ export const MacroparameterTableContainer = ({
     return result;
   }, []);
 
-  const convertToTableArticles = useCallback((nonPrepearedArticles: Article[]): TableArticle[] => {
+  const convertToTableArticles = useCallback((nonPreparedArticles: Article[]): TableArticle[] => {
     const result: TableArticle[] = [];
-    if (nonPrepearedArticles.length) {
-      nonPrepearedArticles.forEach((article: Article) => {
+    if (nonPreparedArticles.length) {
+      nonPreparedArticles.forEach((article: Article) => {
         result.push({
           id: article.id,
           caption: article?.caption,
@@ -59,10 +59,10 @@ export const MacroparameterTableContainer = ({
   }, []);
 
   const convertToTableGroups = useCallback(
-    (nonPrepearedGroups: MacroparameterSetGroup[]): TableGroup[] => {
+    (nonPreparedGroups: MacroparameterSetGroup[]): TableGroup[] => {
       const result: TableGroup[] = [];
-      if (nonPrepearedGroups.length) {
-        nonPrepearedGroups.forEach((group: MacroparameterSetGroup) => {
+      if (nonPreparedGroups.length) {
+        nonPreparedGroups.forEach((group: MacroparameterSetGroup) => {
           result.push({
             id: group?.id,
             caption: group?.caption,

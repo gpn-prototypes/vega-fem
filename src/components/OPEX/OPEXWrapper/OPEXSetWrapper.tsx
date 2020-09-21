@@ -5,6 +5,7 @@ import { IconSelect } from '@gpn-design/uikit/IconSelect';
 import { Button, Form, Text, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
 import Role from '../../../../types/role';
@@ -39,6 +40,8 @@ interface OPEXWrapperProps {
   OPEXAddMKOSExpense: (article: Article) => void;
   OPEXUpdateSdf: (sdf: boolean) => void;
   selectedRole: Role;
+  highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
+  highlightArticleClear: () => void;
 }
 
 export const OPEXSetWrapper = ({
@@ -61,6 +64,8 @@ export const OPEXSetWrapper = ({
   OPEXAddMKOSExpense,
   OPEXUpdateSdf,
   selectedRole,
+  highlightArticle,
+  highlightArticleClear,
 }: OPEXWrapperProps) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
   const [SDFHelper, setSDFHelper] = useState(false);
@@ -170,7 +175,7 @@ export const OPEXSetWrapper = ({
             <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
               {!isEconomic && OPEXSetInstance?.hasAutoexport && (
                 <GroupWrapper
-                  group={OPEXSetInstance?.autoexport}
+                  group={{ ...OPEXSetInstance?.autoexport, ...{ id: '1' } }}
                   groupName="Автовывоз"
                   isPreset={OPEXSetInstance?.hasAutoexport}
                   updateGroup={OPEXChangeAutoexport}
@@ -178,11 +183,13 @@ export const OPEXSetWrapper = ({
                   updateArticle={OPEXChangeAutoexportExpense}
                   deleteArticle={OPEXDeleteAutoexportExpense}
                   addArticle={OPEXAddAutoexportExpense}
+                  onArticleFocusCallback={highlightArticle}
+                  highlightArticleClear={highlightArticleClear}
                 />
               )}
               {!isEconomic && OPEXSetInstance?.hasMkos && (
                 <GroupWrapper
-                  group={OPEXSetInstance?.mkos}
+                  group={{ ...OPEXSetInstance?.mkos, ...{ id: '2' } }}
                   groupName="Аренда МКОС"
                   isPreset={OPEXSetInstance?.hasMkos}
                   updateGroup={OPEXChangeMKOS}
@@ -190,6 +197,8 @@ export const OPEXSetWrapper = ({
                   updateArticle={OPEXChangeMKOSExpense}
                   deleteArticle={OPEXDeleteMKOSExpense}
                   addArticle={OPEXAddMKOSExpense}
+                  onArticleFocusCallback={highlightArticle}
+                  highlightArticleClear={highlightArticleClear}
                 />
               )}
               {isEconomic &&
@@ -206,6 +215,8 @@ export const OPEXSetWrapper = ({
                       groupsCollapsed.filter((collapsed) => collapsed.id === caseItem.id)[0]
                     }
                     isCollapsedCallback={isCollapsedCallback}
+                    onArticleFocusCallback={highlightArticle}
+                    highlightArticleClear={highlightArticleClear}
                   />
                 ))}
             </Form.Row>
@@ -261,11 +272,6 @@ export const OPEXSetWrapper = ({
           />
         )}
         {isEconomic && <OPEXEconomyTableContainer opexCaseList={OPEXSetInstance.opexCaseList} />}
-        {/* <Table
-          entity={tableData()}
-          secondaryColumn={isEconomic ? 'valueTotal' : 'unit'}
-          headers={isEconomic ? ['', 'Статья', 'Суммарное'] : ['', 'Значение', 'Eд. измерения']}
-        /> */}
       </div>
     </div>
   );

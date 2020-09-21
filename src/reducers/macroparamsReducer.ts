@@ -7,8 +7,8 @@ import { MACROPARAM_SET_GROUP_CHANGE_SUCCESS } from '../actions/Macroparameters/
 import { MACROPARAM_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameter';
 import { MACROPARAM_SET_GROUP_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
-  MACROPARAM_HIGHLIGHT,
-  MACROPARAM_HIGHLIGHT_CLEAR,
+  ARTICLE_HIGHLIGHT,
+  ARTICLE_HIGHLIGHT_CLEAR,
 } from '../actions/Macroparameters/highlightMacroparameter';
 import {
   MACROPARAMS_SET_LIST_ERROR,
@@ -245,7 +245,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           },
         },
       };
-    case MACROPARAM_HIGHLIGHT:
+    case ARTICLE_HIGHLIGHT:
       return {
         ...state,
         focusedArticle: {
@@ -253,7 +253,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           article: action.payload.article,
         },
       };
-    case MACROPARAM_HIGHLIGHT_CLEAR:
+    case ARTICLE_HIGHLIGHT_CLEAR:
       return {
         ...state,
         focusedArticle: {},

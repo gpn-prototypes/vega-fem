@@ -1,7 +1,7 @@
 import {
+  ARTICLE_HIGHLIGHT,
+  ARTICLE_HIGHLIGHT_CLEAR,
   HighlightAction,
-  MACROPARAM_HIGHLIGHT,
-  MACROPARAM_HIGHLIGHT_CLEAR,
 } from '../actions/Macroparameters/highlightMacroparameter';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
 
 export default function highlightReducer(state = initialState, action: HighlightAction) {
   switch (action.type) {
-    case MACROPARAM_HIGHLIGHT:
+    case ARTICLE_HIGHLIGHT:
       return {
         ...state,
         focusedArticle: {
@@ -18,7 +18,7 @@ export default function highlightReducer(state = initialState, action: Highlight
           article: action.payload.article,
         },
       };
-    case MACROPARAM_HIGHLIGHT_CLEAR:
+    case ARTICLE_HIGHLIGHT_CLEAR:
       return {
         ...state,
         focusedArticle: {},
