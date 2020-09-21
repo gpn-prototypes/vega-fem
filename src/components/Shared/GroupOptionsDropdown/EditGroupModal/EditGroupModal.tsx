@@ -8,27 +8,28 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
-
 import { cnEditGroupModal } from './cn-edit-group-modal';
 
 import './EditGroupModal.css';
 
-interface EditGroupModalProps {
+interface EditGroupModalProps<GroupType> {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
-  callback?: (group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup) => void;
-  group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup;
+  callback?: (group: GroupType) => void;
+  group: GroupType;
 }
 
-export const EditGroupModal = ({ isOpen, close, callback, group }: EditGroupModalProps) => {
+export const EditGroupModal = <GroupType extends { id: string | number; caption: string }>({
+  isOpen,
+  close,
+  callback,
+  group,
+}: EditGroupModalProps<GroupType>) => {
   const [id] = useState(group.id);
   const [caption, setCaption] = useState(group.caption);
 
   const submitHandle = (e: any) => {
-    if (callback) callback({ id, caption });
+    if (callback) callback({ ...group, id, caption });
     close(e);
   };
 

@@ -9,14 +9,18 @@ import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
 import { addMKOSExpense } from '../../actions/OPEX/addMKOSExpense';
 import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
 import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
+import { changeCase } from '../../actions/OPEX/changeCase';
 import { MKOSChange } from '../../actions/OPEX/changeMKOS';
 import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
 import { caseChangeExpense } from '../../actions/OPEX/changeOPEXCaseExpense';
 import { createCase } from '../../actions/OPEX/createCase';
 import { autoexportDeleteExpense } from '../../actions/OPEX/deleteAutoexportExpense';
+import { deleteCase } from '../../actions/OPEX/deleteCase';
 import { MKOSDeleteExpense } from '../../actions/OPEX/deleteMKOSExpense';
 import { caseDeleteExpense } from '../../actions/OPEX/deleteOpexCaseExpense';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
+import { autoexportRemove } from '../../actions/OPEX/removeAutoexport';
+import { MKOSRemove } from '../../actions/OPEX/removeMKOS';
 import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';
 import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
 
@@ -39,6 +43,12 @@ export const OPEXContainer = () => {
     },
     [dispatch],
   );
+  const removeOPEXAutoexport = useCallback(
+    (OPEXAutoexport: OPEXGroup) => {
+      dispatch(autoexportRemove(OPEXAutoexport));
+    },
+    [dispatch],
+  );
 
   const changeOPEXAutoexportExpense = useCallback(
     (article: Article) => {
@@ -46,6 +56,7 @@ export const OPEXContainer = () => {
     },
     [dispatch],
   );
+
   const deleteOPEXAutoexportExpense = useCallback(
     (article: Article) => {
       dispatch(autoexportDeleteExpense(article));
@@ -56,6 +67,13 @@ export const OPEXContainer = () => {
   const changeMKOS = useCallback(
     (OPEXMKOS: OPEXGroup) => {
       dispatch(MKOSChange(OPEXMKOS));
+    },
+    [dispatch],
+  );
+
+  const removeMKOS = useCallback(
+    (OPEXMKOS: OPEXGroup) => {
+      dispatch(MKOSRemove(OPEXMKOS));
     },
     [dispatch],
   );
@@ -76,6 +94,18 @@ export const OPEXContainer = () => {
   const createOPEXCase = useCallback(
     (group: OPEXGroup) => {
       dispatch(createCase(group));
+    },
+    [dispatch],
+  );
+  const deleteOPEXCase = useCallback(
+    (group: OPEXGroup) => {
+      dispatch(deleteCase(group));
+    },
+    [dispatch],
+  );
+  const changeOPEXCase = useCallback(
+    (group: OPEXGroup) => {
+      dispatch(changeCase(group));
     },
     [dispatch],
   );
@@ -125,12 +155,16 @@ export const OPEXContainer = () => {
     <OPEXSetWrapper
       OPEXSetInstance={OPEXSetInstance}
       OPEXChangeAutoexport={changeOPEXAutoexport}
+      OPEXDeleteAutoexport={removeOPEXAutoexport}
       OPEXChangeAutoexportExpense={changeOPEXAutoexportExpense}
       OPEXDeleteAutoexportExpense={deleteOPEXAutoexportExpense}
       OPEXChangeMKOS={changeMKOS}
+      OPEXDeleteMKOS={removeMKOS}
       OPEXChangeMKOSExpense={changeOPEXMKOSExpense}
       OPEXDeleteMKOSExpense={deleteOPEXMKOSExpense}
       OPEXCreateCase={createOPEXCase}
+      OPEXDeleteCase={deleteOPEXCase}
+      OPEXChangeCase={changeOPEXCase}
       OPEXChangeCaseExpense={changeOPEXCaseExpense}
       OPEXDeleteCaseExpense={deleteOpexCaseExpense}
       OPEXAddCaseExpense={addOPEXCaseExpense}

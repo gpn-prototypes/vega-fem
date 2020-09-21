@@ -2,23 +2,25 @@ import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
 import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
 
-import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
 import { cnDeleteArticleModal } from '../../ArticleOptionsDropdown/DeleteArticleModal/cn-delete-article-modal';
 
-interface DeleteGroupModalProps {
+interface DeleteGroupModalProps<GroupType> {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
-  callback?: (group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup) => void;
-  group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup;
+  callback?: (group: GroupType) => void;
+  group: GroupType;
 }
 
-export const DeleteGroupModal = ({ isOpen, close, callback, group }: DeleteGroupModalProps) => {
+export const DeleteGroupModal = <GroupType extends { id: string | number }>({
+  isOpen,
+  close,
+  callback,
+  group,
+}: DeleteGroupModalProps<GroupType>): JSX.Element => {
   const [id] = useState(group.id);
 
   const submitHandle = (e: any) => {
-    if (callback) callback({ id });
+    if (callback) callback({ ...group, id });
     close(e);
   };
 

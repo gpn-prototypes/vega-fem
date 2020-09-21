@@ -21,9 +21,9 @@ const OPEXChangeCaseInit = (): OPEXAction => ({
   type: OPEX_CHANGE_CASE_INIT,
 });
 
-const OPEXChangeCaseSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
+const OPEXChangeCaseSuccess = (group: OPEXSetType): OPEXAction => ({
   type: OPEX_CHANGE_CASE_SUCCESS,
-  payload: OPEXSetInstance,
+  payload: group,
 });
 
 const OPEXChangeCaseError = (message: any): OPEXAction => ({
@@ -47,7 +47,7 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
             `caption:"${opexCase.caption}",` +
             `yearStart:${opexCase.yearStart.toString()},` +
             `yearEnd:${opexCase.yearEnd.toString()}` +
-            `){opexCase{name,caption,yearStart,yearEnd} ok}}`,
+            `){opexCase{id,name,caption,yearStart,yearEnd} ok}}`,
         }),
       });
       const body = await response.json();

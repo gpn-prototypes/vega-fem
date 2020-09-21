@@ -3,33 +3,27 @@ import { Dropdown } from '@gpn-prototypes/vega-dropdown';
 import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 
 import { GroupMenu } from './GroupMenu/GroupMenu';
 
-interface GroupOptions {
-  group: OPEXGroup | CapexExpenseSetGroup | MacroparameterSetGroup;
-  requestAddArticle: (
-    article: Article,
-    group: OPEXGroup | CapexExpenseSetGroup | MacroparameterSetGroup,
-  ) => void;
-  requestChangeGroup: (group: OPEXGroup | CapexExpenseSetGroup | MacroparameterSetGroup) => void;
-  requestDeleteGroup: (group: OPEXGroup | CapexExpenseSetGroup | MacroparameterSetGroup) => void;
+interface GroupOptions<GroupType> {
+  group: GroupType;
+  requestAddArticle: (article: Article, group: GroupType) => void;
+  requestChangeGroup?: (group: GroupType) => void;
+  requestDeleteGroup: (group: GroupType) => void;
 }
 
-export const GroupOptionsDropdown = ({
+export const GroupOptionsDropdown = <GroupType,>({
   group,
   requestAddArticle,
   requestChangeGroup,
   requestDeleteGroup,
-}: GroupOptions) => {
+}: GroupOptions<GroupType>) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <Dropdown
-      placement="top-start"
+      placement="bot-start"
       isOpen={isOpen}
       onToggle={(nextState): void => {
         setIsOpen(nextState);

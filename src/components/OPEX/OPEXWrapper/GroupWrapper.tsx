@@ -4,7 +4,6 @@ import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
 import { Form, Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import keyGen from '../../../helpers/keyGenerator';
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
@@ -14,17 +13,18 @@ import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
+import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
 interface GroupWrapperProps {
-  group: any;
+  group: any; // TODO:change any
   groupName?: string;
   isPreset?: boolean;
-  removeGroup?: (group: MacroparameterSetGroup) => void;
+  removeGroup: (group: OPEXGroup) => void;
   updateGroup?: (group: OPEXGroup) => void;
-  // changeGroupName: (article: Article, group: OPEXGroup) => void;
+  changeGroupName?: (group: OPEXGroup) => void;
   addArticle: (article: Article, group: OPEXGroup) => void;
   deleteArticle: (article: Article, group: OPEXGroup) => void;
   updateArticle: (article: Article) => void;
@@ -39,6 +39,8 @@ export const GroupWrapper = ({
   groupName,
   isPreset,
   updateGroup,
+  removeGroup,
+  changeGroupName,
   updateArticle,
   deleteArticle,
   addArticle,
@@ -128,21 +130,12 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          {/* <Button
-            type="button"
-            title="Добавить статью"
-            onlyIcon
-            iconLeft={IconAdd}
-            size="s"
-            view="clear"
-            onClick={openAddArticleModal}
-          /> */}
-          {/* <GroupOptionsDropdown
+          <GroupOptionsDropdown<OPEXGroup>
             group={group}
             requestAddArticle={addArticle}
             requestChangeGroup={changeGroupName}
-            requestDeleteGroup={()=>{} }
-          /> */}
+            requestDeleteGroup={removeGroup}
+          />
         </div>
       </div>
       <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
@@ -155,7 +148,7 @@ export const GroupWrapper = ({
             <Select
               options={yearsOptions}
               name="OPEXYearEnd"
-              value={yearEnd}
+              value={yearEnd.toString()}
               onClearValue={() => null}
               onChange={(selectValue: any) => {
                 setYearEnd(selectValue);

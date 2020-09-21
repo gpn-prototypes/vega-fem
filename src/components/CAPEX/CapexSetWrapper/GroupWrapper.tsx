@@ -88,7 +88,7 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <GroupOptionsDropdown
+          <GroupOptionsDropdown<CapexExpenseSetGroup>
             group={group}
             requestAddArticle={requestAddCapex}
             requestChangeGroup={requestChangeCapexGroup}

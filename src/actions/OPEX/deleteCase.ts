@@ -2,7 +2,6 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -21,9 +20,9 @@ const OPEXDeleteCaseInit = (): OPEXAction => ({
   type: OPEX_DELETE_CASE_INIT,
 });
 
-const OPEXDeleteCaseSuccess = (OPEXSetInstance: OPEXSetType): OPEXAction => ({
+const OPEXDeleteCaseSuccess = (opexCase: OPEXGroup): OPEXAction => ({
   type: OPEX_DELETE_CASE_SUCCESS,
-  payload: OPEXSetInstance,
+  payload: opexCase,
 });
 
 const OPEXDeleteCaseError = (message: any): OPEXAction => ({
@@ -46,7 +45,7 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXDeleteCaseSuccess(body.data?.changeOpexCase?.opexCase));
+        dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {
         dispatch(OPEXDeleteCaseError(body.message));
       }

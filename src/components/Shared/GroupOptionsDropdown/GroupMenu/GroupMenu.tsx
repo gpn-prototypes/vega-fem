@@ -2,29 +2,23 @@ import React, { useState } from 'react';
 import { Button, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
 import { AddArticleModal } from '../AddArticleModal/AddArticleModal';
 import { DeleteGroupModal } from '../DeleteGroupModal/DeleteGroupModal';
 import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
 
-interface GroupMenuOptions {
-  group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup;
-  requestAddArticle: (
-    article: Article,
-    group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup,
-  ) => void;
-  requestChangeGroup: (group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup) => void;
-  requestDeleteGroup: (group: CapexExpenseSetGroup | MacroparameterSetGroup | OPEXGroup) => void;
+interface GroupMenuOptions<GroupType> {
+  group: GroupType;
+  requestAddArticle: (article: Article, group: GroupType) => void;
+  requestChangeGroup?: (group: GroupType) => void;
+  requestDeleteGroup: (group: GroupType) => void;
 }
 
-export const GroupMenu: any = ({
+export const GroupMenu: any = <GroupType extends { id: string | number; caption: string }>({
   group,
   requestAddArticle,
   requestChangeGroup,
   requestDeleteGroup,
-}: GroupMenuOptions) => {
+}: GroupMenuOptions<GroupType>): JSX.Element => {
   const { isOpen, close, open } = useModal();
   const [isAdd, setIsAdd] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -60,13 +54,17 @@ export const GroupMenu: any = ({
         label="Добавить статью"
         onClick={openAddGroupModal}
       />
-      <Button
-        type="button"
-        size="s"
-        view="clear"
-        label="Переименовать"
-        onClick={openEditGroupModal}
-      />
+      {requestChangeGroup ? (
+        <Button
+          type="button"
+          size="s"
+          view="clear"
+          label="Переименовать"
+          onClick={openEditGroupModal}
+        />
+      ) : (
+        <></>
+      )}
       <Button type="button" size="s" view="clear" label="Удалить" onClick={openDeleteGroupModal} />
       {isAdd ? (
         <AddArticleModal
@@ -79,12 +77,17 @@ export const GroupMenu: any = ({
         <></>
       )}
       {isEdit ? (
-        <EditGroupModal isOpen={isOpen} close={close} group={group} callback={requestChangeGroup} />
+        <EditGroupModal<typeof group>
+          isOpen={isOpen}
+          close={close}
+          group={group}
+          callback={requestChangeGroup}
+        />
       ) : (
         <></>
       )}
       {isDelete ? (
-        <DeleteGroupModal
+        <DeleteGroupModal<typeof group>
           isOpen={isOpen}
           close={close}
           group={group}

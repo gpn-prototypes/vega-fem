@@ -96,7 +96,7 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <GroupOptionsDropdown
+          <GroupOptionsDropdown<MacroparameterSetGroup>
             group={group}
             requestAddArticle={addMacroparameterToGroup}
             requestChangeGroup={requestChangeMacroparameterGroup}

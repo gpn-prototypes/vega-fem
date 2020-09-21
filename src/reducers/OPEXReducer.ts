@@ -8,6 +8,7 @@ import { OPEX_ADD_MKOS_EXPENSE_SUCCESS } from '../actions/OPEX/addMKOSExpense';
 import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/changeAutoexport';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeAutoexportExpense';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeAutoexportExpenseYearValue';
+import { OPEX_CHANGE_CASE_SUCCESS } from '../actions/OPEX/changeCase';
 import { OPEX_MKOS_CHANGE_SUCCESS } from '../actions/OPEX/changeMKOS';
 import { OPEX_MKOS_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeMKOSExpense';
 import { OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeMKOSExpenseYearValue';
@@ -15,9 +16,12 @@ import { OPEX_CASE_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeOPEXCase
 import { OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeOPEXCaseExpenseYearValue';
 import { OPEX_CREATE_CASE_SUCCESS } from '../actions/OPEX/createCase';
 import { OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteAutoexportExpense';
+import { OPEX_DELETE_CASE_SUCCESS } from '../actions/OPEX/deleteCase';
 import { OPEX_MKOS_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteMKOSExpense';
 import { OPEX_CASE_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteOpexCaseExpense';
 import { OPEX_SET_SUCCESS, OPEXAction } from '../actions/OPEX/fetchOPEXSet';
+import { OPEX_AUTOEXPORT_REMOVE_SUCCESS } from '../actions/OPEX/removeAutoexport';
+import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/removeMKOS';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
 
@@ -57,6 +61,11 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
       return {
         ...state,
         opex: { ...state.opex, ...{ autoexport: action.payload } },
+      };
+    case OPEX_AUTOEXPORT_REMOVE_SUCCESS:
+      return {
+        ...state,
+        opex: { ...state.opex, ...{ hasAutoexport: false }, ...{ autoexport: null } },
       };
     case OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS:
       return {
@@ -210,6 +219,11 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         ...state,
         opex: { ...state.opex, ...{ mkos: action.payload } },
       };
+    case OPEX_MKOS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        opex: { ...state.opex, ...{ hasMkos: false }, ...{ mkos: null } },
+      };
     case OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS:
       return {
         ...state,
@@ -320,6 +334,32 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
             }
             return group;
           }),
+        },
+      };
+    case OPEX_CHANGE_CASE_SUCCESS:
+      return {
+        ...state,
+        opex: {
+          ...state.opex,
+          opexCaseList: (state.opex.opexCaseList ?? []).map((group: OPEXGroup) => {
+            if (group.id === action.payload.id) {
+              return {
+                ...group,
+                caption: action.payload.caption,
+              };
+            }
+            return { ...group };
+          }),
+        },
+      };
+    case OPEX_DELETE_CASE_SUCCESS:
+      return {
+        ...state,
+        opex: {
+          ...state.opex,
+          opexCaseList: (state.opex.opexCaseList ?? []).filter(
+            (group: OPEXGroup) => group.id !== action.payload.id,
+          ),
         },
       };
     case OPEX_SET_SUCCESS:

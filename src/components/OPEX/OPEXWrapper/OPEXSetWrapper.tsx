@@ -22,12 +22,16 @@ import '../../../styles/BlockWrapper/BlockWrapper.css';
 interface OPEXWrapperProps {
   OPEXSetInstance: OPEXSetType;
   OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
+  OPEXDeleteAutoexport: (OPEXAutoexport: OPEXGroup) => void;
   OPEXChangeAutoexportExpense: (article: Article) => void;
   OPEXDeleteAutoexportExpense: (article: Article) => void;
   OPEXChangeMKOS: (OPEXMKOS: OPEXGroup) => void;
+  OPEXDeleteMKOS: (OPEXMKOS: OPEXGroup) => void;
   OPEXChangeMKOSExpense: (article: Article) => void;
   OPEXDeleteMKOSExpense: (article: Article) => void;
   OPEXCreateCase: (newCase: OPEXGroup) => void;
+  OPEXDeleteCase: (newCase: OPEXGroup) => void;
+  OPEXChangeCase: (newCase: OPEXGroup) => void;
   OPEXChangeCaseExpense: (article: Article, group: OPEXGroup) => void;
   OPEXDeleteCaseExpense: (article: Article, group: OPEXGroup) => void;
   OPEXAddCaseExpense: (article: Article, group: OPEXGroup) => void;
@@ -40,12 +44,16 @@ interface OPEXWrapperProps {
 export const OPEXSetWrapper = ({
   OPEXSetInstance,
   OPEXChangeAutoexport,
+  OPEXDeleteAutoexport,
   OPEXChangeAutoexportExpense,
   OPEXDeleteAutoexportExpense,
   OPEXChangeMKOS,
+  OPEXDeleteMKOS,
   OPEXChangeMKOSExpense,
   OPEXDeleteMKOSExpense,
   OPEXCreateCase,
+  OPEXDeleteCase,
+  OPEXChangeCase,
   OPEXChangeCaseExpense,
   OPEXDeleteCaseExpense,
   OPEXAddCaseExpense,
@@ -166,6 +174,7 @@ export const OPEXSetWrapper = ({
                   groupName="Автовывоз"
                   isPreset={OPEXSetInstance?.hasAutoexport}
                   updateGroup={OPEXChangeAutoexport}
+                  removeGroup={OPEXDeleteAutoexport}
                   updateArticle={OPEXChangeAutoexportExpense}
                   deleteArticle={OPEXDeleteAutoexportExpense}
                   addArticle={OPEXAddAutoexportExpense}
@@ -177,6 +186,7 @@ export const OPEXSetWrapper = ({
                   groupName="Аренда МКОС"
                   isPreset={OPEXSetInstance?.hasMkos}
                   updateGroup={OPEXChangeMKOS}
+                  removeGroup={OPEXDeleteMKOS}
                   updateArticle={OPEXChangeMKOSExpense}
                   deleteArticle={OPEXDeleteMKOSExpense}
                   addArticle={OPEXAddMKOSExpense}
@@ -187,6 +197,8 @@ export const OPEXSetWrapper = ({
                   <GroupWrapper
                     key={keyGen(index)}
                     group={caseItem}
+                    removeGroup={OPEXDeleteCase}
+                    changeGroupName={OPEXChangeCase}
                     updateArticle={(article: Article) => OPEXChangeCaseExpense(article, caseItem)}
                     deleteArticle={(article: Article) => OPEXDeleteCaseExpense(article, caseItem)}
                     addArticle={OPEXAddCaseExpense}
