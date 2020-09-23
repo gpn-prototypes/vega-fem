@@ -13,11 +13,9 @@ import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupW
 import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
-// import { CapexWrapper } from './CapexWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
-// import {Article} from "../../Shared/AddArticleModal/AddArticleModal";
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
   requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
@@ -53,6 +51,7 @@ export const GroupWrapper = ({
     setIsCollapsedState(false);
     open();
   };
+  const addCapexToGroup = (capex: Article): void => requestAddCapex(capex, group);
 
   const updateCapexValueWithGroup = (capex: Article): void => updateCapexValue(capex, group);
 
@@ -118,7 +117,7 @@ export const GroupWrapper = ({
         isOpen={isOpen}
         close={close}
         article={{ caption: '', unit: '' } as Article}
-        callback={updateCapexValueWithGroup}
+        callback={addCapexToGroup}
       />
     </div>
   );
