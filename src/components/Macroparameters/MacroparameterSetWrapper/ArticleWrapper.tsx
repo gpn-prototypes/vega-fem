@@ -6,9 +6,11 @@ import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-cu
 import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdowns';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
+import { cnArticleWrapper } from './cn-article-wrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper/GroupWrapper.css';
+import './ArticleWrapper.css';
 
 interface ArticleWrapperProps {
   article: Article;
@@ -61,27 +63,34 @@ export const ArticleWrapper = ({
   }, [onFocusCallback, article]);
 
   return (
-    <Form.Row className={cnVegaFormCustom('form-row', { width: true && 'full-width' })} space="m">
+    <Form.Row
+      className={cnVegaFormCustom('form-row', { width: fullWidth && 'full-width' })}
+      space="m"
+    >
       <Form.Field className={cnGroupWrapper('body-content')}>
         <Form.Label space="2xs">{article?.caption}</Form.Label>
-        <Form.Row col="2">
-          <TextField
-            size="s"
-            width="full"
-            id={`article_${article?.name}_${article?.id}`}
-            placeholder="Значение"
-            rightSide={article?.unit}
-            value={values && values.length ? values[0]?.value.toString() : ''}
-            onBlur={blurHandle}
-            onChange={(e: any) => editValues(e)}
-            onKeyDown={(e) => loseFocus(e)}
-            onFocus={onFocusHandler}
-          />
-          <ArticleOptionsDropdown
-            article={article}
-            updateArticle={updateArticleCallback}
-            deleteArticle={deleteArticleCallback}
-          />
+        <Form.Row col="4" className={cnArticleWrapper('row')}>
+          <Form.Field className={cnArticleWrapper('text-field')}>
+            <TextField
+              size="s"
+              width="full"
+              id={`article_${article?.name}_${article?.id}`}
+              placeholder="Значение"
+              rightSide={article?.unit}
+              value={values && values.length ? values[0]?.value.toString() : ''}
+              onBlur={blurHandle}
+              onChange={(e: any) => editValues(e)}
+              onKeyDown={(e) => loseFocus(e)}
+              onFocus={onFocusHandler}
+            />
+          </Form.Field>
+          <Form.Field>
+            <ArticleOptionsDropdown
+              article={article}
+              updateArticle={updateArticleCallback}
+              deleteArticle={deleteArticleCallback}
+            />
+          </Form.Field>
         </Form.Row>
       </Form.Field>
     </Form.Row>
