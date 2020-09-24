@@ -3,9 +3,12 @@ import MacroparameterSet from '../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSetGroup';
 import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameter';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
+import { MACROPARAM_SET_GROUP_CHANGE_SUCCESS } from '../actions/Macroparameters/changeMacroparameterSetGroup';
+import { MACROPARAM_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameter';
+import { MACROPARAM_SET_GROUP_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
-  MACROPARAM_HIGHLIGHT,
-  MACROPARAM_HIGHLIGHT_CLEAR,
+  ARTICLE_HIGHLIGHT,
+  ARTICLE_HIGHLIGHT_CLEAR,
 } from '../actions/Macroparameters/highlightMacroparameter';
 import {
   MACROPARAMS_SET_LIST_ERROR,
@@ -63,6 +66,46 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         ...state,
         selected: { ...state.selected },
       };
+    case MACROPARAM_SET_GROUP_CHANGE_SUCCESS:
+      groupList = (state?.selected.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
+      group = (groupList?.find(
+        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.id,
+      ) ?? {}) as MacroparameterSetGroup;
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ...{
+            macroparameterGroupList: [
+              ...groupList.map((groupItem: MacroparameterSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...groupItem,
+                    caption: action.payload.caption,
+                  };
+                }
+                return { ...groupItem };
+              }),
+            ],
+          },
+        },
+      };
+    case MACROPARAM_SET_GROUP_DELETE_SUCCESS:
+      groupList = (state?.selected.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
+      group = (groupList?.find(
+        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.id,
+      ) ?? {}) as MacroparameterSetGroup;
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ...{
+            macroparameterGroupList: [
+              ...groupList.filter((groupItem: MacroparameterSetGroup) => groupItem.id !== group.id),
+            ],
+          },
+        },
+      };
     case MACROPARAM_ADD_SUCCESS:
       /* eslint-disable-line */state?.selected?.macroparameterGroupList
         ?.find((group_: MacroparameterSetGroup) => group_.id === action.payload.group?.id)
@@ -72,13 +115,16 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         selected: { ...state.selected },
       };
     case MACROPARAM_UPDATE_VALUE_SUCCESS:
-      /* eslint-disable-line */groupList = (state?.selected?.macroparameterGroupList ??
-        []) as MacroparameterSetGroup[];
-      /* eslint-disable-line */group = (groupList?.find(
+      /* eslint-disable-line */
+      groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
+      /* eslint-disable-line */
+      group = (groupList?.find(
         (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
       ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-line */macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-line */macr = (macroparameterList?.find(
+      /* eslint-disable-line */
+      macroparameterList = group?.macroparameterList ?? [];
+      /* eslint-disable-line */
+      macr = (macroparameterList?.find(
         (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
       ) ?? {}) as Article;
       return {
@@ -87,7 +133,6 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           ...state.selected,
           ...{
             macroparameterGroupList: [
-              // ...groupList.filter((i) => i.id !== group.id),
               ...groupList.map((groupItem: MacroparameterSetGroup) => {
                 if (groupItem.id === group.id) {
                   return {
@@ -100,6 +145,42 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                           }
                           return { ...i };
                         }),
+                      ],
+                    },
+                  };
+                }
+                return { ...groupItem };
+              }),
+            ],
+          },
+        },
+      };
+    case MACROPARAM_DELETE_SUCCESS:
+      /* eslint-disable-line */
+      groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
+      /* eslint-disable-line */
+      group = (groupList?.find(
+        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
+      ) ?? {}) as MacroparameterSetGroup;
+      /* eslint-disable-line */
+      macroparameterList = group?.macroparameterList ?? [];
+      /* eslint-disable-line */
+      macr = (macroparameterList?.find(
+        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
+      ) ?? {}) as Article;
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          ...{
+            macroparameterGroupList: [
+              ...groupList.map((groupItem: MacroparameterSetGroup) => {
+                if (groupItem.id === group.id) {
+                  return {
+                    ...{
+                      ...action.payload.group,
+                      macroparameterList: [
+                        ...macroparameterList.filter((i: Article) => i.id !== macr.id),
                       ],
                     },
                   };
@@ -140,7 +221,6 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           ...state.selected,
           ...{
             macroparameterGroupList: [
-              // ...groupList.filter((i) => i.id !== group.id),
               ...groupList.map((groupItem: MacroparameterSetGroup) => {
                 if (groupItem.id === group.id) {
                   return {
@@ -161,27 +241,11 @@ export default function macroparamsReducer(state = initialState, action: Macropa
                 }
                 return { ...groupItem };
               }),
-              /* ...[
-                {
-                  ...group,
-                  ...{
-                    macroparameterList: [
-                      ...macroparameterList.filter((i: Article) => i.id !== macr.id),
-                      ...[
-                        {
-                          ...macr,
-                          ...{ value },
-                        },
-                      ],
-                    ],
-                  },
-                },
-              ], */
             ],
           },
         },
       };
-    case MACROPARAM_HIGHLIGHT:
+    case ARTICLE_HIGHLIGHT:
       return {
         ...state,
         focusedArticle: {
@@ -189,7 +253,7 @@ export default function macroparamsReducer(state = initialState, action: Macropa
           article: action.payload.article,
         },
       };
-    case MACROPARAM_HIGHLIGHT_CLEAR:
+    case ARTICLE_HIGHLIGHT_CLEAR:
       return {
         ...state,
         focusedArticle: {},

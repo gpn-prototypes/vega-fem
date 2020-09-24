@@ -3,6 +3,7 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article, { ArticleValues } from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdowns';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
 
@@ -13,6 +14,8 @@ interface ArticleWrapperProps {
   article: Article;
   fullWidth?: boolean;
   updateArticleValueCallback?: (updatedArticle: Article) => void;
+  updateArticleCallback: (updateArticle: Article) => void;
+  deleteArticleCallback: (deleteArticle: Article) => void;
   onFocusCallback?: (article: Article) => void;
   highlightArticleClear?: () => void;
 }
@@ -20,6 +23,8 @@ interface ArticleWrapperProps {
 export const ArticleWrapper = ({
   article,
   updateArticleValueCallback,
+  updateArticleCallback,
+  deleteArticleCallback,
   fullWidth,
   onFocusCallback,
   highlightArticleClear,
@@ -73,6 +78,11 @@ export const ArticleWrapper = ({
           onChange={(e: any) => editValues(e)}
           onKeyDown={(e) => loseFocus(e)}
           onFocus={onFocusHandler}
+        />
+        <ArticleOptionsDropdown
+          article={article}
+          updateArticle={updateArticleCallback}
+          deleteArticle={deleteArticleCallback}
         />
       </Form.Field>
     </Form.Row>

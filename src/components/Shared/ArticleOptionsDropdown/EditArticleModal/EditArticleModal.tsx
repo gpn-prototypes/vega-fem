@@ -8,27 +8,31 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
+import Article from '../../../../../types/Article';
+import { cnAddArticleModal } from '../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
 
-import { cnAddArticleModal } from './cn-add-article-modal';
+import { cnEditArticleModal } from './cn-edit-article-modal';
 
-import './AddArticleModal.css';
+import './EditArticleModal.css';
 
-interface AddArticleModalProps {
+interface EditArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
   article: Article;
 }
 
-export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticleModalProps) => {
+export const EditArticleModal = ({ isOpen, close, callback, article }: EditArticleModalProps) => {
+  const [id] = useState(article.id);
   const [caption, setCaption] = useState(article.caption);
   const [unit, setUnit] = useState(article.unit);
+  const [name, setName] = useState(article.name);
 
   const submitHandle = (e: any) => {
-    if (callback) callback({ caption, unit } as Article);
+    if (callback) callback({ id, name, caption, unit } as Article);
     close(e);
   };
+
   const handleArticleEvent = (e: any) => {
     if (e.key === 'Enter') {
       submitHandle(e);
@@ -43,33 +47,44 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
       onClose={close}
       isOpen={isOpen}
       rootSelector=".App"
-      className={cnAddArticleModal()}
+      className={cnEditArticleModal()}
     >
-      <Modal.Header className={cnAddArticleModal('header')}>
-        <Text size="xs">Добавление новой статьи</Text>
+      <Modal.Header className={cnEditArticleModal('header')}>
+        <Text size="xs">Редактирование статьи</Text>
       </Modal.Header>
       <Modal.Body>
         <Form.Row space="none" gap="none" className={cnAddArticleModal('full-width-row')}>
           <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <TextField
-              id="articleModalNewArticleName"
+              id="articleSetName"
               size="s"
               width="full"
-              maxLength={256}
               value={caption}
               onChange={(e: any) => {
                 setCaption(e.e.target.value);
               }}
             />
           </Form.Field>
+          <Form.Field className={cnAddArticleModal('full-width-field')}>
+            <Form.Label>Описание</Form.Label>
+            <TextField
+              id="articleSetCaption"
+              size="s"
+              width="full"
+              value={name}
+              onChange={(e: any) => {
+                setName(e.e.target.value);
+              }}
+              onKeyDown={(e) => handleArticleEvent(e)}
+            />
+          </Form.Field>
           <Form.Field>
             <Form.Label>Единица измерения</Form.Label>
             <TextField
-              id="articleModalUnit"
+              id="unit"
               size="s"
-              width="full"
-              maxLength={20}
+              width="default"
               value={unit}
               onChange={(e: any) => {
                 setUnit(e.e.target.value);
@@ -83,7 +98,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
         <Form.Row className={cnAddArticleModal('footer-row')}>
           <div />
           <div />
-          <Button size="s" view="primary" label="Добавить" onClick={(e) => submitHandle(e)} />
+          <Button size="s" view="primary" label="Сохранить" onClick={(e) => submitHandle(e)} />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />
         </Form.Row>
       </Modal.Footer>

@@ -2,13 +2,17 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Article from '../../../types/Article';
+import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
 import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
+import { changeMacroparameterSetGroup } from '../../actions/Macroparameters/changeMacroparameterSetGroup';
+import { requestDeleteMacroparameter } from '../../actions/Macroparameters/deleteMacroparameter';
+import { deleteMacroparameterSetGroup } from '../../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
-  macroparameterHighlight,
-  macroparameterHighlightClear,
+  articleHighlight,
+  articleHighlightClear,
 } from '../../actions/Macroparameters/highlightMacroparameter';
 import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
 import { requestUpdateMacroparameterValue } from '../../actions/Macroparameters/updateMacroparameterValue';
@@ -49,16 +53,35 @@ export const MacroparameterSetContainer = () => {
     },
     [dispatch],
   );
-
-  const articleHighlight = useCallback(
-    (article: Article, group: MacroparameterSetGroup) => {
-      dispatch(macroparameterHighlight(article, group));
+  const deleteMacroparameter = useCallback(
+    (macroparameter: Article, group: MacroparameterSetGroup) => {
+      dispatch(requestDeleteMacroparameter(macroparameter, group));
     },
     [dispatch],
   );
 
-  const articleHighlightClear = useCallback(() => {
-    dispatch(macroparameterHighlightClear());
+  const requestDeleteMacroparameterGroup = useCallback(
+    (group: CapexExpenseSetGroup) => {
+      dispatch(deleteMacroparameterSetGroup(group));
+    },
+    [dispatch],
+  );
+  const requestChangeMacroparameterGroup = useCallback(
+    (group: CapexExpenseSetGroup) => {
+      dispatch(changeMacroparameterSetGroup(group));
+    },
+    [dispatch],
+  );
+
+  const articleHighlightCallback = useCallback(
+    (article: Article, group: MacroparameterSetGroup) => {
+      dispatch(articleHighlight(article, group));
+    },
+    [dispatch],
+  );
+
+  const articleHighlightClearCallback = useCallback(() => {
+    dispatch(articleHighlightClear());
   }, [dispatch]);
 
   return (
@@ -68,8 +91,11 @@ export const MacroparameterSetContainer = () => {
       addMacroparameterSetGroup={addMacroparameterSetGroups}
       addMacroparameter={addMacroparameter}
       updateMacroparameterValue={updateMacroparameterValue}
-      highlightArticle={articleHighlight}
-      highlightArticleClear={articleHighlightClear}
+      deleteMacroparameterValue={deleteMacroparameter}
+      requestDeleteMacroparameterGroup={requestDeleteMacroparameterGroup}
+      requestChangeMacroparameterGroup={requestChangeMacroparameterGroup}
+      highlightArticle={articleHighlightCallback}
+      highlightArticleClear={articleHighlightClearCallback}
     />
   );
 };

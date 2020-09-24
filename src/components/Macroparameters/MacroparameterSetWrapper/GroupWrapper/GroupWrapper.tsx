@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Button, IconAdd, Text, useModal } from '@gpn-prototypes/vega-ui';
+import { Text, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
 import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../../helpers/keyGenerator';
-import { AddArticleModal } from '../../../Shared/AddArticleModal/AddArticleModal';
+import { AddArticleModal } from '../../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
+import { GroupOptionsDropdown } from '../../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 import { ArticleWrapper } from '../ArticleWrapper';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 
@@ -24,6 +25,9 @@ interface MacroparameterSetWrapperGroupProps {
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  deleteMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  requestChangeMacroparameterGroup: (group: MacroparameterSetGroup) => void;
+  requestDeleteMacroparameterGroup: (group: MacroparameterSetGroup) => void;
   onArticleFocusCallback?: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear?: () => void;
   isCollapsed?: Collapsed;
@@ -34,6 +38,9 @@ export const GroupWrapper = ({
   group,
   requestAddMacroparameter,
   updateMacroparameterValue,
+  deleteMacroparameterValue,
+  requestChangeMacroparameterGroup,
+  requestDeleteMacroparameterGroup,
   onArticleFocusCallback,
   highlightArticleClear,
   isCollapsed,
@@ -55,6 +62,9 @@ export const GroupWrapper = ({
 
   const updateMacroparameterValueWithGroup = (macroparameter: Article): void =>
     updateMacroparameterValue(macroparameter, group);
+
+  const deleteMacroparameterValueWithGroup = (macroparameter: Article): void =>
+    deleteMacroparameterValue(macroparameter, group);
 
   const articleFocusHandler = useCallback(
     (article: Article) => {
@@ -86,14 +96,11 @@ export const GroupWrapper = ({
           </Text>
         </div>
         <div className={cnGroupWrapper('header-actions')}>
-          <Button
-            type="button"
-            title="Добавить статью"
-            onlyIcon
-            iconLeft={IconAdd}
-            size="s"
-            view="clear"
-            onClick={openAddMacroparameterModal}
+          <GroupOptionsDropdown<MacroparameterSetGroup>
+            group={group}
+            requestAddArticle={addMacroparameterToGroup}
+            requestChangeGroup={requestChangeMacroparameterGroup}
+            requestDeleteGroup={requestDeleteMacroparameterGroup}
           />
         </div>
       </div>
@@ -110,6 +117,8 @@ export const GroupWrapper = ({
               key={keyGen(index)}
               article={macroparameter}
               updateArticleValueCallback={updateMacroparameterValueWithGroup}
+              updateArticleCallback={updateMacroparameterValueWithGroup}
+              deleteArticleCallback={deleteMacroparameterValueWithGroup}
               onFocusCallback={articleFocusHandler}
               highlightArticleClear={highlightArticleClear}
             />

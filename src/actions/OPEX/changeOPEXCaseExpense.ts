@@ -50,8 +50,8 @@ export function caseChangeExpense(
             `name: "${article.name?.toString()}",` +
             `caption: "${article.caption?.toString()}",` +
             `unit: "${article.unit?.toString()}",` +
-            `value: ${article.value?.toString()}` +
-            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok}}`,
+            `${article.value ? `value:${article.value},` : ''}` +
+            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok, totalValueByYear{year, value}}}`,
         }),
       });
       const body = await response.json();

@@ -5,7 +5,9 @@ import thunkMiddleware from 'redux-thunk';
 import { MacroparamsAction } from '../actions/Macroparameters/macroparameterSetList';
 import rootReducer from '../reducers/rootReducer';
 
-const logger = createLogger();
+const logger = createLogger({
+  collapsed: true,
+});
 
 const store = (preloadedState?: any): Store<any, MacroparamsAction> => {
   return createStore(rootReducer, preloadedState, applyMiddleware(thunkMiddleware, logger));

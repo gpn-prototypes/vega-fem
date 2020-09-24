@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select/index';
+import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
@@ -27,6 +27,9 @@ interface MacroparameterSetWrapperProps {
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
   addMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  deleteMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
+  requestChangeMacroparameterGroup: (group: MacroparameterSetGroup) => void;
+  requestDeleteMacroparameterGroup: (group: MacroparameterSetGroup) => void;
   highlightArticle: (article: Article, group: MacroparameterSetGroup) => void;
   highlightArticleClear: () => void;
 }
@@ -37,6 +40,9 @@ export const MacroparameterSetWrapper = ({
   addMacroparameterSetGroup,
   addMacroparameter,
   updateMacroparameterValue,
+  deleteMacroparameterValue,
+  requestChangeMacroparameterGroup,
+  requestDeleteMacroparameterGroup,
   highlightArticle,
   highlightArticleClear,
 }: MacroparameterSetWrapperProps) => {
@@ -255,6 +261,9 @@ export const MacroparameterSetWrapper = ({
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
                         updateMacroparameterValue={updateMacroparameterValue}
+                        deleteMacroparameterValue={deleteMacroparameterValue}
+                        requestChangeMacroparameterGroup={requestChangeMacroparameterGroup}
+                        requestDeleteMacroparameterGroup={requestDeleteMacroparameterGroup}
                         onArticleFocusCallback={highlightArticle}
                         highlightArticleClear={highlightArticleClear}
                         isCollapsed={

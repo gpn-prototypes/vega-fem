@@ -41,10 +41,10 @@ export const CapexTableContainer = ({ capexSet }: CapexTableContainerProps) => {
     return result;
   }, []);
 
-  const convertToTableArticles = useCallback((nonPrepearedArticles: Article[]): TableArticle[] => {
+  const convertToTableArticles = useCallback((nonPreparedArticles: Article[]): TableArticle[] => {
     const result: TableArticle[] = [];
-    if (nonPrepearedArticles.length) {
-      nonPrepearedArticles.forEach((article: Article) => {
+    if (nonPreparedArticles.length) {
+      nonPreparedArticles.forEach((article: Article) => {
         result.push({
           id: article.id,
           caption: article?.caption,
@@ -58,10 +58,10 @@ export const CapexTableContainer = ({ capexSet }: CapexTableContainerProps) => {
   }, []);
 
   const convertToTableGroups = useCallback(
-    (nonPrepearedGroups: CapexExpenseSetGroup[]): TableGroup[] => {
+    (nonPreparedGroups: CapexExpenseSetGroup[]): TableGroup[] => {
       const result: TableGroup[] = [];
-      if (nonPrepearedGroups.length) {
-        nonPrepearedGroups.forEach((group: CapexExpenseSetGroup) => {
+      if (nonPreparedGroups.length) {
+        nonPreparedGroups.forEach((group: CapexExpenseSetGroup) => {
           result.push({
             id: group?.id,
             caption: group?.caption,
