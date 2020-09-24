@@ -61,29 +61,28 @@ export const ArticleWrapper = ({
   }, [onFocusCallback, article]);
 
   return (
-    <Form.Row
-      className={cnVegaFormCustom('form-row', { width: fullWidth && 'full-width' })}
-      space="m"
-    >
+    <Form.Row className={cnVegaFormCustom('form-row', { width: true && 'full-width' })} space="m">
       <Form.Field className={cnGroupWrapper('body-content')}>
         <Form.Label space="2xs">{article?.caption}</Form.Label>
-        <TextField
-          size="s"
-          width="full"
-          id={`article_${article?.name}_${article?.id}`}
-          placeholder="Значение"
-          rightSide={article?.unit}
-          value={values && values.length ? values[0]?.value.toString() : ''}
-          onBlur={blurHandle}
-          onChange={(e: any) => editValues(e)}
-          onKeyDown={(e) => loseFocus(e)}
-          onFocus={onFocusHandler}
-        />
-        <ArticleOptionsDropdown
-          article={article}
-          updateArticle={updateArticleCallback}
-          deleteArticle={deleteArticleCallback}
-        />
+        <Form.Row col="2">
+          <TextField
+            size="s"
+            width="full"
+            id={`article_${article?.name}_${article?.id}`}
+            placeholder="Значение"
+            rightSide={article?.unit}
+            value={values && values.length ? values[0]?.value.toString() : ''}
+            onBlur={blurHandle}
+            onChange={(e: any) => editValues(e)}
+            onKeyDown={(e) => loseFocus(e)}
+            onFocus={onFocusHandler}
+          />
+          <ArticleOptionsDropdown
+            article={article}
+            updateArticle={updateArticleCallback}
+            deleteArticle={deleteArticleCallback}
+          />
+        </Form.Row>
       </Form.Field>
     </Form.Row>
   );
