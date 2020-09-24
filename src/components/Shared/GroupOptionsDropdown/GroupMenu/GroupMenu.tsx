@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { IconAdd } from '@gpn-design/uikit/IconAdd';
+import { IconEdit } from '@gpn-design/uikit/IconEdit';
+import { IconTrash } from '@gpn-design/uikit/IconTrash';
 import { Button, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
@@ -53,6 +56,8 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
         view="clear"
         label="Добавить статью"
         onClick={openAddGroupModal}
+        iconLeft={IconAdd}
+        onlyIcon
       />
       {requestChangeGroup ? (
         <Button
@@ -61,11 +66,21 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
           view="clear"
           label="Переименовать"
           onClick={openEditGroupModal}
+          iconLeft={IconEdit}
+          onlyIcon
         />
       ) : (
         <></>
       )}
-      <Button type="button" size="s" view="clear" label="Удалить" onClick={openDeleteGroupModal} />
+      <Button
+        type="button"
+        size="s"
+        view="clear"
+        label="Удалить"
+        onClick={openDeleteGroupModal}
+        iconLeft={IconTrash}
+        onlyIcon
+      />
       {isAdd ? (
         <AddArticleModal
           isOpen={isOpen}
