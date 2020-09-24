@@ -60,9 +60,9 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
               id="articleSetName"
               size="s"
               width="full"
-              value={name}
+              value={caption}
               onChange={(e: any) => {
-                setName(e.e.target.value);
+                setCaption(e.e.target.value);
               }}
             />
           </Form.Field>
@@ -72,9 +72,9 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
               id="articleSetCaption"
               size="s"
               width="full"
-              value={caption}
+              value={name}
               onChange={(e: any) => {
-                setCaption(e.e.target.value);
+                setName(e.e.target.value);
               }}
               onKeyDown={(e) => handleArticleEvent(e)}
             />
