@@ -1,10 +1,14 @@
 import React from 'react';
 import { Dropdown } from '@gpn-prototypes/vega-dropdown';
+import { usePortal } from '@gpn-prototypes/vega-root';
 import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 
 import { Menu } from './Menu/Menu';
+import { cnArticleOptionsDropdown } from './cn-article-options-dropdown';
+
+import './ArticleOptionsDropdown.css';
 
 interface ArticleOptions {
   article: Article;
@@ -20,18 +24,20 @@ export const ArticleOptionsDropdown = ({
   // const buttonRef = useRef(null);
 
   const [isOpen, setIsOpen] = React.useState(false);
+  const { portal } = usePortal();
 
   return (
     <>
       <Dropdown
-        placement="bottom-end"
+        placement="bottom-start"
+        portal={portal}
         isOpen={isOpen}
         onToggle={(nextState): void => {
           setIsOpen(nextState);
         }}
       >
         <Dropdown.Trigger>
-          {({ toggle }): React.ReactNode => (
+          {({ toggle, props: { ref, ...triggerProps } }): React.ReactNode => (
             <Button
               type="button"
               size="s"
@@ -39,14 +45,22 @@ export const ArticleOptionsDropdown = ({
               onlyIcon
               iconLeft={IconKebab}
               view="ghost"
-              // innerRef={buttonRef}
+              ref={ref}
               onClick={toggle}
+              {...triggerProps}
             />
           )}
         </Dropdown.Trigger>
         <Dropdown.Menu>
-          {(): React.ReactNode => (
-            <Menu article={article} deleteArticle={deleteArticle} updateArticle={updateArticle} />
+          {({ props: menuProps }): React.ReactNode => (
+            <div className={cnArticleOptionsDropdown('menu')} {...menuProps}>
+              <Menu
+                onClose={() => setIsOpen(false)}
+                article={article}
+                deleteArticle={deleteArticle}
+                updateArticle={updateArticle}
+              />
+            </div>
           )}
         </Dropdown.Menu>
       </Dropdown>

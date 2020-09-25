@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
+import { usePortal } from '@gpn-prototypes/vega-root';
 import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
 
 import { cnDeleteArticleModal } from '../../ArticleOptionsDropdown/DeleteArticleModal/cn-delete-article-modal';
@@ -18,6 +19,7 @@ export const DeleteGroupModal = <GroupType extends { id: string | number }>({
   group,
 }: DeleteGroupModalProps<GroupType>): JSX.Element => {
   const [id] = useState(group.id);
+  const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
     if (callback) callback({ ...group, id });
@@ -30,7 +32,7 @@ export const DeleteGroupModal = <GroupType extends { id: string | number }>({
       hasCloseButton
       onClose={close}
       isOpen={isOpen}
-      rootSelector=".App"
+      portal={portal}
       className={cnDeleteArticleModal()}
     >
       <Modal.Header className={cnDeleteArticleModal('header')}>

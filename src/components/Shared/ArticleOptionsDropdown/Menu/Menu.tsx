@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Button, useModal } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
+import { cnArticleOptionsDropdown } from '../cn-article-options-dropdown';
 import { DeleteArticleModal } from '../DeleteArticleModal/DeleteArticleModal';
 import { EditArticleModal } from '../EditArticleModal/EditArticleModal';
 
 interface MenuOptions {
   article: Article;
+  onClose: () => void;
   updateArticle?: (article: Article) => void;
   deleteArticle?: (article: Article) => void;
 }
 
-export const Menu: any = ({ article, updateArticle, deleteArticle }: MenuOptions) => {
+export const Menu: any = ({ article, updateArticle, deleteArticle, onClose }: MenuOptions) => {
   const { isOpen, close, open } = useModal();
 
   const [isEdit, setIsEdit] = useState(false);
@@ -34,9 +36,15 @@ export const Menu: any = ({ article, updateArticle, deleteArticle }: MenuOptions
     }
   };
 
+  const closeHandler = () => {
+    close();
+    onClose();
+  };
+
   return (
     <>
       <Button
+        className={cnArticleOptionsDropdown('menuItem')}
         type="button"
         size="s"
         view="clear"
@@ -44,32 +52,25 @@ export const Menu: any = ({ article, updateArticle, deleteArticle }: MenuOptions
         onClick={openEditArticleModal}
       />
       <Button
+        className={cnArticleOptionsDropdown('menuItem')}
         type="button"
         size="s"
         view="clear"
         label="Удалить"
         onClick={openDeleteArticleModal}
       />
-      {isEdit ? (
-        <EditArticleModal
-          isOpen={isOpen}
-          close={close}
-          article={article}
-          callback={editArticleHandlerCallback}
-        />
-      ) : (
-        <></>
-      )}
-      {isDelete ? (
-        <DeleteArticleModal
-          isOpen={isOpen}
-          close={close}
-          article={article}
-          callback={deleteArticle}
-        />
-      ) : (
-        <></>
-      )}
+      <EditArticleModal
+        isOpen={isOpen && isEdit}
+        close={closeHandler}
+        article={article}
+        callback={editArticleHandlerCallback}
+      />
+      <DeleteArticleModal
+        isOpen={isOpen && isDelete}
+        close={closeHandler}
+        article={article}
+        callback={deleteArticle}
+      />
     </>
   );
 };

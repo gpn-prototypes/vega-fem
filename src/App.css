@@ -18,3 +18,17 @@ body,
 
   background: var(--color-bg-default);
 }
+
+.VegaModal__CloseButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 25px;
+  height: 25px;
+
+  color: var(--color-typo-ghost);
+  background: transparent;
+  border: none;
+  opacity: 0.4;
+}

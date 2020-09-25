@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
+import { usePortal } from '@gpn-prototypes/vega-root';
 import {
   Button,
   Form,
@@ -24,6 +25,7 @@ interface AddArticleModalProps {
 export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticleModalProps) => {
   const [caption, setCaption] = useState(article.caption);
   const [unit, setUnit] = useState(article.unit);
+  const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
     if (callback) callback({ caption, unit } as Article);
@@ -42,7 +44,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
       hasCloseButton
       onClose={close}
       isOpen={isOpen}
-      rootSelector=".App"
+      portal={portal}
       className={cnAddArticleModal()}
     >
       <Modal.Header className={cnAddArticleModal('header')}>

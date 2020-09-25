@@ -35,20 +35,16 @@ export const Navigation = (): React.ReactElement => {
       path: '/mining-profile',
     },
   ];
-  const currentTab = [
-    tabs.find((element) => {
-      return element.path === history.location.pathname;
-    }) as NavItem,
-  ];
-  const [valueTab, setValueTab] = useState<Array<NavItem> | null>(currentTab);
+  const currentTab = tabs.find((element) => {
+    return element.path === history.location.pathname;
+  }) as NavItem;
+  const [valueTab, setValueTab] = useState<NavItem | null>(currentTab);
   // перемещение по исптории вперед/назад
   history.listen((location) => {
-    const switchTab = [
-      tabs.find((element) => {
-        return element.path === location.pathname;
-      }),
-    ];
-    setValueTab(switchTab ? (switchTab as NavItem[]) : null);
+    const switchTab = tabs.find((element) => {
+      return element.path === location.pathname;
+    });
+    setValueTab(switchTab ? (switchTab as NavItem) : null);
   });
 
   return (
@@ -56,13 +52,14 @@ export const Navigation = (): React.ReactElement => {
       size="s"
       view="primary"
       form="default"
+      name=""
+      multiple={false}
       items={tabs}
       value={valueTab}
-      getItemKey={(item) => item.title}
-      getItemLabel={(item) => item.title}
-      onChange={({ value }) => {
+      getLabel={(item): string => item.title}
+      onChange={({ value }): void => {
         setValueTab(value);
-        history.push(value ? value[0].path : '/');
+        history.push(value ? value.path : '/');
       }}
     />
   );
