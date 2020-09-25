@@ -5,6 +5,9 @@ import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
 import Article from '../../../../types/Article';
 
 import { GroupMenu } from './GroupMenu/GroupMenu';
+import { cnGroupOptionsDropdown } from './cn-group-options-dropdown';
+
+import './GroupOptionsDropdown.css';
 
 interface GroupOptions<GroupType> {
   group: GroupType;
@@ -23,14 +26,14 @@ export const GroupOptionsDropdown = <GroupType,>({
 
   return (
     <Dropdown
-      placement="bot-start"
+      placement="bottom-start"
       isOpen={isOpen}
       onToggle={(nextState): void => {
         setIsOpen(nextState);
       }}
     >
       <Dropdown.Trigger>
-        {({ toggle }): React.ReactNode => (
+        {({ toggle, props: { ref, ...triggerProps } }): React.ReactNode => (
           <Button
             type="button"
             size="s"
@@ -38,18 +41,23 @@ export const GroupOptionsDropdown = <GroupType,>({
             onlyIcon
             iconLeft={IconKebab}
             view="ghost"
+            ref={ref}
             onClick={toggle}
+            {...triggerProps}
           />
         )}
       </Dropdown.Trigger>
       <Dropdown.Menu>
-        {(): React.ReactNode => (
-          <GroupMenu
-            group={group}
-            requestAddArticle={requestAddArticle}
-            requestChangeGroup={requestChangeGroup}
-            requestDeleteGroup={requestDeleteGroup}
-          />
+        {({ props: menuProps }): React.ReactNode => (
+          <div className={cnGroupOptionsDropdown('menu')} {...menuProps}>
+            <GroupMenu
+              onClose={() => setIsOpen(false)}
+              group={group}
+              requestAddArticle={requestAddArticle}
+              requestChangeGroup={requestChangeGroup}
+              requestDeleteGroup={requestDeleteGroup}
+            />
+          </div>
         )}
       </Dropdown.Menu>
     </Dropdown>

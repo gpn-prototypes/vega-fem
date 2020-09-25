@@ -3,7 +3,7 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article, { ArticleValues } from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdowns';
+import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdown';
 
 import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
 import { cnArticleWrapper } from './cn-article-wrapper';

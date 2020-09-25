@@ -1,0 +1,11 @@
+.GroupOptionsDropdown__menu {
+  z-index: var(--layout-z-portal);
+
+  box-sizing: border-box;
+
+  background: var(--color-bg-default);
+
+  border: var(--control-border-width) solid var(--color-bg-border);
+  border-radius: var(--control-radius);
+  box-shadow: 0 4px 16px rgba(0, 32, 51, 0.18), 0 2px 2px rgba(0, 0, 0, 0.04);
+}

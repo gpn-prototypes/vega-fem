@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
+import { usePortal } from '@gpn-prototypes/vega-root';
 import {
   Button,
   Form,
@@ -27,6 +28,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
 }: EditGroupModalProps<GroupType>) => {
   const [id] = useState(group.id);
   const [caption, setCaption] = useState(group.caption);
+  const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
     if (callback) callback({ ...group, id, caption });
@@ -46,7 +48,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
       hasCloseButton
       onClose={close}
       isOpen={isOpen}
-      rootSelector=".App"
+      portal={portal}
       className={cnEditGroupModal()}
     >
       <Modal.Header className={cnEditGroupModal('header')}>

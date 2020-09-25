@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Modal } from '@gpn-prototypes/vega-modal';
+import { usePortal } from '@gpn-prototypes/vega-root';
 import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
@@ -22,6 +23,7 @@ export const DeleteArticleModal = ({
   article,
 }: DeleteArticleModalProps) => {
   const [id] = useState(article.id);
+  const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
     if (callback) callback({ id } as Article);
@@ -34,7 +36,7 @@ export const DeleteArticleModal = ({
       hasCloseButton
       onClose={close}
       isOpen={isOpen}
-      rootSelector=".App"
+      portal={portal}
       className={cnDeleteArticleModal()}
     >
       <Modal.Header className={cnDeleteArticleModal('header')}>

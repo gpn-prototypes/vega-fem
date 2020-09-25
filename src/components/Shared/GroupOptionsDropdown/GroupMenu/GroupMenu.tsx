@@ -11,6 +11,7 @@ import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
 
 interface GroupMenuOptions<GroupType> {
   group: GroupType;
+  onClose: () => void;
   requestAddArticle: (article: Article, group: GroupType) => void;
   requestChangeGroup?: (group: GroupType) => void;
   requestDeleteGroup: (group: GroupType) => void;
@@ -18,6 +19,7 @@ interface GroupMenuOptions<GroupType> {
 
 export const GroupMenu: any = <GroupType extends { id: string | number; caption: string }>({
   group,
+  onClose,
   requestAddArticle,
   requestChangeGroup,
   requestDeleteGroup,
@@ -47,6 +49,11 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
   };
 
   const addArticleToGroup = (article: Article): void => requestAddArticle(article, group);
+
+  const closeHandler = () => {
+    close();
+    onClose();
+  };
 
   return (
     <>
@@ -81,36 +88,24 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
         iconLeft={IconTrash}
         onlyIcon
       />
-      {isAdd ? (
-        <AddArticleModal
-          isOpen={isOpen}
-          close={close}
-          article={{ caption: '', unit: '' } as Article}
-          callback={addArticleToGroup}
-        />
-      ) : (
-        <></>
-      )}
-      {isEdit ? (
-        <EditGroupModal<typeof group>
-          isOpen={isOpen}
-          close={close}
-          group={group}
-          callback={requestChangeGroup}
-        />
-      ) : (
-        <></>
-      )}
-      {isDelete ? (
-        <DeleteGroupModal<typeof group>
-          isOpen={isOpen}
-          close={close}
-          group={group}
-          callback={requestDeleteGroup}
-        />
-      ) : (
-        <></>
-      )}
+      <AddArticleModal
+        isOpen={isOpen && isAdd}
+        close={closeHandler}
+        article={{ caption: '', unit: '' } as Article}
+        callback={addArticleToGroup}
+      />
+      <EditGroupModal<typeof group>
+        isOpen={isOpen && isEdit}
+        close={closeHandler}
+        group={group}
+        callback={requestChangeGroup}
+      />
+      <DeleteGroupModal<typeof group>
+        isOpen={isOpen && isDelete}
+        close={closeHandler}
+        group={group}
+        callback={requestDeleteGroup}
+      />
     </>
   );
 };
