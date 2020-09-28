@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
+import { Combobox } from '@consta/uikit/Combobox';
 import { Checkbox } from '@gpn-design/uikit/Checkbox';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import SelectOptions from '../../../../types/SelectOptions';
 import { MacroparameterTableContainer } from '../../../containers/Macroparameters/MacroparameterTableContainer';
 import keyGen from '../../../helpers/keyGenerator';
 import macroparameterSetCategoryOptions from '../../../helpers/MacroparameterSetCategoryOptions';
@@ -57,6 +58,9 @@ export const MacroparameterSetWrapper = ({
   const [yearStartHelper, setYearStartHelper] = useState(false);
 
   const [category, setCategory] = useState(macroparameterSet.category);
+  const [getCategoryOption] = useState(
+    macroparameterSetCategoryOptions.find((option) => option.value === macroparameterSet.category),
+  );
   /* help to call requestSetUpdate with updated category after Select choice */
   const [categoryHelper, setCategoryHelper] = useState(false);
 
@@ -163,6 +167,8 @@ export const MacroparameterSetWrapper = ({
     );
   };
 
+  const getItemLabel = (option: SelectOptions): string => option.label;
+
   return (
     <div className={cnBlockWrapper()}>
       <div className={cnBlockWrapper('title-wrapper')}>
@@ -210,11 +216,12 @@ export const MacroparameterSetWrapper = ({
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Вид оценки</Form.Label>
-                    <Select
+                    <Combobox
+                      id="macroparameterSetCategory"
                       options={macroparameterSetCategoryOptions}
-                      name="macroparameterSetCategory"
-                      value={category}
-                      onClearValue={() => null}
+                      getOptionLabel={(option) => (option.label ? option.label : '')}
+                      // value={{value:category?.toString(),label:'Реальная'}}
+                      value={getCategoryOption}
                       onChange={(selectValue: any) => {
                         setCategory(selectValue);
                         setCategoryHelper(true);
@@ -223,15 +230,26 @@ export const MacroparameterSetWrapper = ({
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Стартовый год</Form.Label>
-                    <Select
+                    <Combobox<SelectOptions>
+                      id="macroparameterSetYearStart"
                       options={yearsOptions}
+                      getOptionLabel={getItemLabel}
+                      value={{
+                        value: yearStart ? yearStart.toString() : '',
+                        label: yearStart ? yearStart.toString() : '',
+                      }}
+                      onChange={(selectValue: any) => {
+                        setYearStart(selectValue.value);
+                        setYearStartHelper(true);
+                      }}
+                      /* options={yearsOptions}
                       name="macroparameterSetYearStart"
                       value={yearStart?.toString()}
                       onClearValue={() => null}
                       onChange={(selectValue: any) => {
                         setYearStart(selectValue);
                         setYearStartHelper(true);
-                      }}
+                      }} */
                     />
                   </Form.Field>
                   <Form.Field>
