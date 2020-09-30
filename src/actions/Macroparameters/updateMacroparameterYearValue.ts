@@ -45,21 +45,32 @@ export const requestUpdateMacroparameterYearValue = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            `mutation {setMacroparameterYearValue(` +
-            `macroparameterSetId: ${selected.id.toString()},` +
-            `macroparameterGroupId: ${group?.id?.toString()},` +
-            `macroparameterId: ${macroparameter.id},` +
-            `year: ${value.year},` +
-            `value: ${value.value}` +
-            `){ok}}`,
+          query: `mutation setMacroparameterYearValue{
+              setMacroparameterYearValue(
+                macroparameterSetId: ${selected.id.toString()}
+                macroparameterGroupId: ${group?.id?.toString()}
+                macroparameterId: ${macroparameter.id}
+                year: ${value.year}
+                value: ${value.value}
+              ){
+                 macroparameter{
+                    __typename
+                    ... on Error{
+                      code
+                      message
+                      details
+                      payload
+                    }
+                }
+              }
+            }`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.setMacroparameterYearValue;
 
-      if (response.ok && responseData?.ok) {
+      if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
         dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
       } else {
         dispatch(macroparameterUpdateYearValueError(body.message));

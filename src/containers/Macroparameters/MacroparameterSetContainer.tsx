@@ -5,17 +5,17 @@ import Article from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { requestAddMacroparameter } from '../../actions/Macroparameters/addMacroparameter';
 import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
 import { changeMacroparameterSetGroup } from '../../actions/Macroparameters/changeMacroparameterSetGroup';
-import { requestDeleteMacroparameter } from '../../actions/Macroparameters/deleteMacroparameter';
 import { deleteMacroparameterSetGroup } from '../../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
   articleHighlight,
   articleHighlightClear,
 } from '../../actions/Macroparameters/highlightMacroparameter';
+import { requestAddMacroparameter } from '../../actions/Macroparameters/macroparameter/addMacroparameter';
+import { requestChangeMacroparameter } from '../../actions/Macroparameters/macroparameter/changeMacroparameter';
+import { requestDeleteMacroparameter } from '../../actions/Macroparameters/macroparameter/deleteMacroparameter';
 import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
-import { requestUpdateMacroparameterValue } from '../../actions/Macroparameters/updateMacroparameterValue';
 import { MacroparameterSetWrapper } from '../../components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetWrapper';
 
 export const MacroparameterSetContainer = () => {
@@ -49,7 +49,7 @@ export const MacroparameterSetContainer = () => {
 
   const updateMacroparameterValue = useCallback(
     (macroparameter: Article, group: MacroparameterSetGroup) => {
-      dispatch(requestUpdateMacroparameterValue(macroparameter, group));
+      dispatch(requestChangeMacroparameter(macroparameter, group));
     },
     [dispatch],
   );

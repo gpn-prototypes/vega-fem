@@ -1,18 +1,19 @@
 import Article, { ArticleValues } from '../../types/Article';
 import MacroparameterSet from '../../types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSetGroup';
-import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameter';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_CHANGE_SUCCESS } from '../actions/Macroparameters/changeMacroparameterSetGroup';
-import { MACROPARAM_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameter';
 import { MACROPARAM_SET_GROUP_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
   ARTICLE_HIGHLIGHT,
   ARTICLE_HIGHLIGHT_CLEAR,
 } from '../actions/Macroparameters/highlightMacroparameter';
+import { MACROPARAM_ADD_SUCCESS } from '../actions/Macroparameters/macroparameter/addMacroparameter';
+import { CHANGE_MACROPARAM_SUCCESS } from '../actions/Macroparameters/macroparameter/changeMacroparameter';
+import { MACROPARAM_DELETE_SUCCESS } from '../actions/Macroparameters/macroparameter/deleteMacroparameter';
 import {
   MACROPARAMS_SET_LIST_ERROR,
-  MACROPARAMS_SET_LIST_FETCH,
+  // MACROPARAMS_SET_LIST_FETCH,
   MACROPARAMS_SET_LIST_SUCCESS,
   MACROPARAMS_SET_SELECTED,
   MacroparamsAction,
@@ -21,7 +22,6 @@ import {
   MACROPARAM_SET_UPDATE_ERROR,
   MACROPARAM_SET_UPDATE_SUCCESS,
 } from '../actions/Macroparameters/updateMacroparameterSet';
-import { MACROPARAM_UPDATE_VALUE_SUCCESS } from '../actions/Macroparameters/updateMacroparameterValue';
 import { MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/Macroparameters/updateMacroparameterYearValue';
 
 const initialState = {
@@ -39,11 +39,34 @@ let isNewYearValue: boolean;
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
-    case MACROPARAMS_SET_LIST_FETCH:
     case MACROPARAMS_SET_LIST_SUCCESS:
       return {
         ...state,
-        macroparameterSetList: action.payload,
+        macroparameterSetList: [
+          ...action.payload.macroparameterSetList.map(
+            (macroparameterSet: any, setIndex: number) => {
+              return {
+                ...macroparameterSet,
+                macroparameterGroupList: [
+                  ...action.payload.macroparameterSetList[
+                    setIndex
+                  ].macroparameterGroupList.macroparameterGroupList.map(
+                    (macroparameterGroup: any, groupIndex: number) => {
+                      return {
+                        ...macroparameterGroup,
+                        macroparameterList: [
+                          ...action.payload.macroparameterSetList[setIndex].macroparameterGroupList
+                            .macroparameterGroupList[groupIndex].macroparameterList
+                            .macroparameterList,
+                        ],
+                      };
+                    },
+                  ),
+                ],
+              };
+            },
+          ),
+        ],
       };
     case MACROPARAMS_SET_LIST_ERROR:
     case MACROPARAM_SET_UPDATE_ERROR:
@@ -52,16 +75,40 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         error: action.payload,
       };
     case MACROPARAMS_SET_SELECTED:
-    case MACROPARAM_SET_UPDATE_SUCCESS:
       return {
         ...state,
         selected: action.payload,
+      };
+    case MACROPARAM_SET_UPDATE_SUCCESS:
+      /* eslint-disable-next-line */
+      const changedMacroparameterSet = {
+        ...action.payload,
+        macroparameterGroupList: [
+          ...action.payload.macroparameterGroupList.macroparameterGroupList.map(
+            (macroparameterGroup: any, groupIndex: number) => {
+              return {
+                ...macroparameterGroup,
+                macroparameterList: [
+                  ...action.payload.macroparameterGroupList.macroparameterGroupList[groupIndex]
+                    .macroparameterList.macroparameterList,
+                ],
+              };
+            },
+          ),
+        ],
+      };
+      return {
+        ...state,
+        selected: changedMacroparameterSet,
         macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) =>
-          macroparameterSet.id === action.payload.id ? action.payload : macroparameterSet,
+          macroparameterSet.id === changedMacroparameterSet.id
+            ? changedMacroparameterSet
+            : macroparameterSet,
         ),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
-      /* eslint-disable-line */state?.selected?.macroparameterGroupList?.push(action.payload);
+      /* eslint-disable-next-line */
+      state?.selected?.macroparameterGroupList?.push(action.payload);
       return {
         ...state,
         selected: { ...state.selected },
@@ -107,23 +154,24 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         },
       };
     case MACROPARAM_ADD_SUCCESS:
-      /* eslint-disable-line */state?.selected?.macroparameterGroupList
+      /* eslint-disable-next-line */
+      state?.selected?.macroparameterGroupList
         ?.find((group_: MacroparameterSetGroup) => group_.id === action.payload.group?.id)
         ?.macroparameterList?.push(action.payload?.macroparameter);
       return {
         ...state,
         selected: { ...state.selected },
       };
-    case MACROPARAM_UPDATE_VALUE_SUCCESS:
-      /* eslint-disable-line */
+    case CHANGE_MACROPARAM_SUCCESS:
+      /* eslint-disable-next-line */
       groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       group = (groupList?.find(
         (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
       ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       macr = (macroparameterList?.find(
         (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
       ) ?? {}) as Article;
@@ -156,15 +204,15 @@ export default function macroparamsReducer(state = initialState, action: Macropa
         },
       };
     case MACROPARAM_DELETE_SUCCESS:
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       group = (groupList?.find(
         (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
       ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       macr = (macroparameterList?.find(
         (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
       ) ?? {}) as Article;

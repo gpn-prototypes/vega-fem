@@ -1,12 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
-import { MacroparamsAction } from './macroparameterSetList';
+import Article from '../../../../types/Article';
+import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { MacroparamsAction } from '../macroparameterSetList';
 
 export const MACROPARAM_ADD_INIT = 'MACROPARAM_ADD_INIT';
 export const MACROPARAM_ADD_SUCCESS = 'MACROPARAM_ADD_SUCCESS';
@@ -43,20 +42,41 @@ export const requestAddMacroparameter = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            `mutation {createMacroparameter(` +
-            `macroparameterSetId:${selected.id.toString()},` +
-            `macroparameterGroupId:${group?.id?.toString()},` +
-            `caption: "${newMacroparameter.caption}", ` +
-            `unit: "${newMacroparameter.unit}"` +
-            `){macroparameter{id, name, caption, unit, value{year,value}}, ok}}`,
+          query: `mutation createMacroparameter{
+            createMacroparameter(
+              macroparameterSetId:${selected.id.toString()}
+              macroparameterGroupId:${group?.id?.toString()}
+              caption: "${newMacroparameter.caption}"
+              unit: "${newMacroparameter.unit}"
+            ){
+              macroparameter{
+                __typename
+                ... on Macroparameter{
+                  id
+                  name
+                  caption
+                  unit
+                  value{
+                    year
+                    value
+                  }
+                }
+                ... on Error{
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.createMacroparameter;
 
-      if (response.ok && responseData?.ok) {
+      if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
         const macroparameter = responseData?.macroparameter;
 
         if (macroparameter) {

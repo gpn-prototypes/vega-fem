@@ -41,17 +41,39 @@ export const addMacroparameterSetGroup = (
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {createMacroparameterGroup(macroparameterSetId:${selected.id.toString()},` +
+            /* `mutation {createMacroparameterGroup(macroparameterSetId:${selected.id.toString()},` +
             `caption: "${newMacroparameterSetGroup.caption}", ` +
             `name: "${newMacroparameterSetGroup.name}"` +
-            `){macroparameterGroup{name, id, caption}, ok}}`,
+            `){macroparameterGroup{name, id, caption}, ok}}`, */
+            `mutation createMacroparameterGroup{
+            createMacroparameterGroup(
+              macroparameterSetId:${selected.id.toString()}
+              caption: "${newMacroparameterSetGroup.caption}"
+              name: "${newMacroparameterSetGroup.name}"
+            ){
+              macroparameterGroup{
+                __typename
+                ... on MacroparameterGroup{
+                  name
+                  id
+                  caption
+                }
+                ... on Error{
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.createMacroparameterGroup;
 
-      if (response.ok && responseData?.ok) {
+      if (response.status === 200 && responseData.macroparameterGroup?.__typename !== 'Error') {
         const newGroup = responseData?.macroparameterGroup;
 
         if (newGroup) {
