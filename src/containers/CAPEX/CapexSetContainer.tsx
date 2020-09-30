@@ -5,14 +5,14 @@ import Article from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
-import { requestAddCapex } from '../../actions/capex/addCapex';
-import { addCapexSetGroup as addGroup } from '../../actions/capex/addCapexSetGroup';
-import { fetchCapexSet } from '../../actions/capex/capexSet';
-import { changeCapexSetGroup } from '../../actions/capex/changeCapexSetGroup';
-import { requestDeleteCapexExpense } from '../../actions/capex/deleteCapexExpense';
-import { deleteCapexSetGroup } from '../../actions/capex/deleteCapexSetGroup';
-import { requestUpdateCapexGlobalValue } from '../../actions/capex/updateCapexSetGlobalValue';
-import { requestUpdateCapexValue } from '../../actions/capex/updateCapexValue';
+import { changeCapexExpenseGroup } from '../../actions/capex/changeCapexExpenseGroup';
+import { createCapexExpenseGroup as addGroup } from '../../actions/capex/createCapexExpenseGroup';
+import { deleteCapexExpenseGroup } from '../../actions/capex/deleteCapexExpenseGroup';
+import { requestChangeCapexExpense } from '../../actions/capex/expense/changeCapexExpense';
+import { requestCreateCapexExpense } from '../../actions/capex/expense/createCapexExpense';
+import { requestDeleteCapexExpense } from '../../actions/capex/expense/deleteCapexExpense';
+import { fetchCapex } from '../../actions/capex/fetchCAPEX';
+import { requestUpdateCapexGlobalValue } from '../../actions/capex/global-value/updateCapexSetGlobalValue';
 import {
   articleHighlight,
   articleHighlightClear,
@@ -25,7 +25,7 @@ export const CapexSetContainer = () => {
   const selectorSelectedCapexSet = (state: any) => state.capexReducer.capexSet;
   const capexSet: CapexSet = useSelector(selectorSelectedCapexSet);
   useEffect(() => {
-    dispatch(fetchCapexSet());
+    dispatch(fetchCapex());
   }, [dispatch]);
 
   const addCapexSetGroups = useCallback(
@@ -37,7 +37,7 @@ export const CapexSetContainer = () => {
 
   const addCapex = useCallback(
     (newCapex: Article, group: CapexExpenseSetGroup) => {
-      dispatch(requestAddCapex(newCapex, group));
+      dispatch(requestCreateCapexExpense(newCapex, group));
     },
     [dispatch],
   );
@@ -50,7 +50,7 @@ export const CapexSetContainer = () => {
   );
   const updateCapexValue = useCallback(
     (capex: Article, group: CapexExpenseSetGroup) => {
-      dispatch(requestUpdateCapexValue(capex, group));
+      dispatch(requestChangeCapexExpense(capex, group));
     },
     [dispatch],
   );
@@ -62,13 +62,13 @@ export const CapexSetContainer = () => {
   );
   const requestDeleteCapexGroup = useCallback(
     (group: CapexExpenseSetGroup) => {
-      dispatch(deleteCapexSetGroup(group));
+      dispatch(deleteCapexExpenseGroup(group));
     },
     [dispatch],
   );
   const requestChangeCapexGroup = useCallback(
     (group: CapexExpenseSetGroup) => {
-      dispatch(changeCapexSetGroup(group));
+      dispatch(changeCapexExpenseGroup(group));
     },
     [dispatch],
   );

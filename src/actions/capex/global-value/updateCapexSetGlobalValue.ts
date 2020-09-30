@@ -1,12 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
-import { authHeader } from '../../helpers/authTokenToLocalstorage';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-import { roundDecimal2Digits } from '../../helpers/roundDecimal2Digits';
-
-import { CapexesAction } from './capexSet';
+import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
+import { authHeader } from '../../../helpers/authTokenToLocalstorage';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
+import { CapexesAction } from '../fetchCAPEX';
 
 export const CAPEX_UPDATE_GLOBAL_VALUE_INIT = 'CAPEX_UPDATE_GLOBAL_VALUE_INIT';
 export const CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS = 'CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS';
@@ -43,20 +42,36 @@ export const requestUpdateCapexGlobalValue = (
           ...authHeader(),
         },
         body: JSON.stringify({
-          query:
-            `mutation {` +
-            `updateCapexGlobalValue(` +
-            `capexGlobalValueId:"${globalValue?.id}",` +
-            `value: ${roundDecimal2Digits(globalValue?.value ?? 0)}` +
-            `){capexGlobalValue{id,name,value,caption}, ok}` +
-            `}`,
+          query: `mutation updateCapexGlobalValue{
+              updateCapexGlobalValue(
+                    capexGlobalValueId:"${globalValue?.id}"
+                    value: ${roundDecimal2Digits(globalValue?.value ?? 0)}
+              ){
+                capexGlobalValue{
+                  __typename
+                  ... on CapexGlobalValue{
+                    id
+                    name
+                    unit
+                    value
+                    caption
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+          }`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.updateCapexGlobalValue;
 
-      if (response.ok && responseData?.ok) {
+      if (response.ok && responseData?.capexGlobalValue.__typename !== 'Error') {
         const capexGlobalValue = responseData?.capexGlobalValue;
 
         if (capexGlobalValue) {

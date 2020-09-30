@@ -2,19 +2,14 @@ import Article, { ArticleValues } from '../../types/Article';
 import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '../../types/CAPEX/CapexSet';
 import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
-import { CAPEX_ADD_SUCCESS } from '../actions/capex/addCapex';
-import { CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS } from '../actions/capex/addCapexSetGroup';
-import {
-  CAPEX_SET_ERROR,
-  CAPEX_SET_FETCH,
-  CAPEX_SET_SUCCESS,
-  CapexesAction,
-} from '../actions/capex/capexSet';
-import { CAPEX_EXPENSE_SET_GROUP_CHANGE_SUCCESS } from '../actions/capex/changeCapexSetGroup';
-import { DELETE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/deleteCapexExpense';
-import { CAPEX_EXPENSE_SET_GROUP_DELETE_SUCCESS } from '../actions/capex/deleteCapexSetGroup';
-import { CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS } from '../actions/capex/updateCapexSetGlobalValue';
-import { CAPEX_UPDATE_VALUE_SUCCESS } from '../actions/capex/updateCapexValue';
+import { CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS } from '../actions/capex/changeCapexExpenseGroup';
+import { CAPEX_EXPENSE_GROUP_ADD_SUCCESS } from '../actions/capex/createCapexExpenseGroup';
+import { CAPEX_EXPENSE_GROUP_DELETE_SUCCESS } from '../actions/capex/deleteCapexExpenseGroup';
+import { CHANGE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/expense/changeCapexExpense';
+import { CREATE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/expense/createCapexExpense';
+import { DELETE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/expense/deleteCapexExpense';
+import { CAPEX_ERROR, CAPEX_SUCCESS, CapexesAction } from '../actions/capex/fetchCAPEX';
+import { CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS } from '../actions/capex/global-value/updateCapexSetGlobalValue';
 import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
 
 const initialState = {
@@ -31,25 +26,38 @@ let newCapexValueTotal: number;
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
   switch (action.type) {
-    case CAPEX_SET_FETCH:
-    case CAPEX_SET_SUCCESS:
+    case CAPEX_SUCCESS:
       return {
         ...state,
-        capexSet: action.payload,
+        capexSet: {
+          years: action.payload.years,
+          yearStart: action.payload.yearStart,
+          capexGlobalValueList: [...action.payload.capexGlobalValueList.capexGlobalValueList],
+          capexExpenseGroupList: [
+            ...action.payload.capexExpenseGroupList.capexExpenseGroupList.map(
+              (capexExpenseGroup: any) => {
+                return {
+                  ...capexExpenseGroup,
+                  capexExpenseList: [...capexExpenseGroup?.capexExpenseList?.capexExpenseList],
+                };
+              },
+            ),
+          ],
+        },
       };
-    case CAPEX_SET_ERROR:
+    case CAPEX_ERROR:
       return {
         ...state,
         error: action.payload,
       };
-    case CAPEX_EXPENSE_SET_GROUP_ADD_SUCCESS:
+    case CAPEX_EXPENSE_GROUP_ADD_SUCCESS:
       /* eslint-disable-line */const newCapexSet = {...state.capexSet};
       /* eslint-disable-line */newCapexSet.capexExpenseGroupList?.push(action.payload);
       return {
         ...state,
         capexSet: newCapexSet,
       };
-    case CAPEX_EXPENSE_SET_GROUP_CHANGE_SUCCESS:
+    case CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
         (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.id,
@@ -71,7 +79,7 @@ export default function capexReducer(state = initialState, action: CapexesAction
           ],
         },
       };
-    case CAPEX_EXPENSE_SET_GROUP_DELETE_SUCCESS:
+    case CAPEX_EXPENSE_GROUP_DELETE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
         (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.id,
@@ -85,9 +93,9 @@ export default function capexReducer(state = initialState, action: CapexesAction
           ],
         },
       };
-    case CAPEX_ADD_SUCCESS:
+    case CREATE_CAPEX_EXPENSE_SUCCESS:
       /* eslint-disable-line */const newCapex = {...state.capexSet};
-      /* eslint-disable-line */newCapex?.capexExpenseGroupList?.find((group: CapexExpenseSetGroup) => group?.id === action.payload.group?.id)?.capexExpenseList?.push(action.payload.capex);
+      /* eslint-disable-line */newCapex?.capexExpenseGroupList?.find((capexGroup: CapexExpenseSetGroup) => capexGroup?.id === action.payload.group?.id)?.capexExpenseList?.push(action.payload.capex);
       return {
         ...state,
         capexSet: newCapex,
@@ -107,7 +115,7 @@ export default function capexReducer(state = initialState, action: CapexesAction
           ),
         },
       };
-    case CAPEX_UPDATE_VALUE_SUCCESS:
+    case CHANGE_CAPEX_EXPENSE_SUCCESS:
       groupList = (state?.capexSet.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[];
       group = (groupList?.find(
         (groupItem: CapexExpenseSetGroup) => groupItem.id === action.payload.group?.id,
@@ -132,7 +140,6 @@ export default function capexReducer(state = initialState, action: CapexesAction
                 if (groupItem.id === group.id) {
                   return {
                     ...{
-                      // ...state.capexSet.capexExpenseGroupList,
                       ...action.payload.group,
                       valueTotal: newGroupTotalValue,
                       totalValueByYear: action?.payload?.groupTotalValueByYear,

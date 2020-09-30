@@ -9,6 +9,7 @@ module.exports = {
       ],
       rules: {
         "ordered-imports": "off",
+        "no-underscore-dangle": [2, { "allow": ["__typename"] }],
         "no-restricted-imports": [
           "error",
           {

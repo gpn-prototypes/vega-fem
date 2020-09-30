@@ -6,7 +6,7 @@ import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
-import { CapexesAction } from './capexSet';
+import { CapexesAction } from './fetchCAPEX';
 
 export const CAPEX_UPDATE_YEAR_VALUE_INIT = 'CAPEX_UPDATE_YEAR_VALUE_INIT';
 export const CAPEX_UPDATE_YEAR_VALUE_SUCCESS = 'CAPEX_UPDATE_YEAR_VALUE_SUCCESS';
@@ -45,13 +45,34 @@ export const requestUpdateCapexYearValue = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            `mutation {setCapexExpenseYearValue(` +
-            `capexExpenseGroupId: ${group?.id?.toString()},` +
-            `capexExpenseId: ${capex.id},` +
-            `year: ${value.year},` +
-            `value: ${value.value}` +
-            `){ok, totalValueByYear{year,value}}}`,
+          query: `mutation setCapexExpenseYearValue {
+            setCapexExpenseYearValue(
+              capexExpenseGroupId: ${group?.id?.toString()}
+              capexExpenseId: ${capex.id}
+              year: ${value.year}
+              value: ${value.value}
+            ) {
+              totalValueByYear{
+                year
+                value
+              }
+              capexExpense {
+                __typename
+                ... on CapexExpense {
+                  value {
+                    year
+                    value
+                  }
+                }
+                ... on Error {
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+          }`,
         }),
       });
 
@@ -59,7 +80,7 @@ export const requestUpdateCapexYearValue = (
       const responseData = body?.data?.setCapexExpenseYearValue;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
-      if (response.ok && responseData?.ok) {
+      if (response.status === 200 && responseData?.totalValueByYear.__typename !== 'Error') {
         dispatch(
           capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
         );

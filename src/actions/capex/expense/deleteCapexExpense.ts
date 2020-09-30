@@ -1,12 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
-import { CapexesAction } from './capexSet';
+import Article from '../../../../types/Article';
+import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { CapexesAction } from '../fetchCAPEX';
 
 export const DELETE_CAPEX_EXPENSE_INIT = 'DELETE_CAPEX_EXPENSE_INIT';
 export const DELETE_CAPEX_EXPENSE_SUCCESS = 'DELETE_CAPEX_EXPENSE_SUCCESS';
@@ -39,19 +38,31 @@ export const requestDeleteCapexExpense = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            `mutation {` +
-            `deleteCapexExpense(` +
-            `capexExpenseGroupId:"${group?.id?.toString()}"` +
-            `capexExpenseId:"${capex.id}"` +
-            `){ok}` +
-            `}`,
+          query: `mutation deleteCapexExpense{
+            deleteCapexExpense(
+              capexExpenseGroupId:"${group?.id?.toString()}",
+              capexExpenseId:"${capex.id}"
+            ){
+              result{
+                __typename
+                ... on Result{
+                  vid
+                }
+                ... on Error{
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+        }`,
         }),
       });
 
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200 && body.data.deleteCapexExpense?.result.__typename !== 'Error') {
         dispatch(capexDeleteValueSuccess(capex, group));
       } else {
         dispatch(capexDeleteValueError(body.message));
