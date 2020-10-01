@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_CHANGE_CASE_INIT = 'OPEX_CHANGE_CASE_INIT';
 export const OPEX_CHANGE_CASE_SUCCESS = 'OPEX_CHANGE_CASE_SUCCESS';
@@ -41,18 +41,43 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {` +
+            /* `mutation {` +
             `changeOpexCase(` +
             `caseId:"${opexCase.id}",` +
             `caption:"${opexCase.caption}",` +
             `yearStart:${opexCase.yearStart.toString()},` +
             `yearEnd:${opexCase.yearEnd.toString()}` +
-            `){opexCase{id,name,caption,yearStart,yearEnd} ok}}`,
+            `){opexCase{id,name,caption,yearStart,yearEnd} ok}}`, */
+            `mutation changeOpexCase{
+              changeOpexCase(
+                caseId:"${opexCase.id}",
+                caption:"${opexCase.caption}",
+                yearStart:${opexCase.yearStart.toString()}
+                yearEnd:${opexCase.yearEnd.toString()}
+              ){
+                opexCase{
+                  __typename
+                  ... on OpexExpenseGroup{
+                    yearStart
+                    yearEnd
+                    id
+                    name
+                    caption
+                  }
+                  ...on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200 && body.data.changeOpexCase.opexCase?.__typename !== 'Error') {
         dispatch(OPEXChangeCaseSuccess(body.data?.changeOpexCase?.opexCase));
       } else {
         dispatch(OPEXChangeCaseError(body.message));

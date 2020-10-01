@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article from '../../../../../types/Article';
+import headers from '../../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT = 'OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT';
 export const OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS = 'OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS';
@@ -42,14 +42,35 @@ export function autoexportDeleteExpense(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {deleteOpexAutoexportExpense(` +
+            /* `mutation {deleteOpexAutoexportExpense(` +
             `expenseId: ${article.id?.toString()},` +
-            `){ok}}`,
+            `){ok}}`, */
+            `mutation deleteOpexAutoexportExpense{
+              deleteOpexAutoexportExpense(
+                expenseId: 2,
+              ){
+                result{
+                  __typename
+                  ... on Result{
+                    vid
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.deleteOpexAutoexportExpense?.__typename !== 'Error'
+      ) {
         dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
       } else {
         dispatch(OPEXAutoexportDeleteExpenseError(body.message));

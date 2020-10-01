@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '../../../../types/Article';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_INIT = 'OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_INIT';
 export const OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_SUCCESS =
@@ -51,17 +51,42 @@ export function opexChangeCaseExpenseYearValue(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {setOpexCaseExpenseYearValue(` +
+            /* `mutation {setOpexCaseExpenseYearValue(` +
             `caseId: ${group.id},` +
             `expenseId: ${article.id},` +
             `year: ${value.year?.toString()},` +
             `value: ${value.value?.toString()}` +
-            `){ok, totalValueByYear{year, value}}}`,
+            `){ok, totalValueByYear{year, value}}}`, */
+            `mutation setOpexCaseExpenseYearValue{
+              setOpexCaseExpenseYearValue(
+                caseId:${group.id},
+                expenseId: ${article.id},
+                year:${value.year?.toString()},
+                value: ${value.value?.toString()}
+              ){
+                totalValueByYear{
+                  year,
+                  value
+                }
+                opexExpense{
+                  __typename
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.setOpexCaseExpenseYearValue.opexExpense?.__typename !== 'Error'
+      ) {
         dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
       } else {
         dispatch(OPEXChangeCaseExpenseYearValueError(body.message));

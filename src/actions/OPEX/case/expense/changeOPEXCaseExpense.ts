@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article from '../../../../../types/Article';
+import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
+import headers from '../../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_CASE_CHANGE_EXPENSE_INIT = 'OPEX_CASE_CHANGE_EXPENSE_INIT';
 export const OPEX_CASE_CHANGE_EXPENSE_SUCCESS = 'OPEX_CASE_CHANGE_EXPENSE_SUCCESS';
@@ -44,19 +44,53 @@ export function caseChangeExpense(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {changeOpexCaseExpense(` +
+            /* `mutation {changeOpexCaseExpense(` +
             `caseId: ${group.id?.toString()},` +
             `expenseId: ${article.id?.toString()},` +
             `name: "${article.name?.toString()}",` +
             `caption: "${article.caption?.toString()}",` +
             `unit: "${article.unit?.toString()}",` +
             `${article.value ? `value:${article.value},` : ''}` +
-            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok, totalValueByYear{year, value}}}`,
+            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok, totalValueByYear{year, value}}}`, */
+            `mutation changeOpexCaseExpense{
+              changeOpexCaseExpense(
+                caseId: ${group.id?.toString()},
+                expenseId: ${article.id?.toString()},
+                name: "${article.name?.toString()}",
+                caption: "${article.caption?.toString()}",
+                unit: "${article.unit?.toString()}",
+                ${article.value ? `value:${article.value},` : ''}
+              ){
+                opexExpense{
+                  __typename
+                  ... on OpexExpense{
+                    id,
+                    name,
+                    caption,
+                    unit,
+                    valueTotal,
+                    value{
+                      year,
+                      value
+                    }
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.changeOpexCaseExpense.opexExpense?.__typename !== 'Error'
+      ) {
         dispatch(
           OPEXCaseChangeExpenseSuccess(group, body.data?.changeOpexCaseExpense?.opexExpense),
         );

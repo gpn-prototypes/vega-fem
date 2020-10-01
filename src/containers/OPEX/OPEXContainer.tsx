@@ -9,23 +9,23 @@ import {
   articleHighlight,
   articleHighlightClear,
 } from '../../actions/Macroparameters/highlightMacroparameter';
-import { addAutoexportExpense } from '../../actions/OPEX/addAutoexportExpense';
-import { addCaseExpense } from '../../actions/OPEX/addCaseExpense';
-import { addMKOSExpense } from '../../actions/OPEX/addMKOSExpense';
-import { autoexportChange } from '../../actions/OPEX/changeAutoexport';
-import { autoexportChangeExpense } from '../../actions/OPEX/changeAutoexportExpense';
-import { changeCase } from '../../actions/OPEX/changeCase';
-import { MKOSChange } from '../../actions/OPEX/changeMKOS';
-import { MKOSChangeExpense } from '../../actions/OPEX/changeMKOSExpense';
-import { caseChangeExpense } from '../../actions/OPEX/changeOPEXCaseExpense';
-import { createCase } from '../../actions/OPEX/createCase';
-import { autoexportDeleteExpense } from '../../actions/OPEX/deleteAutoexportExpense';
-import { deleteCase } from '../../actions/OPEX/deleteCase';
-import { MKOSDeleteExpense } from '../../actions/OPEX/deleteMKOSExpense';
-import { caseDeleteExpense } from '../../actions/OPEX/deleteOpexCaseExpense';
+import { autoexportChange } from '../../actions/OPEX/autoexport/changeAutoexport';
+import { addAutoexportExpense } from '../../actions/OPEX/autoexport/expense/addAutoexportExpense';
+import { autoexportChangeExpense } from '../../actions/OPEX/autoexport/expense/changeAutoexportExpense';
+import { autoexportDeleteExpense } from '../../actions/OPEX/autoexport/expense/deleteAutoexportExpense';
+import { autoexportRemove } from '../../actions/OPEX/autoexport/removeAutoexport';
+import { changeCase } from '../../actions/OPEX/case/changeCase';
+import { createCase } from '../../actions/OPEX/case/createCase';
+import { deleteCase } from '../../actions/OPEX/case/deleteCase';
+import { addCaseExpense } from '../../actions/OPEX/case/expense/addCaseExpense';
+import { caseChangeExpense } from '../../actions/OPEX/case/expense/changeOPEXCaseExpense';
+import { caseDeleteExpense } from '../../actions/OPEX/case/expense/deleteOpexCaseExpense';
 import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
-import { autoexportRemove } from '../../actions/OPEX/removeAutoexport';
-import { MKOSRemove } from '../../actions/OPEX/removeMKOS';
+import { MKOSChange } from '../../actions/OPEX/MKOS/changeMKOS';
+import { addMKOSExpense } from '../../actions/OPEX/MKOS/expense/addMKOSExpense';
+import { MKOSChangeExpense } from '../../actions/OPEX/MKOS/expense/changeMKOSExpense';
+import { MKOSDeleteExpense } from '../../actions/OPEX/MKOS/expense/deleteMKOSExpense';
+import { MKOSRemove } from '../../actions/OPEX/MKOS/removeMKOS';
 import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';
 import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
 

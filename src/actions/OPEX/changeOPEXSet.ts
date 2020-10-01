@@ -31,6 +31,7 @@ const OPEXSetChangeError = (message: any): OPEXAction => ({
 });
 
 export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
+  // TODO: что это за запрос? Его надо менять?
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXSetChangeInit());
 

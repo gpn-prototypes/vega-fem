@@ -2,26 +2,26 @@ import Article, { ArticleValues } from '../../types/Article';
 import { OPEXGroup } from '../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../types/OPEX/OPEXSetType';
 import Role from '../../types/role';
-import { OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS } from '../actions/OPEX/addAutoexportExpense';
-import { OPEX_ADD_CASE_EXPENSE_SUCCESS } from '../actions/OPEX/addCaseExpense';
-import { OPEX_ADD_MKOS_EXPENSE_SUCCESS } from '../actions/OPEX/addMKOSExpense';
-import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/changeAutoexport';
-import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeAutoexportExpense';
-import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeAutoexportExpenseYearValue';
-import { OPEX_CHANGE_CASE_SUCCESS } from '../actions/OPEX/changeCase';
-import { OPEX_MKOS_CHANGE_SUCCESS } from '../actions/OPEX/changeMKOS';
-import { OPEX_MKOS_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeMKOSExpense';
-import { OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeMKOSExpenseYearValue';
-import { OPEX_CASE_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/changeOPEXCaseExpense';
-import { OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/changeOPEXCaseExpenseYearValue';
-import { OPEX_CREATE_CASE_SUCCESS } from '../actions/OPEX/createCase';
-import { OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteAutoexportExpense';
-import { OPEX_DELETE_CASE_SUCCESS } from '../actions/OPEX/deleteCase';
-import { OPEX_MKOS_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteMKOSExpense';
-import { OPEX_CASE_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/deleteOpexCaseExpense';
+import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexport';
+import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
+import { OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS } from '../actions/OPEX/autoexport/expense/addAutoexportExpense';
+import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/autoexport/expense/changeAutoexportExpense';
+import { OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/autoexport/expense/deleteAutoexportExpense';
+import { OPEX_AUTOEXPORT_REMOVE_SUCCESS } from '../actions/OPEX/autoexport/removeAutoexport';
+import { OPEX_CHANGE_CASE_SUCCESS } from '../actions/OPEX/case/changeCase';
+import { OPEX_CHANGE_CASE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/case/changeOPEXCaseExpenseYearValue';
+import { OPEX_CREATE_CASE_SUCCESS } from '../actions/OPEX/case/createCase';
+import { OPEX_DELETE_CASE_SUCCESS } from '../actions/OPEX/case/deleteCase';
+import { OPEX_ADD_CASE_EXPENSE_SUCCESS } from '../actions/OPEX/case/expense/addCaseExpense';
+import { OPEX_CASE_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/case/expense/changeOPEXCaseExpense';
+import { OPEX_CASE_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/case/expense/deleteOpexCaseExpense';
 import { OPEX_SET_SUCCESS, OPEXAction } from '../actions/OPEX/fetchOPEXSet';
-import { OPEX_AUTOEXPORT_REMOVE_SUCCESS } from '../actions/OPEX/removeAutoexport';
-import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/removeMKOS';
+import { OPEX_MKOS_CHANGE_SUCCESS } from '../actions/OPEX/MKOS/changeMKOS';
+import { OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/MKOS/changeMKOSExpenseYearValue';
+import { OPEX_ADD_MKOS_EXPENSE_SUCCESS } from '../actions/OPEX/MKOS/expense/addMKOSExpense';
+import { OPEX_MKOS_CHANGE_EXPENSE_SUCCESS } from '../actions/OPEX/MKOS/expense/changeMKOSExpense';
+import { OPEX_MKOS_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/MKOS/expense/deleteMKOSExpense';
+import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/MKOS/removeMKOS';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
 
@@ -49,7 +49,8 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
       };
     case OPEX_ADD_CASE_EXPENSE_SUCCESS:
       // TODO: change implementation
-      /* eslint-disable-line */action.payload?.caseGroup?.opexExpenseList?.push(action.payload?.expense);
+      /* eslint-disable-next-line */
+      action.payload?.caseGroup?.opexExpenseList?.push(action.payload?.expense);
       return {
         ...state,
         opex: {
@@ -58,9 +59,19 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_AUTOEXPORT_CHANGE_SUCCESS:
-      return {
+      /* return {
         ...state,
         opex: { ...state.opex, ...{ autoexport: action.payload } },
+      }; */
+      return {
+        ...state,
+        opex: {
+          ...state.opex,
+          autoexport: {
+            ...action.payload,
+            opexExpenseList: [...action.payload.opexExpenseList.opexExpenseList],
+          },
+        },
       };
     case OPEX_AUTOEXPORT_REMOVE_SUCCESS:
       return {
@@ -215,9 +226,19 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_MKOS_CHANGE_SUCCESS:
+      /* return {
+        ...state,
+        opex: {...state.opex, ...{mkos: action.payload}},
+      }; */
       return {
         ...state,
-        opex: { ...state.opex, ...{ mkos: action.payload } },
+        opex: {
+          ...state.opex,
+          mkos: {
+            ...action.payload,
+            opexExpenseList: [...action.payload.opexExpenseList.opexExpenseList],
+          },
+        },
       };
     case OPEX_MKOS_REMOVE_SUCCESS:
       return {
@@ -363,15 +384,51 @@ export default function OPEXReducer(state = initialState, action: OPEXAction) {
         },
       };
     case OPEX_SET_SUCCESS:
-      return {
+      /* return {
         ...state,
         opex: action.payload,
+      }; */
+      /* eslint-disable-next-line */
+      const autoExport = action.payload.hasAutoexport ? {
+            autoexport: {
+              ...action.payload.autoexport,
+              opexExpenseList: [...action.payload.autoexport.opexExpenseList.opexExpenseList],
+            },
+          }
+        : { autoexport: null };
+      /* eslint-disable-next-line */
+      const MKOS = action.payload.hasMkos ? {
+            mkos: {
+              ...action.payload.mkos,
+              opexExpenseList: [...action.payload.mkos.opexExpenseList.opexExpenseList],
+            },
+          }
+        : { mkos: null };
+      return {
+        ...state,
+        opex: {
+          ...action.payload,
+          ...autoExport,
+          ...MKOS,
+          opexCaseList: [
+            ...action.payload.opexCaseList.opexCaseList.map((opexCase: any, caseIndex: number) => {
+              return {
+                ...opexCase,
+                opexExpenseList: [
+                  ...action.payload.opexCaseList.opexCaseList[caseIndex].opexExpenseList
+                    .opexExpenseList,
+                ],
+              };
+            }),
+          ],
+        },
       };
     case OPEX_SET_SDF_SUCCESS:
       return {
         ...state,
         opex: { ...state.opex, sdf: action.payload },
       };
+
     case OPEX_ROLE_SELECTED:
       return {
         ...state,

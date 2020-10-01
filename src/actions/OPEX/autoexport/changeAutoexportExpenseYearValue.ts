@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '../../../../types/Article';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_INIT =
   'OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_INIT';
@@ -49,16 +49,36 @@ export function autoexportChangeExpenseYearValue(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {setOpexAutoexportExpenseYearValue(` +
+            /* `mutation {setOpexAutoexportExpenseYearValue(` +
             `expenseId: ${article.id},` +
             `year: ${value.year?.toString()},` +
             `value: ${value.value?.toString()}` +
-            `){ok}}`,
+            `){ok}}`, */
+            `mutation setOpexAutoexportExpenseYearValue{
+              setOpexAutoexportExpenseYearValue(
+                expenseId: ${article.id},
+                year:${value.year?.toString()},
+                value: ${value.value?.toString()}
+              ){
+                opexExpense{
+                  __typename
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.setOpexAutoexportExpenseYearValue.opexExpense?.__typename
+      ) {
         dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
       } else {
         dispatch(OPEXAutoexportChangeExpenseYearValueError(body.message));

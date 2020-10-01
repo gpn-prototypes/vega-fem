@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '../../../../types/Article';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT = 'OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT';
 export const OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS =
@@ -48,16 +48,36 @@ export function MKOSChangeExpenseYearValue(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {setOpexMkosExpenseYearValue(` +
+            /* `mutation {setOpexMkosExpenseYearValue(` +
             `expenseId: ${article.id},` +
             `year: ${value.year?.toString()},` +
             `value: ${value.value?.toString()}` +
-            `){ok}}`,
+            `){ok}}`, */
+            `mutation setOpexMkosExpenseYearValue{
+              setOpexMkosExpenseYearValue(
+                expenseId: ${article.id},
+                year:${value.year?.toString()},
+                value: ${value.value?.toString()}
+              ){
+                opexExpense{
+                  __typename
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.setOpexMkosExpenseYearValue.opexExpense?.__typename !== 'Error'
+      ) {
         dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));
       } else {
         dispatch(OPEXMKOSChangeExpenseYearValueError(body.message));

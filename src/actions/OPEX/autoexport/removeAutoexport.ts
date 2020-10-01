@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_AUTOEXPORT_REMOVE_INIT = 'OPEX_AUTOEXPORT_REMOVE_INIT';
 export const OPEX_AUTOEXPORT_REMOVE_SUCCESS = 'OPEX_AUTOEXPORT_REMOVE_SUCCESS';
@@ -41,12 +41,21 @@ export function autoexportRemove(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation {removeOpexAutoexport{ok}}`,
+          query: `mutation removeOpexAutoexport{
+              removeOpexAutoexport{
+                error{
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200) {
         dispatch(OPEXAutoexportRemoveSuccess(autoexport));
       } else {
         dispatch(OPEXAutoexportRemoveError(body.message));

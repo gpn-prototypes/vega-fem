@@ -33,12 +33,29 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation {setOpexSdf(sdf:${sdfFlag}){ok}}`,
+          query: `mutation setOpexSdf {
+            setOpexSdf(
+              sdf: true
+            ) {
+              opexSdf {
+                __typename
+                ... on OpexSdf {
+                  sdf
+                }
+                ... on Error {
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200) {
         dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
       } else {
         dispatch(OPEXSetChangeSdfError(body.message));

@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_MKOS_REMOVE_INIT = 'OPEX_MKOS_REMOVE_INIT';
 export const OPEX_MKOS_REMOVE_SUCCESS = 'OPEX_MKOS_REMOVE_SUCCESS';
@@ -39,12 +39,21 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation {removeOpexMkos{ok}}`,
+          query: `mutation removeOpexMkos{
+              removeOpexMkos{
+                error{
+                  code
+                  message
+                  details
+                  payload
+                }
+               }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200) {
         dispatch(OPEXMKOSRemoveSuccess(MKOS));
       } else {
         dispatch(OPEXMKOSRemoveError(body.message));

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Article, { ArticleValues } from '../../../types/Article';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import { autoexportChangeExpenseYearValue } from '../../actions/OPEX/changeAutoexportExpenseYearValue';
-import { MKOSChangeExpenseYearValue } from '../../actions/OPEX/changeMKOSExpenseYearValue';
+import { autoexportChangeExpenseYearValue } from '../../actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
+import { MKOSChangeExpenseYearValue } from '../../actions/OPEX/MKOS/changeMKOSExpenseYearValue';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
 import {
   Table2,

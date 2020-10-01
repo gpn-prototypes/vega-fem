@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import headers from '../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_DELETE_CASE_INIT = 'OPEX_DELETE_CASE_INIT';
 export const OPEX_DELETE_CASE_SUCCESS = 'OPEX_DELETE_CASE_SUCCESS';
@@ -39,12 +39,28 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation {deleteOpexCase(caseId:"${opexCase.id}"){ok}}`,
+          /* `mutation {deleteOpexCase(caseId:"${opexCase.id}"){ok}}`, */
+          query: `mutation deleteOpexCase{
+            deleteOpexCase(caseId:"${opexCase.id}"){
+              result{
+                __typename
+                ... on Result{
+                  vid
+                }
+                ... on Error{
+                  code
+                  message
+                  details
+                  payload
+                }
+              }
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (response.status === 200 && body.data.deleteOpexCase.result?.__typename !== 'Error') {
         dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {
         dispatch(OPEXDeleteCaseError(body.message));

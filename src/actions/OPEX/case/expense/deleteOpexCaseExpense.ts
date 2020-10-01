@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../types/Article';
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import Article from '../../../../../types/Article';
+import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
+import headers from '../../../../helpers/headers';
+import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
 export const OPEX_CASE_DELETE_EXPENSE_INIT = 'OPEX_CASE_DELETE_EXPENSE_INIT';
 export const OPEX_CASE_DELETE_EXPENSE_SUCCESS = 'OPEX_CASE_DELETE_EXPENSE_SUCCESS';
@@ -44,15 +44,37 @@ export function caseDeleteExpense(
         headers: headers(),
         body: JSON.stringify({
           query:
-            `mutation {deleteOpexCaseExpense(` +
+            /* `mutation {deleteOpexCaseExpense(` +
             `caseId: ${group.id?.toString()},` +
             `expenseId: ${article.id?.toString()},` +
-            `){ok}}`,
+            `){ok}}`, */
+            `mutation deleteOpexCaseExpense{
+              deleteOpexCaseExpense(
+                caseId: ${group.id?.toString()},
+                expenseId: ${article.id?.toString()}
+              ){
+                result{
+                  __typename
+                  ... on Result{
+                    vid
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
       const body = await response.json();
 
-      if (response.ok) {
+      if (
+        response.status === 200 &&
+        body.data.deleteOpexCaseExpense.result?.__typename !== 'Error'
+      ) {
         dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
       } else {
         dispatch(OPEXCaseDeleteExpenseError(body.message));

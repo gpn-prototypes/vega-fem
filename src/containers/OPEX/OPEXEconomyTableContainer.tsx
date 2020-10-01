@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Article, { ArticleValues } from '../../../types/Article';
 import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import { opexChangeCaseExpenseYearValue } from '../../actions/OPEX/changeOPEXCaseExpenseYearValue';
+import { opexChangeCaseExpenseYearValue } from '../../actions/OPEX/case/changeOPEXCaseExpenseYearValue';
 import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
 import {
   Table2,
