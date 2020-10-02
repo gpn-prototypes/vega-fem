@@ -57,7 +57,7 @@ export const requestChangeMacroparameter = (
               macroparameterGroupId: ${group?.id?.toString()}
               macroparameterId: ${macroparameter.id}
               ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
-              ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : ''}
+              ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
               ${macroparameter.value ? `value:${macroparameter.value},` : ''}
             ){
               macroparameter{

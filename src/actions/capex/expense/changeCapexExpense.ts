@@ -48,7 +48,7 @@ export const requestChangeCapexExpense = (
               capexExpenseId:${capex.id},
               ${capex.caption ? `caption:"${capex.caption}",` : ''}
               ${capex.name ? `name:"${capex.name}",` : ''}
-              ${capex.unit ? `unit:"${capex.unit}",` : ''}
+              ${capex.unit ? `unit:"${capex.unit}",` : 'unit:""'}
               ${capex.value ? `value:${capex.value},` : ''}
             ){
               capexExpense{
