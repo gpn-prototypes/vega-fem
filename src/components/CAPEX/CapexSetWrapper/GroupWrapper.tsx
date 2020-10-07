@@ -6,10 +6,10 @@ import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../helpers/keyGenerator';
-import { ArticleWrapper } from '../../Macroparameters/MacroparameterSetWrapper/ArticleWrapper';
 import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import { ArticleWrapper } from '../../Shared/Article/ArticleWrapper';
 import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 

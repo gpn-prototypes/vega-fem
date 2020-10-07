@@ -18,7 +18,7 @@ import { GroupWrapper } from './GroupWrapper';
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 
-interface CapexSetWrapperProps {
+export interface CapexSetWrapperProps {
   capexSet: CapexSet;
   addCapexSetGroup: (capexSetGroup: CapexExpenseSetGroup) => void;
   addCapex: (capex: Article, group: CapexExpenseSetGroup) => void;

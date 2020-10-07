@@ -9,8 +9,8 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../types/Article';
-import { cnAddArticleModal } from '../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
+import Article from '../../../../../../types/Article';
+import { cnAddArticleModal } from '../../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
