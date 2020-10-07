@@ -3,16 +3,16 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article, { ArticleValues } from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
-import { ArticleOptionsDropdown } from '../../Shared/ArticleOptionsDropdown/ArticleOptionsDropdown';
+import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 
-import { cnGroupWrapper } from './GroupWrapper/cn-group-wrapper';
+import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
-import './GroupWrapper/GroupWrapper.css';
+import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 import './ArticleWrapper.css';
 
-interface ArticleWrapperProps {
+export interface ArticleWrapperProps {
   article: Article;
   fullWidth?: boolean;
   updateArticleValueCallback?: (updatedArticle: Article) => void;
@@ -68,7 +68,9 @@ export const ArticleWrapper = ({
       space="m"
     >
       <Form.Field className={cnGroupWrapper('body-content')}>
-        <Form.Label space="2xs">{article?.caption}</Form.Label>
+        <Form.Label space="2xs" data-testid="label">
+          {article?.caption}
+        </Form.Label>
         <Form.Row col="4" className={cnArticleWrapper('row')}>
           <Form.Field className={cnArticleWrapper('text-field')}>
             <TextField
@@ -82,6 +84,7 @@ export const ArticleWrapper = ({
               onChange={(e: any) => editValues(e)}
               onKeyDown={(e) => loseFocus(e)}
               onFocus={onFocusHandler}
+              data-testid="input"
             />
           </Form.Field>
           <Form.Field>

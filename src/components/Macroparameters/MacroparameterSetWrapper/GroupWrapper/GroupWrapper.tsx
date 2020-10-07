@@ -5,9 +5,9 @@ import { Text, useModal } from '@gpn-prototypes/vega-ui';
 import Article from '../../../../../types/Article';
 import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
 import keyGen from '../../../../helpers/keyGenerator';
+import { ArticleWrapper } from '../../../Shared/Article/ArticleWrapper';
 import { AddArticleModal } from '../../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
-import { ArticleWrapper } from '../ArticleWrapper';
 import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 
 import { cnGroupWrapper } from './cn-group-wrapper';

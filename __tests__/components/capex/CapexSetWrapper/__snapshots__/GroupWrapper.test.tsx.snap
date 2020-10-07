@@ -1,0 +1,332 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GroupWrapper рендерится без ошибок 1`] = `
+<div
+  className="GroupWrapper"
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+      onClick={[Function]}
+      role="presentation"
+    >
+      <span
+        className="Icon Icon_size_xs IconArrowDown"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            clipRule="evenodd"
+            d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+            fillRule="evenodd"
+          />
+        </svg>
+      </span>
+      <span
+        className="Text text text_size_s text_view_primary"
+      >
+        Первоначальный взнос
+      </span>
+    </div>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <button
+        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+        onClick={[Function]}
+        title="Опции"
+        type="button"
+      >
+        <span
+          className="Icon Icon_size_xs IconKebab Button-Icon"
+        >
+          <svg
+            className="Icon-Svg"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <label
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          data-testid="label"
+        >
+          Значение разового платежа
+        </label>
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <div
+              className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+              data-testid="input"
+              onKeyDown={[Function]}
+            >
+              <input
+                autoFocus={false}
+                className="TextField-Input"
+                id="article_oneTimePaymentValue_1"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Значение"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <button
+              className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+              onClick={[Function]}
+              title="Опции"
+              type="button"
+            >
+              <span
+                className="Icon Icon_size_xs IconKebab Button-Icon"
+              >
+                <svg
+                  className="Icon-Svg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <label
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+          data-testid="label"
+        >
+          Значение второго платежа
+        </label>
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <div
+              className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+              data-testid="input"
+              onKeyDown={[Function]}
+            >
+              <input
+                autoFocus={false}
+                className="TextField-Input"
+                id="article_secondTimePaymentValue_2"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                placeholder="Значение"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <button
+              className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+              onClick={[Function]}
+              title="Опции"
+              type="button"
+            >
+              <span
+                className="Icon Icon_size_xs IconKebab Button-Icon"
+              >
+                <svg
+                  className="Icon-Svg"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
