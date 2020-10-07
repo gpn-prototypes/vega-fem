@@ -51,7 +51,7 @@ describe('CapexSetWrapper', () => {
     expect(renderComponent).not.toThrow();
   });
 
-  test('рендерится без ошибок 1', () => {
+  /* test('рендерится без ошибок 1', () => {
     const tree: ReactTestRendererJSON | ReactTestRendererJSON[] | null = renderer
       .create(
         <CapexSetWrapper
@@ -69,7 +69,7 @@ describe('CapexSetWrapper', () => {
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
-  });
+  }); */
   /* test('рендерится с правильно подставленным fakeCapexSet', () => {
     renderComponent({
       capexSet: fakeCapexSet,
