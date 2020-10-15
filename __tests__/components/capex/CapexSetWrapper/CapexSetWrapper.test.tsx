@@ -9,6 +9,7 @@ import {
 import CapexSet from '../../../../types/CAPEX/CapexSet';
 
 let fakeCapexSet: CapexSet;
+jest.mock('../../../../src/containers/CAPEX/CapexTableContainer', () => () => <div />);
 
 beforeEach(() => {
   fakeCapexSet = {
@@ -69,8 +70,8 @@ describe('CapexSetWrapper', () => {
       )
       .toJSON();
     expect(tree).toMatchSnapshot();
-  }); */
-  /* test('рендерится с правильно подставленным fakeCapexSet', () => {
+  });
+  test('рендерится с правильно подставленным fakeCapexSet', () => {
     renderComponent({
       capexSet: fakeCapexSet,
       addCapex: jest.fn(),
