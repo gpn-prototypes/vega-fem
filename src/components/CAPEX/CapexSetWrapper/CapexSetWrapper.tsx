@@ -176,6 +176,7 @@ export const CapexSetWrapper = ({
                           size="s"
                           width="full"
                           id="capexSetNewGroupName"
+                          placeholder="Введите название группы затрат"
                           type="text"
                           maxLength={256}
                           value={newGroupName}
