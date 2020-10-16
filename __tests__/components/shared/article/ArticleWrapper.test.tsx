@@ -30,12 +30,6 @@ describe('ArticleWrapper', () => {
   });
 
   test('рендерится с правильно подставленным Article', () => {
-    /* render(<ArticleWrapper
-      article={fakeArticle}
-      updateArticleValueCallback={jest.fn()}
-      deleteArticleCallback={jest.fn()}
-      updateArticleCallback={jest.fn()}
-    />); */
     renderComponent({
       article: fakeArticle,
       updateArticleValueCallback: jest.fn(),

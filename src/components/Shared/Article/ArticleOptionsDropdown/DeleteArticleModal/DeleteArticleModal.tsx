@@ -9,7 +9,7 @@ import { cnDeleteArticleModal } from './cn-delete-article-modal';
 
 import './DeleteArticleModal.css';
 
-interface DeleteArticleModalProps {
+export interface DeleteArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
