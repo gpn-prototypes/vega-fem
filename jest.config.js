@@ -11,4 +11,15 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/?!(@gpn-prototypes)'],
   modulePathIgnorePatterns: [...config.modulePathIgnorePatterns, '/e2e-tests/'],
   coveragePathIgnorePatterns: [...config.coveragePathIgnorePatterns, '/e2e-tests/'],
+  reporters: [
+    'default',
+    [
+      './node_modules/jest-html-reporter',
+      {
+        pageTitle: 'Test Report ',
+        outputPath: './reports/test-report.html',
+        includeFailureMsg: true,
+      },
+    ],
+  ],
 };

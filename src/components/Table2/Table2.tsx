@@ -3,6 +3,7 @@ import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 import { Resizable } from 're-resizable';
 
 import keyGen from '../../helpers/keyGenerator';
+import { spreadValue } from '../../helpers/spreadValue';
 import { toLetters } from '../../helpers/toLetters';
 
 import { cnTableCell2 } from './TableCell2/cn-table-cell2';
@@ -220,6 +221,7 @@ export const Table2 = ({
                       if (!fillGroupsRow) {
                         return (
                           <TableCell2
+                            format={spreadValue}
                             key={keyGen(additionalColumnsIndex)}
                             width={additionalColumnsWidth[additionalColumnsIndex]}
                             className="additional-column-cell"
@@ -228,6 +230,7 @@ export const Table2 = ({
                       }
                       return (
                         <TableCell2
+                          format={spreadValue}
                           key={keyGen(additionalColumnsIndex)}
                           width={additionalColumnsWidth[additionalColumnsIndex]}
                           className={`
@@ -246,6 +249,7 @@ export const Table2 = ({
                     if (!fillGroupsRow) {
                       return (
                         <TableCell2
+                          format={spreadValue}
                           key={keyGen(valuesColumnsIndex)}
                           width={additionalColumnsWidth[valuesColumnsIndex]}
                           className="additional-column-cell"
@@ -254,6 +258,7 @@ export const Table2 = ({
                     }
                     return (
                       <TableCell2
+                        format={spreadValue}
                         key={keyGen(valuesColumnsIndex)}
                         width={additionalColumnsWidth[valuesColumnsIndex]}
                         className={`
@@ -282,6 +287,7 @@ export const Table2 = ({
                     {additionalColumns?.map(
                       (column: TableAdditionalColumn, additionalColumnsIndex: number) => (
                         <TableCell2
+                          format={spreadValue}
                           key={keyGen(additionalColumnsIndex)}
                           className={`
                             ${cnTableCell2('value')}
@@ -296,6 +302,7 @@ export const Table2 = ({
                     )}
                     {valuesColumns?.map((year: string, valuesColumnsIndex: number) => (
                       <TableCell2
+                        format={spreadValue}
                         key={keyGen(valuesColumnsIndex)}
                         className={`${cnTableCell2('value')} ${cnTableCell2('border-right')}`}
                         editable
