@@ -80,6 +80,26 @@ export const TableCell2 = ({
     [round, plainText, format],
   );
 
+  const validateValue = (cellValue: string): string => {
+    const arr = cellValue.split('');
+    let index = null;
+    let count = arr.length;
+    const match = cellValue.match(/\.|,/gm);
+
+    if (match && match.length > 1) {
+      while (count) {
+        index = index === null && arr[count] === '.' ? count : index;
+        if (arr[count].match(/\.|,/) && index !== count) arr[count] = '';
+        count -= 1;
+      }
+    }
+    if (index) arr[index] = '.';
+
+    if (arr[arr.length] === '.') return [...arr, '0', '0'].join('');
+
+    return arr.join('');
+  };
+
   return (
     <div
       className={getClassName()}
@@ -102,7 +122,9 @@ export const TableCell2 = ({
           width="full"
           autoFocus
           value={innerValue}
-          onChange={(e: any) => setInnerValue(e.e.target.value)}
+          onChange={(e: any) => {
+            setInnerValue(validateValue(e.e.target.value));
+          }}
         />
       )}
     </div>
