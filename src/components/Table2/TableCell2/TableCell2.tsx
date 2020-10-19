@@ -4,6 +4,7 @@ import { Text, TextField } from '@gpn-prototypes/vega-ui';
 import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
 
 import { cnTableCell2 } from './cn-table-cell2';
+import { validateValue } from './validateValue';
 
 import './TableCell2.css';
 
@@ -79,26 +80,6 @@ export const TableCell2 = ({
     },
     [round, plainText, format],
   );
-
-  const validateValue = (cellValue: string): string => {
-    const arr = cellValue.split('');
-    let index = null;
-    let count = arr.length;
-    const match = cellValue.match(/\.|,/gm);
-
-    if (match && match.length > 1) {
-      while (count) {
-        index = index === null && arr[count] === '.' ? count : index;
-        if (arr[count].match(/\.|,/) && index !== count) arr[count] = '';
-        count -= 1;
-      }
-    }
-    if (index) arr[index] = '.';
-
-    if (arr[arr.length] === '.') return [...arr, '0', '0'].join('');
-
-    return arr.join('');
-  };
 
   return (
     <div
