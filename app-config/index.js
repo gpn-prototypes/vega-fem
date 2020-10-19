@@ -1,6 +1,5 @@
 const path = require('path');
 
-process.env.VEGA_SERVER_URL = 'http://outsourcing.nat.tepkom.ru:38080/';
 const root = process.env.PROJECT_ROOT_DIR || path.join(__dirname, '..');
 
 const getAppConfig = () => ({
