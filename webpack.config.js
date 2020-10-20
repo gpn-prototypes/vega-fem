@@ -30,7 +30,7 @@ const femFeWebpack = {
   devServer: {
     historyApiFallback: true,
     proxy: {
-      '/graphql': 'http://localhost:8080',
+      '/graphql': process.env.VEGA_SERVER_URL || 'http://localhost:8080',
     },
   },
 };
