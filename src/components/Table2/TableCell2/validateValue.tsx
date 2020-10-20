@@ -13,11 +13,5 @@ export const validateValue = (cellValue: string): string => {
   }
   if (index) arr[index] = '.';
 
-  // if (arr[arr.length - 1] === '.') {
-  //   arr.pop();
-  //   return arr.join('');
-  // }
-  console.log(arr.join(''), 'CELL2');
-
   return arr.join('');
 };
