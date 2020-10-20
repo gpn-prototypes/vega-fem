@@ -124,12 +124,7 @@ export const GroupWrapper = ({
             />
           ))}
       </div>
-      <AddArticleModal
-        isOpen={isOpen}
-        close={close}
-        article={{ caption: '', unit: '' } as Article}
-        callback={addMacroparameterToGroup}
-      />
+      <AddArticleModal isOpen={isOpen} close={close} callback={addMacroparameterToGroup} />
     </div>
   );
 };
