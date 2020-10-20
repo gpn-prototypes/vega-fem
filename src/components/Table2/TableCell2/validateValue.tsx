@@ -4,7 +4,7 @@ export const validateValue = (cellValue: string): string => {
   let count = arr.length;
   const match = cellValue.match(/\.|,/gm);
 
-  if (match && match.length > 1) {
+  if (match && match.length) {
     while (count) {
       index = index === null && arr[count] === '.' ? count : index;
       if (arr[count]?.match(/\.|,/) && index !== count) arr[count] = '';
@@ -13,7 +13,11 @@ export const validateValue = (cellValue: string): string => {
   }
   if (index) arr[index] = '.';
 
-  if (arr[arr.length - 1] === '.') return [...arr, '0', '0'].join('');
+  // if (arr[arr.length - 1] === '.') {
+  //   arr.pop();
+  //   return arr.join('');
+  // }
+  console.log(arr.join(''), 'CELL2');
 
   return arr.join('');
 };
