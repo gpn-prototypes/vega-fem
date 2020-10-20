@@ -16,7 +16,7 @@ import { cnEditArticleModal } from './cn-edit-article-modal';
 
 import './EditArticleModal.css';
 
-interface EditArticleModalProps {
+export interface EditArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;

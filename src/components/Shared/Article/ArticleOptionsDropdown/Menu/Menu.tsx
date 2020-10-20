@@ -6,7 +6,7 @@ import { cnArticleOptionsDropdown } from '../cn-article-options-dropdown';
 import { DeleteArticleModal } from '../DeleteArticleModal/DeleteArticleModal';
 import { EditArticleModal } from '../EditArticleModal/EditArticleModal';
 
-interface MenuOptions {
+export interface MenuOptions {
   article: Article;
   onClose: () => void;
   updateArticle?: (article: Article) => void;

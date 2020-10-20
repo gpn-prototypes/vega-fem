@@ -9,7 +9,7 @@ import { AddArticleModal } from '../AddArticleModal/AddArticleModal';
 import { DeleteGroupModal } from '../DeleteGroupModal/DeleteGroupModal';
 import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
 
-interface GroupMenuOptions<GroupType> {
+export interface GroupMenuOptions<GroupType> {
   group: GroupType;
   onClose: () => void;
   requestAddArticle: (article: Article, group: GroupType) => void;
@@ -88,12 +88,7 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
         iconLeft={IconTrash}
         onlyIcon
       />
-      <AddArticleModal
-        isOpen={isOpen && isAdd}
-        close={closeHandler}
-        article={{ caption: '', unit: '' } as Article}
-        callback={addArticleToGroup}
-      />
+      <AddArticleModal isOpen={isOpen && isAdd} close={closeHandler} callback={addArticleToGroup} />
       <EditGroupModal<typeof group>
         isOpen={isOpen && isEdit}
         close={closeHandler}

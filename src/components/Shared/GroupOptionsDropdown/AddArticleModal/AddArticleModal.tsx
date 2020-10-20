@@ -15,16 +15,20 @@ import { cnAddArticleModal } from './cn-add-article-modal';
 
 import './AddArticleModal.css';
 
-interface AddArticleModalProps {
+export interface AddArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
-  article: Article;
+  // article: Article;
 }
 
-export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticleModalProps) => {
-  const [caption, setCaption] = useState(article.caption);
-  const [unit, setUnit] = useState(article.unit);
+export const AddArticleModal = ({
+  isOpen,
+  close,
+  callback /* , article */,
+}: AddArticleModalProps) => {
+  const [caption, setCaption] = useState('');
+  const [unit, setUnit] = useState('');
   const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
@@ -58,6 +62,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
               id="articleModalNewArticleName"
               size="s"
               width="full"
+              placeholder="Введите название статьи"
               maxLength={256}
               value={caption}
               onChange={(e: any) => {
@@ -71,6 +76,7 @@ export const AddArticleModal = ({ isOpen, close, callback, article }: AddArticle
               id="articleModalUnit"
               size="s"
               width="full"
+              placeholder="Введите единицы измерения"
               maxLength={20}
               value={unit}
               onChange={(e: any) => {

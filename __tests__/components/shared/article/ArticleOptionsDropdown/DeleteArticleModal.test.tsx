@@ -51,11 +51,12 @@ describe('DeleteArticleModal', () => {
     expect(deleteEvent).toBeCalledTimes(1);
   });
 
-  test('Срабатывает ивент удаления', () => {
+  test('Отмена удаления', () => {
     const cancelEvent = jest.fn();
+    const deleteEvent = jest.fn();
     renderComponent({
       close: cancelEvent,
-      callback: jest.fn(),
+      callback: deleteEvent,
       isOpen: true,
       article: fakeArticle,
     });
@@ -63,6 +64,7 @@ describe('DeleteArticleModal', () => {
     const cancelButton: HTMLElement = screen.getByText('Отмена');
 
     fireEvent.click(cancelButton);
+    expect(deleteEvent).toBeCalledTimes(0);
     expect(cancelEvent).toBeCalledTimes(1);
   });
 });

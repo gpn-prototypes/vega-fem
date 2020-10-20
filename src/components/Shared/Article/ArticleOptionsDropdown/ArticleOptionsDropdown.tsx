@@ -10,7 +10,7 @@ import { cnArticleOptionsDropdown } from './cn-article-options-dropdown';
 
 import './ArticleOptionsDropdown.css';
 
-interface ArticleOptions {
+export interface ArticleOptions {
   article: Article;
   updateArticle: (article: Article) => void;
   deleteArticle: (article: Article) => void;
