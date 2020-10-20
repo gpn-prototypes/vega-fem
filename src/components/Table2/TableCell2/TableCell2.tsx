@@ -4,6 +4,7 @@ import { Text, TextField } from '@gpn-prototypes/vega-ui';
 import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
 
 import { cnTableCell2 } from './cn-table-cell2';
+import { validateValue } from './validateValue';
 
 import './TableCell2.css';
 
@@ -102,7 +103,9 @@ export const TableCell2 = ({
           width="full"
           autoFocus
           value={innerValue}
-          onChange={(e: any) => setInnerValue(e.e.target.value)}
+          onChange={(e: any) => {
+            setInnerValue(validateValue(e.e.target.value));
+          }}
         />
       )}
     </div>
