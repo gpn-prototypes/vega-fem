@@ -18,7 +18,7 @@ interface TableCellProps {
   width?: number;
   round?: boolean; // округление до 2х знаков после запятой
   plainText?: boolean; // отображать переданное значание без дополнительных обработок (# округление и т.п)
-  format?: (value: number) => string;
+  format?: (value: number | string) => string;
 }
 
 export const TableCell2 = ({
@@ -32,7 +32,7 @@ export const TableCell2 = ({
   round,
   plainText,
   format,
-}: TableCellProps) => {
+}: TableCellProps): React.ReactElement => {
   const [isEditing, setIsEditing] = useState(false);
   const [innerValue, setInnerValue] = useState(value ?? '');
 
@@ -71,8 +71,10 @@ export const TableCell2 = ({
       }
       if (round) {
         const rounded = roundDecimal2Digits(+cellValue);
+        const roundedLength = ((): string => `${rounded}`)().length;
+
         if (format) {
-          return format(rounded);
+          return format(roundedLength > 5 ? rounded.toExponential(5) : rounded);
         }
         return rounded;
       }
