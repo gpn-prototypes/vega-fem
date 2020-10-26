@@ -5,7 +5,7 @@ import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
 import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
 import keyGen from '../../../helpers/keyGenerator';
 
-interface MacroparameterSetListProps {
+export interface MacroparameterSetListProps {
   macroparameterSetList: MacroparameterSet[];
   chooseMacroparameterSet: (set: any) => void;
 }
