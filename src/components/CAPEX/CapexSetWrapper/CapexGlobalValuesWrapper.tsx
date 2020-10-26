@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
+import { prepareStringForBack, spreadValue } from '../../../helpers/spreadValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
@@ -17,15 +18,18 @@ export const CapexGlobalValuesWrapper = ({
   updateCapexGlobalValue,
 }: CapexWrapperProps) => {
   const [value, setValue] = useState(globalValue?.value);
+  const [spreaded, setSpreaded] = useState<boolean>(true);
 
   const editValues = (e: any): void => {
+    if (spreaded) setSpreaded(false);
     setValue(e.e.target.value);
   };
   const requestSetGlobalValue = useCallback(() => {
     updateCapexGlobalValue({
       id: globalValue.id,
-      value,
+      value: typeof value === 'string' ? prepareStringForBack(value) : value,
     } as CapexSetGlobalValue);
+    setSpreaded(true);
   }, [updateCapexGlobalValue, value, globalValue]);
 
   const loseFocus = (e: any) => {
@@ -43,7 +47,7 @@ export const CapexGlobalValuesWrapper = ({
           id={`capexSet${globalValue.name}`}
           size="s"
           width="full"
-          value={value?.toString()}
+          value={value && spreaded ? spreadValue(value) : value?.toString()}
           rightSide={globalValue.unit ?? ''}
           onBlur={() => requestSetGlobalValue()}
           onChange={(e) => editValues(e)}
