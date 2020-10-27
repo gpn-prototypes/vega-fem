@@ -96,7 +96,7 @@ export const ArticleWrapper = ({
               id={`article_${article?.name}_${article?.id}`}
               placeholder="Значение"
               rightSide={article?.unit}
-              value={displayValue(values[0]?.value)}
+              value={values ? displayValue(values[0]?.value) : ''}
               onBlur={blurHandle}
               onChange={(e: any) => editValues(e)}
               onKeyDown={(e) => loseFocus(e)}
