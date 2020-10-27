@@ -74,7 +74,7 @@ export const TableCell2 = ({
         const roundedLength = ((): string => `${rounded}`)().length;
 
         if (format) {
-          return format(roundedLength > 5 ? rounded.toExponential(5) : rounded);
+          return format(roundedLength > 9 ? rounded.toExponential(3) : rounded);
         }
         return rounded;
       }
