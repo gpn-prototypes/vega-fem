@@ -39,6 +39,14 @@ export const CapexGlobalValuesWrapper = ({
     }
   };
 
+  const displayValue = (): string => {
+    if (value) {
+      if (spreaded) return spreadValue(value);
+      return value?.toString();
+    }
+    return '';
+  };
+
   return (
     <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
       <Form.Field>
@@ -47,7 +55,7 @@ export const CapexGlobalValuesWrapper = ({
           id={`capexSet${globalValue.name}`}
           size="s"
           width="full"
-          value={value && spreaded ? spreadValue(value) : value?.toString()}
+          value={displayValue()}
           rightSide={globalValue.unit ?? ''}
           onBlur={() => requestSetGlobalValue()}
           onChange={(e) => editValues(e)}

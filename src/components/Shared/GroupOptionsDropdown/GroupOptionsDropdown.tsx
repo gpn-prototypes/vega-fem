@@ -9,7 +9,7 @@ import { cnGroupOptionsDropdown } from './cn-group-options-dropdown';
 
 import './GroupOptionsDropdown.css';
 
-interface GroupOptions<GroupType> {
+export interface GroupOptions<GroupType> {
   group: GroupType;
   requestAddArticle: (article: Article, group: GroupType) => void;
   requestChangeGroup?: (group: GroupType) => void;

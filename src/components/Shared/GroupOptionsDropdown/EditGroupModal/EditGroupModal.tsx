@@ -13,7 +13,7 @@ import { cnEditGroupModal } from './cn-edit-group-modal';
 
 import './EditGroupModal.css';
 
-interface EditGroupModalProps<GroupType> {
+export interface EditGroupModalProps<GroupType> {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (group: GroupType) => void;
@@ -26,8 +26,8 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
   callback,
   group,
 }: EditGroupModalProps<GroupType>) => {
-  const [id] = useState(group.id);
-  const [caption, setCaption] = useState(group.caption);
+  const [id] = useState(group?.id ? group.id : '');
+  const [caption, setCaption] = useState(group?.caption ? group.caption : '');
   const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
@@ -62,6 +62,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
               id="groupSetName"
               size="s"
               width="full"
+              placeholder="Введите название"
               value={caption}
               onChange={(e: any) => {
                 setCaption(e.e.target.value);

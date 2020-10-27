@@ -9,14 +9,14 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../types/Article';
-import { cnAddArticleModal } from '../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
+import Article from '../../../../../../types/Article';
+import { cnAddArticleModal } from '../../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
 import './EditArticleModal.css';
 
-interface EditArticleModalProps {
+export interface EditArticleModalProps {
   close: (e: CloseEvent | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
