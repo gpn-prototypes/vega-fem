@@ -1,10 +1,12 @@
 import React from 'react';
-import { /* fireEvent, */ render, RenderResult, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 
 import {
   MacroparameterSetList,
   MacroparameterSetListProps,
 } from '../../../src/components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
+import store from '../../../src/store/store';
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 
 let macroparameterSetList: Array<MacroparameterSet>;
@@ -24,22 +26,37 @@ beforeAll(() => {
 });
 
 const renderComponent = (props: MacroparameterSetListProps): RenderResult =>
-  render(<MacroparameterSetList {...props} />);
+  render(
+    <Provider store={store}>
+      <MacroparameterSetList {...props} />
+    </Provider>,
+  );
 
-const findFirstMacroparameterSet = (): HTMLElement => screen.getByText('firstMacroparameter');
-const findSecondMacroparameterSet = (): HTMLElement => screen.getByText('secondMacroparameter');
+const findFirstMacroparameterSet = (): HTMLElement =>
+  screen.getByText('firstMacroparameterCaption');
+const findSecondMacroparameterSet = (): HTMLElement =>
+  screen.getByText('secondMacroparameterCaption');
 
 describe('MacroparameterSetList', () => {
-  test('fake test', () => {
-    // это чтобы запушить
-    expect(2 + 2).toBe(4);
-  });
-  /* test('renders correctly',()=>{//TODO:fix this test
+  test('renders correctly', () => {
     renderComponent({
-      macroparameterSetList:macroparameterSetList,
-      chooseMacroparameterSet:jest.fn(),
+      macroparameterSetList,
+      chooseMacroparameterSet: jest.fn(),
     });
     expect(findFirstMacroparameterSet()).toBeInTheDocument();
     expect(findSecondMacroparameterSet()).toBeInTheDocument();
-  }); */
+  });
+  test('choose macroparameter set correct', () => {
+    const fakeCallback = jest.fn();
+    renderComponent({
+      macroparameterSetList,
+      chooseMacroparameterSet: fakeCallback,
+    });
+    expect(findFirstMacroparameterSet()).toBeInTheDocument();
+    expect(findSecondMacroparameterSet()).toBeInTheDocument();
+    fireEvent.click(findSecondMacroparameterSet());
+    expect(fakeCallback).toBeCalledTimes(1);
+    fireEvent.click(findFirstMacroparameterSet());
+    expect(fakeCallback).toBeCalledTimes(2);
+  });
 });
