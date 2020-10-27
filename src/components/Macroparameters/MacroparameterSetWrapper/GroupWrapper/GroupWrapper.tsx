@@ -20,7 +20,7 @@ export interface Collapsed {
   collapsed: boolean;
 }
 
-interface MacroparameterSetWrapperGroupProps {
+export interface MacroparameterSetWrapperGroupProps {
   group: MacroparameterSetGroup;
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
@@ -104,7 +104,10 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
+      <div
+        data-testid="groupWrapper-body"
+        className={cnGroupWrapper('body', { hidden: isCollapsedState })}
+      >
         {articles?.length === 0 && (
           <GroupPlaceholder
             text="Пока не добавлена ни одна статья"

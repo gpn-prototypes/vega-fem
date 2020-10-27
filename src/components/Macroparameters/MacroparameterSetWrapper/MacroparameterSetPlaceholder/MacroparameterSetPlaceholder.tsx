@@ -5,7 +5,7 @@ import { cnMacroparameterSetPlaceholder } from '../../../../styles/Macroparamete
 
 import './MacroparameterSetPlaceholder.css';
 
-interface MacroparameterSetPlaceholderProps {
+export interface MacroparameterSetPlaceholderProps {
   text: string;
 }
 
