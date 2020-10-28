@@ -5,7 +5,7 @@ import { cnGroupPlaceholder } from './cn-group-placeholder';
 
 import './GroupPlaceholder.css';
 
-interface GroupPlaceholderProps {
+export interface GroupPlaceholderProps {
   text: string;
   callback?: () => void;
 }
