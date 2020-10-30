@@ -11,6 +11,11 @@
   grid-column-end: span 2;
 }
 
+.EditArticleModal__text-field {
+  position: relative;
+  margin-top: 0;
+}
+
 .EditArticleModal__footer-row {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }

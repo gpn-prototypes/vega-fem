@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Button, Form, Modal, Text, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
 import { cnAddArticleModal } from '../../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
+import Article from '../../../../../../types/Article';
+import { ErrorList, ErrorMessage } from '../../../ErrorMessage/ErrorMessage';
+import { validateArticle } from '../../../ErrorMessage/ValidateArticle';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
@@ -22,6 +25,10 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
   const [caption, setCaption] = useState(article.caption);
   const [unit, setUnit] = useState(article.unit);
   const [name, setName] = useState(article.name);
+
+  const [errorHelper, setErrorHelper] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+
   const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
@@ -30,12 +37,22 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
   };
 
   const handleArticleEvent = (e: any) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && !setErrorHelper) {
       submitHandle(e);
     } else if (e.key === 'Escape') {
       close(e);
     }
   };
+  const editValues = (
+    e: any,
+    setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
+  ): void => {
+    const validateResult = validateArticle({ value: e.e.target.value });
+    setErrorHelper(validateResult.isError);
+    setErrorMessage(validateResult.errorMsg);
+    setCallback(e.e.target.value);
+  };
+
   return (
     <Modal
       hasOverlay
@@ -49,31 +66,33 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
         <Text size="xs">Редактирование статьи</Text>
       </Modal.Header>
       <Modal.Body>
-        <Form.Row space="none" gap="none" className={cnAddArticleModal('full-width-row')}>
-          <Form.Field className={cnAddArticleModal('full-width-field')}>
+        <Form.Row space="none" gap="none" className={cnEditArticleModal('full-width-row')}>
+          <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
-            <TextField
-              id="articleSetName"
-              size="s"
-              width="full"
-              value={caption}
-              onChange={(e: any) => {
-                setCaption(e.e.target.value);
-              }}
-            />
+            <Form.Row className={cnEditArticleModal('text-field')}>
+              <TextField
+                id="articleSetName"
+                size="s"
+                width="full"
+                value={caption}
+                onChange={(e: any) => editValues(e, setCaption)}
+                state={errorHelper ? 'alert' : undefined}
+              />
+              {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
+            </Form.Row>
           </Form.Field>
-          <Form.Field className={cnAddArticleModal('full-width-field')}>
+          <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Описание</Form.Label>
-            <TextField
-              id="articleSetCaption"
-              size="s"
-              width="full"
-              value={name}
-              onChange={(e: any) => {
-                setName(e.e.target.value);
-              }}
-              onKeyDown={(e) => handleArticleEvent(e)}
-            />
+            <Form.Row className={cnEditArticleModal('text-field')}>
+              <TextField
+                id="articleSetCaption"
+                size="s"
+                width="full"
+                value={name}
+                onChange={(e: any) => setName(e.e.target.value)}
+                onKeyDown={(e) => handleArticleEvent(e)}
+              />
+            </Form.Row>
           </Form.Field>
           <Form.Field>
             <Form.Label>Единица измерения</Form.Label>
@@ -91,10 +110,16 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
         </Form.Row>
       </Modal.Body>
       <Modal.Footer>
-        <Form.Row className={cnAddArticleModal('footer-row')}>
+        <Form.Row className={cnEditArticleModal('footer-row')}>
           <div />
           <div />
-          <Button size="s" view="primary" label="Сохранить" onClick={(e) => submitHandle(e)} />
+          <Button
+            size="s"
+            view="primary"
+            label="Сохранить"
+            disabled={errorHelper}
+            onClick={(e) => submitHandle(e)}
+          />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />
         </Form.Row>
       </Modal.Footer>
