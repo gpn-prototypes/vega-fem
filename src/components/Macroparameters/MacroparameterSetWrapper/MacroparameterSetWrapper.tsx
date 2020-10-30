@@ -21,7 +21,7 @@ import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 
 const yearsOptions = yearsRangeOptions(5, 10);
 
-interface MacroparameterSetWrapperProps {
+export interface MacroparameterSetWrapperProps {
   macroparameterSet: MacroparameterSet;
   updateMacroparameterSet: (macroparameterSet: any) => void;
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
@@ -297,6 +297,7 @@ export const MacroparameterSetWrapper = ({
                           width="full"
                           id="macroparameterSetGroupName"
                           type="text"
+                          placeholder="Введите название группы статей"
                           maxLength={256}
                           value={newGroupName}
                           onChange={(event: any) => setNewGroupName(event.e.target.value)}
