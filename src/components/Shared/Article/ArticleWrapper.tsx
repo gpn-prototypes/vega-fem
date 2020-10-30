@@ -4,6 +4,8 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 import Article, { ArticleValues } from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { ErrorList, ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { validateArticle } from '../ErrorMessage/ValidateArticle';
 
 import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
@@ -33,10 +35,15 @@ export const ArticleWrapper = ({
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
 
+  const [errorHelper, setErrorHelper] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+
   const editValues = (e: any): void => {
+    const validateResult = validateArticle({ value: e.e.target.value });
+    setErrorHelper(validateResult.isError);
+    setErrorMessage(validateResult.errorMsg);
     setValues([{ value: e.e.target.value }]);
   };
-
   const loseFocus = (e: any) => {
     // TODO: change any
     if (e.key === 'Enter') {
@@ -85,6 +92,7 @@ export const ArticleWrapper = ({
               onKeyDown={(e) => loseFocus(e)}
               onFocus={onFocusHandler}
               data-testid="input"
+              state={errorHelper ? 'alert' : undefined}
             />
           </Form.Field>
           <Form.Field>
@@ -94,6 +102,7 @@ export const ArticleWrapper = ({
               deleteArticle={deleteArticleCallback}
             />
           </Form.Field>
+          {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
         </Form.Row>
       </Form.Field>
     </Form.Row>

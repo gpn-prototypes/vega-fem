@@ -9,6 +9,9 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
+import { ErrorList, ErrorMessage } from '../../ErrorMessage/ErrorMessage';
+import { validateArticle } from '../../ErrorMessage/ValidateArticle';
+
 import { cnEditGroupModal } from './cn-edit-group-modal';
 
 import './EditGroupModal.css';
@@ -27,7 +30,11 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
   group,
 }: EditGroupModalProps<GroupType>) => {
   const [id] = useState(group?.id ? group.id : '');
-  const [caption, setCaption] = useState(group?.caption ? group.caption : '');
+  const [caption, setCaption] = useState<string | undefined>(group?.caption ? group.caption : '');
+
+  const [errorHelper, setErrorHelper] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+
   const { portal } = usePortal();
 
   const submitHandle = (e: any) => {
@@ -35,13 +42,24 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
     close(e);
   };
 
-  const handleArticleEvent = (e: any) => {
-    if (e.key === 'Enter') {
+  const handleGroupEvent = (e: any) => {
+    if (e.key === 'Enter' && !setErrorHelper) {
       submitHandle(e);
     } else if (e.key === 'Escape') {
       close(e);
     }
   };
+
+  const editValues = (
+    e: any,
+    setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
+  ): void => {
+    const validateResult = validateArticle({ value: e.e.target.value });
+    setErrorHelper(validateResult.isError);
+    setErrorMessage(validateResult.errorMsg);
+    setCallback(e.e.target.value);
+  };
+
   return (
     <Modal
       hasOverlay
@@ -58,17 +76,19 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
         <Form.Row space="none" gap="none" className={cnEditGroupModal('full-width-row')}>
           <Form.Field className={cnEditGroupModal('full-width-field')}>
             <Form.Label>Название группы</Form.Label>
-            <TextField
-              id="groupSetName"
-              size="s"
-              width="full"
-              placeholder="Введите название"
-              value={caption}
-              onChange={(e: any) => {
-                setCaption(e.e.target.value);
-              }}
-              onKeyDown={(e) => handleArticleEvent(e)}
-            />
+            <Form.Row className={cnEditGroupModal('text-field')}>
+              <TextField
+                id="groupSetName"
+                size="s"
+                width="full"
+                placeholder="Введите название"
+                value={caption}
+                onChange={(e: any) => editValues(e, setCaption)}
+                onKeyDown={(e) => handleGroupEvent(e)}
+                state={errorHelper ? 'alert' : undefined}
+              />
+              {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
+            </Form.Row>
           </Form.Field>
         </Form.Row>
       </Modal.Body>
@@ -76,7 +96,13 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
         <Form.Row className={cnEditGroupModal('footer-row')}>
           <div />
           <div />
-          <Button size="s" view="primary" label="Сохранить" onClick={(e) => submitHandle(e)} />
+          <Button
+            size="s"
+            view="primary"
+            label="Сохранить"
+            disabled={errorHelper}
+            onClick={(e) => submitHandle(e)}
+          />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />
         </Form.Row>
       </Modal.Footer>

@@ -1,0 +1,4 @@
+.ErrorMessage {
+  position: absolute;
+  top: var(--space-2xl);
+}
