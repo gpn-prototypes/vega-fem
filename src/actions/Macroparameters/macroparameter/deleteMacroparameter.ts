@@ -42,16 +42,26 @@ export const requestDeleteMacroparameter = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            ` mutation {` +
-            `deleteMacroparameter(` +
-            `macroparameterSetId:"${selected.id.toString()}"` +
-            `macroparameterGroupId:"${group?.id?.toString()}"` +
-            `macroparameterId:"${macroparameter.id}"` +
-            `){` +
-            `ok` +
-            `}` +
-            `}`,
+          query: `mutation deleteMacroparameter{
+              deleteMacroparameter(
+                macroparameterSetId:"${selected.id.toString()}",
+                macroparameterGroupId:"${group?.id?.toString()}",
+                macroparameterId:"${macroparameter.id}"
+            ){
+              result{
+                 __typename
+                 ... on Result{
+                   vid
+                 }
+                 ... on Error{
+                   code
+                   message
+                   details
+                   payload
+                 }
+               }
+             }
+          }`,
         }),
       });
 
