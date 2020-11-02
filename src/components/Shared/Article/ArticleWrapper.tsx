@@ -3,8 +3,8 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { validateValue } from '../../Table2/TableCell2/validateValue';
-import { ErrorList, ErrorMessage } from '../ErrorMessage/ErrorMessage';
 import { validateArticle } from '../ErrorMessage/ValidateArticle';
+import { ErrorList, Validation } from '../ErrorMessage/Validation';
 
 import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
@@ -95,7 +95,11 @@ export const ArticleWrapper = ({
           {article?.caption}
         </Form.Label>
         <Form.Row col="4" className={cnArticleWrapper('row')}>
-          <Form.Field className={cnArticleWrapper('text-field')}>
+          <Validation
+            isError={errorHelper}
+            errorMsg={errorMessage}
+            className={cnArticleWrapper('text-field')}
+          >
             <TextField
               size="s"
               width="full"
@@ -110,7 +114,7 @@ export const ArticleWrapper = ({
               data-testid="input"
               state={errorHelper ? 'alert' : undefined}
             />
-          </Form.Field>
+          </Validation>
           <Form.Field>
             <ArticleOptionsDropdown
               article={article}
@@ -118,7 +122,6 @@ export const ArticleWrapper = ({
               deleteArticle={deleteArticleCallback}
             />
           </Form.Field>
-          {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
         </Form.Row>
       </Form.Field>
     </Form.Row>

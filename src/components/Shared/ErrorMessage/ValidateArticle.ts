@@ -1,5 +1,5 @@
 // import {useState} from "react";
-import { ErrorList } from './ErrorMessage';
+import { ErrorList } from './Validation';
 
 interface ValidateArticleProps {
   value: string;

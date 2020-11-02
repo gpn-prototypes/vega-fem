@@ -11,10 +11,6 @@
   grid-column-end: span 2;
 }
 
-.EditGroupModal__text-field {
-  position: relative;
-}
-
 .EditGroupModal__footer-row {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }

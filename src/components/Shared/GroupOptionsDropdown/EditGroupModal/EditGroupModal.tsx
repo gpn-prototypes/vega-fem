@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal, Text, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
-import { ErrorList, ErrorMessage } from '../../ErrorMessage/ErrorMessage';
 import { validateArticle } from '../../ErrorMessage/ValidateArticle';
+import { ErrorList, Validation } from '../../ErrorMessage/Validation';
 
 import { cnEditGroupModal } from './cn-edit-group-modal';
 
@@ -70,7 +70,8 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
         <Form.Row space="none" gap="none" className={cnEditGroupModal('full-width-row')}>
           <Form.Field className={cnEditGroupModal('full-width-field')}>
             <Form.Label>Название группы</Form.Label>
-            <Form.Row className={cnEditGroupModal('text-field')}>
+
+            <Validation isError={errorHelper} errorMsg={errorMessage}>
               <TextField
                 id="groupSetName"
                 size="s"
@@ -81,8 +82,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
                 onKeyDown={(e) => handleGroupEvent(e)}
                 state={errorHelper ? 'alert' : undefined}
               />
-              {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
-            </Form.Row>
+            </Validation>
           </Form.Field>
         </Form.Row>
       </Modal.Body>
