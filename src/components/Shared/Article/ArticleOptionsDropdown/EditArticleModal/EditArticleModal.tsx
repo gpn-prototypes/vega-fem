@@ -10,8 +10,8 @@ import {
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../../types/Article';
-import { ErrorList, ErrorMessage } from '../../../ErrorMessage/ErrorMessage';
 import { validateArticle } from '../../../ErrorMessage/ValidateArticle';
+import { ErrorList, Validation } from '../../../ErrorMessage/Validation';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
@@ -73,7 +73,11 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
         <Form.Row space="none" gap="none" className={cnEditArticleModal('full-width-row')}>
           <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
-            <Form.Row className={cnEditArticleModal('text-field')}>
+            <Validation
+              isError={errorHelper}
+              errorMsg={errorMessage}
+              className={cnEditArticleModal('text-field')}
+            >
               <TextField
                 id="articleSetName"
                 size="s"
@@ -82,8 +86,7 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
                 onChange={(e: any) => editValues(e, setCaption)}
                 state={errorHelper ? 'alert' : undefined}
               />
-              {errorHelper && <ErrorMessage errorMsg={errorMessage} />}
-            </Form.Row>
+            </Validation>
           </Form.Field>
           <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Описание</Form.Label>

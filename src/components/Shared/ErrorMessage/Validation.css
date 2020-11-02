@@ -1,0 +1,8 @@
+.Validation {
+  position: relative;
+}
+
+.Validation__error {
+  position: absolute;
+  top: var(--space-2xl);
+}
