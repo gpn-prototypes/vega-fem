@@ -5,6 +5,7 @@ import Article, { ArticleValues } from '../../../../types/Article';
 import { prepareStringForBack, spreadValue } from '../../../helpers/spreadValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { validateValue } from '../../Table2/TableCell2/validateValue';
 
 import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
@@ -54,8 +55,8 @@ export const ArticleWrapper = ({
         ...{
           value:
             typeof values[0]?.value === 'string'
-              ? prepareStringForBack(values[0]?.value)
-              : values[0]?.value,
+              ? prepareStringForBack(validateValue(values[0]?.value))
+              : +validateValue(values[0]?.value),
         },
       });
       setSpreaded(true);

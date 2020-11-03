@@ -45,7 +45,8 @@ export const TableCell2 = ({
   const onBlurHandler = () => {
     setIsEditing(false);
     if (onBlur) {
-      onBlur(+innerValue);
+      const validated = validateValue(innerValue);
+      onBlur(Number(validated));
     }
   };
 
@@ -106,7 +107,7 @@ export const TableCell2 = ({
           autoFocus
           value={innerValue}
           onChange={(e: any) => {
-            setInnerValue(validateValue(e.e.target.value));
+            setInnerValue(e.e.target.value);
           }}
         />
       )}

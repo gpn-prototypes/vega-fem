@@ -4,6 +4,7 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
 import { prepareStringForBack, spreadValue } from '../../../helpers/spreadValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { validateValue } from '../../Table2/TableCell2/validateValue';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
@@ -27,7 +28,10 @@ export const CapexGlobalValuesWrapper = ({
   const requestSetGlobalValue = useCallback(() => {
     updateCapexGlobalValue({
       id: globalValue.id,
-      value: typeof value === 'string' ? prepareStringForBack(value) : value,
+      value:
+        typeof value === 'string'
+          ? prepareStringForBack(validateValue(value))
+          : validateValue(String(value)),
     } as CapexSetGlobalValue);
     setSpreaded(true);
   }, [updateCapexGlobalValue, value, globalValue]);
