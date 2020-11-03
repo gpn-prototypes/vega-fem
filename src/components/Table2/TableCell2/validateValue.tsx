@@ -4,7 +4,7 @@ export const validateValue = (cellValue: string | number): string => {
     const splitted = str.split(/[,|.]/g).filter((v) => v);
     const ending = splitted[splitted.length - 1];
     splitted.pop();
-    return `${splitted.join('')}.${ending}`;
+    return splitted.length ? `${splitted.join('')}.${ending}` : ending;
   }
 
   return `${cellValue}`;
