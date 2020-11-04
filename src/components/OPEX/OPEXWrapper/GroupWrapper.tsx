@@ -177,6 +177,7 @@ export const GroupWrapper = ({
                 <ArticleWrapper
                   key={keyGen(index)}
                   article={article}
+                  articleList={articles}
                   fullWidth
                   updateArticleValueCallback={updateArticle}
                   updateArticleCallback={updateArticle}

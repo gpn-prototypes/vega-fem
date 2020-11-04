@@ -10,8 +10,12 @@ import {
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../../types/Article';
-import { validateArticle } from '../../../ErrorMessage/ValidateArticle';
-import { ErrorList, Validation } from '../../../ErrorMessage/Validation';
+import {
+  validateDescription,
+  validateName,
+  validateUnit,
+} from '../../../ErrorMessage/ValidateArticle';
+import { /* ErrorList, */ Validation } from '../../../ErrorMessage/Validation';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
@@ -22,16 +26,23 @@ export interface EditArticleModalProps {
   isOpen: boolean;
   callback?: (article: Article) => void;
   article: Article;
+  articleList: Article[];
 }
 
-export const EditArticleModal = ({ isOpen, close, callback, article }: EditArticleModalProps) => {
+export const EditArticleModal = ({
+  isOpen,
+  close,
+  callback,
+  article,
+  articleList,
+}: EditArticleModalProps) => {
   const [id] = useState(article.id);
   const [caption, setCaption] = useState(article.caption);
   const [unit, setUnit] = useState(article.unit);
   const [name, setName] = useState(article.name);
 
-  const [errorHelper, setErrorHelper] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+  /*  const [errorHelper, setErrorHelper] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorList>(''); */
 
   const { portal } = usePortal();
 
@@ -41,20 +52,11 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
   };
 
   const handleArticleEvent = (e: any) => {
-    if (e.key === 'Enter' && !setErrorHelper) {
+    if (e.key === 'Enter' /* && !setErrorHelper */) {
       submitHandle(e);
     } else if (e.key === 'Escape') {
       close(e);
     }
-  };
-  const editValues = (
-    e: any,
-    setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
-  ): void => {
-    const validateResult = validateArticle({ value: e.e.target.value });
-    setErrorHelper(validateResult.isError);
-    setErrorMessage(validateResult.errorMsg);
-    setCallback(e.e.target.value);
   };
 
   return (
@@ -74,8 +76,9 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
           <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <Validation
-              isError={errorHelper}
-              errorMsg={errorMessage}
+              articleList={articleList}
+              validationFunction={validateName}
+              linkedHook={setCaption}
               className={cnEditArticleModal('text-field')}
             >
               <TextField
@@ -83,36 +86,46 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
                 size="s"
                 width="full"
                 value={caption}
-                onChange={(e: any) => editValues(e, setCaption)}
-                state={errorHelper ? 'alert' : undefined}
+                // onChange={(e: any) => editValues(e, validateName, setCaption)}
+                // state={errorHelper ? 'alert' : undefined}
               />
             </Validation>
           </Form.Field>
           <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Описание</Form.Label>
             <Form.Row className={cnEditArticleModal('text-field')}>
-              <TextField
-                id="articleSetCaption"
-                size="s"
-                width="full"
-                value={name}
-                onChange={(e: any) => setName(e.e.target.value)}
-                onKeyDown={(e) => handleArticleEvent(e)}
-              />
+              <Validation
+                validationFunction={validateDescription}
+                linkedHook={setName}
+                className={cnEditArticleModal('text-field')}
+              >
+                <TextField
+                  id="articleSetCaption"
+                  size="s"
+                  width="full"
+                  value={name}
+                  // onChange={(e: any) => editValues(e, validateDescription, setName)}
+                  onKeyDown={(e) => handleArticleEvent(e)}
+                />
+              </Validation>
             </Form.Row>
           </Form.Field>
           <Form.Field>
             <Form.Label>Единица измерения</Form.Label>
-            <TextField
-              id="unit"
-              size="s"
-              width="default"
-              value={unit}
-              onChange={(e: any) => {
-                setUnit(e.e.target.value);
-              }}
-              onKeyDown={(e) => handleArticleEvent(e)}
-            />
+            <Validation
+              validationFunction={validateUnit}
+              linkedHook={setUnit}
+              className={cnEditArticleModal('text-field')}
+            >
+              <TextField
+                id="unit"
+                size="s"
+                width="default"
+                value={unit}
+                // onChange={(e: any) => editValues(e, validateUnit, setUnit)}
+                onKeyDown={(e) => handleArticleEvent(e)}
+              />
+            </Validation>
           </Form.Field>
         </Form.Row>
       </Modal.Body>
@@ -124,7 +137,7 @@ export const EditArticleModal = ({ isOpen, close, callback, article }: EditArtic
             size="s"
             view="primary"
             label="Сохранить"
-            disabled={errorHelper}
+            // disabled={errorHelper}
             onClick={(e) => submitHandle(e)}
           />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />

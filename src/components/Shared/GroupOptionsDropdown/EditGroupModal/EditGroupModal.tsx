@@ -9,8 +9,8 @@ import {
   TextField,
 } from '@gpn-prototypes/vega-ui';
 
-import { validateArticle } from '../../ErrorMessage/ValidateArticle';
-import { ErrorList, Validation } from '../../ErrorMessage/Validation';
+import { validateName } from '../../ErrorMessage/ValidateArticle';
+import { /* ErrorList, */ Validation } from '../../ErrorMessage/Validation';
 
 import { cnEditGroupModal } from './cn-edit-group-modal';
 
@@ -32,8 +32,8 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
   const [id] = useState(group?.id ? group.id : '');
   const [caption, setCaption] = useState<string | undefined>(group?.caption ? group.caption : '');
 
-  const [errorHelper, setErrorHelper] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+  // const [errorHelper, setErrorHelper] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState<ErrorList>('');
 
   const { portal } = usePortal();
 
@@ -43,22 +43,22 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
   };
 
   const handleGroupEvent = (e: any) => {
-    if (e.key === 'Enter' && !setErrorHelper) {
+    if (e.key === 'Enter' /* && !setErrorHelper */) {
       submitHandle(e);
     } else if (e.key === 'Escape') {
       close(e);
     }
   };
 
-  const editValues = (
+  /*  const editValues = (
     e: any,
     setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
   ): void => {
-    const validateResult = validateArticle({ value: e.e.target.value });
+    const validateResult = validateName({ value: e.e.target.value });
     setErrorHelper(validateResult.isError);
     setErrorMessage(validateResult.errorMsg);
     setCallback(e.e.target.value);
-  };
+  }; */
 
   return (
     <Modal
@@ -77,16 +77,16 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
           <Form.Field className={cnEditGroupModal('full-width-field')}>
             <Form.Label>Название группы</Form.Label>
 
-            <Validation isError={errorHelper} errorMsg={errorMessage}>
+            <Validation validationFunction={validateName} linkedHook={setCaption}>
               <TextField
                 id="groupSetName"
                 size="s"
                 width="full"
                 placeholder="Введите название"
                 value={caption}
-                onChange={(e: any) => editValues(e, setCaption)}
+                // onChange={(e: any) => editValues(e, setCaption)}
                 onKeyDown={(e) => handleGroupEvent(e)}
-                state={errorHelper ? 'alert' : undefined}
+                // state={errorHelper ? 'alert' : undefined}
               />
             </Validation>
           </Form.Field>
@@ -100,7 +100,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
             size="s"
             view="primary"
             label="Сохранить"
-            disabled={errorHelper}
+            // disabled={errorHelper}
             onClick={(e) => submitHandle(e)}
           />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />

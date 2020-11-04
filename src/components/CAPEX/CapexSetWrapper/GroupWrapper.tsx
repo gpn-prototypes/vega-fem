@@ -104,6 +104,7 @@ export const GroupWrapper = ({
             <ArticleWrapper
               key={keyGen(index)}
               article={article}
+              articleList={capexes}
               fullWidth
               onFocusCallback={articleFocusHandler}
               highlightArticleClear={highlightArticleClear}

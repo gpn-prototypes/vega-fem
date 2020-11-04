@@ -119,6 +119,7 @@ export const GroupWrapper = ({
             <ArticleWrapper
               key={keyGen(index)}
               article={macroparameter}
+              articleList={articles}
               updateArticleValueCallback={updateMacroparameterValueWithGroup}
               updateArticleCallback={updateMacroparameterValueWithGroup}
               deleteArticleCallback={deleteMacroparameterValueWithGroup}

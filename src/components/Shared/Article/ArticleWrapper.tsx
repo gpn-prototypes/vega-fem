@@ -4,9 +4,9 @@ import { Form, TextField } from '@gpn-prototypes/vega-ui';
 import Article, { ArticleValues } from '../../../../types/Article';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
-import { validateArticle } from '../ErrorMessage/ValidateArticle';
-import { ErrorList, Validation } from '../ErrorMessage/Validation';
 
+// import { validateName } from '../ErrorMessage/ValidateArticle';
+// import { ErrorList, Validation } from '../ErrorMessage/Validation';
 import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
 
@@ -16,6 +16,7 @@ import './ArticleWrapper.css';
 
 export interface ArticleWrapperProps {
   article: Article;
+  articleList: Article[];
   fullWidth?: boolean;
   updateArticleValueCallback?: (updatedArticle: Article) => void;
   updateArticleCallback: (updateArticle: Article) => void;
@@ -26,6 +27,7 @@ export interface ArticleWrapperProps {
 
 export const ArticleWrapper = ({
   article,
+  articleList,
   updateArticleValueCallback,
   updateArticleCallback,
   deleteArticleCallback,
@@ -35,13 +37,13 @@ export const ArticleWrapper = ({
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
 
-  const [errorHelper, setErrorHelper] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+  // const [errorHelper, setErrorHelper] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState<ErrorList>('');
 
   const editValues = (e: any): void => {
-    const validateResult = validateArticle({ value: e.e.target.value });
-    setErrorHelper(validateResult.isError);
-    setErrorMessage(validateResult.errorMsg);
+    // const validateResult = validateName({ value: e.e.target.value });
+    // setErrorHelper(validateResult.isError);
+    // setErrorMessage(validateResult.errorMsg);
     setValues([{ value: e.e.target.value }]);
   };
   const loseFocus = (e: any) => {
@@ -79,11 +81,7 @@ export const ArticleWrapper = ({
           {article?.caption}
         </Form.Label>
         <Form.Row col="4" className={cnArticleWrapper('row')}>
-          <Validation
-            isError={errorHelper}
-            errorMsg={errorMessage}
-            className={cnArticleWrapper('text-field')}
-          >
+          <Form.Field className={cnArticleWrapper('text-field')}>
             <TextField
               size="s"
               width="full"
@@ -96,12 +94,13 @@ export const ArticleWrapper = ({
               onKeyDown={(e) => loseFocus(e)}
               onFocus={onFocusHandler}
               data-testid="input"
-              state={errorHelper ? 'alert' : undefined}
+              // state={errorHelper ? 'alert' : undefined}
             />
-          </Validation>
+          </Form.Field>
           <Form.Field>
             <ArticleOptionsDropdown
               article={article}
+              articleList={articleList}
               updateArticle={updateArticleCallback}
               deleteArticle={deleteArticleCallback}
             />

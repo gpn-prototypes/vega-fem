@@ -12,12 +12,14 @@ import './ArticleOptionsDropdown.css';
 
 export interface ArticleOptions {
   article: Article;
+  articleList: Article[];
   updateArticle: (article: Article) => void;
   deleteArticle: (article: Article) => void;
 }
 
 export const ArticleOptionsDropdown = ({
   article,
+  articleList,
   updateArticle,
   deleteArticle,
 }: ArticleOptions) => {
@@ -57,6 +59,7 @@ export const ArticleOptionsDropdown = ({
               <Menu
                 onClose={() => setIsOpen(false)}
                 article={article}
+                articleList={articleList}
                 deleteArticle={deleteArticle}
                 updateArticle={updateArticle}
               />

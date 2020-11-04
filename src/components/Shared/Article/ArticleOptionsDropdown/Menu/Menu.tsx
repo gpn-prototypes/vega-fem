@@ -8,12 +8,19 @@ import { EditArticleModal } from '../EditArticleModal/EditArticleModal';
 
 export interface MenuOptions {
   article: Article;
+  articleList: Article[];
   onClose: () => void;
   updateArticle?: (article: Article) => void;
   deleteArticle?: (article: Article) => void;
 }
 
-export const Menu: any = ({ article, updateArticle, deleteArticle, onClose }: MenuOptions) => {
+export const Menu: any = ({
+  article,
+  articleList,
+  updateArticle,
+  deleteArticle,
+  onClose,
+}: MenuOptions) => {
   const { isOpen, close, open } = useModal();
 
   const [isEdit, setIsEdit] = useState(false);
@@ -63,6 +70,7 @@ export const Menu: any = ({ article, updateArticle, deleteArticle, onClose }: Me
         isOpen={isOpen && isEdit}
         close={closeHandler}
         article={article}
+        articleList={articleList}
         callback={editArticleHandlerCallback}
       />
       <DeleteArticleModal
