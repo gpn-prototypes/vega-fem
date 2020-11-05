@@ -13,8 +13,3 @@ export const spreadValue = (toSpread: number | string): string => {
 
   return toSpreadStr.replace(/(?!^)(?=(?:\d{3})+(?:\.|$))/gm, ' ');
 };
-
-export const prepareStringForBack = (value: string): number => {
-  const replaced = value.replace(/ /g, '');
-  return +replaced;
-};

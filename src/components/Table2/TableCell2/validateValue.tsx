@@ -1,5 +1,6 @@
 export const validateValue = (cellValue: string | number): string => {
-  const str = String(cellValue);
+  let str = String(cellValue);
+  str = str.replace(/ /g, '');
   if (cellValue && str.match(/,|\./g)) {
     const splitted = str.split(/[,|.]/g).filter((v) => v);
     const ending = splitted[splitted.length - 1];
@@ -7,5 +8,5 @@ export const validateValue = (cellValue: string | number): string => {
     return splitted.length ? `${splitted.join('')}.${ending}` : ending;
   }
 
-  return `${cellValue}`;
+  return str;
 };

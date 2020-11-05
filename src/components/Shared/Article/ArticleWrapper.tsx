@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article, { ArticleValues } from '../../../../types/Article';
-import { prepareStringForBack, spreadValue } from '../../../helpers/spreadValue';
+import { spreadValue } from '../../../helpers/spreadValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { validateValue } from '../../Table2/TableCell2/validateValue';
@@ -53,10 +53,7 @@ export const ArticleWrapper = ({
       updateArticleValueCallback({
         ...article,
         ...{
-          value:
-            typeof values[0]?.value === 'string'
-              ? prepareStringForBack(validateValue(values[0]?.value))
-              : +validateValue(values[0]?.value),
+          value: +validateValue(String(values[0]?.value)),
         },
       });
       setSpreaded(true);
