@@ -21,5 +21,12 @@ module.exports = {
         includeFailureMsg: true,
       },
     ],
+    [
+      'jest-junit',
+      {
+        outputDirectory: './reports',
+        suiteName: 'Jest Tests',
+      },
+    ],
   ],
 };
