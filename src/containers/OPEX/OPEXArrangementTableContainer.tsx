@@ -18,7 +18,7 @@ interface OPEXArrangementTableContainerProps {
   mkos?: OPEXPresetGroup;
 }
 
-export const OPEXArrangementTableContainer = ({
+const OPEXArrangementTableContainer = ({
   autoexport,
   mkos,
 }: OPEXArrangementTableContainerProps) => {
@@ -174,3 +174,5 @@ export const OPEXArrangementTableContainer = ({
     />
   );
 };
+
+export default OPEXArrangementTableContainer;
