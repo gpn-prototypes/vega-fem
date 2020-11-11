@@ -123,19 +123,32 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               Название сценария
             </label>
             <div
-              className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text TextField_withValue"
-              onKeyDown={[Function]}
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
             >
-              <input
-                autoFocus={false}
-                className="TextField-Input"
-                id="macroparameterSetName"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="text"
-                value="Набор Макропараметров 20.2В"
-              />
+              <div
+                className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text TextField_withValue"
+                onKeyDown={[Function]}
+              >
+                <input
+                  autoFocus={false}
+                  className="TextField-Input"
+                  id="macroparameterSetName"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="text"
+                  value="Набор Макропараметров 20.2В"
+                />
+              </div>
             </div>
           </div>
           <div
