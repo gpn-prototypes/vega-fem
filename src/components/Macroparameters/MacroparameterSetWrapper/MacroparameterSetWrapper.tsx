@@ -12,6 +12,9 @@ import macroparameterSetCategoryOptions from '../../../helpers/MacroparameterSet
 import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { cnEditArticleModal } from '../../Shared/Article/ArticleOptionsDropdown/EditArticleModal/cn-edit-article-modal';
+import { validateName } from '../../Shared/ErrorMessage/ValidateArticle';
+import { Validation } from '../../Shared/ErrorMessage/Validation';
 
 import { Collapsed, GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
@@ -22,6 +25,7 @@ import '../../../styles/VegaFormCustom/VegaFormCustom.css';
 const yearsOptions = yearsRangeOptions(5, 10);
 
 export interface MacroparameterSetWrapperProps {
+  macroparameterSetList: MacroparameterSet[];
   macroparameterSet: MacroparameterSet;
   updateMacroparameterSet: (macroparameterSet: any) => void;
   addMacroparameterSetGroup: (macroparameterSetGroup: MacroparameterSetGroup) => void;
@@ -35,6 +39,7 @@ export interface MacroparameterSetWrapperProps {
 }
 
 export const MacroparameterSetWrapper = ({
+  macroparameterSetList,
   macroparameterSet,
   updateMacroparameterSet,
   addMacroparameterSetGroup,
@@ -186,15 +191,22 @@ export const MacroparameterSetWrapper = ({
                 <Form.Row gap="m" space="none" className={cnVegaFormCustom('form-row')}>
                   <Form.Field>
                     <Form.Label space="xs">Название сценария</Form.Label>
-                    <TextField
-                      id="macroparameterSetName"
-                      size="s"
-                      width="full"
-                      value={name}
-                      onBlur={() => requestSetUpdate()}
-                      onChange={(e) => onChangeTypoHandler(e, setName)}
-                      onKeyDown={(e) => loseFocus(e)}
-                    />
+                    <Validation
+                      itemsList={macroparameterSetList}
+                      validationFunction={validateName}
+                      linkedHook={setName}
+                      className={cnEditArticleModal('text-field')}
+                    >
+                      <TextField
+                        id="macroparameterSetName"
+                        size="s"
+                        width="full"
+                        value={name}
+                        onBlur={() => requestSetUpdate()}
+                        onChange={(e) => onChangeTypoHandler(e, setName)}
+                        onKeyDown={(e) => loseFocus(e)}
+                      />
+                    </Validation>
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Количество лет</Form.Label>

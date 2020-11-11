@@ -21,6 +21,9 @@ import { MacroparameterSetWrapper } from '../../components/Macroparameters/Macro
 export const MacroparameterSetContainer = () => {
   const dispatch = useDispatch();
 
+  const selectorMacroparameterSet = (state: any) => state.macroparamsReducer.macroparameterSetList;
+  const macroparameterSetList: MacroparameterSet[] = useSelector(selectorMacroparameterSet);
+
   const selectorSelectedMacroparameterSet = (state: any) => state.macroparamsReducer.selected;
   const selectedMacroparameterSet: MacroparameterSet = useSelector(
     selectorSelectedMacroparameterSet,
@@ -86,6 +89,7 @@ export const MacroparameterSetContainer = () => {
 
   return (
     <MacroparameterSetWrapper
+      macroparameterSetList={macroparameterSetList}
       macroparameterSet={selectedMacroparameterSet}
       updateMacroparameterSet={updateMacroparameterSet}
       addMacroparameterSetGroup={addMacroparameterSetGroups}

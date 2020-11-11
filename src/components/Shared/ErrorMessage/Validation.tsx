@@ -2,15 +2,13 @@ import React, { FormEvent, useState } from 'react';
 import { Text } from '@consta/uikit/Text';
 import { Form } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
-
 import { cnValidation } from './cn-validation';
 import { ErrorList, ErrorType, ValidateArticleProps } from './ValidateArticle';
 
 import './Validation.css';
 
 export interface ValidationProps {
-  articleList?: Article[];
+  itemsList?: Array<any>;
   validationFunction: ({ value }: ValidateArticleProps) => ErrorType;
   linkedHook: React.Dispatch<React.SetStateAction<string | undefined>>;
   className?: string;
@@ -19,7 +17,7 @@ export interface ValidationProps {
 
 // компонент, который валидируют, необходимо оборачивать в данный компонент
 export const Validation = ({
-  articleList,
+  itemsList,
   validationFunction,
   linkedHook,
   /* onChange, */ /* errorMsg, */ className,
@@ -33,7 +31,7 @@ export const Validation = ({
     validationCallback: any,
     setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
   ): void => {
-    const validateResult = validationCallback({ articleList, value: e.e.target.value });
+    const validateResult = validationCallback({ itemsList, value: e.e.target.value });
     setErrorHelper(validateResult.isError);
     setErrorMessage(validateResult.errorMsg);
     setCallback(e.e.target.value);

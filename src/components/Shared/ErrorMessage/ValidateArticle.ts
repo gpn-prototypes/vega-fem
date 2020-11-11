@@ -1,8 +1,7 @@
 // import {useState} from "react";
-import Article from '../../../../types/Article';
 
 export interface ValidateArticleProps {
-  articleList?: Article[];
+  itemsList?: Array<any>;
   value: string;
 }
 
@@ -20,10 +19,10 @@ export const errorList = [
 ] as const;
 export type ErrorList = typeof errorList[number];
 
-export const validateName = ({ articleList, value }: ValidateArticleProps): ErrorType => {
+export const validateName = ({ itemsList, value }: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  const findUnique = articleList?.find((article: Article) => article.caption === value);
+  const findUnique = itemsList?.find((item: any) => item.caption === value);
 
   if (value.length === 0) {
     error = { isError: true, errorMsg: 'Пустое имя' };

@@ -76,7 +76,7 @@ export const EditArticleModal = ({
           <Form.Field className={cnEditArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
             <Validation
-              articleList={articleList}
+              itemsList={articleList}
               validationFunction={validateName}
               linkedHook={setCaption}
               className={cnEditArticleModal('text-field')}
