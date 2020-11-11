@@ -16,7 +16,7 @@ interface OPEXEconomyTableContainerProps {
   opexCaseList?: OPEXGroup[];
 }
 
-export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
+const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
   const dispatch = useDispatch();
 
   const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
@@ -149,3 +149,4 @@ export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableCont
     />
   );
 };
+export default OPEXEconomyTableContainer;

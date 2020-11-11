@@ -45,7 +45,8 @@ export const TableCell2 = ({
   const onBlurHandler = () => {
     setIsEditing(false);
     if (onBlur) {
-      onBlur(+innerValue);
+      const validated = validateValue(innerValue);
+      onBlur(Number(validated));
     }
   };
 
@@ -74,7 +75,7 @@ export const TableCell2 = ({
         const roundedLength = ((): string => `${rounded}`)().length;
 
         if (format) {
-          return format(roundedLength > 5 ? rounded.toExponential(5) : rounded);
+          return format(roundedLength > 9 ? rounded.toExponential(3) : rounded);
         }
         return rounded;
       }
@@ -106,7 +107,7 @@ export const TableCell2 = ({
           autoFocus
           value={innerValue}
           onChange={(e: any) => {
-            setInnerValue(validateValue(e.e.target.value));
+            setInnerValue(e.e.target.value);
           }}
         />
       )}

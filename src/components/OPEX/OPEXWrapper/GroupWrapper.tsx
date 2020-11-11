@@ -18,7 +18,7 @@ import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOpt
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
-interface GroupWrapperProps {
+export interface GroupWrapperProps {
   group: any; // TODO:change any
   groupName?: string;
   isPreset?: boolean;
@@ -151,7 +151,10 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
+      <div
+        data-testid="groupWrapper-body"
+        className={cnGroupWrapper('body', { hidden: isCollapsedState })}
+      >
         {articles?.length === 0 && (
           <GroupPlaceholder text="Пустой кейс" callback={openAddArticleModal} />
         )}

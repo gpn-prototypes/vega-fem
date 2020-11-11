@@ -4,7 +4,7 @@ import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
 import Role from '../../../types/role';
 import keyGen from '../../helpers/keyGenerator';
 
-interface OPEXRoleListWrapperProps {
+export interface OPEXRoleListWrapperProps {
   roleList: any[];
   selectedRole: Role;
   selectRole: (role: Role) => void;

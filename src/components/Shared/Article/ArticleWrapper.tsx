@@ -2,8 +2,10 @@ import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
 import Article, { ArticleValues } from '../../../../types/Article';
+import { spreadValue } from '../../../helpers/spreadValue';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
+import { validateValue } from '../../Table2/TableCell2/validateValue';
 
 // import { validateName } from '../ErrorMessage/ValidateArticle';
 // import { ErrorList, Validation } from '../ErrorMessage/Validation';
@@ -36,14 +38,13 @@ export const ArticleWrapper = ({
   highlightArticleClear,
 }: ArticleWrapperProps) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
+  const [spreaded, setSpreaded] = useState<boolean>(true);
 
   // const [errorHelper, setErrorHelper] = useState(false);
   // const [errorMessage, setErrorMessage] = useState<ErrorList>('');
 
   const editValues = (e: any): void => {
-    // const validateResult = validateName({ value: e.e.target.value });
-    // setErrorHelper(validateResult.isError);
-    // setErrorMessage(validateResult.errorMsg);
+    if (spreaded) setSpreaded(false);
     setValues([{ value: e.e.target.value }]);
   };
   const loseFocus = (e: any) => {
@@ -57,8 +58,11 @@ export const ArticleWrapper = ({
     if (updateArticleValueCallback) {
       updateArticleValueCallback({
         ...article,
-        ...{ value: +values[0]?.value },
+        ...{
+          value: +validateValue(String(values[0]?.value)),
+        },
       });
+      setSpreaded(true);
     }
     if (highlightArticleClear) {
       highlightArticleClear();
@@ -70,6 +74,14 @@ export const ArticleWrapper = ({
       onFocusCallback(article);
     }
   }, [onFocusCallback, article]);
+
+  const displayValue = (value: string | number | null | undefined): string => {
+    if (value) {
+      if (spreaded) return spreadValue(value);
+      return value?.toString();
+    }
+    return '';
+  };
 
   return (
     <Form.Row
@@ -88,7 +100,7 @@ export const ArticleWrapper = ({
               id={`article_${article?.name}_${article?.id}`}
               placeholder="Значение"
               rightSide={article?.unit}
-              value={values && values.length ? values[0]?.value?.toString() : ''}
+              value={values ? displayValue(values[0]?.value) : ''}
               onBlur={blurHandle}
               onChange={(e: any) => editValues(e)}
               onKeyDown={(e) => loseFocus(e)}

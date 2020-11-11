@@ -9,8 +9,8 @@ import MacroparameterSetGroup from '../../../../types/Macroparameters/Macroparam
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
 import Role from '../../../../types/role';
-import { OPEXArrangementTableContainer } from '../../../containers/OPEX/OPEXArrangementTableContainer';
-import { OPEXEconomyTableContainer } from '../../../containers/OPEX/OPEXEconomyTableContainer';
+import OPEXArrangementTableContainer from '../../../containers/OPEX/OPEXArrangementTableContainer';
+import OPEXEconomyTableContainer from '../../../containers/OPEX/OPEXEconomyTableContainer';
 import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
@@ -20,7 +20,7 @@ import { GroupWrapper } from './GroupWrapper';
 
 import '../../../styles/BlockWrapper/BlockWrapper.css';
 
-interface OPEXWrapperProps {
+export interface OPEXWrapperProps {
   OPEXSetInstance: OPEXSetType;
   OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
   OPEXDeleteAutoexport: (OPEXAutoexport: OPEXGroup) => void;
@@ -244,6 +244,7 @@ export const OPEXSetWrapper = ({
                         width="full"
                         id="OPEXNewGroupName"
                         type="text"
+                        placeholder="Введите название кейса"
                         maxLength={256}
                         value={newCaseName}
                         onChange={(event: any) => setNewCaseName(event.e.target.value)}
