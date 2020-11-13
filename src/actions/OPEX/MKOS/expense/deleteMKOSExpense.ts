@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -39,11 +40,10 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            // `mutation {deleteOpexMkosExpense(expenseId: ${article.id?.toString()},){ok}}`,
-            `mutation deleteOpexMkosExpense{
+          query: `mutation deleteOpexMkosExpense{
               deleteOpexMkosExpense(
                 expenseId: 2,
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -67,6 +67,7 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
         response.status === 200 &&
         body.data.deleteOpexMkosExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSDeleteExpenseSuccess(article));
       } else {
         dispatch(OPEXMKOSDeleteExpenseError(body.message));

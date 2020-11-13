@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -40,16 +41,12 @@ export const addMacroparameterSetGroup = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {createMacroparameterGroup(macroparameterSetId:${selected.id.toString()},` +
-            `caption: "${newMacroparameterSetGroup.caption}", ` +
-            `name: "${newMacroparameterSetGroup.name}"` +
-            `){macroparameterGroup{name, id, caption}, ok}}`, */
-            `mutation createMacroparameterGroup{
+          query: `mutation createMacroparameterGroup{
             createMacroparameterGroup(
               macroparameterSetId:${selected.id.toString()}
               caption: "${newMacroparameterSetGroup.caption}"
               name: "${newMacroparameterSetGroup.name}"
+              version:${currentVersionFromSessionStorage()}
             ){
               macroparameterGroup{
                 __typename
@@ -74,6 +71,7 @@ export const addMacroparameterSetGroup = (
       const responseData = body?.data?.createMacroparameterGroup;
 
       if (response.status === 200 && responseData.macroparameterGroup?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = responseData?.macroparameterGroup;
 
         if (newGroup) {

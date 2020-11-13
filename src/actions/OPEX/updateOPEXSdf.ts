@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -35,7 +36,8 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         body: JSON.stringify({
           query: `mutation setOpexSdf {
             setOpexSdf(
-              sdf: true
+              sdf: true,
+              version:${currentVersionFromSessionStorage()}
             ) {
               opexSdf {
                 __typename
@@ -56,6 +58,7 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
       } else {
         dispatch(OPEXSetChangeSdfError(body.message));

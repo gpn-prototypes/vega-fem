@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article, { ArticleValues } from '../../../../types/Article';
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -50,19 +51,13 @@ export function opexChangeCaseExpenseYearValue(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {setOpexCaseExpenseYearValue(` +
-            `caseId: ${group.id},` +
-            `expenseId: ${article.id},` +
-            `year: ${value.year?.toString()},` +
-            `value: ${value.value?.toString()}` +
-            `){ok, totalValueByYear{year, value}}}`, */
-            `mutation setOpexCaseExpenseYearValue{
+          query: `mutation setOpexCaseExpenseYearValue{
               setOpexCaseExpenseYearValue(
                 caseId:${group.id},
                 expenseId: ${article.id},
                 year:${value.year?.toString()},
-                value: ${value.value?.toString()}
+                value: ${value.value?.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 totalValueByYear{
                   year,
@@ -87,6 +82,7 @@ export function opexChangeCaseExpenseYearValue(
         response.status === 200 &&
         body.data.setOpexCaseExpenseYearValue.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
       } else {
         dispatch(OPEXChangeCaseExpenseYearValueError(body.message));

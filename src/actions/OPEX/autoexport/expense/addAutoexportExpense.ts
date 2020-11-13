@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -45,6 +46,7 @@ export function addAutoexportExpense(
             createOpexAutoexportExpense(
               caption: "${article.caption?.toString()}",
               unit: "${article.unit?.toString()}",
+              version:${currentVersionFromSessionStorage()}
             ){
             opexExpense{
               __typename
@@ -76,6 +78,7 @@ export function addAutoexportExpense(
         response.status === 200 &&
         body.data.createOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense),
         );

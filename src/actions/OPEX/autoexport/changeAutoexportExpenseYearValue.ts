@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article, { ArticleValues } from '../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -48,17 +49,12 @@ export function autoexportChangeExpenseYearValue(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {setOpexAutoexportExpenseYearValue(` +
-            `expenseId: ${article.id},` +
-            `year: ${value.year?.toString()},` +
-            `value: ${value.value?.toString()}` +
-            `){ok}}`, */
-            `mutation setOpexAutoexportExpenseYearValue{
+          query: `mutation setOpexAutoexportExpenseYearValue{
               setOpexAutoexportExpenseYearValue(
                 expenseId: ${article.id},
                 year:${value.year?.toString()},
-                value: ${value.value?.toString()}
+                value: ${value.value?.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexExpense{
                   __typename
@@ -79,6 +75,7 @@ export function autoexportChangeExpenseYearValue(
         response.status === 200 &&
         body.data.setOpexAutoexportExpenseYearValue.opexExpense?.__typename
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
       } else {
         dispatch(OPEXAutoexportChangeExpenseYearValueError(body.message));

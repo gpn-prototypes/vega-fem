@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -44,6 +45,7 @@ export function autoexportChange(
           query: `mutation changeOpexAutoexport{
               changeOpexAutoexport(
                 yearEnd: ${autoexport.yearEnd.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 autoexport{
                   __typename
@@ -91,6 +93,7 @@ export function autoexportChange(
         response.status === 200 &&
         body.data.changeOpexAutoexport.autoexport?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportChangeSuccess(body.data?.changeOpexAutoexport?.autoexport));
       } else {
         dispatch(OPEXAutoexportChangeError(body.message));

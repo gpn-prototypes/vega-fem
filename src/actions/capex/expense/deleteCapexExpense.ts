@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { CapexesAction } from '../fetchCAPEX';
@@ -42,6 +43,7 @@ export const requestDeleteCapexExpense = (
             deleteCapexExpense(
               capexExpenseGroupId:"${group?.id?.toString()}",
               capexExpenseId:"${capex.id}"
+              version: ${currentVersionFromSessionStorage()}
             ){
               result{
                 __typename
@@ -63,6 +65,7 @@ export const requestDeleteCapexExpense = (
       const body = await response.json();
 
       if (response.status === 200 && body.data.deleteCapexExpense?.result.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexDeleteValueSuccess(capex, group));
       } else {
         dispatch(capexDeleteValueError(body.message));

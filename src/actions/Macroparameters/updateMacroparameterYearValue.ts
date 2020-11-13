@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Macroparameter, { ArticleValues } from '../../../types/Article';
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -52,6 +53,7 @@ export const requestUpdateMacroparameterYearValue = (
                 macroparameterId: ${macroparameter.id}
                 year: ${value.year}
                 value: ${value.value}
+                version:${currentVersionFromSessionStorage()}
               ){
                  macroparameter{
                     __typename
@@ -71,6 +73,7 @@ export const requestUpdateMacroparameterYearValue = (
       const responseData = body?.data?.setMacroparameterYearValue;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
       } else {
         dispatch(macroparameterUpdateYearValueError(body.message));

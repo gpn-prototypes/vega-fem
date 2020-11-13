@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -39,9 +40,11 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          /* `mutation {deleteOpexCase(caseId:"${opexCase.id}"){ok}}`, */
           query: `mutation deleteOpexCase{
-            deleteOpexCase(caseId:"${opexCase.id}"){
+            deleteOpexCase(
+            caseId:"${opexCase.id}",
+            version:${currentVersionFromSessionStorage()}
+            ){
               result{
                 __typename
                 ... on Result{
@@ -61,6 +64,7 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200 && body.data.deleteOpexCase.result?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {
         dispatch(OPEXDeleteCaseError(body.message));

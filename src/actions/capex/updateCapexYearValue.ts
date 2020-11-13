@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article, { ArticleValues } from '../../../types/Article';
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -51,6 +52,7 @@ export const requestUpdateCapexYearValue = (
               capexExpenseId: ${capex.id}
               year: ${value.year}
               value: ${value.value}
+              version:${currentVersionFromSessionStorage()}
             ) {
               totalValueByYear{
                 year
@@ -81,6 +83,7 @@ export const requestUpdateCapexYearValue = (
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.status === 200 && responseData?.totalValueByYear.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
         );
