@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -39,15 +40,11 @@ export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {},
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {createOpexMkosExpense(` +
-            `caption: "${article.caption?.toString()}",` +
-            `unit: "${article.unit?.toString()}",` +
-            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok}}`, */
-            `mutation createOpexMkosExpense{
+          query: `mutation createOpexMkosExpense{
               createOpexMkosExpense(
                 caption: "${article.caption?.toString()}",
                 unit: "${article.unit?.toString()}",
+                version:${currentVersionFromSessionStorage()}
               ){
               opexExpense{
                 __typename
@@ -79,6 +76,7 @@ export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {},
         response.status === 200 &&
         body.data.createOpexMkosExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAddMKOSExpenseSuccess(body.data?.createOpexMkosExpense?.opexExpense));
       } else {
         dispatch(OPEXAddMKOSExpenseError(body.message));

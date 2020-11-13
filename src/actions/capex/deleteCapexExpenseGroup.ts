@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -40,6 +41,7 @@ export const deleteCapexExpenseGroup = (
           query: `mutation deleteCapexExpenseGroup{
             deleteCapexExpenseGroup(
               capexExpenseGroupId:"${capexSetGroup.id}",
+              version:${currentVersionFromSessionStorage()}
             ){
               result{
                 __typename
@@ -62,6 +64,7 @@ export const deleteCapexExpenseGroup = (
         response.status === 200 &&
         body.data.deleteCapexExpenseGroup?.result.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
       } else {
         dispatch(capexExpenseGroupDeleteError(body.message));

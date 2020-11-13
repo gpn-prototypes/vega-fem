@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
 import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -40,17 +41,12 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {createOpexCase(` +
-          `caption: "${opexCase.caption}",` +
-          `yearStart: ${opexCase.yearStart.toString()},` +
-          `yearEnd: ${opexCase.yearEnd.toString()},` +
-          `){opexCase{name,caption,yearStart,yearEnd,opexExpenseList{name,caption,valueTotal}}, ok}}`, */
-            `mutation {
+          query: `mutation {
               createOpexCase(
                 caption: "${opexCase.caption}",
                 yearStart: ${opexCase.yearStart.toString()} ,
                 yearEnd: ${opexCase.yearEnd.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexCase{
                 __typename
@@ -74,6 +70,7 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200 && body.data.createOpexCase.opexCase?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXCreateCaseSuccess({
             ...body.data?.createOpexCase?.opexCase,

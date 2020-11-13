@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -41,13 +42,10 @@ export function autoexportDeleteExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {deleteOpexAutoexportExpense(` +
-            `expenseId: ${article.id?.toString()},` +
-            `){ok}}`, */
-            `mutation deleteOpexAutoexportExpense{
+          query: `mutation deleteOpexAutoexportExpense{
               deleteOpexAutoexportExpense(
                 expenseId: 2,
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -71,6 +69,7 @@ export function autoexportDeleteExpense(
         response.status === 200 &&
         body.data.deleteOpexAutoexportExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
       } else {
         dispatch(OPEXAutoexportDeleteExpenseError(body.message));

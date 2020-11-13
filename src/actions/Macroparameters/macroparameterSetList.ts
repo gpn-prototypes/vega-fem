@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -107,6 +108,7 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
       const body = await response.json();
 
       if (response.status === 200) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterSetListSuccess(body.data?.macroparameterSetList));
       } else {
         dispatch(macroparameterSetListError(body.message));

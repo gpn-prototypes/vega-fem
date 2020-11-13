@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
 import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -43,15 +44,11 @@ export function caseDeleteExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {deleteOpexCaseExpense(` +
-            `caseId: ${group.id?.toString()},` +
-            `expenseId: ${article.id?.toString()},` +
-            `){ok}}`, */
-            `mutation deleteOpexCaseExpense{
+          query: `mutation deleteOpexCaseExpense{
               deleteOpexCaseExpense(
                 caseId: ${group.id?.toString()},
-                expenseId: ${article.id?.toString()}
+                expenseId: ${article.id?.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -75,6 +72,7 @@ export function caseDeleteExpense(
         response.status === 200 &&
         body.data.deleteOpexCaseExpense.result?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
       } else {
         dispatch(OPEXCaseDeleteExpenseError(body.message));

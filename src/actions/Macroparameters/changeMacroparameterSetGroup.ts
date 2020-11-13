@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -46,6 +47,7 @@ export const changeMacroparameterSetGroup = (
             `macroparameterSetId:"${selected.id.toString()}" ` +
             `macroparameterGroupId:"${newMacroparameterSetGroup.id}" ` +
             `caption:"${newMacroparameterSetGroup.caption}" ` +
+            `version:${currentVersionFromSessionStorage()} ` +
             `){macroparameterGroup{ ` +
             `id ` +
             `caption} ` +
@@ -57,6 +59,7 @@ export const changeMacroparameterSetGroup = (
       const responseData = body?.data?.changeMacroparameterGroup;
 
       if (response.ok && responseData?.ok) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = responseData?.macroparameterGroup;
 
         if (newGroup) {
