@@ -48,7 +48,7 @@ export function autoexportChangeExpense(
                 name: "${article.name?.toString()}",
                 caption: "${article.caption?.toString()}",
                 unit: "${article.unit?.toString()}",
-                ${article.value ? `value:${article.value},` : ''},
+                ${article.value ? `value:${article.value},` : ''}
                 version:${currentVersionFromSessionStorage()}
               ){
                 opexExpense{

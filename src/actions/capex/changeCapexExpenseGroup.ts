@@ -42,14 +42,10 @@ export const changeCapexExpenseGroup = (
               changeCapexExpenseGroup(
                 capexExpenseGroupId:"${capexSetGroup.id}",
                 caption:"${capexSetGroup.caption}"
-              version: ${currentVersionFromSessionStorage()}
+                version: ${currentVersionFromSessionStorage()}
               ){
                 capexExpenseGroup{
                   __typename
-                  totalValueByYear{
-                    year
-                    value
-                  }
                   ... on CapexExpenseGroup{
                     id,
                     caption
