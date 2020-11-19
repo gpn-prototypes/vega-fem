@@ -11,6 +11,7 @@ import './GroupOptionsDropdown.css';
 
 export interface GroupOptions<GroupType> {
   group: GroupType;
+  groupList?: Array<GroupType>;
   requestAddArticle: (article: Article, group: GroupType) => void;
   requestChangeGroup?: (group: GroupType) => void;
   requestDeleteGroup: (group: GroupType) => void;
@@ -18,6 +19,7 @@ export interface GroupOptions<GroupType> {
 
 export const GroupOptionsDropdown = <GroupType,>({
   group,
+  groupList,
   requestAddArticle,
   requestChangeGroup,
   requestDeleteGroup,
@@ -53,6 +55,7 @@ export const GroupOptionsDropdown = <GroupType,>({
             <GroupMenu
               onClose={() => setIsOpen(false)}
               group={group}
+              groupList={groupList}
               requestAddArticle={requestAddArticle}
               requestChangeGroup={requestChangeGroup}
               requestDeleteGroup={requestDeleteGroup}

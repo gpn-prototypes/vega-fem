@@ -139,6 +139,7 @@ export const CapexSetWrapper = ({
                       <GroupWrapper
                         key={keyGen(index)}
                         group={group}
+                        groupList={groups}
                         requestAddCapex={addCapex}
                         updateCapexValue={updateCapexValue}
                         deleteCapexValue={deleteCapexValue}

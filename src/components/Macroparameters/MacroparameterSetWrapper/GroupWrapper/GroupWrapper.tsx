@@ -22,6 +22,7 @@ export interface Collapsed {
 
 export interface MacroparameterSetWrapperGroupProps {
   group: MacroparameterSetGroup;
+  groupList: Array<MacroparameterSetGroup>;
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
   updateMacroparameterValue: (macroparameter: Article, group: MacroparameterSetGroup) => void;
@@ -36,6 +37,7 @@ export interface MacroparameterSetWrapperGroupProps {
 
 export const GroupWrapper = ({
   group,
+  groupList,
   requestAddMacroparameter,
   updateMacroparameterValue,
   deleteMacroparameterValue,
@@ -98,6 +100,7 @@ export const GroupWrapper = ({
         <div className={cnGroupWrapper('header-actions')}>
           <GroupOptionsDropdown<MacroparameterSetGroup>
             group={group}
+            groupList={groupList}
             requestAddArticle={addMacroparameterToGroup}
             requestChangeGroup={requestChangeMacroparameterGroup}
             requestDeleteGroup={requestDeleteMacroparameterGroup}

@@ -15,7 +15,7 @@ import {
   validateName,
   validateUnit,
 } from '../../../ErrorMessage/ValidateArticle';
-import { /* ErrorList, */ Validation } from '../../../ErrorMessage/Validation';
+import { Validation } from '../../../ErrorMessage/Validation';
 
 import { cnEditArticleModal } from './cn-edit-article-modal';
 
@@ -45,6 +45,10 @@ export const EditArticleModal = ({
   const [errorMessage, setErrorMessage] = useState<ErrorList>(''); */
 
   const { portal } = usePortal();
+
+  const [firstControl, setFirstControl] = useState<boolean>(false);
+  const [secondControl, setSecondControl] = useState<boolean>(false);
+  const [thirdControl, setThirdControl] = useState<boolean>(false);
 
   const submitHandle = (e: any) => {
     if (callback) callback({ id, name, caption, unit } as Article);
@@ -80,6 +84,7 @@ export const EditArticleModal = ({
               validationFunction={validateName}
               linkedHook={setCaption}
               className={cnEditArticleModal('text-field')}
+              isDisabledParentForm={setFirstControl}
             >
               <TextField
                 id="articleSetName"
@@ -98,6 +103,7 @@ export const EditArticleModal = ({
                 validationFunction={validateDescription}
                 linkedHook={setName}
                 className={cnEditArticleModal('text-field')}
+                isDisabledParentForm={setSecondControl}
               >
                 <TextField
                   id="articleSetCaption"
@@ -116,6 +122,7 @@ export const EditArticleModal = ({
               validationFunction={validateUnit}
               linkedHook={setUnit}
               className={cnEditArticleModal('text-field')}
+              isDisabledParentForm={setThirdControl}
             >
               <TextField
                 id="unit"
@@ -137,7 +144,7 @@ export const EditArticleModal = ({
             size="s"
             view="primary"
             label="Сохранить"
-            // disabled={errorHelper}
+            disabled={firstControl || secondControl || thirdControl}
             onClick={(e) => submitHandle(e)}
           />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />

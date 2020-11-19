@@ -20,6 +20,7 @@ import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper
 
 export interface GroupWrapperProps {
   group: any; // TODO:change any
+  groupList?: Array<any>;
   groupName?: string;
   isPreset?: boolean;
   removeGroup: (group: OPEXGroup) => void;
@@ -38,6 +39,7 @@ const yearsOptions = yearsRangeOptions(5, 10);
 
 export const GroupWrapper = ({
   group,
+  groupList,
   groupName,
   isPreset,
   updateGroup,
@@ -145,6 +147,7 @@ export const GroupWrapper = ({
         <div className={cnGroupWrapper('header-actions')}>
           <GroupOptionsDropdown<OPEXGroup>
             group={group}
+            groupList={groupList}
             requestAddArticle={addArticle}
             requestChangeGroup={changeGroupName}
             requestDeleteGroup={removeGroup}

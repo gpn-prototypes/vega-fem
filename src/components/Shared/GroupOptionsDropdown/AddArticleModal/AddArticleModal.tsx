@@ -10,6 +10,8 @@ import {
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../types/Article';
+import { validateName, validateUnit } from '../../ErrorMessage/ValidateArticle';
+import { Validation } from '../../ErrorMessage/Validation';
 
 import { cnAddArticleModal } from './cn-add-article-modal';
 
@@ -22,14 +24,13 @@ export interface AddArticleModalProps {
   // article: Article;
 }
 
-export const AddArticleModal = ({
-  isOpen,
-  close,
-  callback /* , article */,
-}: AddArticleModalProps) => {
-  const [caption, setCaption] = useState('');
-  const [unit, setUnit] = useState('');
+export const AddArticleModal = ({ isOpen, close, callback }: AddArticleModalProps) => {
+  const [caption, setCaption] = useState<string | undefined>('');
+  const [unit, setUnit] = useState<string | undefined>('');
   const { portal } = usePortal();
+
+  const [firstControl, setFirstControl] = useState<boolean>(false);
+  const [secondControl, setSecondControl] = useState<boolean>(false);
 
   const submitHandle = (e: any) => {
     if (callback) callback({ caption, unit } as Article);
@@ -58,32 +59,40 @@ export const AddArticleModal = ({
         <Form.Row space="none" gap="none" className={cnAddArticleModal('full-width-row')}>
           <Form.Field className={cnAddArticleModal('full-width-field')}>
             <Form.Label>Название статьи</Form.Label>
-            <TextField
-              id="articleModalNewArticleName"
-              size="s"
-              width="full"
-              placeholder="Введите название статьи"
-              maxLength={256}
-              value={caption}
-              onChange={(e: any) => {
-                setCaption(e.e.target.value);
-              }}
-            />
+            <Validation
+              validationFunction={validateName}
+              linkedHook={setCaption}
+              isDisabledParentForm={setFirstControl}
+              isClear
+            >
+              <TextField
+                id="articleModalNewArticleName"
+                size="s"
+                width="full"
+                placeholder="Введите название"
+                maxLength={256}
+                value={caption}
+                onKeyDown={(e) => handleArticleEvent(e)}
+              />
+            </Validation>
           </Form.Field>
           <Form.Field>
             <Form.Label>Единица измерения</Form.Label>
-            <TextField
-              id="articleModalUnit"
-              size="s"
-              width="full"
-              placeholder="Введите единицы измерения"
-              maxLength={20}
-              value={unit}
-              onChange={(e: any) => {
-                setUnit(e.e.target.value);
-              }}
-              onKeyDown={(e) => handleArticleEvent(e)}
-            />
+            <Validation
+              validationFunction={validateUnit}
+              linkedHook={setUnit}
+              isDisabledParentForm={setSecondControl}
+            >
+              <TextField
+                id="articleModalUnit"
+                size="s"
+                width="full"
+                placeholder="Введите единицы измерения"
+                maxLength={20}
+                value={unit}
+                onKeyDown={(e) => handleArticleEvent(e)}
+              />
+            </Validation>
           </Form.Field>
         </Form.Row>
       </Modal.Body>
@@ -91,7 +100,13 @@ export const AddArticleModal = ({
         <Form.Row className={cnAddArticleModal('footer-row')}>
           <div />
           <div />
-          <Button size="s" view="primary" label="Добавить" onClick={(e) => submitHandle(e)} />
+          <Button
+            size="s"
+            view="primary"
+            label="Добавить"
+            onClick={(e) => submitHandle(e)}
+            disabled={firstControl || secondControl}
+          />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />
         </Form.Row>
       </Modal.Footer>

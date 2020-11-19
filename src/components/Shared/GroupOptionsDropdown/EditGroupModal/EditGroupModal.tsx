@@ -21,6 +21,7 @@ export interface EditGroupModalProps<GroupType> {
   isOpen: boolean;
   callback?: (group: GroupType) => void;
   group: GroupType;
+  groupList: Array<GroupType>;
 }
 
 export const EditGroupModal = <GroupType extends { id: string | number; caption: string }>({
@@ -28,12 +29,12 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
   close,
   callback,
   group,
+  groupList,
 }: EditGroupModalProps<GroupType>) => {
   const [id] = useState(group?.id ? group.id : '');
   const [caption, setCaption] = useState<string | undefined>(group?.caption ? group.caption : '');
 
-  // const [errorHelper, setErrorHelper] = useState(false);
-  // const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+  const [firstControl, setFirstControl] = useState<boolean>(false);
 
   const { portal } = usePortal();
 
@@ -49,16 +50,6 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
       close(e);
     }
   };
-
-  /*  const editValues = (
-    e: any,
-    setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
-  ): void => {
-    const validateResult = validateName({ value: e.e.target.value });
-    setErrorHelper(validateResult.isError);
-    setErrorMessage(validateResult.errorMsg);
-    setCallback(e.e.target.value);
-  }; */
 
   return (
     <Modal
@@ -77,16 +68,20 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
           <Form.Field className={cnEditGroupModal('full-width-field')}>
             <Form.Label>Название группы</Form.Label>
 
-            <Validation validationFunction={validateName} linkedHook={setCaption}>
+            <Validation
+              validationFunction={validateName}
+              linkedHook={setCaption}
+              isDisabledParentForm={setFirstControl}
+              itemsList={groupList}
+            >
               <TextField
                 id="groupSetName"
                 size="s"
                 width="full"
                 placeholder="Введите название"
+                maxLength={256}
                 value={caption}
-                // onChange={(e: any) => editValues(e, setCaption)}
                 onKeyDown={(e) => handleGroupEvent(e)}
-                // state={errorHelper ? 'alert' : undefined}
               />
             </Validation>
           </Form.Field>
@@ -100,7 +95,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
             size="s"
             view="primary"
             label="Сохранить"
-            // disabled={errorHelper}
+            disabled={firstControl}
             onClick={(e) => submitHandle(e)}
           />
           <Button size="s" view="ghost" label="Отмена" onClick={close} />

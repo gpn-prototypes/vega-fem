@@ -13,8 +13,8 @@ export interface ErrorType {
 export const errorList = [
   '',
   'Пустое имя',
-  'Больше 256 символов',
-  'Больше 20 символов',
+  'Максимум 256 символов',
+  'Максимум 20 символов',
   'Неуникальное имя',
 ] as const;
 export type ErrorList = typeof errorList[number];
@@ -27,7 +27,7 @@ export const validateName = ({ itemsList, value }: ValidateArticleProps): ErrorT
   if (value.length === 0) {
     error = { isError: true, errorMsg: 'Пустое имя' };
   } else if (value.length > 256) {
-    error = { isError: true, errorMsg: 'Больше 256 символов' };
+    error = { isError: true, errorMsg: 'Максимум 256 символов' };
   } else if (findUnique !== undefined) {
     // TODO: fix
     error = { isError: true, errorMsg: 'Неуникальное имя' };
@@ -38,8 +38,8 @@ export const validateName = ({ itemsList, value }: ValidateArticleProps): ErrorT
 export const validateDescription = ({ value }: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  if (value.length > 256) {
-    error = { isError: true, errorMsg: 'Больше 256 символов' };
+  if (value.length >= 256) {
+    error = { isError: true, errorMsg: 'Максимум 256 символов' };
   } else error = { isError: false, errorMsg: '' };
 
   return error;
@@ -47,8 +47,8 @@ export const validateDescription = ({ value }: ValidateArticleProps): ErrorType 
 export const validateUnit = ({ value }: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  if (value.length > 20) {
-    error = { isError: true, errorMsg: 'Больше 20 символов' };
+  if (value.length >= 20) {
+    error = { isError: true, errorMsg: 'Максимум 20 символов' };
   } else error = { isError: false, errorMsg: '' };
 
   return error;

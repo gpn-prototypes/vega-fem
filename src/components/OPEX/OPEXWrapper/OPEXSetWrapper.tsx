@@ -206,6 +206,7 @@ export const OPEXSetWrapper = ({
                   <GroupWrapper
                     key={keyGen(index)}
                     group={caseItem}
+                    groupList={OPEXSetInstance?.opexCaseList}
                     removeGroup={OPEXDeleteCase}
                     changeGroupName={OPEXChangeCase}
                     updateArticle={(article: Article) => OPEXChangeCaseExpense(article, caseItem)}

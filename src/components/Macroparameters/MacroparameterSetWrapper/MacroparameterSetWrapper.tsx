@@ -270,6 +270,7 @@ export const MacroparameterSetWrapper = ({
                       <GroupWrapper
                         key={keyGen(index)}
                         group={group}
+                        groupList={groups}
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
                         updateMacroparameterValue={updateMacroparameterValue}

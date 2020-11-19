@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import { Text } from '@consta/uikit/Text';
 import { Form } from '@gpn-prototypes/vega-ui';
 
@@ -9,22 +9,37 @@ import './Validation.css';
 
 export interface ValidationProps {
   itemsList?: Array<any>;
+  isClear?: boolean;
   validationFunction: ({ value }: ValidateArticleProps) => ErrorType;
   linkedHook: React.Dispatch<React.SetStateAction<string | undefined>>;
   className?: string;
+  isDisabledParentForm?: (value: boolean) => void;
   children: React.ReactElement;
 }
 
 // компонент, который валидируют, необходимо оборачивать в данный компонент
 export const Validation = ({
   itemsList,
+  isClear = false,
   validationFunction,
   linkedHook,
-  /* onChange, */ /* errorMsg, */ className,
+  className,
+  isDisabledParentForm,
   children,
 }: ValidationProps) => {
-  const [errorHelper, setErrorHelper] = useState(false);
+  const [errorHelper, setErrorHelper] = useState<boolean>(isClear);
   const [errorMessage, setErrorMessage] = useState<ErrorList>('');
+
+  useEffect(() => {
+    if (isClear) {
+      const validateResult = validationFunction({ itemsList, value: '' });
+      setErrorHelper(validateResult.isError);
+      isDisabledParentForm!(validateResult.isError);
+      setErrorMessage(validateResult.errorMsg);
+      linkedHook('');
+    } /* to load only ones */
+    /* eslint-disable-next-line */
+  }, []);
 
   const editValues = (
     e: any,
@@ -33,6 +48,7 @@ export const Validation = ({
   ): void => {
     const validateResult = validationCallback({ itemsList, value: e.e.target.value });
     setErrorHelper(validateResult.isError);
+    isDisabledParentForm!(validateResult.isError);
     setErrorMessage(validateResult.errorMsg);
     setCallback(e.e.target.value);
   };

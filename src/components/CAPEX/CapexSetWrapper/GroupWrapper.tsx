@@ -18,6 +18,7 @@ import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper
 
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
+  groupList: Array<CapexExpenseSetGroup>;
   requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
   deleteCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;
@@ -31,6 +32,7 @@ interface CapexSetWrapperGroupProps {
 
 export const GroupWrapper = ({
   group,
+  groupList,
   requestAddCapex,
   updateCapexValue,
   deleteCapexValue,
@@ -89,6 +91,7 @@ export const GroupWrapper = ({
         <div className={cnGroupWrapper('header-actions')}>
           <GroupOptionsDropdown<CapexExpenseSetGroup>
             group={group}
+            groupList={groupList}
             requestAddArticle={requestAddCapex}
             requestChangeGroup={requestChangeCapexGroup}
             requestDeleteGroup={requestDeleteCapexGroup}

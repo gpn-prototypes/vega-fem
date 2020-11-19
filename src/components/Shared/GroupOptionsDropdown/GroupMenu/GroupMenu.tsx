@@ -11,6 +11,7 @@ import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
 
 export interface GroupMenuOptions<GroupType> {
   group: GroupType;
+  groupList: Array<GroupType>;
   onClose: () => void;
   requestAddArticle: (article: Article, group: GroupType) => void;
   requestChangeGroup?: (group: GroupType) => void;
@@ -19,6 +20,7 @@ export interface GroupMenuOptions<GroupType> {
 
 export const GroupMenu: any = <GroupType extends { id: string | number; caption: string }>({
   group,
+  groupList,
   onClose,
   requestAddArticle,
   requestChangeGroup,
@@ -94,6 +96,7 @@ export const GroupMenu: any = <GroupType extends { id: string | number; caption:
         close={closeHandler}
         group={group}
         callback={requestChangeGroup}
+        groupList={groupList}
       />
       <DeleteGroupModal<typeof group>
         isOpen={isOpen && isDelete}
