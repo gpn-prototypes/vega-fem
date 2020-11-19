@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -40,8 +41,8 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         headers: headers(),
         body: JSON.stringify({
           query: `mutation removeOpexMkos{
-              removeOpexMkos{
-                error{
+              removeOpexMkos(version:${currentVersionFromSessionStorage()} ){
+                ...on Error{
                   code
                   message
                   details
@@ -54,6 +55,7 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
       const body = await response.json();
 
       if (response.status === 200) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSRemoveSuccess(MKOS));
       } else {
         dispatch(OPEXMKOSRemoveError(body.message));

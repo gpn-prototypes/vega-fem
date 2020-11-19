@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
@@ -47,6 +48,7 @@ export const requestDeleteMacroparameter = (
                 macroparameterSetId:"${selected.id.toString()}",
                 macroparameterGroupId:"${group?.id?.toString()}",
                 macroparameterId:"${macroparameter.id}"
+              version:${currentVersionFromSessionStorage()}
             ){
               result{
                  __typename
@@ -68,6 +70,7 @@ export const requestDeleteMacroparameter = (
       const body = await response.json();
 
       if (response.ok) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));
       } else {
         dispatch(macroparameterDeleteError(body.message));

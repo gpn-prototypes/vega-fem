@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../types/Article';
 import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
@@ -48,6 +49,7 @@ export const requestAddMacroparameter = (
               macroparameterGroupId:${group?.id?.toString()}
               caption: "${newMacroparameter.caption}"
               unit: "${newMacroparameter.unit}"
+              version:${currentVersionFromSessionStorage()}
             ){
               macroparameter{
                 __typename
@@ -77,6 +79,7 @@ export const requestAddMacroparameter = (
       const responseData = body?.data?.createMacroparameter;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const macroparameter = responseData?.macroparameter;
 
         if (macroparameter) {

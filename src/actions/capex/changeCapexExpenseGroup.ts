@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -41,13 +42,10 @@ export const changeCapexExpenseGroup = (
               changeCapexExpenseGroup(
                 capexExpenseGroupId:"${capexSetGroup.id}",
                 caption:"${capexSetGroup.caption}"
+                version: ${currentVersionFromSessionStorage()}
               ){
                 capexExpenseGroup{
                   __typename
-                  totalValueByYear{
-                    year
-                    value
-                  }
                   ... on CapexExpenseGroup{
                     id,
                     caption
@@ -68,6 +66,7 @@ export const changeCapexExpenseGroup = (
       const changedCapexGroup = body?.data?.changeCapexExpenseGroup;
 
       if (response.status === 200 && changedCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = changedCapexGroup?.capexExpenseGroup;
         if (newGroup) console.log(newGroup);
         dispatch(capexExpenseGroupChangeSuccess({ ...newGroup } as CapexExpenseSetGroup));

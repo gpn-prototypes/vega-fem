@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -40,23 +41,36 @@ export const changeMacroparameterSetGroup = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            `mutation {` +
-            `changeMacroparameterGroup( ` +
-            `macroparameterSetId:"${selected.id.toString()}" ` +
-            `macroparameterGroupId:"${newMacroparameterSetGroup.id}" ` +
-            `caption:"${newMacroparameterSetGroup.caption}" ` +
-            `){macroparameterGroup{ ` +
-            `id ` +
-            `caption} ` +
-            `ok}}`,
+          query: `mutation {
+              changeMacroparameterGroup(
+              macroparameterSetId:"${selected.id.toString()}"
+              macroparameterGroupId:"${newMacroparameterSetGroup.id}"
+              caption:"${newMacroparameterSetGroup.caption}"
+              version:${currentVersionFromSessionStorage()}){
+                macroparameterGroup{
+                  __typename
+                  ... on MacroparameterGroup{
+                    name
+                    id
+                    caption
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
+                  }
+                }
+              }
+            }`,
         }),
       });
 
       const body = await response.json();
       const responseData = body?.data?.changeMacroparameterGroup;
 
-      if (response.ok && responseData?.ok) {
+      if (response.ok && responseData?.macroparameterGroup?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = responseData?.macroparameterGroup;
 
         if (newGroup) {

@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
 import { authHeader } from '../../../helpers/authTokenToLocalstorage';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
 import { CapexesAction } from '../fetchCAPEX';
@@ -44,8 +45,9 @@ export const requestUpdateCapexGlobalValue = (
         body: JSON.stringify({
           query: `mutation updateCapexGlobalValue{
               updateCapexGlobalValue(
-                    capexGlobalValueId:"${globalValue?.id}"
-                    value: ${roundDecimal2Digits(globalValue?.value ?? 0)}
+                capexGlobalValueId:"${globalValue?.id}"
+                value: ${roundDecimal2Digits(globalValue?.value ?? 0)}
+                version: ${currentVersionFromSessionStorage()}
               ){
                 capexGlobalValue{
                   __typename
@@ -75,6 +77,7 @@ export const requestUpdateCapexGlobalValue = (
         const capexGlobalValue = responseData?.capexGlobalValue;
 
         if (capexGlobalValue) {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(capexUpdateGlobalValueSuccess(capexGlobalValue as CapexSetGlobalValue));
         }
       } else {

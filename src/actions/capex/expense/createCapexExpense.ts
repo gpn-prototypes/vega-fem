@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../types/Article';
 import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { CapexesAction } from '../fetchCAPEX';
@@ -43,6 +44,7 @@ export const requestCreateCapexExpense = (
               capexExpenseGroupId:"${group?.id?.toString()}",
               caption:"${newCapexExpense.caption}",
               unit:"${newCapexExpense.unit}"
+              version: ${currentVersionFromSessionStorage()}
             ){
               capexExpense{
                 __typename
@@ -75,6 +77,7 @@ export const requestCreateCapexExpense = (
         const capex = responseData?.capexExpense;
 
         if (capex) {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(createCapexExpenseSuccess(capex as Article, group));
         }
       } else {

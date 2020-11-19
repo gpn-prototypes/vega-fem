@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -40,6 +41,7 @@ export const createCapexExpenseGroup = (
           query: `mutation createCapexExpenseGroup{
               createCapexExpenseGroup(
                 caption:"${newCapexSetGroup.caption}"
+              version:${currentVersionFromSessionStorage()}
               ){
                 capexExpenseGroup{
                   __typename
@@ -64,6 +66,7 @@ export const createCapexExpenseGroup = (
       const createdCapexGroup = body?.data?.createCapexExpenseGroup;
 
       if (response.status === 200 && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = createdCapexGroup?.capexExpenseGroup;
         if (newGroup)
           dispatch(

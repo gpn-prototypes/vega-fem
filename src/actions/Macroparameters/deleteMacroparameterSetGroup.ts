@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
@@ -45,6 +46,7 @@ export const deleteMacroparameterSetGroup = (
               deleteMacroparameterGroup(
                 macroparameterSetId:"${selected.id.toString()}",
                 macroparameterGroupId:"${macroparameterSetGroup.id}",
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -65,6 +67,7 @@ export const deleteMacroparameterSetGroup = (
       const body = await response.json();
 
       if (response.ok) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterSetGroupDeleteSuccess(macroparameterSetGroup));
       } else {
         dispatch(macroparameterSetGroupDeleteError(body.message));

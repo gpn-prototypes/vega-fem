@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
 import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -43,23 +44,15 @@ export function caseChangeExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {changeOpexCaseExpense(` +
-            `caseId: ${group.id?.toString()},` +
-            `expenseId: ${article.id?.toString()},` +
-            `name: "${article.name?.toString()}",` +
-            `caption: "${article.caption?.toString()}",` +
-            `unit: "${article.unit?.toString()}",` +
-            `${article.value ? `value:${article.value},` : ''}` +
-            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok, totalValueByYear{year, value}}}`, */
-            `mutation changeOpexCaseExpense{
+          query: `mutation changeOpexCaseExpense{
               changeOpexCaseExpense(
                 caseId: ${group.id?.toString()},
                 expenseId: ${article.id?.toString()},
                 name: "${article.name?.toString()}",
                 caption: "${article.caption?.toString()}",
                 unit: "${article.unit?.toString()}",
-                ${article.value ? `value:${article.value},` : ''}
+                ${article.value ? `value:${article.value},` : ''},
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexExpense{
                   __typename
@@ -91,6 +84,7 @@ export function caseChangeExpense(
         response.status === 200 &&
         body.data.changeOpexCaseExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXCaseChangeExpenseSuccess(group, body.data?.changeOpexCaseExpense?.opexExpense),
         );

@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import Article from '../../../../../types/Article';
+import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
 
@@ -41,21 +42,14 @@ export function autoexportChangeExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {changeOpexAutoexportExpense(` +
-            `expenseId: ${article.id?.toString()},` +
-            `name: "${article.name?.toString()}",` +
-            `caption: "${article.caption?.toString()}",` +
-            `unit: "${article.unit?.toString()}",` +
-            `${article.value ? `value:${article.value},` : ''}` +
-            `){opexExpense{id,name,caption,unit,valueTotal,value{year,value}}, ok}}`, */
-            `mutation changeOpexAutoexportExpense{
+          query: `mutation changeOpexAutoexportExpense{
               changeOpexAutoexportExpense(
                 expenseId: ${article.id?.toString()},
                 name: "${article.name?.toString()}",
                 caption: "${article.caption?.toString()}",
                 unit: "${article.unit?.toString()}",
                 ${article.value ? `value:${article.value},` : ''}
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexExpense{
                   __typename
@@ -87,6 +81,7 @@ export function autoexportChangeExpense(
         response.status === 200 &&
         body.data.changeOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXAutoexportChangeExpenseSuccess(body.data?.changeOpexAutoexportExpense?.opexExpense),
         );

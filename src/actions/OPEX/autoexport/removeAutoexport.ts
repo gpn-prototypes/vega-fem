@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
 import headers from '../../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 
@@ -42,8 +43,8 @@ export function autoexportRemove(
         headers: headers(),
         body: JSON.stringify({
           query: `mutation removeOpexAutoexport{
-              removeOpexAutoexport{
-                error{
+              removeOpexAutoexport(version:${currentVersionFromSessionStorage()} ){
+                ...on Error{
                   code
                   message
                   details
@@ -56,6 +57,7 @@ export function autoexportRemove(
       const body = await response.json();
 
       if (response.status === 200) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportRemoveSuccess(autoexport));
       } else {
         dispatch(OPEXAutoexportRemoveError(body.message));
