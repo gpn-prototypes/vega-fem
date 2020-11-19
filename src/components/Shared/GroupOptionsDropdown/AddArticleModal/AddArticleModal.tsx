@@ -69,7 +69,7 @@ export const AddArticleModal = ({ isOpen, close, callback }: AddArticleModalProp
                 id="articleModalNewArticleName"
                 size="s"
                 width="full"
-                placeholder="Введите название"
+                placeholder="Введите название статьи"
                 maxLength={256}
                 value={caption}
                 onKeyDown={(e) => handleArticleEvent(e)}

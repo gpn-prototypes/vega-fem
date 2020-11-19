@@ -188,8 +188,9 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                 onBlur={[Function]}
                 onChange={[Function]}
                 onFocus={[Function]}
+                placeholder="Количество лет"
                 type="text"
-                value="15"
+                value="19"
               />
             </div>
           </div>

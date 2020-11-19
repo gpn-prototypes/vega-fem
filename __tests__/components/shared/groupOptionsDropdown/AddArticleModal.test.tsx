@@ -14,7 +14,7 @@ const findUnitInput = (): HTMLElement => screen.getByPlaceholderText('Введи
 const findSaveButton = (): HTMLElement => screen.getByText('Добавить');
 const findCancelButton = (): HTMLElement => screen.getByText('Отмена');
 
-describe('DeleteArticleModal', () => {
+describe('AddArticleModal', () => {
   test('рендерится с правильно подставленным Article', () => {
     renderComponent({
       close: jest.fn(),
@@ -44,7 +44,7 @@ describe('DeleteArticleModal', () => {
     fireEvent.click(saveButton);
     expect(addEvent).toBeCalledTimes(1);
   });
-  test('Создается с пустым caption', () => {
+  test('не создается с пустым caption', () => {
     const addEvent = jest.fn();
     renderComponent({
       close: jest.fn(),
@@ -59,7 +59,7 @@ describe('DeleteArticleModal', () => {
     fireEvent.change(unitInput, { target: { value: 'rub' } });
     expect(unitInput).toHaveValue('rub');
     fireEvent.click(saveButton);
-    expect(addEvent).toBeCalledTimes(1);
+    expect(addEvent).toBeCalledTimes(0);
   });
   test('Создается полностью заполненная статья', () => {
     const addEvent = jest.fn();

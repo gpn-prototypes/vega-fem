@@ -214,6 +214,7 @@ export const MacroparameterSetWrapper = ({
                       id="macroparameterSetYears"
                       size="s"
                       width="full"
+                      placeholder="Количество лет"
                       value={years?.toString()}
                       onBlur={() => requestSetUpdate()}
                       onChange={(e) => onChangeTypoHandler(e, setYears)}
