@@ -34,7 +34,9 @@ export const Validation = ({
     if (isClear) {
       const validateResult = validationFunction({ itemsList, value: '' });
       setErrorHelper(validateResult.isError);
-      isDisabledParentForm!(validateResult.isError);
+      if (isDisabledParentForm) {
+        isDisabledParentForm!(validateResult.isError);
+      }
       setErrorMessage(validateResult.errorMsg);
       linkedHook('');
     } /* to load only ones */
@@ -48,7 +50,9 @@ export const Validation = ({
   ): void => {
     const validateResult = validationCallback({ itemsList, value: e.e.target.value });
     setErrorHelper(validateResult.isError);
-    isDisabledParentForm!(validateResult.isError);
+    if (isDisabledParentForm) {
+      isDisabledParentForm!(validateResult.isError);
+    }
     setErrorMessage(validateResult.errorMsg);
     setCallback(e.e.target.value);
   };

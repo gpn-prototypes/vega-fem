@@ -196,6 +196,7 @@ export const MacroparameterSetWrapper = ({
                       validationFunction={validateName}
                       linkedHook={setName}
                       className={cnEditArticleModal('text-field')}
+                      // isDisabledParentForm={()=>{}}
                     >
                       <TextField
                         id="macroparameterSetName"
@@ -203,7 +204,7 @@ export const MacroparameterSetWrapper = ({
                         width="full"
                         value={name}
                         onBlur={() => requestSetUpdate()}
-                        onChange={(e) => onChangeTypoHandler(e, setName)}
+                        // onChange={(e) => onChangeTypoHandler(e, setName)}
                         onKeyDown={(e) => loseFocus(e)}
                       />
                     </Validation>
