@@ -38,7 +38,7 @@ export const validateName = ({ itemsList, value }: ValidateArticleProps): ErrorT
 export const validateDescription = ({ value }: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  if (value.length >= 256) {
+  if (value.length > 256) {
     error = { isError: true, errorMsg: 'Максимум 256 символов' };
   } else error = { isError: false, errorMsg: '' };
 
@@ -47,7 +47,7 @@ export const validateDescription = ({ value }: ValidateArticleProps): ErrorType 
 export const validateUnit = ({ value }: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  if (value.length >= 20) {
+  if (value.length > 20) {
     error = { isError: true, errorMsg: 'Максимум 20 символов' };
   } else error = { isError: false, errorMsg: '' };
 

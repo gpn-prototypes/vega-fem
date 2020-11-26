@@ -79,7 +79,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
                 size="s"
                 width="full"
                 placeholder="Введите название"
-                maxLength={256}
+                maxLength={257}
                 value={caption}
                 onKeyDown={(e) => handleGroupEvent(e)}
               />

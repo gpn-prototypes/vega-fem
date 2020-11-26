@@ -91,6 +91,7 @@ export const EditArticleModal = ({
                 size="s"
                 width="full"
                 value={caption}
+                maxLength={257}
                 // onChange={(e: any) => editValues(e, validateName, setCaption)}
                 // state={errorHelper ? 'alert' : undefined}
               />
@@ -110,6 +111,7 @@ export const EditArticleModal = ({
                   size="s"
                   width="full"
                   value={name}
+                  maxLength={257}
                   // onChange={(e: any) => editValues(e, validateDescription, setName)}
                   onKeyDown={(e) => handleArticleEvent(e)}
                 />
@@ -129,6 +131,7 @@ export const EditArticleModal = ({
                 size="s"
                 width="default"
                 value={unit}
+                maxLength={21}
                 // onChange={(e: any) => editValues(e, validateUnit, setUnit)}
                 onKeyDown={(e) => handleArticleEvent(e)}
               />

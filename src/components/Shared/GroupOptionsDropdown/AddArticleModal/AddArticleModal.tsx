@@ -70,7 +70,7 @@ export const AddArticleModal = ({ isOpen, close, callback }: AddArticleModalProp
                 size="s"
                 width="full"
                 placeholder="Введите название статьи"
-                maxLength={256}
+                maxLength={257}
                 value={caption}
                 onKeyDown={(e) => handleArticleEvent(e)}
               />
@@ -88,7 +88,7 @@ export const AddArticleModal = ({ isOpen, close, callback }: AddArticleModalProp
                 size="s"
                 width="full"
                 placeholder="Введите единицы измерения"
-                maxLength={20}
+                maxLength={21}
                 value={unit}
                 onKeyDown={(e) => handleArticleEvent(e)}
               />

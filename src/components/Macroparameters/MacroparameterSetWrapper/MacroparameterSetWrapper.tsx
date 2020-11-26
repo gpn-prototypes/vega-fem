@@ -204,6 +204,7 @@ export const MacroparameterSetWrapper = ({
                         width="full"
                         value={name}
                         onBlur={() => requestSetUpdate()}
+                        maxLength={257}
                         // onChange={(e) => onChangeTypoHandler(e, setName)}
                         onKeyDown={(e) => loseFocus(e)}
                       />
