@@ -9,6 +9,7 @@ import './Validation.css';
 
 export interface ValidationProps {
   itemsList?: Array<any>;
+  currentItem?: any;
   isClear?: boolean;
   validationFunction: ({ value }: ValidateArticleProps) => ErrorType;
   linkedHook: React.Dispatch<React.SetStateAction<string | undefined>>;
@@ -20,6 +21,7 @@ export interface ValidationProps {
 // компонент, который валидируют, необходимо оборачивать в данный компонент
 export const Validation = ({
   itemsList,
+  currentItem,
   isClear = false,
   validationFunction,
   linkedHook,
@@ -32,7 +34,7 @@ export const Validation = ({
 
   useEffect(() => {
     if (isClear) {
-      const validateResult = validationFunction({ itemsList, value: '' });
+      const validateResult = validationFunction({ itemsList, currentItem, value: '' });
       setErrorHelper(validateResult.isError);
       if (isDisabledParentForm) {
         isDisabledParentForm!(validateResult.isError);
@@ -48,7 +50,11 @@ export const Validation = ({
     validationCallback: any,
     setCallback: React.Dispatch<React.SetStateAction<string | undefined>>,
   ): void => {
-    const validateResult = validationCallback({ itemsList, value: e.e.target.value });
+    const validateResult = validationCallback({
+      itemsList,
+      currentItem,
+      value: e.e.target.value,
+    });
     setErrorHelper(validateResult.isError);
     if (isDisabledParentForm) {
       isDisabledParentForm!(validateResult.isError);

@@ -81,6 +81,7 @@ export const EditArticleModal = ({
             <Form.Label>Название статьи</Form.Label>
             <Validation
               itemsList={articleList}
+              currentItem={article}
               validationFunction={validateName}
               linkedHook={setCaption}
               className={cnEditArticleModal('text-field')}

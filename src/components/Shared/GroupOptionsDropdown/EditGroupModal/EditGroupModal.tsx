@@ -73,6 +73,7 @@ export const EditGroupModal = <GroupType extends { id: string | number; caption:
               linkedHook={setCaption}
               isDisabledParentForm={setFirstControl}
               itemsList={groupList}
+              currentItem={group}
             >
               <TextField
                 id="groupSetName"
