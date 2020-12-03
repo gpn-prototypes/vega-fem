@@ -79,7 +79,7 @@
 }
 
 .VegaFormCustom__footer-action {
-  margin-top: var(--space-s);
+  margin-top: var(--space-m);
 
   display: grid;
   grid-template-columns: 2.9fr 1.7fr 1fr 1fr;

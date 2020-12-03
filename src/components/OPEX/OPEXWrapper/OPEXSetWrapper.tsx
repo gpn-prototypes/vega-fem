@@ -15,6 +15,8 @@ import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import { validateName } from '../../Shared/ErrorMessage/ValidateArticle';
+import { Validation } from '../../Shared/ErrorMessage/Validation';
 
 import { GroupWrapper } from './GroupWrapper';
 
@@ -71,7 +73,7 @@ export const OPEXSetWrapper = ({
   const [SDFHelper, setSDFHelper] = useState(false);
 
   const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newCaseName, setNewCaseName] = useState('');
+  const [newCaseName, setNewCaseName] = useState<string | undefined>('');
   const [isEconomic, setIsEconomic] = useState(selectedRole.name === 'Экономика');
 
   /* collapse/expand groups state */
@@ -234,35 +236,37 @@ export const OPEXSetWrapper = ({
                 />
               )}
               {isAddingGroup && (
-                <div>
-                  <Text as="span" view="secondary" size="s">
-                    Название кейса
-                  </Text>
+                <Form.Field>
+                  <Form.Label size="s">Название кейса</Form.Label>
                   <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                    <Form.Field>
+                    <Validation
+                      validationFunction={validateName}
+                      linkedHook={setNewCaseName}
+                      isClear
+                      itemsList={OPEXSetInstance?.opexCaseList}
+                    >
                       <TextField
                         size="s"
                         width="full"
                         id="OPEXNewGroupName"
                         type="text"
                         placeholder="Введите название кейса"
-                        maxLength={256}
+                        maxLength={257}
                         value={newCaseName}
-                        onChange={(event: any) => setNewCaseName(event.e.target.value)}
                       />
-                    </Form.Field>
+                    </Validation>
                   </Form.Row>
                   <Form.Row className={cnVegaFormCustom('footer-action')}>
                     <Button
                       size="s"
                       label="Добавить кейс"
                       view="ghost"
-                      disabled={!newCaseName.length}
-                      onClick={(e) => addGroup(e, newCaseName)}
+                      disabled={!newCaseName?.length}
+                      onClick={(e) => addGroup(e, newCaseName ?? '')}
                     />
                     <Button size="s" label="Отмена" view="clear" onClick={toggleGroup} />
                   </Form.Row>
-                </div>
+                </Form.Field>
               )}
             </Form.Row>
           )}

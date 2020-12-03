@@ -2,6 +2,7 @@
 
 export interface ValidateArticleProps {
   itemsList?: Array<any>;
+  currentItem?: any | undefined;
   value: string;
 }
 
@@ -19,10 +20,17 @@ export const errorList = [
 ] as const;
 export type ErrorList = typeof errorList[number];
 
-export const validateName = ({ itemsList, value }: ValidateArticleProps): ErrorType => {
+export const validateName = ({
+  itemsList,
+  currentItem,
+  value,
+}: ValidateArticleProps): ErrorType => {
   let error: ErrorType;
 
-  const findUnique = itemsList?.find((item: any) => item.caption === value);
+  const findUnique = itemsList?.find((item: any) => {
+    const currentItemCaption = currentItem ? currentItem.caption : '';
+    return item.caption === value && item.caption !== currentItemCaption;
+  });
 
   if (value.length === 0) {
     error = { isError: true, errorMsg: 'Пустое имя' };

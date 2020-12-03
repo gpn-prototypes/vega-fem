@@ -11,6 +11,8 @@ import keyGen from '../../../helpers/keyGenerator';
 import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import { validateName } from '../../Shared/ErrorMessage/ValidateArticle';
+import { Validation } from '../../Shared/ErrorMessage/Validation';
 
 import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
@@ -44,7 +46,7 @@ export const CapexSetWrapper = ({
   highlightArticleClear,
 }: CapexSetWrapperProps) => {
   const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
+  const [newGroupName, setNewGroupName] = useState<string | undefined>('');
   const [groups, setGroups] = useState(
     (capexSet?.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[],
   );
@@ -167,35 +169,38 @@ export const CapexSetWrapper = ({
                   />
                 )}
                 {isAddingGroup && (
-                  <div>
-                    <Text as="span" view="secondary" size="s">
-                      Название группы затрат
-                    </Text>
+                  <Form.Field>
+                    <Form.Label size="s">Название группы затрат</Form.Label>
                     <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                      <Form.Field>
+                      <Validation
+                        validationFunction={validateName}
+                        linkedHook={setNewGroupName}
+                        isClear
+                        itemsList={groups}
+                      >
                         <TextField
+                          id="capexSetNewGroupName"
                           size="s"
                           width="full"
-                          id="capexSetNewGroupName"
+                          value={newGroupName}
+                          maxLength={257}
                           placeholder="Введите название группы затрат"
                           type="text"
-                          maxLength={256}
-                          value={newGroupName}
-                          onChange={(event: any) => setNewGroupName(event.e.target.value)}
+                          // onChange={(event: any) => setNewGroupName(event.e.target.value)}
                         />
-                      </Form.Field>
+                      </Validation>
                     </Form.Row>
                     <Form.Row className={cnVegaFormCustom('footer-action')}>
                       <Button
                         size="s"
                         label="Добавить группу"
                         view="ghost"
-                        disabled={!newGroupName.length}
-                        onClick={(e) => addGroup(e, newGroupName)}
+                        disabled={!newGroupName?.length}
+                        onClick={(e) => addGroup(e, newGroupName ?? '')}
                       />
                       <Button label="Отмена" size="s" view="clear" onClick={toggleCapexSetGroup} />
                     </Form.Row>
-                  </div>
+                  </Form.Field>
                 )}
               </Form.Row>
             </Form>

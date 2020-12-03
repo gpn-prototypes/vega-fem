@@ -66,7 +66,7 @@ export const MacroparameterSetWrapper = ({
   const [categoryHelper, setCategoryHelper] = useState(false);
 
   const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
+  const [newGroupName, setNewGroupName] = useState<string | undefined>('');
   const [groups, setGroups] = useState(
     macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[],
   );
@@ -302,31 +302,33 @@ export const MacroparameterSetWrapper = ({
                   />
                 )}
                 {isAddingGroup && (
-                  <div>
-                    <Text as="span" view="secondary" size="s">
-                      Название группы статей
-                    </Text>
+                  <Form.Field>
+                    <Form.Label size="s">Название группы статей</Form.Label>
                     <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                      <Form.Field>
+                      <Validation
+                        validationFunction={validateName}
+                        linkedHook={setNewGroupName}
+                        isClear
+                        itemsList={groups}
+                      >
                         <TextField
                           size="s"
                           width="full"
                           id="macroparameterSetGroupName"
                           type="text"
                           placeholder="Введите название группы статей"
-                          maxLength={256}
+                          maxLength={257}
                           value={newGroupName}
-                          onChange={(event: any) => setNewGroupName(event.e.target.value)}
                         />
-                      </Form.Field>
+                      </Validation>
                     </Form.Row>
                     <Form.Row className={cnVegaFormCustom('footer-action')}>
                       <Button
                         size="s"
                         label="Добавить группу"
                         view="ghost"
-                        disabled={!newGroupName.length}
-                        onClick={(e) => addGroup(e, newGroupName)}
+                        disabled={!newGroupName?.length}
+                        onClick={(e) => addGroup(e, newGroupName ?? '')}
                       />
                       <Button
                         size="s"
@@ -335,7 +337,7 @@ export const MacroparameterSetWrapper = ({
                         onClick={toggleMacroparameterSetGroup}
                       />
                     </Form.Row>
-                  </div>
+                  </Form.Field>
                 )}
               </Form.Row>
             </Form>
