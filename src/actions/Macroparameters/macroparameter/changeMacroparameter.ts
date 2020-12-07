@@ -1,12 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const CHANGE_MACROPARAM_INIT = 'CHANGE_MACROPARAM_INIT';
 export const CHANGE_MACROPARAM_SUCCESS = 'CHANGE_MACROPARAM_SUCCESS';

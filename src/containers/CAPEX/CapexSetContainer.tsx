@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import CapexSet from '../../../types/CAPEX/CapexSet';
-import CapexSetGlobalValue from '../../../types/CAPEX/CapexSetGlobalValue';
-import { changeCapexExpenseGroup } from '../../actions/capex/changeCapexExpenseGroup';
-import { createCapexExpenseGroup as addGroup } from '../../actions/capex/createCapexExpenseGroup';
-import { deleteCapexExpenseGroup } from '../../actions/capex/deleteCapexExpenseGroup';
-import { requestChangeCapexExpense } from '../../actions/capex/expense/changeCapexExpense';
-import { requestCreateCapexExpense } from '../../actions/capex/expense/createCapexExpense';
-import { requestDeleteCapexExpense } from '../../actions/capex/expense/deleteCapexExpense';
-import { fetchCapex } from '../../actions/capex/fetchCAPEX';
-import { requestUpdateCapexGlobalValue } from '../../actions/capex/global-value/updateCapexSetGlobalValue';
+import { changeCapexExpenseGroup } from '@/actions/capex/changeCapexExpenseGroup';
+import { createCapexExpenseGroup as addGroup } from '@/actions/capex/createCapexExpenseGroup';
+import { deleteCapexExpenseGroup } from '@/actions/capex/deleteCapexExpenseGroup';
+import { requestChangeCapexExpense } from '@/actions/capex/expense/changeCapexExpense';
+import { requestCreateCapexExpense } from '@/actions/capex/expense/createCapexExpense';
+import { requestDeleteCapexExpense } from '@/actions/capex/expense/deleteCapexExpense';
+import { fetchCapex } from '@/actions/capex/fetchCAPEX';
+import { requestUpdateCapexGlobalValue } from '@/actions/capex/global-value/updateCapexSetGlobalValue';
 import {
   articleHighlight,
   articleHighlightClear,
-} from '../../actions/Macroparameters/highlightMacroparameter';
-import { CapexSetWrapper } from '../../components/CAPEX/CapexSetWrapper/CapexSetWrapper';
+} from '@/actions/Macroparameters/highlightMacroparameter';
+import { CapexSetWrapper } from '@/components/CAPEX/CapexSetWrapper/CapexSetWrapper';
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '@/types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '@/types/CAPEX/CapexSetGlobalValue';
 
 export const CapexSetContainer = () => {
   const dispatch = useDispatch();

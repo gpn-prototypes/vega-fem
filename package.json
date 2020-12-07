@@ -28,10 +28,10 @@
     "coverage": "jest --all --coverage",
     "lint": "npm-run-all lint:*",
     "lint-fix": "npm-run-all format lint-fix:*",
-    "lint:ts": "eslint '{src,types}/**/*.ts{,x}'",
-    "lint-fix:ts": "eslint '{src,types}/**/*.ts{,x}' --fix",
-    "lint:css": "stylelint 'src/**/*.css'",
-    "lint-fix:css": "stylelint 'src/**/*.css' --fix"
+    "lint:ts": "eslint \"{src,types}/**/*.ts{,x}\"",
+    "lint-fix:ts": "eslint \"{src,types}/**/*.ts{,x}\" --fix",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint-fix:css": "stylelint \"src/**/*.css\" --fix"
   },
   "dependencies": {
     "@bem-react/classname": "^1.5.8",

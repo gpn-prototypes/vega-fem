@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
-import keyGen from '../../helpers/keyGenerator';
-
 import { cnTableCell } from './TableCell/cn-table-cell';
 import { cnTableWrapper } from './cn-table-wrapper';
 import { TableCell } from './TableCell';
 
 import './Table.css';
+
+import keyGen from '@/helpers/keyGenerator';
+import Article, { ArticleValues } from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 interface FEMTableProps {
   entity: any;

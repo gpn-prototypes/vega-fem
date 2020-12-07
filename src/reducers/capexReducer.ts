@@ -1,7 +1,3 @@
-import Article, { ArticleValues } from '../../types/Article';
-import CapexExpenseSetGroup from '../../types/CAPEX/CapexExpenseSetGroup';
-import CapexSet from '../../types/CAPEX/CapexSet';
-import CapexSetGlobalValue from '../../types/CAPEX/CapexSetGlobalValue';
 import { CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS } from '../actions/capex/changeCapexExpenseGroup';
 import { CAPEX_EXPENSE_GROUP_ADD_SUCCESS } from '../actions/capex/createCapexExpenseGroup';
 import { CAPEX_EXPENSE_GROUP_DELETE_SUCCESS } from '../actions/capex/deleteCapexExpenseGroup';
@@ -11,6 +7,11 @@ import { DELETE_CAPEX_EXPENSE_SUCCESS } from '../actions/capex/expense/deleteCap
 import { CAPEX_ERROR, CAPEX_SUCCESS, CapexesAction } from '../actions/capex/fetchCAPEX';
 import { CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS } from '../actions/capex/global-value/updateCapexSetGlobalValue';
 import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
+
+import Article, { ArticleValues } from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '@/types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '@/types/CAPEX/CapexSetGlobalValue';
 
 const initialState = {
   capexSet: {} as CapexSet,

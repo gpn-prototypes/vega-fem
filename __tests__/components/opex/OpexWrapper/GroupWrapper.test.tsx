@@ -1,11 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import {
-  GroupWrapper,
-  GroupWrapperProps,
-} from '../../../../src/components/OPEX/OPEXWrapper/GroupWrapper';
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+import { GroupWrapper, GroupWrapperProps } from '@/components/OPEX/OPEXWrapper/GroupWrapper';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 let fakeGroup: OPEXGroup;
 let defaultProps: GroupWrapperProps;

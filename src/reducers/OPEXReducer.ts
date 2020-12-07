@@ -1,7 +1,3 @@
-import Article, { ArticleValues } from '../../types/Article';
-import { OPEXGroup } from '../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../types/OPEX/OPEXSetType';
-import Role from '../../types/role';
 import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexport';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
 import { OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS } from '../actions/OPEX/autoexport/expense/addAutoexportExpense';
@@ -24,6 +20,11 @@ import { OPEX_MKOS_DELETE_EXPENSE_SUCCESS } from '../actions/OPEX/MKOS/expense/d
 import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/MKOS/removeMKOS';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
+
+import Article, { ArticleValues } from '@/types/Article';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
+import Role from '@/types/role';
 
 const initialState = {
   opex: {} as OPEXSetType,

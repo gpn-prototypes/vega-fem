@@ -1,6 +1,3 @@
-import Article, { ArticleValues } from '../../types/Article';
-import MacroparameterSet from '../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_CHANGE_SUCCESS } from '../actions/Macroparameters/changeMacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameterSetGroup';
@@ -23,6 +20,10 @@ import {
   MACROPARAM_SET_UPDATE_SUCCESS,
 } from '../actions/Macroparameters/updateMacroparameterSet';
 import { MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/Macroparameters/updateMacroparameterYearValue';
+
+import Article, { ArticleValues } from '@/types/Article';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 const initialState = {
   macroparameterSetList: [] as MacroparameterSet[],
@@ -100,11 +101,11 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       return {
         ...state,
         selected: changedMacroparameterSet,
-        macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) =>
-          macroparameterSet.id === changedMacroparameterSet.id
+        macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) => {
+          return macroparameterSet.id === changedMacroparameterSet.id
             ? changedMacroparameterSet
-            : macroparameterSet,
-        ),
+            : macroparameterSet;
+        }),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
       /* eslint-disable-next-line */

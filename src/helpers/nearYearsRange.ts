@@ -1,4 +1,4 @@
-import SelectOptions from '../../types/SelectOptions';
+import SelectOptions from '@/types/SelectOptions';
 
 /* return [currentYear - from, ... , currentYear + to]
  *  */

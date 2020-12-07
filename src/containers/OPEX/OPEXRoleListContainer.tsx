@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Role from '../../../types/role';
-import { selectOPEXRole } from '../../actions/OPEX/selectOPEXRole';
-import { OPEXRoleListWrapper } from '../../components/OPEX/OPEXRoleListWrapper';
+import { selectOPEXRole } from '@/actions/OPEX/selectOPEXRole';
+import { OPEXRoleListWrapper } from '@/components/OPEX/OPEXRoleListWrapper';
+import Role from '@/types/role';
 
 const roleList: Role[] = [
   {

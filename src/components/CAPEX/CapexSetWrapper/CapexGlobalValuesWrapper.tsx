@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
-import { spreadValue } from '../../../helpers/spreadValue';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { validateValue } from '../../Table2/TableCell2/validateValue';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
+import { spreadValue } from '@/helpers/spreadValue';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import CapexSetGlobalValue from '@/types/CAPEX/CapexSetGlobalValue';
 
 interface CapexWrapperProps {
   globalValue: CapexSetGlobalValue;

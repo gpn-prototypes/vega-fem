@@ -1,12 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { CapexesAction } from './fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_EXPENSE_GROUP_CHANGE_INIT = 'CAPEX_EXPENSE_GROUP_CHANGE_INIT';
 export const CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS = 'CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS';

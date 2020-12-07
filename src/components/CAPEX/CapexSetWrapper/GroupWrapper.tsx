@@ -1,11 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Text, useModal } from '@gpn-prototypes/vega-ui';
+import { IconArrowDown, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import keyGen from '../../../helpers/keyGenerator';
 import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
@@ -13,8 +8,13 @@ import { ArticleWrapper } from '../../Shared/Article/ArticleWrapper';
 import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
+import keyGen from '@/helpers/keyGenerator';
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;

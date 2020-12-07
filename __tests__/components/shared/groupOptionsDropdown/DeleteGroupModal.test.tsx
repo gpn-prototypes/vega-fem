@@ -4,10 +4,10 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   DeleteGroupModal,
   DeleteGroupModalProps,
-} from '../../../../src/components/Shared/GroupOptionsDropdown/DeleteGroupModal/DeleteGroupModal';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
+} from '@/components/Shared/GroupOptionsDropdown/DeleteGroupModal/DeleteGroupModal';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 let fakeGroup: CapexExpenseSetGroup;
 

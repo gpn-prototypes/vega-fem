@@ -2,15 +2,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Text } from '@gpn-prototypes/vega-ui';
 
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import Article, {
   ArticleValues,
-} from '../../../types/Article';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
-import keyGen from '../../helpers/keyGenerator';
-import { toLetters } from '../../helpers/toLetters';
+} from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
+import keyGen from '@/helpers/keyGenerator';
+import { toLetters } from '@/helpers/toLetters';
 
 import { TableCell } from './TableCell/TableCell';
 import { cnTableWrapper } from './cn-table-wrapper';

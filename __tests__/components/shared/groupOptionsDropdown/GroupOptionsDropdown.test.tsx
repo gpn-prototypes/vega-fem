@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer, { ReactTestRendererJSON } from 'react-test-renderer';
 
-import { GroupOptionsDropdown } from '../../../../src/components/Shared/GroupOptionsDropdown/GroupOptionsDropdown';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import { GroupOptionsDropdown } from '@/components/Shared/GroupOptionsDropdown/GroupOptionsDropdown';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 let fakeGroup: CapexExpenseSetGroup;
 

@@ -1,17 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import CapexSet from '../../../types/CAPEX/CapexSet';
-import { requestUpdateCapexYearValue } from '../../actions/capex/updateCapexYearValue';
-import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
-import {
-  Table2,
-  TableArticle,
-  TableArticleValue,
-  TableGroup,
-} from '../../components/Table2/Table2';
+import { requestUpdateCapexYearValue } from '@/actions/capex/updateCapexYearValue';
+import { FolderComponent } from '@/components/Table2/FolderComponent/FolderComponent';
+import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/components/Table2/Table2';
+import Article, { ArticleValues } from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '@/types/CAPEX/CapexSet';
 
 interface CapexTableContainerProps {
   capexSet: CapexSet;

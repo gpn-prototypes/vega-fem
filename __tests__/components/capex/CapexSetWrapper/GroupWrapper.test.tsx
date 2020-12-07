@@ -2,8 +2,8 @@ import React from 'react';
 import renderer, { ReactTestRendererJSON } from 'react-test-renderer';
 import { render, screen } from '@testing-library/react';
 
-import { GroupWrapper } from '../../../../src/components/CAPEX/CapexSetWrapper/GroupWrapper';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
+import { GroupWrapper } from '@/components/CAPEX/CapexSetWrapper/GroupWrapper';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 // import {render,screen,fireEvent} from "@testing-library/react";
 
 let fakeGroup: CapexExpenseSetGroup;

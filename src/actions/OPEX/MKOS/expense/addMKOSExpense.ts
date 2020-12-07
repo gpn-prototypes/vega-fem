@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../../types/Article';
-import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
 
 export const OPEX_ADD_MKOS_EXPENSE_INIT = 'OPEX_ADD_MKOS_EXPENSE_INIT';
 export const OPEX_ADD_MKOS_EXPENSE_SUCCESS = 'OPEX_ADD_MKOS_EXPENSE_SUCCESS';

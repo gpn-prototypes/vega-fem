@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexSet from '../../../types/CAPEX/CapexSet';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import CapexSet from '@/types/CAPEX/CapexSet';
 
 export const CAPEX_FETCH = 'CAPEX_FETCH';
 export const CAPEX_SUCCESS = 'CAPEX_SUCCESS';

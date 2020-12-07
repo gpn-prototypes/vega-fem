@@ -5,12 +5,12 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   CapexSetWrapper,
   CapexSetWrapperProps,
-} from '../../../../src/components/CAPEX/CapexSetWrapper/CapexSetWrapper';
-import CapexSet from '../../../../types/CAPEX/CapexSet';
+} from '@/components/CAPEX/CapexSetWrapper/CapexSetWrapper';
+import CapexSet from '@/types/CAPEX/CapexSet';
 
 let fakeCapexSet: CapexSet;
 // mocking table
-jest.mock('../../../../src/containers/CAPEX/CapexTableContainer', () => {
+jest.mock('@/containers/CAPEX/CapexTableContainer', () => {
   return {
     CapexTableContainer: () => {
       return <div />;

@@ -4,7 +4,7 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   OPEXRoleListWrapper,
   OPEXRoleListWrapperProps,
-} from '../../../../src/components/OPEX/OPEXRoleListWrapper';
+} from '@/components/OPEX/OPEXRoleListWrapper';
 
 let roleList: any[];
 beforeAll(() => {

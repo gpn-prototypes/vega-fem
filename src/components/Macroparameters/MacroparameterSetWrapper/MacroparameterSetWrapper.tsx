@@ -1,23 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
-import { Checkbox } from '@gpn-design/uikit/Checkbox';
-import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
-
-import Article from '../../../../types/Article';
-import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { MacroparameterTableContainer } from '../../../containers/Macroparameters/MacroparameterTableContainer';
-import keyGen from '../../../helpers/keyGenerator';
-import macroparameterSetCategoryOptions from '../../../helpers/MacroparameterSetCategoryOptions';
-import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
-import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import {
+  BasicSelect,
+  Button,
+  Checkbox,
+  Form,
+  IconAdd,
+  IconSelect,
+  Text,
+  TextField,
+} from '@gpn-prototypes/vega-ui';
 
 import { Collapsed, GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../../styles/VegaFormCustom/VegaFormCustom.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/VegaFormCustom/VegaFormCustom.css';
+
+import { MacroparameterTableContainer } from '@/containers/Macroparameters/MacroparameterTableContainer';
+import keyGen from '@/helpers/keyGenerator';
+import macroparameterSetCategoryOptions from '@/helpers/MacroparameterSetCategoryOptions';
+import { yearsRangeOptions } from '@/helpers/nearYearsRange';
+import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '@/types/Article';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import SelectOptions from '@/types/SelectOptions';
 
 const yearsOptions = yearsRangeOptions(5, 10);
 
@@ -210,11 +218,11 @@ export const MacroparameterSetWrapper = ({
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Вид оценки</Form.Label>
-                    <Select
+                    <BasicSelect
                       options={macroparameterSetCategoryOptions}
-                      name="macroparameterSetCategory"
+                      id="macroparameterSetCategory"
                       value={category}
-                      onClearValue={() => null}
+                      getOptionLabel={(item: SelectOptions) => item.label}
                       onChange={(selectValue: any) => {
                         setCategory(selectValue);
                         setCategoryHelper(true);
@@ -223,11 +231,11 @@ export const MacroparameterSetWrapper = ({
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Стартовый год</Form.Label>
-                    <Select
+                    <BasicSelect
                       options={yearsOptions}
-                      name="macroparameterSetYearStart"
+                      id="macroparameterSetYearStart"
                       value={yearStart?.toString()}
-                      onClearValue={() => null}
+                      getOptionLabel={(item: SelectOptions) => item.label}
                       onChange={(selectValue: any) => {
                         setYearStart(selectValue);
                         setYearStartHelper(true);

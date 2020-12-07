@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_DELETE_CASE_INIT = 'OPEX_DELETE_CASE_INIT';
 export const OPEX_DELETE_CASE_SUCCESS = 'OPEX_DELETE_CASE_SUCCESS';

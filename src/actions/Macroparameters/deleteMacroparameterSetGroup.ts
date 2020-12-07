@@ -1,12 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { MacroparamsAction } from './macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_SET_GROUP_DELETE_INIT = 'MACROPARAM_SET_GROUP_DELETE_INIT';
 export const MACROPARAM_SET_GROUP_DELETE_SUCCESS = 'MACROPARAM_SET_GROUP_DELETE_SUCCESS';

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Button, useModal } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../../types/Article';
 import { cnArticleOptionsDropdown } from '../cn-article-options-dropdown';
 import { DeleteArticleModal } from '../DeleteArticleModal/DeleteArticleModal';
 import { EditArticleModal } from '../EditArticleModal/EditArticleModal';
+
+import Article from '@/types/Article';
 
 export interface MenuOptions {
   article: Article;

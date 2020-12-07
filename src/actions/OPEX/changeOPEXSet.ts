@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEX_SET_CHANGE_INIT = 'OPEX_SET_CHANGE_INIT';
 export const OPEX_SET_CHANGE_SUCCESS = 'OPEX_SET_CHANGE_SUCCESS';

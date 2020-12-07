@@ -1,14 +1,12 @@
 import React from 'react';
-import { Dropdown } from '@gpn-prototypes/vega-dropdown';
-import { usePortal } from '@gpn-prototypes/vega-root';
-import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
-
-import Article from '../../../../../types/Article';
+import { Button, Dropdown, IconKebab, usePortal } from '@gpn-prototypes/vega-ui';
 
 import { Menu } from './Menu/Menu';
 import { cnArticleOptionsDropdown } from './cn-article-options-dropdown';
 
 import './ArticleOptionsDropdown.css';
+
+import Article from '@/types/Article';
 
 export interface ArticleOptions {
   article: Article;

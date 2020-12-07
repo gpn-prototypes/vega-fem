@@ -1,13 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter, { ArticleValues } from '../../../types/Article';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { MacroparamsAction } from './macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Macroparameter, { ArticleValues } from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_UPDATE_YEAR_VALUE_INIT = 'MACROPARAM_UPDATE_YEAR_VALUE_INIT';
 export const MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS = 'MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS';

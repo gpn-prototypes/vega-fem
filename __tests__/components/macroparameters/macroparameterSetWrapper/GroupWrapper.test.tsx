@@ -4,8 +4,8 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   GroupWrapper,
   MacroparameterSetWrapperGroupProps,
-} from '../../../../src/components/Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
+} from '@/components/Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 let fakeGroup: MacroparameterSetGroup;
 
