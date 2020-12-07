@@ -11,6 +11,10 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/?!(@gpn-prototypes)'],
   modulePathIgnorePatterns: [...config.modulePathIgnorePatterns, '/e2e-tests/'],
   coveragePathIgnorePatterns: [...config.coveragePathIgnorePatterns, '/e2e-tests/'],
+  moduleNameMapper: {
+    ...config.moduleNameMapper,
+    '^@/(.*)$': '<rootDir>/src/$1',
+  },
   reporters: [
     'default',
     [
