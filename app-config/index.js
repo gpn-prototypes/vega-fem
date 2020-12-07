@@ -14,4 +14,4 @@ const getAppConfig = () => ({
   analyze: process.env.ANALYZE || 0,
 });
 
-module.exports = getAppConfig;
+module.exports = { getAppConfig };

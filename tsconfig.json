@@ -5,6 +5,12 @@
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["node_modules", "**/dist/**/*"],
   "compilerOptions": {
-    "lib": ["dom", "esnext", "es2020"]
+    "sourceMap": true,
+    "noImplicitThis": false,
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
