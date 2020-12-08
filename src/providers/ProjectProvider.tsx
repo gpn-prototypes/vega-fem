@@ -2,6 +2,8 @@ import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { defaultTo } from 'lodash';
 
+import { setProjectId } from '@/helpers/projectIdToLocalstorage';
+
 const ROUTE_MATCH_PROJECT_ID = '/projects/show/:projectId';
 
 type MatchedData = { projectId: string };
@@ -15,6 +17,8 @@ const ProjectProvider: React.FC = ({ children }) => {
       projectId: '',
     },
   );
+
+  setProjectId(matchedData.projectId);
 
   return <ProjectContext.Provider value={matchedData}>{children}</ProjectContext.Provider>;
 };
