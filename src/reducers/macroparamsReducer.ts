@@ -21,6 +21,7 @@ import {
 } from '../actions/Macroparameters/updateMacroparameterSet';
 import { MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/Macroparameters/updateMacroparameterYearValue';
 
+import { FEM_CLEAR_STORES } from '@/actions/clear';
 import Article, { ArticleValues } from '@/types/Article';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
@@ -40,6 +41,8 @@ let isNewYearValue: boolean;
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
+    case FEM_CLEAR_STORES:
+      return { ...initialState };
     case MACROPARAMS_SET_LIST_SUCCESS:
       return {
         ...state,

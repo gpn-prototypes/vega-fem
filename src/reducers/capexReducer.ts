@@ -8,6 +8,7 @@ import { CAPEX_ERROR, CAPEX_SUCCESS, CapexesAction } from '../actions/capex/fetc
 import { CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS } from '../actions/capex/global-value/updateCapexSetGlobalValue';
 import { CAPEX_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/capex/updateCapexYearValue';
 
+import { FEM_CLEAR_STORES } from '@/actions/clear';
 import Article, { ArticleValues } from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import CapexSet from '@/types/CAPEX/CapexSet';
@@ -27,6 +28,8 @@ let newCapexValueTotal: number;
 
 export default function capexReducer(state = initialState, action: CapexesAction) {
   switch (action.type) {
+    case FEM_CLEAR_STORES:
+      return { ...initialState };
     case CAPEX_SUCCESS:
       return {
         ...state,

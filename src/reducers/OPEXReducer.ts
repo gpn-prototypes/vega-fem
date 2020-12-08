@@ -21,6 +21,7 @@ import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/MKOS/removeMKOS';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
 
+import { FEM_CLEAR_STORES } from '@/actions/clear';
 import Article, { ArticleValues } from '@/types/Article';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
@@ -38,6 +39,8 @@ let caseGroup: OPEXGroup | undefined;
 
 export default function OPEXReducer(state = initialState, action: OPEXAction) {
   switch (action.type) {
+    case FEM_CLEAR_STORES:
+      return { ...initialState };
     case OPEX_CREATE_CASE_SUCCESS:
       return {
         ...state,

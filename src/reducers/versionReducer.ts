@@ -22,7 +22,7 @@ export interface VersionState {
 export default function versionReducer(state = initialState, action: VersionAction) {
   switch (action.type) {
     case VERSION_FETCH:
-      return { ...state };
+      return { ...initialState };
     case VERSION_SUCCESS:
       return { ...state, version: action.payload };
     case VERSION_ERROR:

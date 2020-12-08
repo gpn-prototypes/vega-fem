@@ -1,6 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { clearStores } from './clear';
+
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
@@ -31,6 +33,7 @@ const VersionFetchError = (message: any): VersionAction => ({
 
 export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch(clearStores());
     dispatch(VersionFetchInit());
 
     try {
