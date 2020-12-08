@@ -4,6 +4,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { CapexesAction } from './fetchCAPEX';
 
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
 import Article, { ArticleValues } from '@/types/Article';
@@ -42,7 +43,7 @@ export const requestUpdateCapexYearValue = (
     dispatch(capexUpdateYearValueInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

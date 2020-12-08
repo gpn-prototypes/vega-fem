@@ -1,4 +1,5 @@
 export type AppConfig = {
+  projectName: string;
   root: string;
   entry: string;
   buildDirPath: string;
@@ -6,7 +7,7 @@ export type AppConfig = {
   env: 'development' | 'testing' | 'production';
   assetsPath: string;
   port: string | number;
-  apiURL: string;
+  baseApiUrl: string;
 };
 
 export declare function getAppConfig(): AppConfig;

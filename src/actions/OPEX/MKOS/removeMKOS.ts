@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
@@ -36,7 +37,7 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
     dispatch(OPEXMKOSRemoveInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

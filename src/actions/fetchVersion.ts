@@ -1,8 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import headers from '../helpers/headers';
-import { projectIdFromLocalStorage } from '../helpers/projectIdToLocalstorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
 
 export const VERSION_FETCH = 'VERSION_FETCH';
 export const VERSION_SUCCESS = 'VERSION_SUCCESS';
@@ -33,7 +34,7 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     dispatch(VersionFetchInit());
 
     try {
-      const response = await fetch(`graphql`, {
+      const response = await fetch(`${graphqlRequestUrl}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
