@@ -221,10 +221,10 @@ export const MacroparameterSetWrapper = ({
                     <BasicSelect
                       options={macroparameterSetCategoryOptions}
                       id="macroparameterSetCategory"
-                      value={category}
+                      value={macroparameterSetCategoryOptions.find((i) => i.value === category)}
                       getOptionLabel={(item: SelectOptions) => item.label}
-                      onChange={(selectValue: any) => {
-                        setCategory(selectValue);
+                      onChange={(selectValue: SelectOptions | null) => {
+                        setCategory(selectValue?.value);
                         setCategoryHelper(true);
                       }}
                     />
@@ -234,10 +234,10 @@ export const MacroparameterSetWrapper = ({
                     <BasicSelect
                       options={yearsOptions}
                       id="macroparameterSetYearStart"
-                      value={yearStart?.toString()}
+                      value={yearsOptions.find((i) => i.value === yearStart?.toString())}
                       getOptionLabel={(item: SelectOptions) => item.label}
-                      onChange={(selectValue: any) => {
-                        setYearStart(selectValue);
+                      onChange={(selectValue: SelectOptions | null) => {
+                        setYearStart(selectValue ? +selectValue.value : undefined);
                         setYearStartHelper(true);
                       }}
                     />
