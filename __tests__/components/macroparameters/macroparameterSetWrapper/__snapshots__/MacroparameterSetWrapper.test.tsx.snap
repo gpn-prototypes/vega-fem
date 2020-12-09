@@ -233,7 +233,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                     />
                     <span
                       className="Select-ControlValue"
-                    />
+                      title="Реальная"
+                    >
+                      Реальная
+                    </span>
                   </div>
                 </div>
                 <span
@@ -315,7 +318,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                     />
                     <span
                       className="Select-ControlValue"
-                    />
+                      title="2015"
+                    >
+                      2015
+                    </span>
                   </div>
                 </div>
                 <span
