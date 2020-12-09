@@ -2,17 +2,11 @@ import React from 'react';
 import renderer, { ReactTestRendererJSON } from 'react-test-renderer';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 
-import {
-  OPEXSetWrapper,
-  OPEXWrapperProps,
-} from '../../../../src/components/OPEX/OPEXWrapper/OPEXSetWrapper';
-import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
+import { OPEXSetWrapper, OPEXWrapperProps } from '@/components/OPEX/OPEXWrapper/OPEXSetWrapper';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
-jest.mock(
-  '../../../../src/containers/OPEX/OPEXArrangementTableContainer',
-  () => 'opex-arrangement-table',
-);
-jest.mock('../../../../src/containers/OPEX/OPEXEconomyTableContainer', () => 'opex-economy-table');
+jest.mock('@/containers/OPEX/OPEXArrangementTableContainer', () => 'opex-arrangement-table');
+jest.mock('@/containers/OPEX/OPEXEconomyTableContainer', () => 'opex-economy-table');
 
 let defaultOPEXWrapperProps: OPEXWrapperProps;
 let economicDefaultOPEXWrapperProps: OPEXWrapperProps;

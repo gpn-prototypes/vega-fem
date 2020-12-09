@@ -1,11 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
-import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEX_CHANGE_CASE_INIT = 'OPEX_CHANGE_CASE_INIT';
 export const OPEX_CHANGE_CASE_SUCCESS = 'OPEX_CHANGE_CASE_SUCCESS';
@@ -37,7 +38,7 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXChangeCaseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import CapexSet from '../../../../types/CAPEX/CapexSet';
-import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { CapexTableContainer } from '../../../containers/CAPEX/CapexTableContainer';
-import keyGen from '../../../helpers/keyGenerator';
-import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 
 import { CapexGlobalValuesWrapper } from './CapexGlobalValuesWrapper';
 import { GroupWrapper } from './GroupWrapper';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../../styles/VegaFormCustom/VegaFormCustom.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/VegaFormCustom/VegaFormCustom.css';
+
+import { CapexTableContainer } from '@/containers/CAPEX/CapexTableContainer';
+import keyGen from '@/helpers/keyGenerator';
+import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import CapexSet from '@/types/CAPEX/CapexSet';
+import CapexSetGlobalValue from '@/types/CAPEX/CapexSetGlobalValue';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export interface CapexSetWrapperProps {
   capexSet: CapexSet;

@@ -4,7 +4,7 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   GroupPlaceholder,
   GroupPlaceholderProps,
-} from '../../../../src/components/Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
+} from '@/components/Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 
 let placeholder: string;
 

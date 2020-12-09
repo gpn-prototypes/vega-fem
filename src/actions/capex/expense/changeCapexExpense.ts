@@ -1,12 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { CapexesAction } from '../fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CHANGE_CAPEX_EXPENSE_INIT = 'CHANGE_CAPEX_EXPENSE_INIT';
 export const CHANGE_CAPEX_EXPENSE_SUCCESS = 'CHANGE_CAPEX_EXPENSE_SUCCESS';
@@ -39,7 +41,7 @@ export const requestChangeCapexExpense = (
     dispatch(changeCapexExpenseInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

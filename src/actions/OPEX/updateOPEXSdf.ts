@@ -7,6 +7,8 @@ import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage
 
 import { OPEXAction } from './fetchOPEXSet';
 
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+
 export const OPEX_SET_SDF_INIT = 'OPEX_SET_CHANGE_INIT';
 export const OPEX_SET_SDF_SUCCESS = 'OPEX_SET_SDF_SUCCESS';
 export const OPEX_SET_SDF_ERROR = 'OPEX_SET_SDF_ERROR';
@@ -30,7 +32,7 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXSetChangeSdfInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

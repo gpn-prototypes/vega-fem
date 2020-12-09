@@ -1,12 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { currentVersionFromSessionStorage } from '../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_ADD_INIT = 'MACROPARAM_ADD_INIT';
 export const MACROPARAM_ADD_SUCCESS = 'MACROPARAM_ADD_SUCCESS';
@@ -39,7 +41,7 @@ export const requestAddMacroparameter = (
     dispatch(macroparameterAddInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

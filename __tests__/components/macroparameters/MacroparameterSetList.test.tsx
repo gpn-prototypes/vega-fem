@@ -5,9 +5,9 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   MacroparameterSetList,
   MacroparameterSetListProps,
-} from '../../../src/components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
-import store from '../../../src/store/store';
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
+} from '@/components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
+import store from '@/store/store';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 let macroparameterSetList: Array<MacroparameterSet>;
 beforeAll(() => {

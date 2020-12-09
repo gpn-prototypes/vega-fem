@@ -1,11 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../../types/Article';
-import { OPEXGroup } from '../../../../../types/OPEX/OPEXGroup';
-import { currentVersionFromSessionStorage } from '../../../../helpers/currentVersionFromSessionStorage';
-import headers from '../../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_CASE_DELETE_EXPENSE_INIT = 'OPEX_CASE_DELETE_EXPENSE_INIT';
 export const OPEX_CASE_DELETE_EXPENSE_SUCCESS = 'OPEX_CASE_DELETE_EXPENSE_SUCCESS';
@@ -40,7 +41,7 @@ export function caseDeleteExpense(
     dispatch(OPEXCaseDeleteExpenseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

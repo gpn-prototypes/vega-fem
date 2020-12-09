@@ -1,18 +1,19 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import Article, { ArticleValues } from '../../../../types/Article';
-import { spreadValue } from '../../../helpers/spreadValue';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { validateValue } from '../../Table2/TableCell2/validateValue';
 
 import { ArticleOptionsDropdown } from './ArticleOptionsDropdown/ArticleOptionsDropdown';
 import { cnArticleWrapper } from './cn-article-wrapper';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 import './ArticleWrapper.css';
+
+import { spreadValue } from '@/helpers/spreadValue';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article, { ArticleValues } from '@/types/Article';
 
 export interface ArticleWrapperProps {
   article: Article;

@@ -29,7 +29,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
       }
     >
       <span
-        className="Text text text_size_xs text_view_primary"
+        className="Text Text_size_xs Text_view_primary"
       >
         Макропараметры
       </span>
@@ -207,68 +207,62 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               Вид оценки
             </label>
             <div
-              className="Select Select_selected Select_size_m"
+              className="Select Select_size_m Select_form_default Select_view_default"
             >
-              <label
-                className="Select__label"
-                onClick={[Function]}
-                onMouseMove={[Function]}
-                onMouseOver={[Function]}
+              <div
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                className="Select-Control"
+                id="macroparameterSetCategory"
               >
-                <input
-                  autoComplete="off"
-                  className="input input_view_default input_width_full input_size_m input_form_default Select__input"
-                  name="macroparameterSetCategory"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  onKeyDown={[Function]}
-                  placeholder="Реальная"
-                  value="Реальная"
-                />
                 <div
-                  className="Select__icon Select__icon_type_arrow"
-                  onClick={[Function]}
+                  className="Select-ControlInner"
                 >
                   <div
-                    className="Select__icon-wrapper"
+                    className="Select-ControlValueContainer"
                   >
+                    <input
+                      className="Select-FakeField"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      readOnly={true}
+                      type="button"
+                    />
                     <span
-                      className="Icon Icon_size_s IconSelect Select__arrow"
+                      className="Select-ControlValue"
+                      title="Реальная"
                     >
-                      <svg
-                        className="Icon-Svg"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M3.5 5L8 10l4.5-5h-9z"
-                        />
-                      </svg>
+                      Реальная
                     </span>
                   </div>
                 </div>
                 <span
-                  className="Select__delimiter"
-                />
-                <button
-                  className="Button Button_size_xs Button_view_clear Button_form_default Button_withIcon Button_onlyIcon Select__icon Select__icon_type_delete"
-                  onClick={[Function]}
-                  tabIndex={-1}
-                  type="button"
+                  className="Select-Indicators"
                 >
-                  <svg
-                    className="Button-Icon"
-                    fill="none"
-                    viewBox="0 0 12 12"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    className="Select-IndicatorsDropdown"
+                    onClick={[Function]}
+                    tabIndex={-1}
+                    type="button"
                   >
-                    <path
-                      d="M2.16423 9.15573L2.84989 9.84958L5.99996 6.69962L9.14923 9.84898L9.15003 9.84978L9.84984 9.14986L6.69987 5.99973L9.85003 2.84969L9.14293 2.14258L6.0006 5.30042L2.85076 2.15041L2.15009 2.84961L5.30242 6.00205L2.16423 9.15573Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-              </label>
+                    <span
+                      className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                    >
+                      <svg
+                        className="Icon-Svg"
+                        viewBox="0 0 12 12"
+                      >
+                        <path
+                          d="M6 8.5L10 4H2l4 4.5z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -298,68 +292,62 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               Стартовый год
             </label>
             <div
-              className="Select Select_selected Select_size_m"
+              className="Select Select_size_m Select_form_default Select_view_default"
             >
-              <label
-                className="Select__label"
-                onClick={[Function]}
-                onMouseMove={[Function]}
-                onMouseOver={[Function]}
+              <div
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                className="Select-Control"
+                id="macroparameterSetYearStart"
               >
-                <input
-                  autoComplete="off"
-                  className="input input_view_default input_width_full input_size_m input_form_default Select__input"
-                  name="macroparameterSetYearStart"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  onFocus={[Function]}
-                  onKeyDown={[Function]}
-                  placeholder="2015"
-                  value="2015"
-                />
                 <div
-                  className="Select__icon Select__icon_type_arrow"
-                  onClick={[Function]}
+                  className="Select-ControlInner"
                 >
                   <div
-                    className="Select__icon-wrapper"
+                    className="Select-ControlValueContainer"
                   >
+                    <input
+                      className="Select-FakeField"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      readOnly={true}
+                      type="button"
+                    />
                     <span
-                      className="Icon Icon_size_s IconSelect Select__arrow"
+                      className="Select-ControlValue"
+                      title="2015"
                     >
-                      <svg
-                        className="Icon-Svg"
-                        viewBox="0 0 16 16"
-                      >
-                        <path
-                          d="M3.5 5L8 10l4.5-5h-9z"
-                        />
-                      </svg>
+                      2015
                     </span>
                   </div>
                 </div>
                 <span
-                  className="Select__delimiter"
-                />
-                <button
-                  className="Button Button_size_xs Button_view_clear Button_form_default Button_withIcon Button_onlyIcon Select__icon Select__icon_type_delete"
-                  onClick={[Function]}
-                  tabIndex={-1}
-                  type="button"
+                  className="Select-Indicators"
                 >
-                  <svg
-                    className="Button-Icon"
-                    fill="none"
-                    viewBox="0 0 12 12"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    className="Select-IndicatorsDropdown"
+                    onClick={[Function]}
+                    tabIndex={-1}
+                    type="button"
                   >
-                    <path
-                      d="M2.16423 9.15573L2.84989 9.84958L5.99996 6.69962L9.14923 9.84898L9.15003 9.84978L9.84984 9.14986L6.69987 5.99973L9.85003 2.84969L9.14293 2.14258L6.0006 5.30042L2.85076 2.15041L2.15009 2.84961L5.30242 6.00205L2.16423 9.15573Z"
-                      fill="black"
-                    />
-                  </svg>
-                </button>
-              </label>
+                    <span
+                      className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                    >
+                      <svg
+                        className="Icon-Svg"
+                        viewBox="0 0 12 12"
+                      >
+                        <path
+                          d="M6 8.5L10 4H2l4 4.5z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -388,11 +376,11 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               htmlFor="macroparameterSetIsTemplate"
             >
               <label
-                className="Checkbox Checkbox_size_m"
+                className="Checkbox Checkbox_size_m Checkbox_view_primary Checkbox_align_center"
               >
                 <input
                   checked={false}
-                  className="Checkbox-Input"
+                  className="Checkbox-Input MixFocus"
                   name="macroparameterSetIsTemplate"
                   onChange={[Function]}
                   type="checkbox"
@@ -462,7 +450,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   </svg>
                 </span>
                 <span
-                  className="Text text text_size_s text_view_primary"
+                  className="Text Text_size_s Text_view_primary"
                 >
                   Курсы основных валют
                 </span>
@@ -480,7 +468,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                 }
               >
                 <button
-                  className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                   onClick={[Function]}
                   title="Опции"
                   type="button"
@@ -490,10 +478,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   >
                     <svg
                       className="Icon-Svg"
-                      viewBox="0 0 16 16"
+                      viewBox="0 0 12 12"
                     >
                       <path
-                        d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                       />
                     </svg>
                   </span>
@@ -613,7 +601,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -623,10 +611,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -735,7 +723,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -745,10 +733,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -803,7 +791,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   </svg>
                 </span>
                 <span
-                  className="Text text text_size_s text_view_primary"
+                  className="Text Text_size_s Text_view_primary"
                 >
                   Цена на нефть - РЕАЛЬНЫЕ ЦЕНЫ
                 </span>
@@ -821,7 +809,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                 }
               >
                 <button
-                  className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                   onClick={[Function]}
                   title="Опции"
                   type="button"
@@ -831,10 +819,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   >
                     <svg
                       className="Icon-Svg"
-                      viewBox="0 0 16 16"
+                      viewBox="0 0 12 12"
                     >
                       <path
-                        d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                       />
                     </svg>
                   </span>
@@ -954,7 +942,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -964,10 +952,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -1076,7 +1064,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -1086,10 +1074,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -1115,7 +1103,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
         }
       >
         <button
-          className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon MixFocus"
+          className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
           onClick={[Function]}
           type="button"
         >
@@ -1127,7 +1115,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               viewBox="0 0 12 12"
             >
               <path
-                d="M6 3H5v3H2v1h3v3h1V7h3V6H6V3z"
+                d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
               />
             </svg>
           </span>

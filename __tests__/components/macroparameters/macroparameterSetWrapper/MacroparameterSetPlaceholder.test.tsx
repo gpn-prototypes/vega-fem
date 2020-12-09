@@ -4,7 +4,7 @@ import { render, RenderResult, screen } from '@testing-library/react';
 import {
   MacroparameterSetPlaceholder,
   MacroparameterSetPlaceholderProps,
-} from '../../../../src/components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
+} from '@/components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
 
 let placeholder: string;
 

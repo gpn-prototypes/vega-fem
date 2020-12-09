@@ -1,13 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
-import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Form, Text, useModal } from '@gpn-prototypes/vega-ui';
+import { BasicSelect, Form, IconArrowDown, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import keyGen from '../../../helpers/keyGenerator';
-import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
 import { GroupPlaceholder } from '../../Macroparameters/MacroparameterSetWrapper/GroupPlaceholder/GroupPlaceholder';
 import { cnGroupWrapper } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/cn-group-wrapper';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
@@ -15,8 +8,15 @@ import { ArticleWrapper } from '../../Shared/Article/ArticleWrapper';
 import { AddArticleModal } from '../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
+import keyGen from '@/helpers/keyGenerator';
+import { yearsRangeOptions } from '@/helpers/nearYearsRange';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '@/types/Article';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import SelectOptions from '@/types/SelectOptions';
 
 export interface GroupWrapperProps {
   group: any; // TODO:change any
@@ -161,11 +161,11 @@ export const GroupWrapper = ({
         {isPreset && (
           <Form.Field className={cnVegaFormCustom('field', { middle: true })}>
             <Form.Label space="xs">Год окончания</Form.Label>
-            <Select
+            <BasicSelect
               options={yearsOptions}
-              name="OPEXYearEnd"
+              id="OPEXYearEnd"
               value={yearEnd.toString()}
-              onClearValue={() => null}
+              getOptionLabel={(item: SelectOptions) => item.label}
               onChange={(selectValue: any) => {
                 setYearEnd(selectValue);
                 setYearEndHelper(true);

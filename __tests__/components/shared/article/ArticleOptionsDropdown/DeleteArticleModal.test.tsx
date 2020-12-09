@@ -4,8 +4,8 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   DeleteArticleModal,
   DeleteArticleModalProps,
-} from '../../../../../src/components/Shared/Article/ArticleOptionsDropdown/DeleteArticleModal/DeleteArticleModal';
-import Article from '../../../../../types/Article';
+} from '@/components/Shared/Article/ArticleOptionsDropdown/DeleteArticleModal/DeleteArticleModal';
+import Article from '@/types/Article';
 
 let fakeArticle: Article;
 beforeAll(() => {

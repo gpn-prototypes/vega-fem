@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { IconAdd } from '@gpn-design/uikit/IconAdd';
-import { IconEdit } from '@gpn-design/uikit/IconEdit';
-import { IconTrash } from '@gpn-design/uikit/IconTrash';
-import { Button, useModal } from '@gpn-prototypes/vega-ui';
+import { Button, IconAdd, IconEdit, IconTrash, useModal } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../types/Article';
 import { AddArticleModal } from '../AddArticleModal/AddArticleModal';
 import { DeleteGroupModal } from '../DeleteGroupModal/DeleteGroupModal';
 import { EditGroupModal } from '../EditGroupModal/EditGroupModal';
+
+import Article from '@/types/Article';
 
 export interface GroupMenuOptions<GroupType> {
   group: GroupType;

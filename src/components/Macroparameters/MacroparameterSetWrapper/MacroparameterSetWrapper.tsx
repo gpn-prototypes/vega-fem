@@ -1,23 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Select } from '@gpn-design/uikit/__internal__/src/components/Select';
-import { Checkbox } from '@gpn-design/uikit/Checkbox';
-import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
-
-import Article from '../../../../types/Article';
-import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { MacroparameterTableContainer } from '../../../containers/Macroparameters/MacroparameterTableContainer';
-import keyGen from '../../../helpers/keyGenerator';
-import macroparameterSetCategoryOptions from '../../../helpers/MacroparameterSetCategoryOptions';
-import { yearsRangeOptions } from '../../../helpers/nearYearsRange';
-import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import {
+  BasicSelect,
+  Button,
+  Checkbox,
+  Form,
+  IconAdd,
+  IconSelect,
+  Text,
+  TextField,
+} from '@gpn-prototypes/vega-ui';
 
 import { Collapsed, GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
-import '../../../styles/VegaFormCustom/VegaFormCustom.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/VegaFormCustom/VegaFormCustom.css';
+
+import { MacroparameterTableContainer } from '@/containers/Macroparameters/MacroparameterTableContainer';
+import keyGen from '@/helpers/keyGenerator';
+import macroparameterSetCategoryOptions from '@/helpers/MacroparameterSetCategoryOptions';
+import { yearsRangeOptions } from '@/helpers/nearYearsRange';
+import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '@/types/Article';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import SelectOptions from '@/types/SelectOptions';
 
 const yearsOptions = yearsRangeOptions(5, 10);
 
@@ -210,26 +218,26 @@ export const MacroparameterSetWrapper = ({
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Вид оценки</Form.Label>
-                    <Select
+                    <BasicSelect
                       options={macroparameterSetCategoryOptions}
-                      name="macroparameterSetCategory"
-                      value={category}
-                      onClearValue={() => null}
-                      onChange={(selectValue: any) => {
-                        setCategory(selectValue);
+                      id="macroparameterSetCategory"
+                      value={macroparameterSetCategoryOptions.find((i) => i.value === category)}
+                      getOptionLabel={(item: SelectOptions) => item.label}
+                      onChange={(selectValue: SelectOptions | null) => {
+                        setCategory(selectValue?.value);
                         setCategoryHelper(true);
                       }}
                     />
                   </Form.Field>
                   <Form.Field>
                     <Form.Label space="xs">Стартовый год</Form.Label>
-                    <Select
+                    <BasicSelect
                       options={yearsOptions}
-                      name="macroparameterSetYearStart"
-                      value={yearStart?.toString()}
-                      onClearValue={() => null}
-                      onChange={(selectValue: any) => {
-                        setYearStart(selectValue);
+                      id="macroparameterSetYearStart"
+                      value={yearsOptions.find((i) => i.value === yearStart?.toString())}
+                      getOptionLabel={(item: SelectOptions) => item.label}
+                      onChange={(selectValue: SelectOptions | null) => {
+                        setYearStart(selectValue ? +selectValue.value : undefined);
                         setYearStartHelper(true);
                       }}
                     />

@@ -9,14 +9,16 @@ import { OPEXTab } from '../OPEX/OPEXTab';
 import { Prices } from '../Prices/Prices';
 import { TaxEnvironment } from '../TaxEnvironment/TaxEnvironment';
 
+const basename = '/projects/show/:projectId/fem';
+
 export const Main = (): React.ReactElement => (
   <Switch>
-    <Route exact path="/" component={MacroparametersTab} />
-    <Route exact path="/tax-environment" component={TaxEnvironment} />
-    <Route exact path="/prices" component={Prices} />
-    <Route exact path="/OPEX" component={OPEXTab} />
-    <Route exact path="/CAPEX" component={CapexTab} />
-    <Route exact path="/mining-profile" component={MiningProfile} />
+    <Route exact path={`${basename}`} component={MacroparametersTab} />
+    <Route exact path={`${basename}/tax-environment`} component={TaxEnvironment} />
+    <Route exact path={`${basename}/prices`} component={Prices} />
+    <Route exact path={`${basename}/OPEX`} component={OPEXTab} />
+    <Route exact path={`${basename}/CAPEX`} component={CapexTab} />
+    <Route exact path={`${basename}/mining-profile`} component={MiningProfile} />
     <Route component={NoPageFound} />
   </Switch>
 );

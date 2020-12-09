@@ -1,8 +1,8 @@
-import Article from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-
 import { MacroparamsAction } from './macroparameterSetList';
+
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const ARTICLE_HIGHLIGHT = 'ARTICLE_HIGHLIGHT';
 export const ARTICLE_HIGHLIGHT_CLEAR = 'ARTICLE_HIGHLIGHT_CLEAR';
