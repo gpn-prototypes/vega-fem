@@ -1,22 +1,22 @@
 import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { addMacroparameterSetGroup as addGroup } from '../../actions/Macroparameters/addMacroparameterSetGroup';
-import { changeMacroparameterSetGroup } from '../../actions/Macroparameters/changeMacroparameterSetGroup';
-import { deleteMacroparameterSetGroup } from '../../actions/Macroparameters/deleteMacroparameterSetGroup';
+import { addMacroparameterSetGroup as addGroup } from '@/actions/Macroparameters/addMacroparameterSetGroup';
+import { changeMacroparameterSetGroup } from '@/actions/Macroparameters/changeMacroparameterSetGroup';
+import { deleteMacroparameterSetGroup } from '@/actions/Macroparameters/deleteMacroparameterSetGroup';
 import {
   articleHighlight,
   articleHighlightClear,
-} from '../../actions/Macroparameters/highlightMacroparameter';
-import { requestAddMacroparameter } from '../../actions/Macroparameters/macroparameter/addMacroparameter';
-import { requestChangeMacroparameter } from '../../actions/Macroparameters/macroparameter/changeMacroparameter';
-import { requestDeleteMacroparameter } from '../../actions/Macroparameters/macroparameter/deleteMacroparameter';
-import { updateMacroparameterSet as updateSet } from '../../actions/Macroparameters/updateMacroparameterSet';
-import { MacroparameterSetWrapper } from '../../components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetWrapper';
+} from '@/actions/Macroparameters/highlightMacroparameter';
+import { requestAddMacroparameter } from '@/actions/Macroparameters/macroparameter/addMacroparameter';
+import { requestChangeMacroparameter } from '@/actions/Macroparameters/macroparameter/changeMacroparameter';
+import { requestDeleteMacroparameter } from '@/actions/Macroparameters/macroparameter/deleteMacroparameter';
+import { updateMacroparameterSet as updateSet } from '@/actions/Macroparameters/updateMacroparameterSet';
+import { MacroparameterSetWrapper } from '@/components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetWrapper';
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MacroparameterSetContainer = () => {
   const dispatch = useDispatch();

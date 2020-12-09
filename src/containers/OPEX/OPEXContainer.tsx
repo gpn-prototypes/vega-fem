@@ -1,33 +1,33 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article from '../../../types/Article';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../types/OPEX/OPEXSetType';
 import {
   articleHighlight,
   articleHighlightClear,
-} from '../../actions/Macroparameters/highlightMacroparameter';
-import { autoexportChange } from '../../actions/OPEX/autoexport/changeAutoexport';
-import { addAutoexportExpense } from '../../actions/OPEX/autoexport/expense/addAutoexportExpense';
-import { autoexportChangeExpense } from '../../actions/OPEX/autoexport/expense/changeAutoexportExpense';
-import { autoexportDeleteExpense } from '../../actions/OPEX/autoexport/expense/deleteAutoexportExpense';
-import { autoexportRemove } from '../../actions/OPEX/autoexport/removeAutoexport';
-import { changeCase } from '../../actions/OPEX/case/changeCase';
-import { createCase } from '../../actions/OPEX/case/createCase';
-import { deleteCase } from '../../actions/OPEX/case/deleteCase';
-import { addCaseExpense } from '../../actions/OPEX/case/expense/addCaseExpense';
-import { caseChangeExpense } from '../../actions/OPEX/case/expense/changeOPEXCaseExpense';
-import { caseDeleteExpense } from '../../actions/OPEX/case/expense/deleteOpexCaseExpense';
-import { fetchOPEXSet } from '../../actions/OPEX/fetchOPEXSet';
-import { MKOSChange } from '../../actions/OPEX/MKOS/changeMKOS';
-import { addMKOSExpense } from '../../actions/OPEX/MKOS/expense/addMKOSExpense';
-import { MKOSChangeExpense } from '../../actions/OPEX/MKOS/expense/changeMKOSExpense';
-import { MKOSDeleteExpense } from '../../actions/OPEX/MKOS/expense/deleteMKOSExpense';
-import { MKOSRemove } from '../../actions/OPEX/MKOS/removeMKOS';
-import { changeOPEXSdf } from '../../actions/OPEX/updateOPEXSdf';
-import { OPEXSetWrapper } from '../../components/OPEX/OPEXWrapper/OPEXSetWrapper';
+} from '@/actions/Macroparameters/highlightMacroparameter';
+import { autoexportChange } from '@/actions/OPEX/autoexport/changeAutoexport';
+import { addAutoexportExpense } from '@/actions/OPEX/autoexport/expense/addAutoexportExpense';
+import { autoexportChangeExpense } from '@/actions/OPEX/autoexport/expense/changeAutoexportExpense';
+import { autoexportDeleteExpense } from '@/actions/OPEX/autoexport/expense/deleteAutoexportExpense';
+import { autoexportRemove } from '@/actions/OPEX/autoexport/removeAutoexport';
+import { changeCase } from '@/actions/OPEX/case/changeCase';
+import { createCase } from '@/actions/OPEX/case/createCase';
+import { deleteCase } from '@/actions/OPEX/case/deleteCase';
+import { addCaseExpense } from '@/actions/OPEX/case/expense/addCaseExpense';
+import { caseChangeExpense } from '@/actions/OPEX/case/expense/changeOPEXCaseExpense';
+import { caseDeleteExpense } from '@/actions/OPEX/case/expense/deleteOpexCaseExpense';
+import { fetchOPEXSet } from '@/actions/OPEX/fetchOPEXSet';
+import { MKOSChange } from '@/actions/OPEX/MKOS/changeMKOS';
+import { addMKOSExpense } from '@/actions/OPEX/MKOS/expense/addMKOSExpense';
+import { MKOSChangeExpense } from '@/actions/OPEX/MKOS/expense/changeMKOSExpense';
+import { MKOSDeleteExpense } from '@/actions/OPEX/MKOS/expense/deleteMKOSExpense';
+import { MKOSRemove } from '@/actions/OPEX/MKOS/removeMKOS';
+import { changeOPEXSdf } from '@/actions/OPEX/updateOPEXSdf';
+import { OPEXSetWrapper } from '@/components/OPEX/OPEXWrapper/OPEXSetWrapper';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEXContainer = () => {
   const dispatch = useDispatch();

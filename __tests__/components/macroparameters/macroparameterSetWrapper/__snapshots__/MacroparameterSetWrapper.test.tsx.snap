@@ -1,0 +1,1133 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroparameterSetWrapper snapshot test 1`] = `
+<div
+  className="BlockWrapper"
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <span
+        className="Text Text_size_xs Text_view_primary"
+      >
+        Макропараметры
+      </span>
+      <span
+        className="Icon Icon_size_xs IconSelect"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            d="M6 8.5L10 4H2l4 4.5z"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <form
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+      onSubmit={[Function]}
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              Название сценария
+            </label>
+            <div
+              className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text TextField_withValue"
+              onKeyDown={[Function]}
+            >
+              <input
+                autoFocus={false}
+                className="TextField-Input"
+                id="macroparameterSetName"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                type="text"
+                value="Набор Макропараметров 20.2В"
+              />
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              Количество лет
+            </label>
+            <div
+              className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text TextField_withValue"
+              onKeyDown={[Function]}
+            >
+              <input
+                autoFocus={false}
+                className="TextField-Input"
+                id="macroparameterSetYears"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                type="text"
+                value="15"
+              />
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              Вид оценки
+            </label>
+            <div
+              className="Select Select_size_m Select_form_default Select_view_default"
+            >
+              <div
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                className="Select-Control"
+                id="macroparameterSetCategory"
+              >
+                <div
+                  className="Select-ControlInner"
+                >
+                  <div
+                    className="Select-ControlValueContainer"
+                  >
+                    <input
+                      className="Select-FakeField"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      readOnly={true}
+                      type="button"
+                    />
+                    <span
+                      className="Select-ControlValue"
+                      title="Реальная"
+                    >
+                      Реальная
+                    </span>
+                  </div>
+                </div>
+                <span
+                  className="Select-Indicators"
+                >
+                  <button
+                    className="Select-IndicatorsDropdown"
+                    onClick={[Function]}
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <span
+                      className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                    >
+                      <svg
+                        className="Icon-Svg"
+                        viewBox="0 0 12 12"
+                      >
+                        <path
+                          d="M6 8.5L10 4H2l4 4.5z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              Стартовый год
+            </label>
+            <div
+              className="Select Select_size_m Select_form_default Select_view_default"
+            >
+              <div
+                aria-expanded={false}
+                aria-haspopup="listbox"
+                className="Select-Control"
+                id="macroparameterSetYearStart"
+              >
+                <div
+                  className="Select-ControlInner"
+                >
+                  <div
+                    className="Select-ControlValueContainer"
+                  >
+                    <input
+                      className="Select-FakeField"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      onClick={[Function]}
+                      onFocus={[Function]}
+                      onKeyDown={[Function]}
+                      readOnly={true}
+                      type="button"
+                    />
+                    <span
+                      className="Select-ControlValue"
+                      title="2015"
+                    >
+                      2015
+                    </span>
+                  </div>
+                </div>
+                <span
+                  className="Select-Indicators"
+                >
+                  <button
+                    className="Select-IndicatorsDropdown"
+                    onClick={[Function]}
+                    tabIndex={-1}
+                    type="button"
+                  >
+                    <span
+                      className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                    >
+                      <svg
+                        className="Icon-Svg"
+                        viewBox="0 0 12 12"
+                      >
+                        <path
+                          d="M6 8.5L10 4H2l4 4.5z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              htmlFor="macroparameterSetIsTemplate"
+            >
+              <label
+                className="Checkbox Checkbox_size_m Checkbox_view_primary Checkbox_align_center"
+              >
+                <input
+                  checked={false}
+                  className="Checkbox-Input MixFocus"
+                  name="macroparameterSetIsTemplate"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="Checkbox-Label"
+                >
+                  Для всех проектов
+                </span>
+              </label>
+            </label>
+          </div>
+        </div>
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Курсы основных валют
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Курс доллара реальный
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_Курс_доллара_реальный_1"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="₽/$"
+                        >
+                          ₽/$
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Курс евро реальный
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_Курс_евро_реальный_2"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="₽/€"
+                        >
+                          ₽/€
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Цена на нефть - РЕАЛЬНЫЕ ЦЕНЫ
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Цена на нефть Brent в реальном выражении
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_Цена_на_нефть_Brent_в_реальном_выражении_1"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="$/барр."
+                        >
+                          $/барр.
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Цена на нефть Urals, среднее значение MED и NWE Rotterdam, в реальном выражении
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_Цена_на_нефть_Urals,_среднее_значение_MED_и_NWE_Rotterdam,_в_реальном_выражении_2"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="$/барр."
+                        >
+                          $/барр.
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <button
+          className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
+          onClick={[Function]}
+          type="button"
+        >
+          <span
+            className="Icon Icon_size_xs IconAdd Button-Icon Button-Icon_position_left"
+          >
+            <svg
+              className="Icon-Svg"
+              viewBox="0 0 12 12"
+            >
+              <path
+                d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
+              />
+            </svg>
+          </span>
+          <span
+            className="Button-Label"
+          >
+            Добавить группу статей
+          </span>
+        </button>
+      </div>
+    </form>
+    <div />
+  </div>
+</div>
+`;

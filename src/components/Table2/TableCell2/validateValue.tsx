@@ -1,19 +1,12 @@
-export const validateValue = (cellValue: string): string => {
-  const arr = cellValue.split('');
-  let index = null;
-  let count = arr.length;
-  const match = cellValue.match(/\.|,/gm);
-
-  if (match && match.length > 1) {
-    while (count) {
-      index = index === null && arr[count] === '.' ? count : index;
-      if (arr[count]?.match(/\.|,/) && index !== count) arr[count] = '';
-      count -= 1;
-    }
+export const validateValue = (cellValue: string | number): string => {
+  let str = String(cellValue);
+  str = str.replace(/ /g, '');
+  if (cellValue && str.match(/,|\./g)) {
+    const splitted = str.split(/[,|.]/g).filter((v) => v);
+    const ending = splitted[splitted.length - 1];
+    splitted.pop();
+    return splitted.length ? `${splitted.join('')}.${ending}` : ending;
   }
-  if (index) arr[index] = '.';
 
-  if (arr[arr.length - 1] === '.') return [...arr, '0', '0'].join('');
-
-  return arr.join('');
+  return str;
 };

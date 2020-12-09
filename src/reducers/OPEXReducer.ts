@@ -1,7 +1,3 @@
-import Article, { ArticleValues } from '../../types/Article';
-import { OPEXGroup } from '../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../types/OPEX/OPEXSetType';
-import Role from '../../types/role';
 import { OPEX_AUTOEXPORT_CHANGE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexport';
 import { OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS } from '../actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
 import { OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS } from '../actions/OPEX/autoexport/expense/addAutoexportExpense';
@@ -25,6 +21,12 @@ import { OPEX_MKOS_REMOVE_SUCCESS } from '../actions/OPEX/MKOS/removeMKOS';
 import { OPEX_ROLE_SELECTED } from '../actions/OPEX/selectOPEXRole';
 import { OPEX_SET_SDF_SUCCESS } from '../actions/OPEX/updateOPEXSdf';
 
+import { FEM_CLEAR_STORES } from '@/actions/clear';
+import Article, { ArticleValues } from '@/types/Article';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
+import Role from '@/types/role';
+
 const initialState = {
   opex: {} as OPEXSetType,
   selectedRole: { name: 'Обустройство' } as Role,
@@ -37,6 +39,8 @@ let caseGroup: OPEXGroup | undefined;
 
 export default function OPEXReducer(state = initialState, action: OPEXAction) {
   switch (action.type) {
+    case FEM_CLEAR_STORES:
+      return { ...initialState };
     case OPEX_CREATE_CASE_SUCCESS:
       return {
         ...state,

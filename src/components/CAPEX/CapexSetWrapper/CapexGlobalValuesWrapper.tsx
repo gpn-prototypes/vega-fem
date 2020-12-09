@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Form, TextField } from '@gpn-prototypes/vega-ui';
 
-import CapexSetGlobalValue from '../../../../types/CAPEX/CapexSetGlobalValue';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import { validateValue } from '../../Table2/TableCell2/validateValue';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
+
+import { spreadValue } from '@/helpers/spreadValue';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import CapexSetGlobalValue from '@/types/CAPEX/CapexSetGlobalValue';
 
 interface CapexWrapperProps {
   globalValue: CapexSetGlobalValue;
@@ -17,15 +20,18 @@ export const CapexGlobalValuesWrapper = ({
   updateCapexGlobalValue,
 }: CapexWrapperProps) => {
   const [value, setValue] = useState(globalValue?.value);
+  const [spreaded, setSpreaded] = useState<boolean>(true);
 
   const editValues = (e: any): void => {
+    if (spreaded) setSpreaded(false);
     setValue(e.e.target.value);
   };
   const requestSetGlobalValue = useCallback(() => {
     updateCapexGlobalValue({
       id: globalValue.id,
-      value,
+      value: +validateValue(String(value)),
     } as CapexSetGlobalValue);
+    setSpreaded(true);
   }, [updateCapexGlobalValue, value, globalValue]);
 
   const loseFocus = (e: any) => {
@@ -33,6 +39,14 @@ export const CapexGlobalValuesWrapper = ({
     if (e.key === 'Enter') {
       (e.target as HTMLElement).blur();
     }
+  };
+
+  const displayValue = (): string => {
+    if (value) {
+      if (spreaded) return spreadValue(value);
+      return value?.toString();
+    }
+    return '';
   };
 
   return (
@@ -43,7 +57,7 @@ export const CapexGlobalValuesWrapper = ({
           id={`capexSet${globalValue.name}`}
           size="s"
           width="full"
-          value={value?.toString()}
+          value={displayValue()}
           rightSide={globalValue.unit ?? ''}
           onBlur={() => requestSetGlobalValue()}
           onChange={(e) => editValues(e)}

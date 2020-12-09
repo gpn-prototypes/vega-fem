@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { usePortal } from '@gpn-prototypes/vega-root';
-import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
+import { Button, Form, Modal, Text, usePortal } from '@gpn-prototypes/vega-ui';
 
 import { cnDeleteArticleModal } from '../../Article/ArticleOptionsDropdown/DeleteArticleModal/cn-delete-article-modal';
 
+import { PossibleCloseEvent } from '@/types';
+
 export interface DeleteGroupModalProps<GroupType> {
-  close: (e: CloseEvent | React.SyntheticEvent) => void;
+  close: (e: PossibleCloseEvent) => void;
   isOpen: boolean;
   callback?: (group: GroupType) => void;
   group: GroupType;

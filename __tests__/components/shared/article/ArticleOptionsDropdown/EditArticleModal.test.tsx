@@ -4,8 +4,8 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   EditArticleModal,
   EditArticleModalProps,
-} from '../../../../../src/components/Shared/Article/ArticleOptionsDropdown/EditArticleModal/EditArticleModal';
-import Article from '../../../../../types/Article';
+} from '@/components/Shared/Article/ArticleOptionsDropdown/EditArticleModal/EditArticleModal';
+import Article from '@/types/Article';
 
 let fakeArticle: Article;
 beforeEach(() => {

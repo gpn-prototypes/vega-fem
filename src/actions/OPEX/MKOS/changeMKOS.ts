@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_MKOS_CHANGE_INIT = 'OPEX_MKOS_CHANGE_INIT';
 export const OPEX_MKOS_CHANGE_SUCCESS = 'OPEX_MKOS_CHANGE_SUCCESS';
@@ -35,17 +37,14 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
     dispatch(OPEXMKOSChangeInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            // `mutation {changeOpexMkos(` +
-            // `yearEnd: ${MKOS.yearEnd.toString()},` +
-            // `){mkos{yearStart,yearEnd,opexExpenseList{id,caption,name,value{year,value},valueTotal,unit}}, ok}}`,
-            `mutation changeOpexMkos{
+          query: `mutation changeOpexMkos{
               changeOpexMkos(
                 yearEnd: ${MKOS.yearEnd.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 mkos{
                   __typename
@@ -90,6 +89,7 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
       const body = await response.json();
 
       if (response.status === 200 && body.data.changeOpexMkos.mkos?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSChangeSuccess(body.data?.changeOpexMkos?.mkos));
       } else {
         dispatch(OPEXMKOSChangeError(body.message));

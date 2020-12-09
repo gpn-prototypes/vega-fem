@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
+import { NavigationList } from '@gpn-prototypes/vega-ui';
 
-import MacroparameterSet from '../../../../types/Macroparameters/MacroparameterSet';
-import keyGen from '../../../helpers/keyGenerator';
+import keyGen from '@/helpers/keyGenerator';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
-interface MacroparameterSetListProps {
+export interface MacroparameterSetListProps {
   macroparameterSetList: MacroparameterSet[];
   chooseMacroparameterSet: (set: any) => void;
 }

@@ -1,13 +1,12 @@
 import React from 'react';
-import { Dropdown } from '@gpn-prototypes/vega-dropdown';
-import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
-
-import Article from '../../../../types/Article';
+import { Button, Dropdown, IconKebab } from '@gpn-prototypes/vega-ui';
 
 import { GroupMenu } from './GroupMenu/GroupMenu';
 import { cnGroupOptionsDropdown } from './cn-group-options-dropdown';
 
 import './GroupOptionsDropdown.css';
+
+import Article from '@/types/Article';
 
 export interface GroupOptions<GroupType> {
   group: GroupType;

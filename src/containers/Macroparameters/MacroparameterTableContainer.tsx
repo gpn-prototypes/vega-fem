@@ -1,17 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import { requestUpdateMacroparameterYearValue } from '../../actions/Macroparameters/updateMacroparameterYearValue';
-import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
-import {
-  Table2,
-  TableArticle,
-  TableArticleValue,
-  TableGroup,
-} from '../../components/Table2/Table2';
+import { requestUpdateMacroparameterYearValue } from '@/actions/Macroparameters/updateMacroparameterYearValue';
+import { FolderComponent } from '@/components/Table2/FolderComponent/FolderComponent';
+import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/components/Table2/Table2';
+import Article, { ArticleValues } from '@/types/Article';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 interface MacroparameterTableContainerProps {
   macroparameterSet: MacroparameterSet;

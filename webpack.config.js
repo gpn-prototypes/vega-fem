@@ -1,13 +1,16 @@
 const merge = require('webpack-merge');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
+const path = require('path');
 
-const appConfig = require('./app-config')();
-const postCssConfig = require('./postcss.config');
+const appConfig = require('./app-config').getAppConfig();
+
+dotenv.config();
 
 const gpnWebpack = require('@gpn-prototypes/frontend-configs/webpack.config')({
   appConfig,
-  postCssConfig,
+  // eslint-disable-next-line global-require
+  postCssConfig: { postcssOptions: { ...require('./postcss.config') } },
 });
 
 const commonWebpack = () => {
@@ -26,13 +29,17 @@ const commonWebpack = () => {
   };
 };
 
-const femFeWebpack = {
-  devServer: {
-    historyApiFallback: true,
-    proxy: {
-      '/graphql': process.env.VEGA_SERVER_URL || 'http://localhost:8080',
+const appWebpack = {
+  devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : false,
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
+  },
+  devServer: {
+    ...gpnWebpack.devServer,
+    historyApiFallback: true,
   },
 };
 
-module.exports = merge(commonWebpack(), gpnWebpack, femFeWebpack);
+module.exports = merge(commonWebpack(), gpnWebpack, appWebpack);

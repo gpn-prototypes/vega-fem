@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../../types/Article';
-import headers from '../../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
 
 export const OPEX_ADD_AUTOEXPORT_EXPENSE_INIT = 'OPEX_ADD_AUTOEXPORT_EXPENSE_INIT';
 export const OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS = 'OPEX_ADD_AUTOEXPORT_EXPENSE_SUCCESS';
@@ -37,7 +39,7 @@ export function addAutoexportExpense(
     dispatch(OPEXAddAutoexportExpenseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -45,6 +47,7 @@ export function addAutoexportExpense(
             createOpexAutoexportExpense(
               caption: "${article.caption?.toString()}",
               unit: "${article.unit?.toString()}",
+              version:${currentVersionFromSessionStorage()}
             ){
             opexExpense{
               __typename
@@ -76,6 +79,7 @@ export function addAutoexportExpense(
         response.status === 200 &&
         body.data.createOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense),
         );

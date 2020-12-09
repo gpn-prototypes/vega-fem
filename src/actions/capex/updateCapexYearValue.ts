@@ -1,12 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { CapexesAction } from './fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_UPDATE_YEAR_VALUE_INIT = 'CAPEX_UPDATE_YEAR_VALUE_INIT';
 export const CAPEX_UPDATE_YEAR_VALUE_SUCCESS = 'CAPEX_UPDATE_YEAR_VALUE_SUCCESS';
@@ -41,7 +43,7 @@ export const requestUpdateCapexYearValue = (
     dispatch(capexUpdateYearValueInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -51,6 +53,7 @@ export const requestUpdateCapexYearValue = (
               capexExpenseId: ${capex.id}
               year: ${value.year}
               value: ${value.value}
+              version:${currentVersionFromSessionStorage()}
             ) {
               totalValueByYear{
                 year
@@ -81,6 +84,7 @@ export const requestUpdateCapexYearValue = (
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.status === 200 && responseData?.totalValueByYear.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
         );

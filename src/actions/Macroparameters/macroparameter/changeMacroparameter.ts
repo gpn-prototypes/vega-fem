@@ -1,11 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const CHANGE_MACROPARAM_INIT = 'CHANGE_MACROPARAM_INIT';
 export const CHANGE_MACROPARAM_SUCCESS = 'CHANGE_MACROPARAM_SUCCESS';
@@ -38,20 +41,11 @@ export const requestChangeMacroparameter = (
     dispatch(changeMacroparameterInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {changeMacroparameter(` +
-            `macroparameterSetId: ${selected.id.toString()},` +
-            `macroparameterGroupId: ${group?.id?.toString()},` +
-            `macroparameterId: ${macroparameter.id},` +
-            `${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}` +
-            `${macroparameter.unit ? `unit:"${macroparameter.unit}",` : ''}` +
-            `${macroparameter.value ? `value:${macroparameter.value},` : ''}` +
-            `){macroparameter{name, id, caption,unit, value{year,value}}, ok}}`, */
-            `mutation changeMacroparameter{
+          query: `mutation changeMacroparameter{
             changeMacroparameter(
               macroparameterSetId: ${selected.id.toString()}
               macroparameterGroupId: ${group?.id?.toString()}
@@ -59,6 +53,7 @@ export const requestChangeMacroparameter = (
               ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
               ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
               ${macroparameter.value ? `value:${macroparameter.value},` : ''}
+              version:${currentVersionFromSessionStorage()}
             ){
               macroparameter{
               __typename
@@ -88,6 +83,7 @@ export const requestChangeMacroparameter = (
       const responseData = body?.data?.changeMacroparameter;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const updatedMacroparameter = responseData?.macroparameter;
 
         if (updatedMacroparameter) {

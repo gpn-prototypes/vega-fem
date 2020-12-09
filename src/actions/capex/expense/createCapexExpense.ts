@@ -1,11 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../types/Article';
-import CapexExpenseSetGroup from '../../../../types/CAPEX/CapexExpenseSetGroup';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { CapexesAction } from '../fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CREATE_CAPEX_EXPENSE_INIT = 'CREATE_CAPEX_EXPENSE_INIT';
 export const CREATE_CAPEX_EXPENSE_SUCCESS = 'CREATE_CAPEX_EXPENSE_SUCCESS';
@@ -34,7 +37,7 @@ export const requestCreateCapexExpense = (
     dispatch(createCapexExpenseInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -43,6 +46,7 @@ export const requestCreateCapexExpense = (
               capexExpenseGroupId:"${group?.id?.toString()}",
               caption:"${newCapexExpense.caption}",
               unit:"${newCapexExpense.unit}"
+              version: ${currentVersionFromSessionStorage()}
             ){
               capexExpense{
                 __typename
@@ -75,6 +79,7 @@ export const requestCreateCapexExpense = (
         const capex = responseData?.capexExpense;
 
         if (capex) {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(createCapexExpenseSuccess(capex as Article, group));
         }
       } else {

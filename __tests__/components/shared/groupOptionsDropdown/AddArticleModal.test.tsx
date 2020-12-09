@@ -4,7 +4,7 @@ import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
 import {
   AddArticleModal,
   AddArticleModalProps,
-} from '../../../../src/components/Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
+} from '@/components/Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 
 const renderComponent = (props: AddArticleModalProps): RenderResult =>
   render(<AddArticleModal {...props} />);

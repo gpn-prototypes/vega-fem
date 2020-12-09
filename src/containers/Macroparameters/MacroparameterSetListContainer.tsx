@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
 import {
   fetchMacroparameterSetList,
   selectMacroparameterSet,
-} from '../../actions/Macroparameters/macroparameterSetList';
-import { MacroparameterSetList } from '../../components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
+} from '@/actions/Macroparameters/macroparameterSetList';
+import { MacroparameterSetList } from '@/components/Macroparameters/MacroparameterSetList/MacroparameterSetList';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MacroparameterSetListContainer = () => {
   const dispatch = useDispatch();

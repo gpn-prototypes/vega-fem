@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article, { ArticleValues } from '../../../../types/Article';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article, { ArticleValues } from '@/types/Article';
 
 export const OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT = 'OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT';
 export const OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_SUCCESS =
@@ -43,21 +45,16 @@ export function MKOSChangeExpenseYearValue(
     dispatch(OPEXMKOSChangeExpenseYearValueInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {setOpexMkosExpenseYearValue(` +
-            `expenseId: ${article.id},` +
-            `year: ${value.year?.toString()},` +
-            `value: ${value.value?.toString()}` +
-            `){ok}}`, */
-            `mutation setOpexMkosExpenseYearValue{
+          query: `mutation setOpexMkosExpenseYearValue{
               setOpexMkosExpenseYearValue(
                 expenseId: ${article.id},
                 year:${value.year?.toString()},
-                value: ${value.value?.toString()}
+                value: ${value.value?.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexExpense{
                   __typename
@@ -78,6 +75,7 @@ export function MKOSChangeExpenseYearValue(
         response.status === 200 &&
         body.data.setOpexMkosExpenseYearValue.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));
       } else {
         dispatch(OPEXMKOSChangeExpenseYearValueError(body.message));

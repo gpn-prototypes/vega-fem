@@ -1,10 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import { IconArrowDown } from '@gpn-design/uikit/IconArrowDown';
-import { Text, useModal } from '@gpn-prototypes/vega-ui';
+import { IconArrowDown, Text, useModal } from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../../types/Article';
-import MacroparameterSetGroup from '../../../../../types/Macroparameters/MacroparameterSetGroup';
-import keyGen from '../../../../helpers/keyGenerator';
 import { ArticleWrapper } from '../../../Shared/Article/ArticleWrapper';
 import { AddArticleModal } from '../../../Shared/GroupOptionsDropdown/AddArticleModal/AddArticleModal';
 import { GroupOptionsDropdown } from '../../../Shared/GroupOptionsDropdown/GroupOptionsDropdown';
@@ -12,15 +8,19 @@ import { GroupPlaceholder } from '../GroupPlaceholder/GroupPlaceholder';
 
 import { cnGroupWrapper } from './cn-group-wrapper';
 
-import '../../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper.css';
+
+import keyGen from '@/helpers/keyGenerator';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export interface Collapsed {
   id: string | number;
   collapsed: boolean;
 }
 
-interface MacroparameterSetWrapperGroupProps {
+export interface MacroparameterSetWrapperGroupProps {
   group: MacroparameterSetGroup;
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
@@ -104,7 +104,10 @@ export const GroupWrapper = ({
           />
         </div>
       </div>
-      <div className={cnGroupWrapper('body', { hidden: isCollapsedState })}>
+      <div
+        data-testid="groupWrapper-body"
+        className={cnGroupWrapper('body', { hidden: isCollapsedState })}
+      >
         {articles?.length === 0 && (
           <GroupPlaceholder
             text="Пока не добавлена ни одна статья"

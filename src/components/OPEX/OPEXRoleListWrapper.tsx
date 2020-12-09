@@ -1,10 +1,10 @@
 import React from 'react';
-import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
+import { NavigationList } from '@gpn-prototypes/vega-ui';
 
-import Role from '../../../types/role';
-import keyGen from '../../helpers/keyGenerator';
+import keyGen from '@/helpers/keyGenerator';
+import Role from '@/types/role';
 
-interface OPEXRoleListWrapperProps {
+export interface OPEXRoleListWrapperProps {
   roleList: any[];
   selectedRole: Role;
   selectRole: (role: Role) => void;

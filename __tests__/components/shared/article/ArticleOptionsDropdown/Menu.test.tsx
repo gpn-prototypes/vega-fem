@@ -1,11 +1,8 @@
 import * as React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 
-import {
-  Menu,
-  MenuOptions,
-} from '../../../../../src/components/Shared/Article/ArticleOptionsDropdown/Menu/Menu';
-import Article from '../../../../../types/Article';
+import { Menu, MenuOptions } from '@/components/Shared/Article/ArticleOptionsDropdown/Menu/Menu';
+import Article from '@/types/Article';
 
 let fakeArticle: Article;
 beforeAll(() => {

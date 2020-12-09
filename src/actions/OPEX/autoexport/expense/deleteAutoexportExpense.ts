@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../../types/Article';
-import headers from '../../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
 
 export const OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT = 'OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT';
 export const OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS = 'OPEX_AUTOEXPORT_DELETE_EXPENSE_SUCCESS';
@@ -37,17 +39,14 @@ export function autoexportDeleteExpense(
     dispatch(OPEXAutoexportDeleteExpenseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {deleteOpexAutoexportExpense(` +
-            `expenseId: ${article.id?.toString()},` +
-            `){ok}}`, */
-            `mutation deleteOpexAutoexportExpense{
+          query: `mutation deleteOpexAutoexportExpense{
               deleteOpexAutoexportExpense(
                 expenseId: 2,
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -71,6 +70,7 @@ export function autoexportDeleteExpense(
         response.status === 200 &&
         body.data.deleteOpexAutoexportExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
       } else {
         dispatch(OPEXAutoexportDeleteExpenseError(body.message));

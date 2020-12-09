@@ -1,4 +1,4 @@
-import SelectOptions from '../../types/SelectOptions';
+import SelectOptions from '@/types/SelectOptions';
 
 /* return [currentYear - from, ... , currentYear + to]
  *  */
@@ -9,8 +9,10 @@ const nearYearsRange = (from: number, to: number): number[] => {
 };
 
 const yearsRangeOptions = (from: number, to: number): SelectOptions[] =>
-  nearYearsRange(from, to).map((year) => {
-    return { value: year.toString(), label: year.toString() } as SelectOptions;
-  });
+  nearYearsRange(from, to).map(
+    (year): SelectOptions => {
+      return { value: year.toString(), label: year.toString() };
+    },
+  );
 
 export { nearYearsRange, yearsRangeOptions };

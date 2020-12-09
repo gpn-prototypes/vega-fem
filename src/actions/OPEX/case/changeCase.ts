@@ -1,10 +1,12 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEX_CHANGE_CASE_INIT = 'OPEX_CHANGE_CASE_INIT';
 export const OPEX_CHANGE_CASE_SUCCESS = 'OPEX_CHANGE_CASE_SUCCESS';
@@ -36,24 +38,17 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXChangeCaseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            /* `mutation {` +
-            `changeOpexCase(` +
-            `caseId:"${opexCase.id}",` +
-            `caption:"${opexCase.caption}",` +
-            `yearStart:${opexCase.yearStart.toString()},` +
-            `yearEnd:${opexCase.yearEnd.toString()}` +
-            `){opexCase{id,name,caption,yearStart,yearEnd} ok}}`, */
-            `mutation changeOpexCase{
+          query: `mutation changeOpexCase{
               changeOpexCase(
                 caseId:"${opexCase.id}",
                 caption:"${opexCase.caption}",
-                yearStart:${opexCase.yearStart.toString()}
-                yearEnd:${opexCase.yearEnd.toString()}
+                yearStart:${opexCase.yearStart.toString()},
+                yearEnd:${opexCase.yearEnd.toString()},
+                version:${currentVersionFromSessionStorage()}
               ){
                 opexCase{
                   __typename
@@ -78,6 +73,7 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200 && body.data.changeOpexCase.opexCase?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXChangeCaseSuccess(body.data?.changeOpexCase?.opexCase));
       } else {
         dispatch(OPEXChangeCaseError(body.message));

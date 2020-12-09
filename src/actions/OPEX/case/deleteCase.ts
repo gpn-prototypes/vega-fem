@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_DELETE_CASE_INIT = 'OPEX_DELETE_CASE_INIT';
 export const OPEX_DELETE_CASE_SUCCESS = 'OPEX_DELETE_CASE_SUCCESS';
@@ -35,13 +37,15 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXDeleteCaseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          /* `mutation {deleteOpexCase(caseId:"${opexCase.id}"){ok}}`, */
           query: `mutation deleteOpexCase{
-            deleteOpexCase(caseId:"${opexCase.id}"){
+            deleteOpexCase(
+            caseId:"${opexCase.id}",
+            version:${currentVersionFromSessionStorage()}
+            ){
               result{
                 __typename
                 ... on Result{
@@ -61,6 +65,7 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200 && body.data.deleteOpexCase.result?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {
         dispatch(OPEXDeleteCaseError(body.message));

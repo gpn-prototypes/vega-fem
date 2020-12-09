@@ -1,11 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { CapexesAction } from './fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_EXPENSE_GROUP_CHANGE_INIT = 'CAPEX_EXPENSE_GROUP_CHANGE_INIT';
 export const CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS = 'CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS';
@@ -33,7 +35,7 @@ export const changeCapexExpenseGroup = (
     dispatch(capexExpenseGroupChangeInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -41,13 +43,10 @@ export const changeCapexExpenseGroup = (
               changeCapexExpenseGroup(
                 capexExpenseGroupId:"${capexSetGroup.id}",
                 caption:"${capexSetGroup.caption}"
+                version: ${currentVersionFromSessionStorage()}
               ){
                 capexExpenseGroup{
                   __typename
-                  totalValueByYear{
-                    year
-                    value
-                  }
                   ... on CapexExpenseGroup{
                     id,
                     caption
@@ -68,6 +67,7 @@ export const changeCapexExpenseGroup = (
       const changedCapexGroup = body?.data?.changeCapexExpenseGroup;
 
       if (response.status === 200 && changedCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = changedCapexGroup?.capexExpenseGroup;
         if (newGroup) console.log(newGroup);
         dispatch(capexExpenseGroupChangeSuccess({ ...newGroup } as CapexExpenseSetGroup));

@@ -1,11 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import MacroparameterSet from '../../../types/Macroparameters/MacroparameterSet';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { MacroparamsAction } from './macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MACROPARAM_SET_UPDATE_INIT = 'MACROPARAM_SET_UPDATE_INIT';
 export const MACROPARAM_SET_UPDATE_SUCCESS = 'MACROPARAM_SET_UPDATE_SUCCESS';
@@ -37,7 +39,7 @@ export const updateMacroparameterSet = (
     dispatch(macroparameterSetUpdateInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -50,6 +52,7 @@ export const updateMacroparameterSet = (
                 years:${newMacroparameterSet.years}
                 yearStart:${newMacroparameterSet.yearStart}
                 allProjects:${newMacroparameterSet.allProjects}
+                version:${currentVersionFromSessionStorage()}
               ){
                 macroparameterSet{
                   __typename
@@ -114,6 +117,7 @@ export const updateMacroparameterSet = (
       const responseData = body?.data?.changeMacroparameterSet;
 
       if (response.status === 200 && responseData.macroparameterSet?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
         );

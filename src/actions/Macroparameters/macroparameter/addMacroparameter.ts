@@ -1,11 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import headers from '../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../helpers/projectIdToLocalstorage';
 import { MacroparamsAction } from '../macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_ADD_INIT = 'MACROPARAM_ADD_INIT';
 export const MACROPARAM_ADD_SUCCESS = 'MACROPARAM_ADD_SUCCESS';
@@ -38,7 +41,7 @@ export const requestAddMacroparameter = (
     dispatch(macroparameterAddInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -48,6 +51,7 @@ export const requestAddMacroparameter = (
               macroparameterGroupId:${group?.id?.toString()}
               caption: "${newMacroparameter.caption}"
               unit: "${newMacroparameter.unit}"
+              version:${currentVersionFromSessionStorage()}
             ){
               macroparameter{
                 __typename
@@ -77,6 +81,7 @@ export const requestAddMacroparameter = (
       const responseData = body?.data?.createMacroparameter;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const macroparameter = responseData?.macroparameter;
 
         if (macroparameter) {

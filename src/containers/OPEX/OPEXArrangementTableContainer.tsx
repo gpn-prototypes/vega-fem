@@ -1,24 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import { autoexportChangeExpenseYearValue } from '../../actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
-import { MKOSChangeExpenseYearValue } from '../../actions/OPEX/MKOS/changeMKOSExpenseYearValue';
-import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
-import {
-  Table2,
-  TableArticle,
-  TableArticleValue,
-  TableGroup,
-} from '../../components/Table2/Table2';
+import { autoexportChangeExpenseYearValue } from '@/actions/OPEX/autoexport/changeAutoexportExpenseYearValue';
+import { MKOSChangeExpenseYearValue } from '@/actions/OPEX/MKOS/changeMKOSExpenseYearValue';
+import { FolderComponent } from '@/components/Table2/FolderComponent/FolderComponent';
+import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/components/Table2/Table2';
+import Article, { ArticleValues } from '@/types/Article';
+import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 
 interface OPEXArrangementTableContainerProps {
   autoexport?: OPEXPresetGroup;
   mkos?: OPEXPresetGroup;
 }
 
-export const OPEXArrangementTableContainer = ({
+const OPEXArrangementTableContainer = ({
   autoexport,
   mkos,
 }: OPEXArrangementTableContainerProps) => {
@@ -174,3 +169,5 @@ export const OPEXArrangementTableContainer = ({
     />
   );
 };
+
+export default OPEXArrangementTableContainer;

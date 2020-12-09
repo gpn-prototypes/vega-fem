@@ -1,10 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
 import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { OPEXAction } from './fetchOPEXSet';
+
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 
 export const OPEX_SET_SDF_INIT = 'OPEX_SET_CHANGE_INIT';
 export const OPEX_SET_SDF_SUCCESS = 'OPEX_SET_SDF_SUCCESS';
@@ -29,13 +32,14 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXSetChangeSdfInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
           query: `mutation setOpexSdf {
             setOpexSdf(
-              sdf: true
+              sdf: true,
+              version:${currentVersionFromSessionStorage()}
             ) {
               opexSdf {
                 __typename
@@ -56,6 +60,7 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
       const body = await response.json();
 
       if (response.status === 200) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
       } else {
         dispatch(OPEXSetChangeSdfError(body.message));

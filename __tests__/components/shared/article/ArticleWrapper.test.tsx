@@ -1,11 +1,8 @@
 import React from 'react';
 import { fireEvent, render, RenderResult, screen } from '@testing-library/react';
 
-import {
-  ArticleWrapper,
-  ArticleWrapperProps,
-} from '../../../../src/components/Shared/Article/ArticleWrapper';
-import Article from '../../../../types/Article';
+import { ArticleWrapper, ArticleWrapperProps } from '@/components/Shared/Article/ArticleWrapper';
+import Article from '@/types/Article';
 
 let fakeArticle: Article;
 beforeEach(() => {

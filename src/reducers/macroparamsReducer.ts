@@ -1,6 +1,3 @@
-import Article, { ArticleValues } from '../../types/Article';
-import MacroparameterSet from '../../types/Macroparameters/MacroparameterSet';
-import MacroparameterSetGroup from '../../types/Macroparameters/MacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_ADD_SUCCESS } from '../actions/Macroparameters/addMacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_CHANGE_SUCCESS } from '../actions/Macroparameters/changeMacroparameterSetGroup';
 import { MACROPARAM_SET_GROUP_DELETE_SUCCESS } from '../actions/Macroparameters/deleteMacroparameterSetGroup';
@@ -24,6 +21,11 @@ import {
 } from '../actions/Macroparameters/updateMacroparameterSet';
 import { MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS } from '../actions/Macroparameters/updateMacroparameterYearValue';
 
+import { FEM_CLEAR_STORES } from '@/actions/clear';
+import Article, { ArticleValues } from '@/types/Article';
+import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+
 const initialState = {
   macroparameterSetList: [] as MacroparameterSet[],
   selected: {} as MacroparameterSet,
@@ -39,6 +41,8 @@ let isNewYearValue: boolean;
 
 export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
   switch (action.type) {
+    case FEM_CLEAR_STORES:
+      return { ...initialState };
     case MACROPARAMS_SET_LIST_SUCCESS:
       return {
         ...state,
@@ -100,11 +104,11 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       return {
         ...state,
         selected: changedMacroparameterSet,
-        macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) =>
-          macroparameterSet.id === changedMacroparameterSet.id
+        macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) => {
+          return macroparameterSet.id === changedMacroparameterSet.id
             ? changedMacroparameterSet
-            : macroparameterSet,
-        ),
+            : macroparameterSet;
+        }),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
       /* eslint-disable-next-line */

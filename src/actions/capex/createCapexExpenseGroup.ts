@@ -1,11 +1,13 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import CapexExpenseSetGroup from '../../../types/CAPEX/CapexExpenseSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { CapexesAction } from './fetchCAPEX';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_EXPENSE_GROUP_ADD_INIT = 'CAPEX_EXPENSE_GROUP_ADD_INIT';
 export const CAPEX_EXPENSE_GROUP_ADD_SUCCESS = 'CAPEX_EXPENSE_GROUP_ADD_SUCCESS';
@@ -33,13 +35,14 @@ export const createCapexExpenseGroup = (
     dispatch(capexExpenseSetGroupAddInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
           query: `mutation createCapexExpenseGroup{
               createCapexExpenseGroup(
                 caption:"${newCapexSetGroup.caption}"
+              version:${currentVersionFromSessionStorage()}
               ){
                 capexExpenseGroup{
                   __typename
@@ -64,6 +67,7 @@ export const createCapexExpenseGroup = (
       const createdCapexGroup = body?.data?.createCapexExpenseGroup;
 
       if (response.status === 200 && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = createdCapexGroup?.capexExpenseGroup;
         if (newGroup)
           dispatch(

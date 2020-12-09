@@ -1,9 +1,11 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Article from '../../../../../types/Article';
-import headers from '../../../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../../../helpers/projectIdToLocalstorage';
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Article from '@/types/Article';
 
 export const OPEX_MKOS_DELETE_EXPENSE_INIT = 'OPEX_MKOS_DELETE_EXPENSE_INIT';
 export const OPEX_MKOS_DELETE_EXPENSE_SUCCESS = 'OPEX_MKOS_DELETE_EXPENSE_SUCCESS';
@@ -35,15 +37,14 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
     dispatch(OPEXMKOSDeleteExpenseInit());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            // `mutation {deleteOpexMkosExpense(expenseId: ${article.id?.toString()},){ok}}`,
-            `mutation deleteOpexMkosExpense{
+          query: `mutation deleteOpexMkosExpense{
               deleteOpexMkosExpense(
                 expenseId: 2,
+                version:${currentVersionFromSessionStorage()}
               ){
                 result{
                   __typename
@@ -67,6 +68,7 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
         response.status === 200 &&
         body.data.deleteOpexMkosExpense.opexExpense?.__typename !== 'Error'
       ) {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSDeleteExpenseSuccess(article));
       } else {
         dispatch(OPEXMKOSDeleteExpenseError(body.message));

@@ -1,12 +1,14 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import Macroparameter, { ArticleValues } from '../../../types/Article';
-import MacroparameterSetGroup from '../../../types/Macroparameters/MacroparameterSetGroup';
-import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
-
 import { MacroparamsAction } from './macroparameterSetList';
+
+import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
+import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import headers from '@/helpers/headers';
+import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import Macroparameter, { ArticleValues } from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_UPDATE_YEAR_VALUE_INIT = 'MACROPARAM_UPDATE_YEAR_VALUE_INIT';
 export const MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS = 'MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS';
@@ -41,7 +43,7 @@ export const requestUpdateMacroparameterYearValue = (
     dispatch(macroparameterUpdateYearValueInitialized());
 
     try {
-      const response = await fetch(`graphql/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
@@ -52,6 +54,7 @@ export const requestUpdateMacroparameterYearValue = (
                 macroparameterId: ${macroparameter.id}
                 year: ${value.year}
                 value: ${value.value}
+                version:${currentVersionFromSessionStorage()}
               ){
                  macroparameter{
                     __typename
@@ -71,6 +74,7 @@ export const requestUpdateMacroparameterYearValue = (
       const responseData = body?.data?.setMacroparameterYearValue;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
       } else {
         dispatch(macroparameterUpdateYearValueError(body.message));

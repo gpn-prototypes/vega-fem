@@ -1,22 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Article, { ArticleValues } from '../../../types/Article';
-import { OPEXGroup, OPEXPresetGroup } from '../../../types/OPEX/OPEXGroup';
-import { opexChangeCaseExpenseYearValue } from '../../actions/OPEX/case/changeOPEXCaseExpenseYearValue';
-import { FolderComponent } from '../../components/Table2/FolderComponent/FolderComponent';
-import {
-  Table2,
-  TableArticle,
-  TableArticleValue,
-  TableGroup,
-} from '../../components/Table2/Table2';
+import { opexChangeCaseExpenseYearValue } from '@/actions/OPEX/case/changeOPEXCaseExpenseYearValue';
+import { FolderComponent } from '@/components/Table2/FolderComponent/FolderComponent';
+import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/components/Table2/Table2';
+import Article, { ArticleValues } from '@/types/Article';
+import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 
 interface OPEXEconomyTableContainerProps {
   opexCaseList?: OPEXGroup[];
 }
 
-export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
+const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableContainerProps) => {
   const dispatch = useDispatch();
 
   const focusedArticleSelector = (state: any) => state.highlightReducer.focusedArticle;
@@ -149,3 +144,4 @@ export const OPEXEconomyTableContainer = ({ opexCaseList }: OPEXEconomyTableCont
     />
   );
 };
+export default OPEXEconomyTableContainer;

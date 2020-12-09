@@ -1,8 +1,8 @@
 import * as React from 'react';
 import renderer, { ReactTestRendererJSON } from 'react-test-renderer';
 
-import { ArticleOptionsDropdown } from '../../../../../src/components/Shared/Article/ArticleOptionsDropdown/ArticleOptionsDropdown';
-import Article from '../../../../../types/Article';
+import { ArticleOptionsDropdown } from '@/components/Shared/Article/ArticleOptionsDropdown/ArticleOptionsDropdown';
+import Article from '@/types/Article';
 
 let fakeArticle: Article;
 beforeAll(() => {

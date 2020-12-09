@@ -1,0 +1,1178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OpexSetWrapper Эконопмика snapshot test 1`] = `
+<div
+  className="BlockWrapper"
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <span
+        className="Text Text_size_xs Text_view_primary"
+      >
+        OPEX
+      </span>
+      <span
+        className="Icon Icon_size_xs IconSelect"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            d="M6 8.5L10 4H2l4 4.5z"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <form
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+      onSubmit={[Function]}
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className={
+              Object {
+                "has": [Function],
+                "is": [Function],
+                "mix": [Function],
+                "split": [Function],
+                "state": [Function],
+                "toString": [Function],
+              }
+            }
+          >
+            <label
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              htmlFor="OPEXSetSDF"
+            >
+              <label
+                className="Checkbox Checkbox_size_m Checkbox_view_primary Checkbox_align_center"
+              >
+                <input
+                  checked={true}
+                  className="Checkbox-Input MixFocus"
+                  name="macroparameterSetIsTemplate"
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <span
+                  className="Checkbox-Label"
+                >
+                  Учитывать в СДФ для калькуляции OPEX водозаб. скважины
+                </span>
+              </label>
+            </label>
+          </div>
+        </div>
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Нефтяной
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className="GroupPlaceholder"
+              >
+                <span
+                  className="Text Text_size_s Text_view_secondary"
+                >
+                  Пустой кейс
+                </span>
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default MixFocus"
+                  onClick={[Function]}
+                >
+                  Добавить статью
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Газовый
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className="GroupPlaceholder"
+              >
+                <span
+                  className="Text Text_size_s Text_view_secondary"
+                >
+                  Пустой кейс
+                </span>
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default MixFocus"
+                  onClick={[Function]}
+                >
+                  Добавить статью
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <button
+          className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
+          onClick={[Function]}
+        >
+          <span
+            className="Icon Icon_size_xs IconAdd Button-Icon Button-Icon_position_left"
+          >
+            <svg
+              className="Icon-Svg"
+              viewBox="0 0 12 12"
+            >
+              <path
+                d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
+              />
+            </svg>
+          </span>
+          <span
+            className="Button-Label"
+          >
+            Добавить кейс
+          </span>
+        </button>
+      </div>
+    </form>
+    <opex-economy-table
+      opexCaseList={
+        Array [
+          Object {
+            "caption": "Нефтяной",
+            "id": "1",
+            "name": "oil",
+            "opexExpenseList": Array [],
+            "yearEnd": 2030,
+            "yearStart": 2015,
+          },
+          Object {
+            "caption": "Газовый",
+            "id": "2",
+            "name": "gas",
+            "opexExpenseList": Array [],
+            "yearEnd": 2030,
+            "yearStart": 2015,
+          },
+        ]
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`OpexSetWrapper обустройство snapshot test 1`] = `
+<div
+  className="BlockWrapper"
+>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <div
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+    >
+      <span
+        className="Text Text_size_xs Text_view_primary"
+      >
+        OPEX
+      </span>
+      <span
+        className="Icon Icon_size_xs IconSelect"
+      >
+        <svg
+          className="Icon-Svg"
+          viewBox="0 0 12 12"
+        >
+          <path
+            d="M6 8.5L10 4H2l4 4.5z"
+          />
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div
+    className={
+      Object {
+        "has": [Function],
+        "is": [Function],
+        "mix": [Function],
+        "split": [Function],
+        "state": [Function],
+        "toString": [Function],
+      }
+    }
+  >
+    <form
+      className={
+        Object {
+          "has": [Function],
+          "is": [Function],
+          "mix": [Function],
+          "split": [Function],
+          "state": [Function],
+          "toString": [Function],
+        }
+      }
+      onSubmit={[Function]}
+    >
+      <div
+        className={
+          Object {
+            "has": [Function],
+            "is": [Function],
+            "mix": [Function],
+            "split": [Function],
+            "state": [Function],
+            "toString": [Function],
+          }
+        }
+      >
+        <div
+          className={
+            Object {
+              "has": [Function],
+              "is": [Function],
+              "mix": [Function],
+              "split": [Function],
+              "state": [Function],
+              "toString": [Function],
+            }
+          }
+        >
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Автовывоз
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <label
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  Год окончания
+                </label>
+                <div
+                  className="Select Select_size_m Select_form_default Select_view_default"
+                >
+                  <div
+                    aria-expanded={false}
+                    aria-haspopup="listbox"
+                    className="Select-Control"
+                    id="OPEXYearEnd"
+                  >
+                    <div
+                      className="Select-ControlInner"
+                    >
+                      <div
+                        className="Select-ControlValueContainer"
+                      >
+                        <input
+                          className="Select-FakeField"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          readOnly={true}
+                          type="button"
+                        />
+                        <span
+                          className="Select-ControlValue"
+                        />
+                      </div>
+                    </div>
+                    <span
+                      className="Select-Indicators"
+                    >
+                      <button
+                        className="Select-IndicatorsDropdown"
+                        onClick={[Function]}
+                        tabIndex={-1}
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M6 8.5L10 4H2l4 4.5z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Дополнительные затраты на автовывоз
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_additionalCosts_1"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="тыс. ₽"
+                        >
+                          тыс. ₽
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="GroupWrapper"
+          >
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+                onClick={[Function]}
+                role="presentation"
+              >
+                <span
+                  className="Icon Icon_size_xs IconArrowDown"
+                >
+                  <svg
+                    className="Icon-Svg"
+                    viewBox="0 0 12 12"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M6.005 8.341L2.03 4.366l.707-.707 3.268 3.268 3.268-3.268.707.707-3.975 3.975z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span
+                  className="Text Text_size_s Text_view_primary"
+                >
+                  Аренда МКОС
+                </span>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <button
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  onClick={[Function]}
+                  title="Опции"
+                  type="button"
+                >
+                  <span
+                    className="Icon Icon_size_xs IconKebab Button-Icon"
+                  >
+                    <svg
+                      className="Icon-Svg"
+                      viewBox="0 0 12 12"
+                    >
+                      <path
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                      />
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div
+              className={
+                Object {
+                  "has": [Function],
+                  "is": [Function],
+                  "mix": [Function],
+                  "split": [Function],
+                  "state": [Function],
+                  "toString": [Function],
+                }
+              }
+              data-testid="groupWrapper-body"
+            >
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <label
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  Год окончания
+                </label>
+                <div
+                  className="Select Select_size_m Select_form_default Select_view_default"
+                >
+                  <div
+                    aria-expanded={false}
+                    aria-haspopup="listbox"
+                    className="Select-Control"
+                    id="OPEXYearEnd"
+                  >
+                    <div
+                      className="Select-ControlInner"
+                    >
+                      <div
+                        className="Select-ControlValueContainer"
+                      >
+                        <input
+                          className="Select-FakeField"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onClick={[Function]}
+                          onFocus={[Function]}
+                          onKeyDown={[Function]}
+                          readOnly={true}
+                          type="button"
+                        />
+                        <span
+                          className="Select-ControlValue"
+                        />
+                      </div>
+                    </div>
+                    <span
+                      className="Select-Indicators"
+                    >
+                      <button
+                        className="Select-IndicatorsDropdown"
+                        onClick={[Function]}
+                        tabIndex={-1}
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconSelect Select-DropdownIndicatorIcon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M6 8.5L10 4H2l4 4.5z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className={
+                  Object {
+                    "has": [Function],
+                    "is": [Function],
+                    "mix": [Function],
+                    "split": [Function],
+                    "state": [Function],
+                    "toString": [Function],
+                  }
+                }
+              >
+                <div
+                  className={
+                    Object {
+                      "has": [Function],
+                      "is": [Function],
+                      "mix": [Function],
+                      "split": [Function],
+                      "state": [Function],
+                      "toString": [Function],
+                    }
+                  }
+                >
+                  <label
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                    data-testid="label"
+                  >
+                    Количество дней использования МКОС за год
+                  </label>
+                  <div
+                    className={
+                      Object {
+                        "has": [Function],
+                        "is": [Function],
+                        "mix": [Function],
+                        "split": [Function],
+                        "state": [Function],
+                        "toString": [Function],
+                      }
+                    }
+                  >
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <div
+                        className="TextField TextField_size_s TextField_view_default TextField_form_default TextField_width_full TextField_type_text"
+                        data-testid="input"
+                        onKeyDown={[Function]}
+                      >
+                        <input
+                          autoFocus={false}
+                          className="TextField-Input"
+                          id="article_numberOfDays_1"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          onFocus={[Function]}
+                          placeholder="Значение"
+                          type="text"
+                          value=""
+                        />
+                        <div
+                          className="TextField-Side TextField-Side_position_right TextField-Side_type_string"
+                          title="дней"
+                        >
+                          дней
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className={
+                        Object {
+                          "has": [Function],
+                          "is": [Function],
+                          "mix": [Function],
+                          "split": [Function],
+                          "state": [Function],
+                          "toString": [Function],
+                        }
+                      }
+                    >
+                      <button
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        onClick={[Function]}
+                        title="Опции"
+                        type="button"
+                      >
+                        <span
+                          className="Icon Icon_size_xs IconKebab Button-Icon"
+                        >
+                          <svg
+                            className="Icon-Svg"
+                            viewBox="0 0 12 12"
+                          >
+                            <path
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
+                            />
+                          </svg>
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <opex-arrangement-table
+      autoexport={
+        Object {
+          "opexExpenseList": Array [
+            Object {
+              "caption": "Дополнительные затраты на автовывоз",
+              "id": "1",
+              "name": "additionalCosts",
+              "unit": "тыс. ₽",
+              "valueTotal": 400,
+            },
+          ],
+          "yearEnd": 2018,
+          "yearStart": 2015,
+        }
+      }
+      mkos={
+        Object {
+          "opexExpenseList": Array [
+            Object {
+              "caption": "Количество дней использования МКОС за год",
+              "id": "1",
+              "name": "numberOfDays",
+              "unit": "дней",
+              "valueTotal": 5840,
+            },
+          ],
+          "yearEnd": 2030,
+          "yearStart": 2015,
+        }
+      }
+    />
+  </div>
+</div>
+`;

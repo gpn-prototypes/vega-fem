@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { Checkbox } from '@gpn-design/uikit/Checkbox';
-import { IconAdd } from '@gpn-design/uikit/IconAdd';
-import { IconSelect } from '@gpn-design/uikit/IconSelect';
-import { Button, Form, Text, TextField } from '@gpn-prototypes/vega-ui';
+import {
+  Button,
+  Checkbox,
+  Form,
+  IconAdd,
+  IconSelect,
+  Text,
+  TextField,
+} from '@gpn-prototypes/vega-ui';
 
-import Article from '../../../../types/Article';
-import MacroparameterSetGroup from '../../../../types/Macroparameters/MacroparameterSetGroup';
-import { OPEXGroup } from '../../../../types/OPEX/OPEXGroup';
-import OPEXSetType from '../../../../types/OPEX/OPEXSetType';
-import Role from '../../../../types/role';
-import { OPEXArrangementTableContainer } from '../../../containers/OPEX/OPEXArrangementTableContainer';
-import { OPEXEconomyTableContainer } from '../../../containers/OPEX/OPEXEconomyTableContainer';
-import keyGen from '../../../helpers/keyGenerator';
-import { cnBlockWrapper } from '../../../styles/BlockWrapper/cn-block-wrapper';
-import { cnVegaFormCustom } from '../../../styles/VegaFormCustom/cn-vega-form-custom';
+import OPEXArrangementTableContainer from '../../../containers/OPEX/OPEXArrangementTableContainer';
+import OPEXEconomyTableContainer from '../../../containers/OPEX/OPEXEconomyTableContainer';
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 
 import { GroupWrapper } from './GroupWrapper';
 
-import '../../../styles/BlockWrapper/BlockWrapper.css';
+import '@/styles/BlockWrapper/BlockWrapper.css';
 
-interface OPEXWrapperProps {
+import keyGen from '@/helpers/keyGenerator';
+import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
+import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
+import Article from '@/types/Article';
+import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
+import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
+import OPEXSetType from '@/types/OPEX/OPEXSetType';
+import Role from '@/types/role';
+
+export interface OPEXWrapperProps {
   OPEXSetInstance: OPEXSetType;
   OPEXChangeAutoexport: (OPEXAutoexport: OPEXGroup) => void;
   OPEXDeleteAutoexport: (OPEXAutoexport: OPEXGroup) => void;
@@ -244,6 +250,7 @@ export const OPEXSetWrapper = ({
                         width="full"
                         id="OPEXNewGroupName"
                         type="text"
+                        placeholder="Введите название кейса"
                         maxLength={256}
                         value={newCaseName}
                         onChange={(event: any) => setNewCaseName(event.e.target.value)}

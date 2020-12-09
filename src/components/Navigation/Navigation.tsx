@@ -1,51 +1,50 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ChoiceGroup } from '@gpn-prototypes/vega-ui';
+
+import { ProjectContext } from '@/providers';
 
 export interface NavItem {
   title: string;
   path: string;
 }
 
-export const Navigation = (): React.ReactElement => {
+export const Navigation: React.FC = () => {
   const history = useHistory();
+  const { projectId } = useContext(ProjectContext);
+
+  const prefix = `/projects/show/${projectId}/fem`;
+
   const tabs: Array<NavItem> = [
     {
       title: 'Макропараметры',
-      path: '/',
+      path: `${prefix}`,
     },
     {
       title: 'Налоговое окружение',
-      path: '/tax-environment',
+      path: `${prefix}/tax-environment`,
     },
     {
       title: 'Цены',
-      path: '/prices',
+      path: `${prefix}/prices`,
     },
     {
       title: 'OPEX',
-      path: '/OPEX',
+      path: `${prefix}/OPEX`,
     },
     {
       title: 'CAPEX',
-      path: '/CAPEX',
+      path: `${prefix}/CAPEX`,
     },
     {
       title: 'Профиль добычи',
-      path: '/mining-profile',
+      path: `${prefix}/mining-profile`,
     },
   ];
   const currentTab = tabs.find((element) => {
     return element.path === history.location.pathname;
   }) as NavItem;
   const [valueTab, setValueTab] = useState<NavItem | null>(currentTab);
-  // перемещение по исптории вперед/назад
-  history.listen((location) => {
-    const switchTab = tabs.find((element) => {
-      return element.path === location.pathname;
-    });
-    setValueTab(switchTab ? (switchTab as NavItem) : null);
-  });
 
   return (
     <ChoiceGroup
