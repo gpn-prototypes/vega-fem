@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationList } from '@gpn-prototypes/vega-navigation-list';
+import { NavigationList } from '@gpn-prototypes/vega-ui';
 
 import keyGen from '@/helpers/keyGenerator';
 import Role from '@/types/role';

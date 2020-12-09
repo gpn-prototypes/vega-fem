@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { Button, Form, Text, TextField, usePortal } from '@gpn-prototypes/vega-ui';
+import { Button, Form, Modal, Text, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
 import { cnEditGroupModal } from './cn-edit-group-modal';
 

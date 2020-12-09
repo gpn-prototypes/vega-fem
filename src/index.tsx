@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 import { App } from './app';
 
-import '@gpn-prototypes/vega-modal/dist/src/Modal.css';
-
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // <Root className="App" initialPortals={[{ name: 'modalRoot' }]} defaultTheme="dark">

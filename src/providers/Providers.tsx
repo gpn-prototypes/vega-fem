@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 
 import { ProjectProvider } from './ProjectProvider';
@@ -20,10 +20,7 @@ export const Providers: React.FC<ProvidersProps> = (props) => {
     <Provider store={store}>
       {/* <ApolloProvider client={graphqlClient}> */}
       <BrowserRouter>
-        <Route
-          path="/projects/show/:projectId/fem"
-          render={() => <ProjectProvider>{children}</ProjectProvider>}
-        />
+        <ProjectProvider>{children}</ProjectProvider>
       </BrowserRouter>
       {/* </ApolloProvider> */}
     </Provider>

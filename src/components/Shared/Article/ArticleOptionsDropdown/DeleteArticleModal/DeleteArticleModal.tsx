@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { Button, Form, Text, usePortal } from '@gpn-prototypes/vega-ui';
+import { Button, Form, Modal, Text, usePortal } from '@gpn-prototypes/vega-ui';
 
 import { cnDeleteArticleModal } from './cn-delete-article-modal';
 

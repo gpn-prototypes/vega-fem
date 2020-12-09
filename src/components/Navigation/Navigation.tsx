@@ -45,13 +45,6 @@ export const Navigation: React.FC = () => {
     return element.path === history.location.pathname;
   }) as NavItem;
   const [valueTab, setValueTab] = useState<NavItem | null>(currentTab);
-  // перемещение по исптории вперед/назад
-  history.listen((location) => {
-    const switchTab = tabs.find((element) => {
-      return element.path === location.pathname;
-    });
-    setValueTab(switchTab ? (switchTab as NavItem) : null);
-  });
 
   return (
     <ChoiceGroup
