@@ -29,7 +29,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
       }
     >
       <span
-        className="Text text text_size_xs text_view_primary"
+        className="Text Text_size_xs Text_view_primary"
       >
         Макропараметры
       </span>
@@ -462,7 +462,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   </svg>
                 </span>
                 <span
-                  className="Text text text_size_s text_view_primary"
+                  className="Text Text_size_s Text_view_primary"
                 >
                   Курсы основных валют
                 </span>
@@ -480,7 +480,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                 }
               >
                 <button
-                  className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                   onClick={[Function]}
                   title="Опции"
                   type="button"
@@ -490,10 +490,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   >
                     <svg
                       className="Icon-Svg"
-                      viewBox="0 0 16 16"
+                      viewBox="0 0 12 12"
                     >
                       <path
-                        d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                       />
                     </svg>
                   </span>
@@ -613,7 +613,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -623,10 +623,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -735,7 +735,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -745,10 +745,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -803,7 +803,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   </svg>
                 </span>
                 <span
-                  className="Text text text_size_s text_view_primary"
+                  className="Text Text_size_s Text_view_primary"
                 >
                   Цена на нефть - РЕАЛЬНЫЕ ЦЕНЫ
                 </span>
@@ -821,7 +821,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                 }
               >
                 <button
-                  className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                  className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                   onClick={[Function]}
                   title="Опции"
                   type="button"
@@ -831,10 +831,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                   >
                     <svg
                       className="Icon-Svg"
-                      viewBox="0 0 16 16"
+                      viewBox="0 0 12 12"
                     >
                       <path
-                        d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                        d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                       />
                     </svg>
                   </span>
@@ -954,7 +954,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -964,10 +964,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -1076,7 +1076,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                       }
                     >
                       <button
-                        className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon Button_onlyIcon MixFocus"
+                        className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon Button_onlyIcon MixFocus"
                         onClick={[Function]}
                         title="Опции"
                         type="button"
@@ -1086,10 +1086,10 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
                         >
                           <svg
                             className="Icon-Svg"
-                            viewBox="0 0 16 16"
+                            viewBox="0 0 12 12"
                           >
                             <path
-                              d="M8 4.5c.83 0 1.5-.67 1.5-1.5S8.83 1.5 8 1.5 6.5 2.17 6.5 3 7.17 4.5 8 4.5zm0 2c-.83 0-1.5.67-1.5 1.5S7.17 9.5 8 9.5 9.5 8.83 9.5 8 8.83 6.5 8 6.5zm0 5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"
+                              d="M7 2a1 1 0 11-2 0 1 1 0 012 0zm0 4a1 1 0 11-2 0 1 1 0 012 0zm-1 5a1 1 0 100-2 1 1 0 000 2z"
                             />
                           </svg>
                         </span>
@@ -1115,7 +1115,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
         }
       >
         <button
-          className="Button Button_size_s Button_view_ghost Button_form_default Button_withIcon MixFocus"
+          className="Button Button_size_s Button_view_ghost Button_width_default Button_form_default Button_withIcon MixFocus"
           onClick={[Function]}
           type="button"
         >
@@ -1127,7 +1127,7 @@ exports[`MacroparameterSetWrapper snapshot test 1`] = `
               viewBox="0 0 12 12"
             >
               <path
-                d="M6 3H5v3H2v1h3v3h1V7h3V6H6V3z"
+                d="M6.5 2.5h-1v3h-3v1h3v3h1v-3h3v-1h-3v-3z"
               />
             </svg>
           </span>
