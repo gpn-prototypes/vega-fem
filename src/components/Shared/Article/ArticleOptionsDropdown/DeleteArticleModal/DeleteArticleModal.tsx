@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { usePortal } from '@gpn-prototypes/vega-root';
-import { Button, Form, PossibleCloseEvent as CloseEvent, Text } from '@gpn-prototypes/vega-ui';
+import {
+  Button,
+  Form,
+  Modal,
+  PossibleCloseEvent as CloseEvent,
+  Text,
+  usePortal,
+} from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../../types/Article';
 
@@ -10,7 +15,7 @@ import { cnDeleteArticleModal } from './cn-delete-article-modal';
 import './DeleteArticleModal.css';
 
 export interface DeleteArticleModalProps {
-  close: (e: CloseEvent | React.SyntheticEvent) => void;
+  close: (e: CloseEvent | Event | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
   article: Article;

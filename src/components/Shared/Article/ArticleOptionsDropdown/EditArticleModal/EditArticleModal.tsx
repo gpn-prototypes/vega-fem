@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { usePortal } from '@gpn-prototypes/vega-root';
 import {
   Button,
   Form,
+  Modal,
   PossibleCloseEvent as CloseEvent,
   Text,
   TextField,
+  usePortal,
 } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../../../types/Article';
@@ -17,7 +17,7 @@ import { cnEditArticleModal } from './cn-edit-article-modal';
 import './EditArticleModal.css';
 
 export interface EditArticleModalProps {
-  close: (e: CloseEvent | React.SyntheticEvent) => void;
+  close: (e: CloseEvent | Event | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (article: Article) => void;
   article: Article;

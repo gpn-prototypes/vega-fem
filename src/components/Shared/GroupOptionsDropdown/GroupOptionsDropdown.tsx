@@ -1,6 +1,5 @@
 import React from 'react';
-import { Dropdown } from '@gpn-prototypes/vega-dropdown';
-import { Button, IconKebab } from '@gpn-prototypes/vega-ui';
+import { Button, Dropdown, IconKebab } from '@gpn-prototypes/vega-ui';
 
 import Article from '../../../../types/Article';
 

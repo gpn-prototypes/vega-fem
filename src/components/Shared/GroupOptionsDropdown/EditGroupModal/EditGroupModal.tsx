@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Modal } from '@gpn-prototypes/vega-modal';
-import { usePortal } from '@gpn-prototypes/vega-root';
 import {
   Button,
   Form,
+  Modal,
   PossibleCloseEvent as CloseEvent,
   Text,
   TextField,
+  usePortal,
 } from '@gpn-prototypes/vega-ui';
 
 import { cnEditGroupModal } from './cn-edit-group-modal';
@@ -14,7 +14,7 @@ import { cnEditGroupModal } from './cn-edit-group-modal';
 import './EditGroupModal.css';
 
 export interface EditGroupModalProps<GroupType> {
-  close: (e: CloseEvent | React.SyntheticEvent) => void;
+  close: (e: CloseEvent | Event | React.SyntheticEvent) => void;
   isOpen: boolean;
   callback?: (group: GroupType) => void;
   group: GroupType;
