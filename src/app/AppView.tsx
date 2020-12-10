@@ -6,6 +6,7 @@ import './App.css';
 import '../styles/colors.css';
 
 import { fetchVersion } from '@/actions/fetchVersion';
+import { InProgress } from '@/components/InProgress';
 import { Main } from '@/components/Main/Main';
 import { Navigation } from '@/components/Navigation/Navigation';
 import { VersionState } from '@/reducers/versionReducer';
@@ -20,12 +21,18 @@ export const AppView = (): React.ReactElement => {
     dispatch(fetchVersion());
   }, [dispatch]);
 
-  return isLoading ? (
-    <Loader size="m" />
-  ) : (
+  return (
     <>
-      <Navigation />
-      <Main />
+      {isLoading ? (
+        <Loader size="m" />
+      ) : (
+        <>
+          <Navigation />
+          <Main />
+        </>
+      )}
+      ;
+      <InProgress />
     </>
   );
 };

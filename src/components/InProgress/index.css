@@ -1,0 +1,17 @@
+.LC_InProgress {
+  position: absolute;
+  z-index: 2;
+  right: var(--space-xs);
+  bottom: var(--space-s);
+
+  width: 400px;
+
+  &__SnackBar {
+    padding-right: var(--space-xs);
+    padding-left: var(--space-xs);
+
+    overflow: auto;
+
+    width: 400px;
+  }
+}
