@@ -1,0 +1,16 @@
+version: 1-alpha.1
+
+releases:
+  vega-fem-testing:
+    name: VEGA FEM
+    autodeploy-on: default
+    chart: csssr/static-site@~1.0.0
+    static-params:
+      projectID: vega-fem
+      ingress:
+        annotations:
+          nginx.ingress.kubernetes.io/enable-cors: 'true'
+    builds:
+      - workflow: build-static.yaml
+        values:
+          buildID: build-{{ .Build.RunID }}
