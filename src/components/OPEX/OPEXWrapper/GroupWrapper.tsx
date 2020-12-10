@@ -164,10 +164,10 @@ export const GroupWrapper = ({
             <BasicSelect
               options={yearsOptions}
               id="OPEXYearEnd"
-              value={yearEnd.toString()}
+              value={yearsOptions.find((i) => i.value === yearEnd?.toString())}
               getOptionLabel={(item: SelectOptions) => item.label}
-              onChange={(selectValue: any) => {
-                setYearEnd(selectValue);
+              onChange={(selectValue: SelectOptions | null) => {
+                setYearEnd(selectValue?.value);
                 setYearEndHelper(true);
               }}
             />

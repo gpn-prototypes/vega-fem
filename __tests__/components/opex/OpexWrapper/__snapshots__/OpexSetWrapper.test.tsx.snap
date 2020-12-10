@@ -684,7 +684,10 @@ exports[`OpexSetWrapper обустройство snapshot test 1`] = `
                         />
                         <span
                           className="Select-ControlValue"
-                        />
+                          title="2018"
+                        >
+                          2018
+                        </span>
                       </div>
                     </div>
                     <span
@@ -985,7 +988,10 @@ exports[`OpexSetWrapper обустройство snapshot test 1`] = `
                         />
                         <span
                           className="Select-ControlValue"
-                        />
+                          title="2030"
+                        >
+                          2030
+                        </span>
                       </div>
                     </div>
                     <span
