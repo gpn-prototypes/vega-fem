@@ -36,9 +36,9 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation setOpexSdf {
+          query: `mutation setOpexSdf($sdf: Boolean) {
             setOpexSdf(
-              sdf: true,
+              sdf: $sdf,
               version:${currentVersionFromSessionStorage()}
             ) {
               opexSdf {
@@ -55,6 +55,9 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
               }
             }
           }`,
+          variables: {
+            sdf: sdfFlag,
+          },
         }),
       });
       const body = await response.json();
