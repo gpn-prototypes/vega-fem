@@ -1,3 +1,3 @@
 import bemCn from 'bem-cn';
 
-export const cnInProgress = bemCn('LC_InProgress');
+export const cnInProgress = bemCn('FEM_InProgress');

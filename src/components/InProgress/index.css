@@ -1,8 +1,8 @@
-.LC_InProgress {
+.FEM_InProgress {
   position: absolute;
   z-index: 2;
-  right: var(--space-xs);
-  bottom: var(--space-s);
+  left: var(--space-s);
+  bottom: var(--space-xs);
 
   width: 400px;
 
