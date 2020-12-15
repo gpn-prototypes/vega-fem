@@ -13,7 +13,7 @@ import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGro
 import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
-interface FEMTableProps {
+export interface FEMTableProps {
   entity: any;
   headers: string[];
   secondaryColumn: string;

@@ -14,19 +14,19 @@ import { cnFolderComponentWrapper } from './cn-folder-component-wrapper';
 
 import './FolderComponent.css';
 
-interface FolderComponentProps {
+export interface FolderComponentProps {
   headerText?: any;
   groups?: TableGroup[];
   containerHeight: number;
   focusedArticle?: { article: TableArticle; group: TableGroup };
 }
 
-export const FolderComponent = ({
+export const FolderComponent: React.FC<FolderComponentProps> = ({
   headerText,
   groups,
   containerHeight,
   focusedArticle,
-}: FolderComponentProps) => {
+}) => {
   const isSelectedArticle = useCallback(
     (article: TableArticle): boolean => article.id === focusedArticle?.article?.id,
     [focusedArticle],

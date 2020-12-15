@@ -16,7 +16,7 @@ import Article from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
-interface CapexSetWrapperGroupProps {
+export interface CapexSetWrapperGroupProps {
   group: CapexExpenseSetGroup;
   requestAddCapex: (capex: Article, group: CapexExpenseSetGroup) => void;
   updateCapexValue: (capex: Article, group: CapexExpenseSetGroup) => void;

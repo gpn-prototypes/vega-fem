@@ -5,7 +5,7 @@ import { cnTableCell } from './cn-table-cell';
 
 import './TableCell.css';
 
-interface TableCellProps {
+export interface TableCellProps {
   value: string;
   onBlur?: any;
   editable: boolean;

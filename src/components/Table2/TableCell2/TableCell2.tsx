@@ -8,7 +8,7 @@ import { validateValue } from './validateValue';
 
 import './TableCell2.css';
 
-interface TableCellProps {
+export interface TableCellProps {
   children?: any;
   className?: string;
   letter?: string;
