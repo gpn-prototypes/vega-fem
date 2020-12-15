@@ -8,7 +8,7 @@ import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/component
 import Article, { ArticleValues } from '@/types/Article';
 import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 
-interface OPEXArrangementTableContainerProps {
+export interface OPEXArrangementTableContainerProps {
   autoexport?: OPEXPresetGroup;
   mkos?: OPEXPresetGroup;
 }

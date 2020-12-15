@@ -33,6 +33,5 @@ export const OPEXRoleListWrapper = ({
         </NavigationList.Item>
       );
     })}
-    )
   </NavigationList>
 );

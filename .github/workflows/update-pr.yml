@@ -17,8 +17,8 @@ jobs:
           uppercase-title: true
           body-template: |
             ## Задача
-            Задача в Jira: https://jira.csssr.io/browse/%branch%
-            Ссылка на стенд: https://%branch%.vega-2.csssr.cloud
+            Задача в Jira: https://jira.konakov.tv/browse/%branch%
+            Ссылка на стенд: https://%branch%.vega-fem.csssr.cloud
 
           replace-body: false
           body-prefix-newline-count: 1

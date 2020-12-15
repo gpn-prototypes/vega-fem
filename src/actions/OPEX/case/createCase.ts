@@ -52,6 +52,7 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
                 opexCase{
                 __typename
                   ... on OpexExpenseGroup{
+                    id
                     yearStart
                     yearEnd
                     name

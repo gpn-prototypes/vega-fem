@@ -4,7 +4,7 @@ import { cnTableHeaderRow } from './cn-table-header-row';
 
 import './TableHeaderRow.css';
 
-interface TableHeaderRowProps {
+export interface TableHeaderRowProps {
   children?: any;
   className?: string;
 }

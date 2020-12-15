@@ -57,7 +57,7 @@ export const resizeDirectionOnlyRight = {
   topLeft: false,
 };
 
-interface Table2Props {
+export interface Table2Props {
   leftSideComponent: React.ReactElement;
   valuesColumns?: string[];
   groups?: TableGroup[];

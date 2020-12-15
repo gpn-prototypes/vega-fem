@@ -7,7 +7,7 @@ import { Table2, TableArticle, TableArticleValue, TableGroup } from '@/component
 import Article, { ArticleValues } from '@/types/Article';
 import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 
-interface OPEXEconomyTableContainerProps {
+export interface OPEXEconomyTableContainerProps {
   opexCaseList?: OPEXGroup[];
 }
 
