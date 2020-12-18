@@ -41,21 +41,29 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteOpexCase{
-            deleteOpexCase(
-            caseId:"${opexCase.id}",
-            version:${currentVersionFromSessionStorage()}
-            ){
-              result{
-                __typename
-                ... on Result{
-                  vid
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
+          query: `mutation deleteOpexCase {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteOpexCase(
+                  caseId:"${opexCase.id}"
+                ) {
+                  result {
+                    __typename
+                    ... on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
                 }
               }
             }
@@ -64,7 +72,10 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       });
       const body = await response.json();
 
-      if (response.status === 200 && body.data.deleteOpexCase.result?.__typename !== 'Error') {
+      if (
+        response.status === 200 &&
+        body.data?.project?.deleteOpexCase?.result?.__typename !== 'Error'
+      ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {

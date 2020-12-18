@@ -45,46 +45,57 @@ export function addCaseExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createOpexCaseExpense{
-              createOpexCaseExpense(
-                caseId:${caseGroup.id},
-                caption:"${article.caption?.toString()}",
-                unit:"${article.unit?.toString()}",
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on OpexExpense{
-                    id
-                    name
-                    caption
-                    unit
-                    valueTotal
-                    value{
-                      year
-                      value
+          query: `mutation createOpexCaseExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createOpexCaseExpense(
+                  caseId:${caseGroup.id},
+                  caption:"${article.caption?.toString()}",
+                  unit:"${article.unit?.toString()}"
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on OpexExpense {
+                      id
+                      name
+                      caption
+                      unit
+                      valueTotal
+                      value {
+                        year
+                        value
+                      }
                     }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.createOpexCaseExpense.opexExpense?.__typename !== 'Error'
+        body.data?.project?.createOpexCaseExpense?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
-          OPEXAddCaseExpenseSuccess(caseGroup, body.data?.createOpexCaseExpense?.opexExpense),
+          OPEXAddCaseExpenseSuccess(
+            caseGroup,
+            body.data?.project?.createOpexCaseExpense?.opexExpense,
+          ),
         );
       } else {
         dispatch(OPEXAddCaseExpenseError(body.message));

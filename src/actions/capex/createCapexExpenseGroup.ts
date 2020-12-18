@@ -39,32 +39,38 @@ export const createCapexExpenseGroup = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createCapexExpenseGroup{
-              createCapexExpenseGroup(
-                caption:"${newCapexSetGroup.caption}"
-              version:${currentVersionFromSessionStorage()}
-              ){
-                capexExpenseGroup{
-                  __typename
-                  ... on CapexExpenseGroup{
-                    id
-                    name
-                    caption
-                  }
-                  ... on Error {
-                      code
-                      message
-                      details
-                      payload
+          query: `mutation createCapexExpenseGroup {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createCapexExpenseGroup(caption:"${newCapexSetGroup.caption}") {
+                  capexExpenseGroup {
+                    __typename
+                    ... on CapexExpenseGroup {
+                      id
+                      name
+                      caption
+                    }
+                    ... on Error {
+                        code
+                        message
+                        details
+                        payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
-      const createdCapexGroup = body?.data?.createCapexExpenseGroup;
+      const createdCapexGroup = body?.data?.project?.createCapexExpenseGroup;
 
       if (response.status === 200 && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

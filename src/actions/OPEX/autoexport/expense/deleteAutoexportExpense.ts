@@ -43,24 +43,30 @@ export function autoexportDeleteExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteOpexAutoexportExpense{
-              deleteOpexAutoexportExpense(
-                expenseId: 2,
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation deleteOpexAutoexportExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteOpexAutoexportExpense(expenseId: 2) {
+                  result {
+                    __typename
+                    ... on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
+            }
           }`,
         }),
       });
@@ -68,7 +74,7 @@ export function autoexportDeleteExpense(
 
       if (
         response.status === 200 &&
-        body.data.deleteOpexAutoexportExpense?.__typename !== 'Error'
+        body.data?.project?.deleteOpexAutoexportExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportDeleteExpenseSuccess(article));

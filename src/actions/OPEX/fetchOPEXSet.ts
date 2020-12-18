@@ -41,34 +41,35 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         headers: headers(),
         body: JSON.stringify({
           query: `{
-              opex{
+            project {
+              opex {
                 __typename
-                ... on Opex{
+                ... on Opex {
                   sdf,
                   hasAutoexport,
                   hasMkos,
-                  autoexport{
+                  autoexport {
                     __typename
-                    ... on OpexExpenseGroup{
+                    ... on OpexExpenseGroup {
                       yearStart,
                       yearEnd,
-                      opexExpenseList{
+                      opexExpenseList {
                         __typename
-                        ... on OpexExpenseList{
-                          opexExpenseList{
+                        ... on OpexExpenseList {
+                          opexExpenseList {
                             id,
                             name,
                             caption,
                             unit,
                             valueTotal,
                             description,
-                            value{
+                            value {
                               year,
                               value
                             }
                           }
                         }
-                        ... on Error{
+                        ... on Error {
                           code
                           message
                           details
@@ -76,35 +77,35 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
                         }
                       }
                     }
-                    ... on Error{
+                    ... on Error {
                       code
                       message
                       details
                       payload
                     }
                   }
-                  mkos{
+                  mkos {
                     __typename
-                    ... on OpexExpenseGroup{
+                    ... on OpexExpenseGroup {
                       yearStart,
                       yearEnd,
-                      opexExpenseList{
+                      opexExpenseList {
                         __typename
-                        ...on OpexExpenseList{
-                          opexExpenseList{
+                        ...on OpexExpenseList {
+                          opexExpenseList {
                             id,
                             name,
                             caption,
                             unit,
                             valueTotal,
                             description,
-                            value{
+                            value {
                               year,
                               value
                             }
                           }
                         }
-                        ... on Error{
+                        ... on Error {
                           code
                           message
                           details
@@ -112,38 +113,38 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
                         }
                       }
                     }
-                    ... on Error{
+                    ... on Error {
                       code
                       message
                       details
                       payload
                     }
                   }
-                  opexCaseList{
+                  opexCaseList {
                     __typename
-                    ...on OpexExpenseGroupList{
-                      opexCaseList{
+                    ...on OpexExpenseGroupList {
+                      opexCaseList {
                         yearStart,
                         yearEnd,
                         id,
                         name,
                         caption,
-                        opexExpenseList{
+                        opexExpenseList {
                           __typename
-                          ... on OpexExpenseList{
-                            opexExpenseList{
+                          ... on OpexExpenseList {
+                            opexExpenseList {
                               id,
                               name,
                               caption,
                               unit,
                               valueTotal,
-                              value{
+                              value {
                                 year,
                                 value
                               }
                             }
                           }
-                          ... on Error{
+                          ... on Error {
                             code
                             message
                             details
@@ -152,7 +153,7 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
                         }
                       }
                     }
-                    ... on Error{
+                    ... on Error {
                       code
                       message
                       details
@@ -160,20 +161,21 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
                     }
                   }
                 }
-                ... on Error{
+                ... on Error {
                   code
                   message
                   details
                   payload
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (response.status === 200) {
-        dispatch(OPEXSetSuccess(body.data?.opex));
+        dispatch(OPEXSetSuccess(body.data?.project?.opex));
       } else {
         dispatch(OPEXSetError(body.message));
       }

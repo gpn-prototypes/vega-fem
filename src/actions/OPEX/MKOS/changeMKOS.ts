@@ -41,56 +41,65 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeOpexMkos{
-              changeOpexMkos(
-                yearEnd: ${MKOS.yearEnd.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                mkos{
-                  __typename
-                  ... on OpexExpenseGroup{
-                    yearStart,
-                    yearEnd,
-                    opexExpenseList{
-                      __typename
-                    ... on OpexExpenseList{
-                      opexExpenseList{
-                        id,
-                        name,
-                        caption,
-                        unit,
-                        valueTotal,
-                        description,
-                        value{
-                          year,
-                          value
+          query: `mutation changeOpexMkos {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeOpexMkos(yearEnd: ${MKOS.yearEnd.toString()}) {
+                  mkos {
+                    __typename
+                    ... on OpexExpenseGroup {
+                      yearStart,
+                      yearEnd,
+                      opexExpenseList {
+                        __typename
+                        ... on OpexExpenseList {
+                          opexExpenseList {
+                            id,
+                            name,
+                            caption,
+                            unit,
+                            valueTotal,
+                            description,
+                            value {
+                              year,
+                              value
+                            }
+                          }
+                        }
+                        ... on Error {
+                          code
+                          message
+                          details
+                          payload
                         }
                       }
                     }
-                      ... on Error{
-                        code
-                        message
-                        details
-                        payload
-                      }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
                     }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.status === 200 && body.data.changeOpexMkos.mkos?.__typename !== 'Error') {
+      if (
+        response.status === 200 &&
+        body.data?.project?.changeOpexMkos?.mkos?.__typename !== 'Error'
+      ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeSuccess(body.data?.changeOpexMkos?.mkos));
+        dispatch(OPEXMKOSChangeSuccess(body.data?.project?.changeOpexMkos?.mkos));
       } else {
         dispatch(OPEXMKOSChangeError(body.message));
       }

@@ -45,33 +45,41 @@ export function caseDeleteExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteOpexCaseExpense{
-              deleteOpexCaseExpense(
-                caseId: ${group.id?.toString()},
-                expenseId: ${article.id?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation deleteOpexCaseExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteOpexCaseExpense(
+                  caseId: ${group.id?.toString()},
+                  expenseId: ${article.id?.toString()}
+                ) {
+                  result {
+                    __typename
+                    ... on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.deleteOpexCaseExpense.result?.__typename !== 'Error'
+        body.data?.project?.deleteOpexCaseExpense?.result?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXCaseDeleteExpenseSuccess(group, article));

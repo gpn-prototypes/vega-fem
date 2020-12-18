@@ -43,39 +43,50 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         headers: headers(),
         body: JSON.stringify({
           query: `mutation {
-              createOpexCase(
-                caption: "${opexCase.caption}",
-                yearStart: ${opexCase.yearStart.toString()} ,
-                yearEnd: ${opexCase.yearEnd.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexCase{
-                __typename
-                  ... on OpexExpenseGroup{
-                    id
-                    yearStart
-                    yearEnd
-                    name
-                    caption
-                  }
-                  ...on Error{
-                    code
-                    message
-                    details
-                    payload
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createOpexCase(
+                  caption: "${opexCase.caption}",
+                  yearStart: ${opexCase.yearStart.toString()} ,
+                  yearEnd: ${opexCase.yearEnd.toString()}
+                ) {
+                  opexCase {
+                  __typename
+                    ... on OpexExpenseGroup {
+                      id
+                      yearStart
+                      yearEnd
+                      name
+                      caption
+                    }
+                    ...on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.status === 200 && body.data.createOpexCase.opexCase?.__typename !== 'Error') {
+      if (
+        response.status === 200 &&
+        body.data?.project?.createOpexCase.opexCase?.__typename !== 'Error'
+      ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXCreateCaseSuccess({
-            ...body.data?.createOpexCase?.opexCase,
+            ...body.data?.project?.createOpexCase?.opexCase,
             opexExpenseList: [],
           } as OPEXSetType),
         );

@@ -37,20 +37,26 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         headers: headers(),
         body: JSON.stringify({
           query: `mutation setOpexSdf($sdf: Boolean) {
-            setOpexSdf(
-              sdf: $sdf,
-              version:${currentVersionFromSessionStorage()}
-            ) {
-              opexSdf {
-                __typename
-                ... on OpexSdf {
-                  sdf
-                }
-                ... on Error {
-                  code
-                  message
-                  details
-                  payload
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                setOpexSdf(sdf: $sdf) {
+                  opexSdf {
+                    __typename
+                    ... on OpexSdf {
+                      sdf
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
                 }
               }
             }

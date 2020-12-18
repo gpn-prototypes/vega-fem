@@ -42,39 +42,50 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeOpexCase{
-              changeOpexCase(
-                caseId:"${opexCase.id}",
-                caption:"${opexCase.caption}",
-                yearStart:${opexCase.yearStart.toString()},
-                yearEnd:${opexCase.yearEnd.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexCase{
-                  __typename
-                  ... on OpexExpenseGroup{
-                    yearStart
-                    yearEnd
-                    id
-                    name
-                    caption
-                  }
-                  ...on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation changeOpexCase {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeOpexCase(
+                  caseId:"${opexCase.id}",
+                  caption:"${opexCase.caption}",
+                  yearStart:${opexCase.yearStart.toString()},
+                  yearEnd:${opexCase.yearEnd.toString()}
+                ) {
+                  opexCase {
+                    __typename
+                    ... on OpexExpenseGroup {
+                      yearStart
+                      yearEnd
+                      id
+                      name
+                      caption
+                    }
+                    ...on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
-      if (response.status === 200 && body.data.changeOpexCase.opexCase?.__typename !== 'Error') {
+      if (
+        response.status === 200 &&
+        body.data?.project?.changeOpexCase?.opexCase?.__typename !== 'Error'
+      ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXChangeCaseSuccess(body.data?.changeOpexCase?.opexCase));
+        dispatch(OPEXChangeCaseSuccess(body.data?.project?.changeOpexCase?.opexCase));
       } else {
         dispatch(OPEXChangeCaseError(body.message));
       }

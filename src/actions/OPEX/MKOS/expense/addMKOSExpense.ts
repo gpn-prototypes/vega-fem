@@ -41,30 +41,38 @@ export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {},
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createOpexMkosExpense{
-              createOpexMkosExpense(
-                caption: "${article.caption?.toString()}",
-                unit: "${article.unit?.toString()}",
-                version:${currentVersionFromSessionStorage()}
-              ){
-              opexExpense{
-                __typename
-                ... on OpexExpense{
-                  id
-                  name
-                  caption
-                  unit
-                  valueTotal
-                  value{
-                      year
-                      value
+          query: `mutation createOpexMkosExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createOpexMkosExpense(
+                  caption: "${article.caption?.toString()}",
+                  unit: "${article.unit?.toString()}"
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on OpexExpense {
+                      id
+                      name
+                      caption
+                      unit
+                      valueTotal
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
                 }
               }
             }
@@ -75,10 +83,10 @@ export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {},
 
       if (
         response.status === 200 &&
-        body.data.createOpexMkosExpense.opexExpense?.__typename !== 'Error'
+        body.data?.project?.createOpexMkosExpense?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAddMKOSExpenseSuccess(body.data?.createOpexMkosExpense?.opexExpense));
+        dispatch(OPEXAddMKOSExpenseSuccess(body.data?.project?.createOpexMkosExpense?.opexExpense));
       } else {
         dispatch(OPEXAddMKOSExpenseError(body.message));
       }

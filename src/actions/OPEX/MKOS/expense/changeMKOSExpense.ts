@@ -41,47 +41,57 @@ export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeOpexMkosExpense{
-              changeOpexMkosExpense(
-                expenseId: ${article.id?.toString()},
-                name: "${article.name?.toString()}",
-                caption: "${article.caption?.toString()}",
-                unit: "${article.unit?.toString()}",
-                ${article.value ? `value:${article.value},` : ''},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on OpexExpense{
-                    id,
-                    name,
-                    caption,
-                    unit,
-                    valueTotal,
-                    value{
-                      year,
-                      value
+          query: `mutation changeOpexMkosExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeOpexMkosExpense(
+                  expenseId: ${article.id?.toString()},
+                  name: "${article.name?.toString()}",
+                  caption: "${article.caption?.toString()}",
+                  unit: "${article.unit?.toString()}",
+                  ${article.value ? `value:${article.value},` : ''}
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on OpexExpense {
+                      id,
+                      name,
+                      caption,
+                      unit,
+                      valueTotal,
+                      value {
+                        year,
+                        value
+                      }
                     }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.changeOpexMkosExpense.opexExpense?.__typename !== 'Error'
+        body.data?.project?.changeOpexMkosExpense?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeExpenseSuccess(body.data?.changeOpexMkosExpense?.opexExpense));
+        dispatch(
+          OPEXMKOSChangeExpenseSuccess(body.data?.project?.changeOpexMkosExpense?.opexExpense),
+        );
       } else {
         dispatch(OPEXMKOSChangeExpenseError(body.message));
       }

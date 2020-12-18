@@ -41,32 +41,38 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteOpexMkosExpense{
-              deleteOpexMkosExpense(
-                expenseId: 2,
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation deleteOpexMkosExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteOpexMkosExpense(expenseId: 2) {
+                  result {
+                    __typename
+                    ... on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.deleteOpexMkosExpense.opexExpense?.__typename !== 'Error'
+        body.data?.project?.deleteOpexMkosExpense?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSDeleteExpenseSuccess(article));

@@ -45,35 +45,43 @@ export const requestUpdateCapexGlobalValue = (
           ...authHeader(),
         },
         body: JSON.stringify({
-          query: `mutation updateCapexGlobalValue{
-              updateCapexGlobalValue(
-                capexGlobalValueId:"${globalValue?.id}"
-                value: ${roundDecimal2Digits(globalValue?.value ?? 0)}
-                version: ${currentVersionFromSessionStorage()}
-              ){
-                capexGlobalValue{
-                  __typename
-                  ... on CapexGlobalValue{
-                    id
-                    name
-                    unit
-                    value
-                    caption
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation updateCapexGlobalValue {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                updateCapexGlobalValue(
+                  capexGlobalValueId:"${globalValue?.id}"
+                  value: ${roundDecimal2Digits(globalValue?.value ?? 0)}
+                ) {
+                  capexGlobalValue {
+                    __typename
+                    ... on CapexGlobalValue {
+                      id
+                      name
+                      unit
+                      value
+                      caption
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
+            }
           }`,
         }),
       });
 
       const body = await response.json();
-      const responseData = body?.data?.updateCapexGlobalValue;
+      const responseData = body?.data?.project?.updateCapexGlobalValue;
 
       if (response.ok && responseData?.capexGlobalValue.__typename !== 'Error') {
         const capexGlobalValue = responseData?.capexGlobalValue;

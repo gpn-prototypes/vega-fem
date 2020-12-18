@@ -45,33 +45,41 @@ export const requestChangeMacroparameter = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeMacroparameter{
-            changeMacroparameter(
-              macroparameterSetId: ${selected.id.toString()}
-              macroparameterGroupId: ${group?.id?.toString()}
-              macroparameterId: ${macroparameter.id}
-              ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
-              ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
-              ${macroparameter.value ? `value:${macroparameter.value},` : ''}
-              version:${currentVersionFromSessionStorage()}
-            ){
-              macroparameter{
+          query: `mutation changeMacroparameter {
+            project(version: ${currentVersionFromSessionStorage()}) {
               __typename
-                ... on Macroparameter{
-                  name
-                  id
-                  caption
-                  unit
-                  value{
-                    year
-                    value
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeMacroparameter(
+                  macroparameterSetId: ${selected.id.toString()}
+                  macroparameterGroupId: ${group?.id?.toString()}
+                  macroparameterId: ${macroparameter.id}
+                  ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
+                  ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
+                  ${macroparameter.value ? `value:${macroparameter.value},` : ''}
+                ) {
+                  macroparameter {
+                  __typename
+                    ... on Macroparameter {
+                      name
+                      id
+                      caption
+                      unit
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
                 }
               }
             }
@@ -80,7 +88,7 @@ export const requestChangeMacroparameter = (
       });
 
       const body = await response.json();
-      const responseData = body?.data?.changeMacroparameter;
+      const responseData = body?.data?.project?.changeMacroparameter;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

@@ -41,32 +41,43 @@ export const requestDeleteCapexExpense = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteCapexExpense{
-            deleteCapexExpense(
-              capexExpenseGroupId:"${group?.id?.toString()}",
-              capexExpenseId:"${capex.id}"
-              version: ${currentVersionFromSessionStorage()}
-            ){
-              result{
-                __typename
-                ... on Result{
-                  vid
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
+          query: `mutation deleteCapexExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteCapexExpense(
+                  capexExpenseGroupId:"${group?.id?.toString()}",
+                  capexExpenseId:"${capex.id}"
+                ) {
+                  result {
+                    __typename
+                    ... on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
                 }
               }
             }
-        }`,
+          }`,
         }),
       });
 
       const body = await response.json();
 
-      if (response.status === 200 && body.data.deleteCapexExpense?.result.__typename !== 'Error') {
+      if (
+        response.status === 200 &&
+        body.data.project?.deleteCapexExpense?.result.__typename !== 'Error'
+      ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexDeleteValueSuccess(capex, group));
       } else {

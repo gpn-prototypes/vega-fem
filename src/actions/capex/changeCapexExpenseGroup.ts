@@ -39,32 +39,40 @@ export const changeCapexExpenseGroup = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeCapexExpenseGroup{
-              changeCapexExpenseGroup(
-                capexExpenseGroupId:"${capexSetGroup.id}",
-                caption:"${capexSetGroup.caption}"
-                version: ${currentVersionFromSessionStorage()}
-              ){
-                capexExpenseGroup{
-                  __typename
-                  ... on CapexExpenseGroup{
-                    id,
-                    caption
-                  }
-                  ...on Error{
-                      code
-                      message
-                      details
-                      payload
+          query: `mutation changeCapexExpenseGroup {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeCapexExpenseGroup(
+                  capexExpenseGroupId:"${capexSetGroup.id}",
+                  caption:"${capexSetGroup.caption}"
+                ) {
+                  capexExpenseGroup {
+                    __typename
+                    ... on CapexExpenseGroup {
+                      id,
+                      caption
+                    }
+                    ...on Error {
+                        code
+                        message
+                        details
+                        payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
-      const changedCapexGroup = body?.data?.changeCapexExpenseGroup;
+      const changedCapexGroup = body?.data?.project?.changeCapexExpenseGroup;
 
       if (response.status === 200 && changedCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

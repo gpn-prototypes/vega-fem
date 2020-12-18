@@ -43,16 +43,25 @@ export function autoexportRemove(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation removeOpexAutoexport{
-              removeOpexAutoexport(version:${currentVersionFromSessionStorage()} ){
-                ...on Error{
-                  code
-                  message
-                  details
-                  payload
+          query: `mutation removeOpexAutoexport {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                removeOpexAutoexport {
+                  ...on Error {
+                    code
+                    message
+                    details
+                    payload
+                  }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();

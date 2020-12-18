@@ -48,30 +48,38 @@ export const requestUpdateCapexYearValue = (
         headers: headers(),
         body: JSON.stringify({
           query: `mutation setCapexExpenseYearValue {
-            setCapexExpenseYearValue(
-              capexExpenseGroupId: ${group?.id?.toString()}
-              capexExpenseId: ${capex.id}
-              year: ${value.year}
-              value: ${value.value}
-              version:${currentVersionFromSessionStorage()}
-            ) {
-              totalValueByYear{
-                year
-                value
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
               }
-              capexExpense {
-                __typename
-                ... on CapexExpense {
-                  value {
+              ... on ProjectMutation {
+                setCapexExpenseYearValue(
+                  capexExpenseGroupId: ${group?.id?.toString()}
+                  capexExpenseId: ${capex.id}
+                  year: ${value.year}
+                  value: ${value.value}
+                ) {
+                  totalValueByYear {
                     year
                     value
                   }
-                }
-                ... on Error {
-                  code
-                  message
-                  details
-                  payload
+                  capexExpense {
+                    __typename
+                    ... on CapexExpense {
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
                 }
               }
             }
@@ -80,7 +88,7 @@ export const requestUpdateCapexYearValue = (
       });
 
       const body = await response.json();
-      const responseData = body?.data?.setCapexExpenseYearValue;
+      const responseData = body?.data?.project?.setCapexExpenseYearValue;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.status === 200 && responseData?.totalValueByYear.__typename !== 'Error') {

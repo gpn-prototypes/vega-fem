@@ -43,25 +43,32 @@ export const deleteMacroparameterSetGroup = (
         headers: headers(),
         body: JSON.stringify({
           query: `
-            mutation deleteMacroparameterGroup{
-              deleteMacroparameterGroup(
-                macroparameterSetId:"${selected.id.toString()}",
-                macroparameterGroupId:"${macroparameterSetGroup.id}",
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ...on Result{
-                      vid
-                  }
-                  ... on Error{
-                      code
-                      message
+            mutation deleteMacroparameterGroup {
+              project(version: ${currentVersionFromSessionStorage()}) {
+                __typename
+                ... on Error {
+                  code,
+                  message
+                }
+                ... on ProjectMutation {
+                  deleteMacroparameterGroup(
+                    macroparameterSetId:"${selected.id.toString()}",
+                    macroparameterGroupId:"${macroparameterSetGroup.id}"
+                  ) {
+                    result {
+                      __typename
+                      ...on Result {
+                          vid
+                      }
+                      ... on Error {
+                          code
+                          message
+                      }
+                    }
                   }
                 }
               }
-            }
-            `,
+            }`,
         }),
       });
 

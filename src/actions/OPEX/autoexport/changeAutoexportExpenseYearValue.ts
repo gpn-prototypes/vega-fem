@@ -50,31 +50,39 @@ export function autoexportChangeExpenseYearValue(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation setOpexAutoexportExpenseYearValue{
-              setOpexAutoexportExpenseYearValue(
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation setOpexAutoexportExpenseYearValue {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                setOpexAutoexportExpenseYearValue(
+                  expenseId: ${article.id},
+                  year:${value.year?.toString()},
+                  value: ${value.value?.toString()}
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.setOpexAutoexportExpenseYearValue.opexExpense?.__typename
+        body.data?.project?.setOpexAutoexportExpenseYearValue?.opexExpense?.__typename
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));

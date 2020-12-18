@@ -41,20 +41,68 @@ export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query:
-            '{opex{' +
-            'hasAutoexport,' +
-            'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            'hasMkos,' +
-            'mkos{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            'opexCaseList{yearStart, yearEnd, id, name, caption, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            '}}',
+          query: `{
+            project {
+              opex {
+                hasAutoexport,
+                autoexport {
+                  yearStart,
+                  yearEnd,
+                  opexExpenseList {
+                    id,
+                    name,
+                    caption,
+                    unit,
+                    valueTotal,
+                    value {
+                      year,
+                      value
+                    }
+                  }
+                },
+                hasMkos,
+                mkos {
+                  yearStart,
+                  yearEnd,
+                  opexExpenseList {
+                    id,
+                    name,
+                    caption,
+                    unit,
+                    valueTotal,
+                    value {
+                      year,
+                      value
+                    }
+                  }
+                },
+                opexCaseList {
+                  yearStart,
+                  yearEnd,
+                  id,
+                  name,
+                  caption,
+                  opexExpenseList {
+                    id,
+                    name,
+                    caption,
+                    unit,
+                    valueTotal,
+                    value {
+                      year,
+                      value
+                    }
+                  }
+                }
+              }
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (response.ok) {
-        dispatch(OPEXSetChangeSuccess(body.data?.opex));
+        dispatch(OPEXSetChangeSuccess(body.data?.project?.opex));
       } else {
         dispatch(OPEXSetChangeError(body.message));
       }

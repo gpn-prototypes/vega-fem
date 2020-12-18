@@ -43,32 +43,41 @@ export const changeMacroparameterSetGroup = (
         headers: headers(),
         body: JSON.stringify({
           query: `mutation {
-              changeMacroparameterGroup(
-              macroparameterSetId:"${selected.id.toString()}"
-              macroparameterGroupId:"${newMacroparameterSetGroup.id}"
-              caption:"${newMacroparameterSetGroup.caption}"
-              version:${currentVersionFromSessionStorage()}){
-                macroparameterGroup{
-                  __typename
-                  ... on MacroparameterGroup{
-                    name
-                    id
-                    caption
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeMacroparameterGroup(
+                  macroparameterSetId:"${selected.id.toString()}"
+                  macroparameterGroupId:"${newMacroparameterSetGroup.id}"
+                  caption:"${newMacroparameterSetGroup.caption}"
+                ) {
+                  macroparameterGroup {
+                    __typename
+                    ... on MacroparameterGroup {
+                      name
+                      id
+                      caption
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
-      const responseData = body?.data?.changeMacroparameterGroup;
+      const responseData = body?.data?.project?.changeMacroparameterGroup;
 
       if (response.ok && responseData?.macroparameterGroup?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

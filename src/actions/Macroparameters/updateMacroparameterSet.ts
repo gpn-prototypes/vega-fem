@@ -43,78 +43,86 @@ export const updateMacroparameterSet = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeMacroparameterSet{
-              changeMacroparameterSet(
-                macroparameterSetId:${selected.id.toString()},
-                category:${newMacroparameterSet.category}
-                caption: "${newMacroparameterSet.caption}"
-                name: "${newMacroparameterSet.name}"
-                years:${newMacroparameterSet.years}
-                yearStart:${newMacroparameterSet.yearStart}
-                allProjects:${newMacroparameterSet.allProjects}
-                version:${currentVersionFromSessionStorage()}
-              ){
-                macroparameterSet{
-                  __typename
-                  ...on MacroparameterSet{
-                    id
-                    name
-                    caption
-                    years
-                    yearStart
-                    category
-                    allProjects
-                    macroparameterGroupList{
-                      __typename
-                      ... on MacroparameterGroupList{
-                        macroparameterGroupList{
-                          id
-                          name
-                          caption
-                          macroparameterList{
-                            __typename
-                            ... on MacroparameterList{
-                              macroparameterList{
-                                id
-                                name
-                                caption
-                                unit
-                                value{
-                                  year
-                                  value
+          query: `mutation changeMacroparameterSet {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeMacroparameterSet(
+                  macroparameterSetId:${selected.id.toString()},
+                  category:${newMacroparameterSet.category}
+                  caption: "${newMacroparameterSet.caption}"
+                  name: "${newMacroparameterSet.name}"
+                  years:${newMacroparameterSet.years}
+                  yearStart:${newMacroparameterSet.yearStart}
+                  allProjects:${newMacroparameterSet.allProjects}
+                ) {
+                  macroparameterSet {
+                    __typename
+                    ...on MacroparameterSet {
+                      id
+                      name
+                      caption
+                      years
+                      yearStart
+                      category
+                      allProjects
+                      macroparameterGroupList {
+                        __typename
+                        ... on MacroparameterGroupList {
+                          macroparameterGroupList {
+                            id
+                            name
+                            caption
+                            macroparameterList {
+                              __typename
+                              ... on MacroparameterList {
+                                macroparameterList {
+                                  id
+                                  name
+                                  caption
+                                  unit
+                                  value {
+                                    year
+                                    value
+                                  }
                                 }
                               }
-                            }
-                            ... on Error{
-                              code
-                              message
-                              details
-                              payload
+                              ... on Error {
+                                code
+                                message
+                                details
+                                payload
+                              }
                             }
                           }
                         }
-                      }
-                      ... on Error{
-                        code
-                        message
-                        details
-                        payload
+                        ... on Error {
+                          code
+                          message
+                          details
+                          payload
+                        }
                       }
                     }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
+            }
           }`,
         }),
       });
       const body = await response.json();
-      const responseData = body?.data?.changeMacroparameterSet;
+      const responseData = body?.data?.project?.changeMacroparameterSet;
 
       if (response.status === 200 && responseData.macroparameterSet?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

@@ -43,45 +43,55 @@ export function addAutoexportExpense(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createOpexAutoexportExpense{
-            createOpexAutoexportExpense(
-              caption: "${article.caption?.toString()}",
-              unit: "${article.unit?.toString()}",
-              version:${currentVersionFromSessionStorage()}
-            ){
-            opexExpense{
+          query: `mutation createOpexAutoexportExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
               __typename
-              ... on OpexExpense{
-                id
-                name
-                caption
-                unit
-                valueTotal
-                value{
-                    year
-                    value
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createOpexAutoexportExpense(
+                  caption: "${article.caption?.toString()}",
+                  unit: "${article.unit?.toString()}"
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on OpexExpense {
+                      id
+                      name
+                      caption
+                      unit
+                      valueTotal
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
                 }
               }
-              ... on Error{
-                code
-                message
-                details
-                payload
-              }
             }
-          }
-        }`,
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.createOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
+        body.data?.project?.createOpexAutoexportExpense?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
-          OPEXAddAutoexportExpenseSuccess(body.data?.createOpexAutoexportExpense?.opexExpense),
+          OPEXAddAutoexportExpenseSuccess(
+            body.data?.project?.createOpexAutoexportExpense?.opexExpense,
+          ),
         );
       } else {
         dispatch(OPEXAddAutoexportExpenseError(body.message));

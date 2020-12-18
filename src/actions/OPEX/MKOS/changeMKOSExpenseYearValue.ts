@@ -49,31 +49,39 @@ export function MKOSChangeExpenseYearValue(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation setOpexMkosExpenseYearValue{
-              setOpexMkosExpenseYearValue(
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation setOpexMkosExpenseYearValue {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                setOpexMkosExpenseYearValue(
+                  expenseId: ${article.id},
+                  year:${value.year?.toString()},
+                  value: ${value.value?.toString()}
+                ) {
+                  opexExpense {
+                    __typename
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.setOpexMkosExpenseYearValue.opexExpense?.__typename !== 'Error'
+        body.data?.project?.setOpexMkosExpenseYearValue?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));

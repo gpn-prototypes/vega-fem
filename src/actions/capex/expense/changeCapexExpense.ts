@@ -45,39 +45,47 @@ export const requestChangeCapexExpense = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeCapexExpense{
-            changeCapexExpense(
-              capexExpenseGroupId:"${group?.id}",
-              capexExpenseId:${capex.id},
-              ${capex.caption ? `caption:"${capex.caption}",` : ''}
-              ${capex.name ? `name:"${capex.name}",` : ''}
-              ${capex.unit ? `unit:"${capex.unit}",` : 'unit:""'}
-              ${capex.value ? `value:${capex.value},` : ''}
-              version: ${currentVersionFromSessionStorage()}
-            ){
-              capexExpense{
-                __typename
-                ... on CapexExpense{
-                  id
-                  name
-                  caption
-                  valueTotal
-                  unit
-                  value{
+          query: `mutation changeCapexExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeCapexExpense(
+                  capexExpenseGroupId:"${group?.id}",
+                  capexExpenseId:${capex.id},
+                  ${capex.caption ? `caption:"${capex.caption}",` : ''}
+                  ${capex.name ? `name:"${capex.name}",` : ''}
+                  ${capex.unit ? `unit:"${capex.unit}",` : 'unit:""'}
+                  ${capex.value ? `value:${capex.value},` : ''}
+                ) {
+                  capexExpense {
+                    __typename
+                    ... on CapexExpense {
+                      id
+                      name
+                      caption
+                      valueTotal
+                      unit
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
+                  }
+                  totalValueByYear {
                     year
                     value
                   }
                 }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-              }
-              totalValueByYear{
-                year
-                value
               }
             }
           }`,
@@ -85,7 +93,7 @@ export const requestChangeCapexExpense = (
       });
 
       const body = await response.json();
-      const responseData = body?.data?.changeCapexExpense;
+      const responseData = body?.data?.project?.changeCapexExpense;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
       if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {

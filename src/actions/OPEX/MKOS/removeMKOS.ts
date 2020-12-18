@@ -41,16 +41,25 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation removeOpexMkos{
-              removeOpexMkos(version:${currentVersionFromSessionStorage()} ){
-                ...on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-               }
-            }`,
+          query: `mutation removeOpexMkos {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                removeOpexMkos {
+                  ...on Error {
+                    code
+                    message
+                    details
+                    payload
+                  }
+                 }
+              }
+            }
+          }`,
         }),
       });
       const body = await response.json();

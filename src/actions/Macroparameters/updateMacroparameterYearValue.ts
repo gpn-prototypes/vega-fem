@@ -47,31 +47,39 @@ export const requestUpdateMacroparameterYearValue = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation setMacroparameterYearValue{
-              setMacroparameterYearValue(
-                macroparameterSetId: ${selected.id.toString()}
-                macroparameterGroupId: ${group?.id?.toString()}
-                macroparameterId: ${macroparameter.id}
-                year: ${value.year}
-                value: ${value.value}
-                version:${currentVersionFromSessionStorage()}
-              ){
-                 macroparameter{
+          query: `mutation setMacroparameterYearValue {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                setMacroparameterYearValue(
+                  macroparameterSetId: ${selected.id.toString()}
+                  macroparameterGroupId: ${group?.id?.toString()}
+                  macroparameterId: ${macroparameter.id}
+                  year: ${value.year}
+                  value: ${value.value}
+                ) {
+                  macroparameter {
                     __typename
-                    ... on Error{
+                    ... on Error {
                       code
                       message
                       details
                       payload
                     }
+                  }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
 
       const body = await response.json();
-      const responseData = body?.data?.setMacroparameterYearValue;
+      const responseData = body?.data?.project?.setMacroparameterYearValue;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

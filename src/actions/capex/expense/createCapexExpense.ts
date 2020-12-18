@@ -41,30 +41,38 @@ export const requestCreateCapexExpense = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createCapexExpense{
-            createCapexExpense(
-              capexExpenseGroupId:"${group?.id?.toString()}",
-              caption:"${newCapexExpense.caption}",
-              unit:"${newCapexExpense.unit}"
-              version: ${currentVersionFromSessionStorage()}
-            ){
-              capexExpense{
-                __typename
-                ... on CapexExpense{
-                  id
-                  name
-                  caption
-                  unit
-                  value{
-                      year
-                      value
+          query: `mutation createCapexExpense {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createCapexExpense(
+                  capexExpenseGroupId:"${group?.id?.toString()}",
+                  caption:"${newCapexExpense.caption}",
+                  unit:"${newCapexExpense.unit}"
+                ) {
+                  capexExpense {
+                    __typename
+                    ... on CapexExpense {
+                      id
+                      name
+                      caption
+                      unit
+                      value {
+                          year
+                          value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
                 }
               }
             }
@@ -73,7 +81,7 @@ export const requestCreateCapexExpense = (
       });
 
       const body = await response.json();
-      const responseData = body?.data?.createCapexExpense;
+      const responseData = body?.data?.project?.createCapexExpense;
 
       if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {
         const capex = responseData?.capexExpense;

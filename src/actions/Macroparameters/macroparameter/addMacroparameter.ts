@@ -45,31 +45,39 @@ export const requestAddMacroparameter = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation createMacroparameter{
-            createMacroparameter(
-              macroparameterSetId:${selected.id.toString()}
-              macroparameterGroupId:${group?.id?.toString()}
-              caption: "${newMacroparameter.caption}"
-              unit: "${newMacroparameter.unit}"
-              version:${currentVersionFromSessionStorage()}
-            ){
-              macroparameter{
-                __typename
-                ... on Macroparameter{
-                  id
-                  name
-                  caption
-                  unit
-                  value{
-                    year
-                    value
+          query: `mutation createMacroparameter {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                createMacroparameter(
+                  macroparameterSetId:${selected.id.toString()}
+                  macroparameterGroupId:${group?.id?.toString()}
+                  caption: "${newMacroparameter.caption}"
+                  unit: "${newMacroparameter.unit}"
+                ) {
+                  macroparameter {
+                    __typename
+                    ... on Macroparameter {
+                      id
+                      name
+                      caption
+                      unit
+                      value {
+                        year
+                        value
+                      }
+                    }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
                 }
               }
             }
@@ -78,7 +86,7 @@ export const requestAddMacroparameter = (
       });
 
       const body = await response.json();
-      const responseData = body?.data?.createMacroparameter;
+      const responseData = body?.data?.project?.createMacroparameter;
 
       if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

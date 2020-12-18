@@ -43,59 +43,67 @@ export function autoexportChange(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation changeOpexAutoexport{
-              changeOpexAutoexport(
-                yearEnd: ${autoexport.yearEnd.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                autoexport{
-                  __typename
-                  ... on OpexExpenseGroup{
-                    yearStart,
-                    yearEnd,
-                    opexExpenseList{
-                      __typename
-                    ... on OpexExpenseList{
-                      opexExpenseList{
-                        id,
-                        name,
-                        caption,
-                        unit,
-                        valueTotal,
-                        description,
-                        value{
-                          year,
-                          value
+          query: `mutation changeOpexAutoexport {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                changeOpexAutoexport(
+                  yearEnd: ${autoexport.yearEnd.toString()}
+                ) {
+                  autoexport {
+                    __typename
+                    ... on OpexExpenseGroup {
+                      yearStart,
+                      yearEnd,
+                      opexExpenseList {
+                        __typename
+                        ... on OpexExpenseList {
+                          opexExpenseList {
+                            id,
+                            name,
+                            caption,
+                            unit,
+                            valueTotal,
+                            description,
+                            value {
+                              year,
+                              value
+                            }
+                          }
+                        }
+                        ... on Error {
+                          code
+                          message
+                          details
+                          payload
                         }
                       }
                     }
-                      ... on Error{
-                        code
-                        message
-                        details
-                        payload
-                      }
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
                     }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.changeOpexAutoexport.autoexport?.__typename !== 'Error'
+        body.data?.project?.changeOpexAutoexport?.autoexport?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAutoexportChangeSuccess(body.data?.changeOpexAutoexport?.autoexport));
+        dispatch(OPEXAutoexportChangeSuccess(body.data?.project?.changeOpexAutoexport?.autoexport));
       } else {
         dispatch(OPEXAutoexportChangeError(body.message));
       }

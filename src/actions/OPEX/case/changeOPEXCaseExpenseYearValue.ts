@@ -52,36 +52,44 @@ export function opexChangeCaseExpenseYearValue(
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation setOpexCaseExpenseYearValue{
-              setOpexCaseExpenseYearValue(
-                caseId:${group.id},
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                totalValueByYear{
-                  year,
-                  value
-                }
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
+          query: `mutation setOpexCaseExpenseYearValue {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                setOpexCaseExpenseYearValue(
+                  caseId:${group.id},
+                  expenseId: ${article.id},
+                  year:${value.year?.toString()},
+                  value: ${value.value?.toString()}
+                ) {
+                  totalValueByYear {
+                    year,
+                    value
+                  }
+                  opexExpense {
+                    __typename
+                    ... on Error {
+                      code
+                      message
+                      details
+                      payload
+                    }
                   }
                 }
               }
-            }`,
+            }
+          }`,
         }),
       });
       const body = await response.json();
 
       if (
         response.status === 200 &&
-        body.data.setOpexCaseExpenseYearValue.opexExpense?.__typename !== 'Error'
+        body.data?.project?.setOpexCaseExpenseYearValue?.opexExpense?.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));

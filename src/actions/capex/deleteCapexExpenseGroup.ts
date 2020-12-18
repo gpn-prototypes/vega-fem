@@ -39,19 +39,25 @@ export const deleteCapexExpenseGroup = (
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({
-          query: `mutation deleteCapexExpenseGroup{
-            deleteCapexExpenseGroup(
-              capexExpenseGroupId:"${capexSetGroup.id}",
-              version:${currentVersionFromSessionStorage()}
-            ){
-              result{
-                __typename
-                ...on Result{
-                  vid
-                }
-                ... on Error{
-                  code
-                  message
+          query: `mutation deleteCapexExpenseGroup {
+            project(version: ${currentVersionFromSessionStorage()}) {
+              __typename
+              ... on Error {
+                code,
+                message
+              }
+              ... on ProjectMutation {
+                deleteCapexExpenseGroup(capexExpenseGroupId:"${capexSetGroup.id}") {
+                  result {
+                    __typename
+                    ...on Result {
+                      vid
+                    }
+                    ... on Error {
+                      code
+                      message
+                    }
+                  }
                 }
               }
             }
@@ -63,7 +69,7 @@ export const deleteCapexExpenseGroup = (
 
       if (
         response.status === 200 &&
-        body.data.deleteCapexExpenseGroup?.result.__typename !== 'Error'
+        body.data.project?.deleteCapexExpenseGroup?.result.__typename !== 'Error'
       ) {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
