@@ -4,7 +4,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_MKOS_CHANGE_INIT = 'OPEX_MKOS_CHANGE_INIT';
@@ -37,7 +37,7 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
     dispatch(OPEXMKOSChangeInit());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

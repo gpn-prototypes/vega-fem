@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouteMatch } from 'react-router';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { defaultTo } from 'lodash';
 
-import { setProjectId } from '@/helpers/projectIdToLocalstorage';
+import { initServiceConfig } from '@/helpers/sevice-config';
+import { Identity } from '@/types';
 
 const ROUTE_MATCH_PROJECT_ID = '/projects/show/:projectId';
 
-type MatchedData = { projectId: string };
+interface MatchedData {
+  projectId: string;
+}
 
-const ProjectContext = React.createContext<MatchedData>({ projectId: '' });
+interface ProjectContextProps extends MatchedData {
+  identity?: Identity;
+  initialized: boolean;
+}
 
-const ProjectProvider: React.FC = ({ children }) => {
+interface ProjectProviderProps {
+  graphqlClient?: ApolloClient<NormalizedCacheObject>;
+  identity?: Identity;
+}
+
+const ProjectContext = React.createContext<ProjectContextProps>({
+  projectId: '',
+  initialized: false,
+});
+
+const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, identity }) => {
+  const [initialized, setInitialized] = useState(false);
   const matchedData = defaultTo<MatchedData>(
     useRouteMatch<MatchedData>(ROUTE_MATCH_PROJECT_ID)?.params,
     {
@@ -18,9 +36,24 @@ const ProjectProvider: React.FC = ({ children }) => {
     },
   );
 
-  setProjectId(matchedData.projectId);
+  useEffect(() => {
+    async function init() {
+      await initServiceConfig({
+        projectId: matchedData.projectId,
+        identity,
+      });
+    }
 
-  return <ProjectContext.Provider value={matchedData}>{children}</ProjectContext.Provider>;
+    init();
+
+    setInitialized(true);
+  }, [identity, matchedData]);
+
+  return (
+    <ProjectContext.Provider value={{ ...matchedData, identity, initialized }}>
+      {children}
+    </ProjectContext.Provider>
+  );
 };
 
 export { ProjectProvider, ProjectContext };

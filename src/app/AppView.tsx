@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '@gpn-prototypes/vega-ui';
 
@@ -9,6 +9,7 @@ import { fetchVersion } from '@/actions/fetchVersion';
 import { InProgress } from '@/components/InProgress';
 import { Main } from '@/components/Main/Main';
 import { Navigation } from '@/components/Navigation/Navigation';
+import { ProjectContext } from '@/providers';
 import { VersionState } from '@/reducers/versionReducer';
 
 export const AppView = (): React.ReactElement => {
@@ -17,9 +18,13 @@ export const AppView = (): React.ReactElement => {
     return !state.versionReducer.version;
   });
 
+  const { initialized } = useContext(ProjectContext);
+
   useEffect(() => {
-    dispatch(fetchVersion());
-  }, [dispatch]);
+    if (initialized) {
+      dispatch(fetchVersion());
+    }
+  }, [dispatch, initialized]);
 
   return (
     <>

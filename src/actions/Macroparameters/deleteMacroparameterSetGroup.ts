@@ -6,7 +6,7 @@ import { MacroparamsAction } from './macroparameterSetList';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_SET_GROUP_DELETE_INIT = 'MACROPARAM_SET_GROUP_DELETE_INIT';
@@ -38,7 +38,7 @@ export const deleteMacroparameterSetGroup = (
     dispatch(macroparameterSetGroupDeleteInitialized());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

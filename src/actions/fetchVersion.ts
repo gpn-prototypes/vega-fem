@@ -5,7 +5,7 @@ import { clearStores } from './clear';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 
 export const VERSION_FETCH = 'VERSION_FETCH';
 export const VERSION_SUCCESS = 'VERSION_SUCCESS';
@@ -42,7 +42,7 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         headers: headers(),
         body: JSON.stringify({
           query: `{
-              project(vid:"${projectIdFromLocalStorage()}") {
+              project(vid:"${serviceConfig.projectId}") {
                 __typename
                 ... on Project {
                   name
