@@ -6,7 +6,7 @@ import { MacroparamsAction } from './macroparameterSetList';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MACROPARAM_SET_UPDATE_INIT = 'MACROPARAM_SET_UPDATE_INIT';
@@ -39,7 +39,7 @@ export const updateMacroparameterSet = (
     dispatch(macroparameterSetUpdateInitialized());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

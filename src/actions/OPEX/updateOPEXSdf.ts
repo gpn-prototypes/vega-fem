@@ -3,11 +3,11 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { currentVersionFromSessionStorage } from '../../helpers/currentVersionFromSessionStorage';
 import headers from '../../helpers/headers';
-import { projectIdFromLocalStorage } from '../../helpers/projectIdToLocalstorage';
 
 import { OPEXAction } from './fetchOPEXSet';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
+import { serviceConfig } from '@/helpers/sevice-config';
 
 export const OPEX_SET_SDF_INIT = 'OPEX_SET_CHANGE_INIT';
 export const OPEX_SET_SDF_SUCCESS = 'OPEX_SET_SDF_SUCCESS';
@@ -32,7 +32,7 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
     dispatch(OPEXSetChangeSdfInit());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

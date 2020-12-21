@@ -3,7 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
@@ -40,7 +40,7 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
     dispatch(macroparameterSetListFetch());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

@@ -3,7 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
-import { projectIdFromLocalStorage } from '@/helpers/projectIdToLocalstorage';
+import { serviceConfig } from '@/helpers/sevice-config';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEX_SET_CHANGE_INIT = 'OPEX_SET_CHANGE_INIT';
@@ -37,7 +37,7 @@ export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     dispatch(OPEXSetChangeInit());
 
     try {
-      const response = await fetch(`${graphqlRequestUrl}/${projectIdFromLocalStorage()}`, {
+      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
         method: 'POST',
         headers: headers(),
         body: JSON.stringify({

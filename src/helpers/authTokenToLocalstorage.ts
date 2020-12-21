@@ -1,12 +1,12 @@
-export function authHeader() {
-  let token = localStorage.getItem('token') || '';
-  if (!token) {
-    localStorage.setItem(
-      'token',
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiYTExMTExMjNiMTExYzExMWQxMTFlMDAwMDAwMDAwMDAifQ.ugIJES0Ruu9cf5aA6hBPP1MLV1FfyaBV5ISq6EcCPKs',
-    );
-    token = localStorage.getItem('token') || '';
-  }
+import { config } from '@/config.public';
+import { serviceConfig } from '@/helpers/sevice-config';
 
-  return { Authorization: token };
-}
+type AuthHeader = {
+  Authorization: string;
+};
+
+export const authHeader = (): AuthHeader => {
+  const token = serviceConfig.identityToken || config.authToken;
+
+  return { Authorization: `Bearer ${token}` };
+};
