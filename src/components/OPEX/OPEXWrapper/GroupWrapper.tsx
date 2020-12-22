@@ -34,7 +34,7 @@ export interface GroupWrapperProps {
   highlightArticleClear?: () => void;
 }
 
-const yearsOptions = yearsRangeOptions(5, 10);
+const yearsOptions = yearsRangeOptions(0, 15);
 
 export const GroupWrapper = ({
   group,
