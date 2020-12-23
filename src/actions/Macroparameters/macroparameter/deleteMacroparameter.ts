@@ -47,7 +47,7 @@ export const requestDeleteMacroparameter = (
         body: JSON.stringify({
           query: `mutation deleteMacroparameter{
               deleteMacroparameter(
-                macroparameterSetId:"${selected.id.toString()}",
+                macroparameterSetId:"${selected.toString()}",
                 macroparameterGroupId:"${group?.id?.toString()}",
                 macroparameterId:"${macroparameter.id}"
               version:${currentVersionFromSessionStorage()}

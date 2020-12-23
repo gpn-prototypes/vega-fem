@@ -45,7 +45,7 @@ export const deleteMacroparameterSetGroup = (
           query: `
             mutation deleteMacroparameterGroup{
               deleteMacroparameterGroup(
-                macroparameterSetId:"${selected.id.toString()}",
+                macroparameterSetId:"${selected.toString()}",
                 macroparameterGroupId:"${macroparameterSetGroup.id}",
                 version:${currentVersionFromSessionStorage()}
               ){

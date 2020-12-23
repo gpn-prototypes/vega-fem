@@ -13,6 +13,7 @@ import { requestChangeMacroparameter } from '@/actions/Macroparameters/macropara
 import { requestDeleteMacroparameter } from '@/actions/Macroparameters/macroparameter/deleteMacroparameter';
 import { updateMacroparameterSet as updateSet } from '@/actions/Macroparameters/updateMacroparameterSet';
 import { MacroparameterSetWrapper } from '@/components/Macroparameters/MacroparameterSetWrapper/MacroparameterSetWrapper';
+import { MacroparametersState } from '@/reducers/macroparamsReducer';
 import Article from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
@@ -21,7 +22,14 @@ import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGro
 export const MacroparameterSetContainer = () => {
   const dispatch = useDispatch();
 
-  const selectorSelectedMacroparameterSet = (state: any) => state.macroparamsReducer.selected;
+  const selectorSelectedMacroparameterSet = ({
+    macroparamsReducer,
+  }: {
+    macroparamsReducer: MacroparametersState;
+  }) =>
+    macroparamsReducer.macroparameterSetList.find((i) => i.id === macroparamsReducer.selected) ??
+    {};
+
   const selectedMacroparameterSet: MacroparameterSet = useSelector(
     selectorSelectedMacroparameterSet,
   );

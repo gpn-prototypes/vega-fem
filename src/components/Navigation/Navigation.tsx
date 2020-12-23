@@ -57,7 +57,7 @@ export const Navigation: React.FC = () => {
       {tabs.map(({ title, path, disabled }) => {
         if (disabled) {
           return (
-            <div className={cnNavigation('Label', { disabled: true })}>
+            <div key={title} className={cnNavigation('Label', { disabled: true })}>
               <Text view="ghost">{title}</Text>
               <Badge
                 className={cnNavigation('Badge').toString()}
@@ -74,9 +74,10 @@ export const Navigation: React.FC = () => {
         return (
           <NavLink
             exact
-            activeClassName={cnNavigation('Label', { checked: true })}
+            key={title}
+            activeClassName={cnNavigation('Label', { checked: true }).toString()}
             to={path}
-            className={cnNavigation('Label')}
+            className={cnNavigation('Label').toString()}
           >
             {title}
           </NavLink>

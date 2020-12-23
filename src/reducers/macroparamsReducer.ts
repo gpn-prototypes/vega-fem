@@ -26,20 +26,30 @@ import Article, { ArticleValues } from '@/types/Article';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
-const initialState = {
-  macroparameterSetList: [] as MacroparameterSet[],
-  selected: {} as MacroparameterSet,
-  focusedArticle: {} as any,
+export interface MacroparametersState {
+  macroparameterSetList: MacroparameterSet[];
+  selected: string | number;
+  focusedArticle: any;
+  error?: any;
+}
+
+const initialState: MacroparametersState = {
+  macroparameterSetList: [],
+  selected: '',
+  focusedArticle: {},
 };
 
-let groupList: MacroparameterSetGroup[];
-let group: MacroparameterSetGroup;
-let macroparameterList: Array<Article>;
+// let groupList: MacroparameterSetGroup[];
+// let group: MacroparameterSetGroup;
+// let macroparameterList: Array<Article>;
 let macr: Article;
 let value: ArticleValues[];
 let isNewYearValue: boolean;
 
-export default function macroparamsReducer(state = initialState, action: MacroparamsAction) {
+export default function macroparamsReducer(
+  state: MacroparametersState = initialState,
+  action: MacroparamsAction,
+): MacroparametersState {
   switch (action.type) {
     case FEM_CLEAR_STORES:
       return { ...initialState };
@@ -81,11 +91,11 @@ export default function macroparamsReducer(state = initialState, action: Macropa
     case MACROPARAMS_SET_SELECTED:
       return {
         ...state,
-        selected: action.payload,
+        selected: action.payload.id,
       };
     case MACROPARAM_SET_UPDATE_SUCCESS:
       /* eslint-disable-next-line */
-      const changedMacroparameterSet = {
+      const merged = {
         ...action.payload,
         macroparameterGroupList: [
           ...action.payload.macroparameterGroupList.macroparameterGroupList.map(
@@ -103,162 +113,137 @@ export default function macroparamsReducer(state = initialState, action: Macropa
       };
       return {
         ...state,
-        selected: changedMacroparameterSet,
         macroparameterSetList: state.macroparameterSetList.map((macroparameterSet) => {
-          return macroparameterSet.id === changedMacroparameterSet.id
-            ? changedMacroparameterSet
-            : macroparameterSet;
+          return macroparameterSet.id === merged.id ? merged : macroparameterSet;
         }),
       };
     case MACROPARAM_SET_GROUP_ADD_SUCCESS:
-      /* eslint-disable-next-line */
-      state?.selected?.macroparameterGroupList?.push(action.payload);
       return {
         ...state,
-        selected: { ...state.selected },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList: [...(i.macroparameterGroupList ?? []), action.payload],
+              }
+            : i;
+        }),
       };
     case MACROPARAM_SET_GROUP_CHANGE_SUCCESS:
-      groupList = (state?.selected.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      group = (groupList?.find(
-        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.id,
-      ) ?? {}) as MacroparameterSetGroup;
       return {
         ...state,
-        selected: {
-          ...state.selected,
-          ...{
-            macroparameterGroupList: [
-              ...groupList.map((groupItem: MacroparameterSetGroup) => {
-                if (groupItem.id === group.id) {
-                  return {
-                    ...groupItem,
-                    caption: action.payload.caption,
-                  };
-                }
-                return { ...groupItem };
-              }),
-            ],
-          },
-        },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList:
+                  i.macroparameterGroupList?.map((groupItem) => {
+                    if (groupItem.id === action.payload.id) {
+                      return {
+                        ...groupItem,
+                        caption: action.payload.caption,
+                      };
+                    }
+                    return { ...groupItem };
+                  }) ?? [],
+              }
+            : i;
+        }),
       };
     case MACROPARAM_SET_GROUP_DELETE_SUCCESS:
-      groupList = (state?.selected.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      group = (groupList?.find(
-        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.id,
-      ) ?? {}) as MacroparameterSetGroup;
       return {
         ...state,
-        selected: {
-          ...state.selected,
-          ...{
-            macroparameterGroupList: [
-              ...groupList.filter((groupItem: MacroparameterSetGroup) => groupItem.id !== group.id),
-            ],
-          },
-        },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList: [
+                  ...(i.macroparameterGroupList ?? []).filter(
+                    (groupItem: MacroparameterSetGroup) => groupItem.id !== action.payload.id,
+                  ),
+                ],
+              }
+            : i;
+        }),
       };
     case MACROPARAM_ADD_SUCCESS:
-      /* eslint-disable-next-line */
-      state?.selected?.macroparameterGroupList
-        ?.find((group_: MacroparameterSetGroup) => group_.id === action.payload.group?.id)
-        ?.macroparameterList?.push(action.payload?.macroparameter);
       return {
         ...state,
-        selected: { ...state.selected },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList:
+                  i.macroparameterGroupList?.map((group) => {
+                    return group.id === action.payload.group?.id
+                      ? {
+                          ...group,
+                          macroparameterList: [
+                            ...(group.macroparameterList ?? []),
+                            action.payload?.macroparameter,
+                          ],
+                        }
+                      : group;
+                  }) ?? [],
+              }
+            : i;
+        }),
       };
     case CHANGE_MACROPARAM_SUCCESS:
-      /* eslint-disable-next-line */
-      groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      /* eslint-disable-next-line */
-      group = (groupList?.find(
-        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
-      ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-next-line */
-      macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-next-line */
-      macr = (macroparameterList?.find(
-        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
-      ) ?? {}) as Article;
       return {
         ...state,
-        selected: {
-          ...state.selected,
-          ...{
-            macroparameterGroupList: [
-              ...groupList.map((groupItem: MacroparameterSetGroup) => {
-                if (groupItem.id === group.id) {
-                  return {
-                    ...{
-                      ...action.payload.group,
-                      macroparameterList: [
-                        ...macroparameterList.map((i: Article) => {
-                          if (i.id === macr.id) {
-                            return { ...action.payload.macroparameter };
-                          }
-                          return { ...i };
-                        }),
-                      ],
-                    },
-                  };
-                }
-                return { ...groupItem };
-              }),
-            ],
-          },
-        },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList:
+                  i.macroparameterGroupList?.map((group) => {
+                    return group.id === action.payload.group?.id
+                      ? {
+                          ...group,
+                          macroparameterList:
+                            group.macroparameterList?.map((mp) => {
+                              return mp.id === action.payload.macroparameter?.id
+                                ? { ...action.payload.macroparameter }
+                                : mp;
+                            }) ?? [],
+                        }
+                      : group;
+                  }) ?? [],
+              }
+            : i;
+        }),
       };
+
     case MACROPARAM_DELETE_SUCCESS:
-      /* eslint-disable-next-line */
-      groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      /* eslint-disable-next-line */
-      group = (groupList?.find(
-        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
-      ) ?? {}) as MacroparameterSetGroup;
-      /* eslint-disable-next-line */
-      macroparameterList = group?.macroparameterList ?? [];
-      /* eslint-disable-next-line */
-      macr = (macroparameterList?.find(
-        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
-      ) ?? {}) as Article;
       return {
         ...state,
-        selected: {
-          ...state.selected,
-          ...{
-            macroparameterGroupList: [
-              ...groupList.map((groupItem: MacroparameterSetGroup) => {
-                if (groupItem.id === group.id) {
-                  return {
-                    ...{
-                      ...action.payload.group,
-                      macroparameterList: [
-                        ...macroparameterList.filter((i: Article) => i.id !== macr.id),
-                      ],
-                    },
-                  };
-                }
-                return { ...groupItem };
-              }),
-            ],
-          },
-        },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList:
+                  i.macroparameterGroupList?.map((group) => {
+                    return group.id === action.payload.group?.id
+                      ? {
+                          ...group,
+                          macroparameterList: group.macroparameterList?.filter(
+                            (mp) => mp.id !== action.payload.macroparameter?.id,
+                          ),
+                        }
+                      : group;
+                  }) ?? [],
+              }
+            : i;
+        }),
       };
     case MACROPARAM_UPDATE_YEAR_VALUE_SUCCESS:
-      groupList = (state?.selected?.macroparameterGroupList ?? []) as MacroparameterSetGroup[];
-      group = (groupList?.find(
-        (groupItem: MacroparameterSetGroup) => groupItem.id === action.payload.group?.id,
-      ) ?? {}) as MacroparameterSetGroup;
-
-      macroparameterList = group?.macroparameterList ?? [];
-      macr = (macroparameterList?.find(
-        (macroparameter: Article) => macroparameter.id === action.payload.macroparameter?.id,
-      ) ?? {}) as Article;
-      value = (macr?.value as ArticleValues[]).map((i) => {
-        const iCopy = i;
-        if (iCopy.year === action.payload.value?.year) {
-          iCopy.value = action.payload.value?.value;
+      macr = action.payload.macroparameter as Article;
+      value = (macr?.value as ArticleValues[]).map((v) => {
+        if (v.year === action.payload.value?.year) {
+          return { ...v, value: action.payload.value?.value };
         }
-        return iCopy;
+        return v;
       });
 
       // обновление значения в ранее незаполненном году
@@ -269,33 +254,27 @@ export default function macroparamsReducer(state = initialState, action: Macropa
 
       return {
         ...state,
-        selected: {
-          ...state.selected,
-          ...{
-            macroparameterGroupList: [
-              ...groupList.map((groupItem: MacroparameterSetGroup) => {
-                if (groupItem.id === group.id) {
-                  return {
-                    ...{
-                      ...group,
-                      ...{
-                        macroparameterList: [
-                          ...macroparameterList.map((article: Article) => {
-                            if (article.id === macr.id) {
-                              return { ...macr, ...{ value } };
-                            }
-                            return { ...article };
-                          }),
-                        ],
-                      },
-                    },
-                  };
-                }
-                return { ...groupItem };
-              }),
-            ],
-          },
-        },
+        macroparameterSetList: state.macroparameterSetList.map((i) => {
+          return i.id === state.selected
+            ? {
+                ...i,
+                macroparameterGroupList:
+                  i.macroparameterGroupList?.map((group) => {
+                    return group.id === action.payload.group?.id
+                      ? {
+                          ...group,
+                          macroparameterList:
+                            group.macroparameterList?.map((mp) => {
+                              return mp.id === action.payload.macroparameter?.id
+                                ? { ...mp, value }
+                                : mp;
+                            }) ?? [],
+                        }
+                      : group;
+                  }) ?? [],
+              }
+            : i;
+        }),
       };
     case ARTICLE_HIGHLIGHT:
       return {

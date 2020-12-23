@@ -44,7 +44,7 @@ export const addMacroparameterSetGroup = (
         body: JSON.stringify({
           query: `mutation createMacroparameterGroup{
             createMacroparameterGroup(
-              macroparameterSetId:${selected.id.toString()}
+              macroparameterSetId:${selected.toString()}
               caption: "${newMacroparameterSetGroup.caption}"
               name: "${newMacroparameterSetGroup.name}"
               version:${currentVersionFromSessionStorage()}

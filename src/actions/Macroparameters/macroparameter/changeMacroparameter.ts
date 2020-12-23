@@ -40,14 +40,14 @@ export const requestChangeMacroparameter = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(changeMacroparameterInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeMacroparameter{
+    // try {
+    const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
+      method: 'POST',
+      headers: headers(),
+      body: JSON.stringify({
+        query: `mutation changeMacroparameter{
             changeMacroparameter(
-              macroparameterSetId: ${selected.id.toString()}
+              macroparameterSetId: ${selected.toString()}
               macroparameterGroupId: ${group?.id?.toString()}
               macroparameterId: ${macroparameter.id}
               ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
@@ -76,24 +76,25 @@ export const requestChangeMacroparameter = (
               }
             }
           }`,
-        }),
-      });
+      }),
+    });
 
-      const body = await response.json();
-      const responseData = body?.data?.changeMacroparameter;
+    const body = await response.json();
+    const responseData = body?.data?.changeMacroparameter;
 
-      if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        const updatedMacroparameter = responseData?.macroparameter;
+    if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
+      sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+      const updatedMacroparameter = responseData?.macroparameter;
 
-        if (updatedMacroparameter) {
-          dispatch(changeMacroparameterSuccess(updatedMacroparameter as Article, group));
-        }
-      } else {
-        dispatch(changeMacroparameterError(body.message));
+      if (updatedMacroparameter) {
+        dispatch(changeMacroparameterSuccess(updatedMacroparameter as Article, group));
       }
-    } catch (e) {
-      dispatch(changeMacroparameterError(e));
+    } else {
+      dispatch(changeMacroparameterError(body.message));
     }
+    // }
+    // catch (e) {
+    //   dispatch(changeMacroparameterError(e));
+    // }
   };
 };
