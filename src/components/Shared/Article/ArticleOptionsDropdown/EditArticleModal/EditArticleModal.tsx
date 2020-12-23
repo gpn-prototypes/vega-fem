@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal, Text, TextField, usePortal } from '@gpn-prototypes/vega-ui';
 
-import { cnAddArticleModal } from '../../../GroupOptionsDropdown/AddArticleModal/cn-add-article-modal';
-import Article from '../../../../../../types/Article';
 import { validateArticle } from '../../../ErrorMessage/ValidateArticle';
 import { ErrorList, Validation } from '../../../ErrorMessage/Validation';
 
