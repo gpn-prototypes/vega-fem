@@ -1,10 +1,12 @@
-.FEM_InProgress {
+.FEM_Notifications {
   position: absolute;
   z-index: 2;
-  left: var(--space-s);
-  bottom: var(--space-xs);
+  left: 50%;
+  bottom: 0;
 
   width: 400px;
+
+  transform: translate(-50%, 0);
 
   &__SnackBar {
     padding-right: var(--space-xs);
