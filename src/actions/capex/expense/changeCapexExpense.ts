@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -88,7 +89,7 @@ export const requestChangeCapexExpense = (
       const responseData = body?.data?.changeCapexExpense;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
-      if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
         const newCapex = responseData?.capexExpense;
 
         if (newCapex) {
@@ -97,9 +98,15 @@ export const requestChangeCapexExpense = (
         }
       } else {
         dispatch(changeCapexExpenseError(body.message));
+        if (responseData?.capexExpense?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.capexExpense.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(changeCapexExpenseError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

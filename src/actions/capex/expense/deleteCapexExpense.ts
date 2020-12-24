@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -65,15 +66,22 @@ export const requestDeleteCapexExpense = (
       });
 
       const body = await response.json();
+      const responseData = body.data?.deleteCapexExpense;
 
-      if (response.status === 200 && body.data.deleteCapexExpense?.result.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexDeleteValueSuccess(capex, group));
       } else {
         dispatch(capexDeleteValueError(body.message));
+        if (responseData?.result?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.result.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(capexDeleteValueError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

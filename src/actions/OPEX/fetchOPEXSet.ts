@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { serviceConfig } from '@/helpers/sevice-config';
@@ -171,14 +172,21 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.opex;
 
-      if (response.status === 200) {
-        dispatch(OPEXSetSuccess(body.data?.opex));
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
+        dispatch(OPEXSetSuccess(responseData));
       } else {
         dispatch(OPEXSetError(body.message));
+        if (responseData?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData?.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(OPEXSetError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

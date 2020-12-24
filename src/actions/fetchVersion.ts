@@ -2,7 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { clearStores } from './clear';
-import { setNotification } from './notifications';
+import { setAlertNotification } from './notifications';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -74,12 +74,12 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         ) {
           message = 'В url не корректный UUID проекта';
         }
-        dispatch(setNotification({ message, status: 'alert' }));
+        dispatch(setAlertNotification(message));
         dispatch(VersionFetchError(body.message));
       }
     } catch (e) {
       dispatch(VersionFetchError(e));
-      dispatch(setNotification({ message: 'Серверная ошибка', status: 'alert' }));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

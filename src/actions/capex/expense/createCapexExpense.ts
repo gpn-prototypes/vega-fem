@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -75,7 +76,7 @@ export const requestCreateCapexExpense = (
       const body = await response.json();
       const responseData = body?.data?.createCapexExpense;
 
-      if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
         const capex = responseData?.capexExpense;
 
         if (capex) {
@@ -84,9 +85,15 @@ export const requestCreateCapexExpense = (
         }
       } else {
         dispatch(createCapexExpenseError(body.message));
+        if (responseData?.capexExpense?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.capexExpense.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(createCapexExpenseError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

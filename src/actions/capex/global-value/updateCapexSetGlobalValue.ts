@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { authHeader } from '@/helpers/authTokenToLocalstorage';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
@@ -75,7 +76,7 @@ export const requestUpdateCapexGlobalValue = (
       const body = await response.json();
       const responseData = body?.data?.updateCapexGlobalValue;
 
-      if (response.ok && responseData?.capexGlobalValue.__typename !== 'Error') {
+      if (response.ok && responseData?.capexGlobalValue?.__typename !== 'Error') {
         const capexGlobalValue = responseData?.capexGlobalValue;
 
         if (capexGlobalValue) {
@@ -84,9 +85,15 @@ export const requestUpdateCapexGlobalValue = (
         }
       } else {
         dispatch(capexUpdateGlobalValueError(body.message));
+        if (responseData?.capexGlobalValue?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.capexGlobalValue.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(capexUpdateGlobalValueError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

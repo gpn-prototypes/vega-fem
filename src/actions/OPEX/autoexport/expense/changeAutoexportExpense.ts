@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -77,20 +78,22 @@ export function autoexportChangeExpense(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeOpexAutoexportExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.changeOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(
-          OPEXAutoexportChangeExpenseSuccess(body.data?.changeOpexAutoexportExpense?.opexExpense),
-        );
+        dispatch(OPEXAutoexportChangeExpenseSuccess(responseData?.opexExpense));
       } else {
         dispatch(OPEXAutoexportChangeExpenseError(body.message));
+        if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.opexExpense.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(OPEXAutoexportChangeExpenseError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

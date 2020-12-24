@@ -25,6 +25,12 @@ export const setNotification = (notification: Notification): SetNotification => 
   notification,
 });
 
+export const setAlertNotification = (message: string): SetNotification =>
+  setNotification({
+    message,
+    status: 'alert',
+  });
+
 export const deleteNotification = (index: number): DeleteNotification => ({
   type: DELETE_NOTIFICATION,
   index,

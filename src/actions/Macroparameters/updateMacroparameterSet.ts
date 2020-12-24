@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -116,16 +117,22 @@ export const updateMacroparameterSet = (
       const body = await response.json();
       const responseData = body?.data?.changeMacroparameterSet;
 
-      if (response.status === 200 && responseData.macroparameterSet?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.macroparameterSet?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
         );
       } else {
         dispatch(macroparameterSetUpdateError(body.message));
+        if (responseData.macroparameterSet?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.macroparameterSet?.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(macroparameterSetUpdateError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

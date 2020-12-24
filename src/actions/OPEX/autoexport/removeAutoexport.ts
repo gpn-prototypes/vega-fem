@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -45,6 +46,7 @@ export function autoexportRemove(
         body: JSON.stringify({
           query: `mutation removeOpexAutoexport{
               removeOpexAutoexport(version:${currentVersionFromSessionStorage()} ){
+                __typename
                 ...on Error{
                   code
                   message
@@ -56,15 +58,22 @@ export function autoexportRemove(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.removeOpexAutoexport;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportRemoveSuccess(autoexport));
       } else {
         dispatch(OPEXAutoexportRemoveError(body.message));
+        if (responseData?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(OPEXAutoexportRemoveError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

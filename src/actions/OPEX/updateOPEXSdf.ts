@@ -6,6 +6,7 @@ import headers from '../../helpers/headers';
 
 import { OPEXAction } from './fetchOPEXSet';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import { serviceConfig } from '@/helpers/sevice-config';
 
@@ -61,15 +62,22 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.setOpexSdf;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.opexSdf?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
       } else {
         dispatch(OPEXSetChangeSdfError(body.message));
+        if (responseData?.opexSdf?.__typename === 'Error') {
+          dispatch(setAlertNotification(responseData.opexSdf.message));
+        } else {
+          dispatch(setAlertNotification('Серверная ошибка'));
+        }
       }
     } catch (e) {
       dispatch(OPEXSetChangeSdfError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { setAlertNotification } from '@/actions/notifications';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { serviceConfig } from '@/helpers/sevice-config';
@@ -57,9 +58,11 @@ export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         dispatch(OPEXSetChangeSuccess(body.data?.opex));
       } else {
         dispatch(OPEXSetChangeError(body.message));
+        dispatch(setAlertNotification('Серверная ошибка'));
       }
     } catch (e) {
       dispatch(OPEXSetChangeError(e));
+      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }
