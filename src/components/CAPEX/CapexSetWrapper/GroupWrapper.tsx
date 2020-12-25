@@ -11,7 +11,6 @@ import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOpt
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import Article from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
@@ -29,7 +28,7 @@ export interface CapexSetWrapperGroupProps {
   isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
-export const GroupWrapper = ({
+export const GroupWrapper: React.FC<CapexSetWrapperGroupProps> = ({
   group,
   requestAddCapex,
   updateCapexValue,
@@ -100,9 +99,9 @@ export const GroupWrapper = ({
           <GroupPlaceholder text="Пока не добавлена ни одна статья" callback={openAddCapexModal} />
         )}
         {capexes?.length > 0 &&
-          capexes.map((article: Article, index: any) => (
+          capexes.map((article: Article) => (
             <ArticleWrapper
-              key={keyGen(index)}
+              key={`article_${article.id}`}
               article={article}
               fullWidth
               onFocusCallback={articleFocusHandler}

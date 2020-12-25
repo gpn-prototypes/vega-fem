@@ -17,7 +17,6 @@ import '@/styles/BlockWrapper/BlockWrapper.css';
 import '@/styles/VegaFormCustom/VegaFormCustom.css';
 
 import { MacroparameterTableContainer } from '@/containers/Macroparameters/MacroparameterTableContainer';
-import keyGen from '@/helpers/keyGenerator';
 import macroparameterSetCategoryOptions from '@/helpers/MacroparameterSetCategoryOptions';
 import { yearsRangeOptions } from '@/helpers/nearYearsRange';
 import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
@@ -266,7 +265,7 @@ export const MacroparameterSetWrapper = ({
                   {(groups ?? []).length > 0 &&
                     groups.map((group, index) => (
                       <GroupWrapper
-                        key={keyGen(index)}
+                        key={group.id}
                         group={group}
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}

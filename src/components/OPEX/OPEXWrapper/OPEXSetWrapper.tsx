@@ -17,7 +17,6 @@ import { GroupWrapper } from './GroupWrapper';
 
 import '@/styles/BlockWrapper/BlockWrapper.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
 import Article from '@/types/Article';
@@ -50,7 +49,7 @@ export interface OPEXWrapperProps {
   highlightArticleClear: () => void;
 }
 
-export const OPEXSetWrapper = ({
+export const OPEXSetWrapper: React.FC<OPEXWrapperProps> = ({
   OPEXSetInstance,
   OPEXChangeAutoexport,
   OPEXDeleteAutoexport,
@@ -72,7 +71,7 @@ export const OPEXSetWrapper = ({
   selectedRole,
   highlightArticle,
   highlightArticleClear,
-}: OPEXWrapperProps) => {
+}) => {
   const [SDF, setSDF] = useState(OPEXSetInstance?.sdf as boolean);
   const [SDFHelper, setSDFHelper] = useState(false);
 
@@ -208,9 +207,9 @@ export const OPEXSetWrapper = ({
                 />
               )}
               {isEconomic &&
-                (OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup, index: number) => (
+                (OPEXSetInstance?.opexCaseList ?? []).map((caseItem: OPEXGroup) => (
                   <GroupWrapper
-                    key={keyGen(index)}
+                    key={caseItem.id}
                     group={caseItem}
                     removeGroup={OPEXDeleteCase}
                     changeGroupName={OPEXChangeCase}

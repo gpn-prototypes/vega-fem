@@ -11,7 +11,6 @@ import { cnGroupWrapper } from './cn-group-wrapper';
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import Article from '@/types/Article';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
@@ -117,7 +116,7 @@ export const GroupWrapper = ({
         {articles?.length > 0 &&
           articles.map((macroparameter, index) => (
             <ArticleWrapper
-              key={keyGen(index)}
+              key={macroparameter.id}
               article={macroparameter}
               updateArticleValueCallback={updateMacroparameterValueWithGroup}
               updateArticleCallback={updateMacroparameterValueWithGroup}

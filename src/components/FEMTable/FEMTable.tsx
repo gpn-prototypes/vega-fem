@@ -6,7 +6,6 @@ import { TableCell } from './TableCell';
 
 import './Table.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import Article, { ArticleValues } from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
@@ -101,14 +100,14 @@ export const FEMTable = ({
         <thead>
           <tr>
             {headers.concat(yearsRange).map((header: string | number, index: number) => (
-              <th key={keyGen(index)}>{header}</th>
+              <th key={`header_${header}`}>{header}</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {groupList.map((group: any, indexGroup: number) => (
-            <React.Fragment key={keyGen(indexGroup)}>
-              <tr key={keyGen(indexGroup)}>
+            <React.Fragment key={group.id}>
+              <tr>
                 <td />
                 <td title={group.caption} className={cnTableWrapper('node')}>
                   {group.caption}
@@ -117,11 +116,11 @@ export const FEMTable = ({
                   {(group as CapexExpenseSetGroup)?.valueTotal ?? ''}
                 </td>
                 {yearsRange.map((year) => (
-                  <td key={keyGen(year)} className={cnTableWrapper('value')} />
+                  <td key={year} className={cnTableWrapper('value')} />
                 ))}
               </tr>
               {articleList(group).map((article: any, indexArticle: number) => (
-                <tr key={keyGen(indexArticle)}>
+                <tr key={article.id}>
                   <td />
                   <td className={cnTableWrapper('sub-node')} title={article.caption}>
                     {article.caption}
@@ -129,7 +128,7 @@ export const FEMTable = ({
                   <td className={cnTableWrapper('value')}>{article[secondaryColumn]}</td>
                   {yearsRange.map((year) => (
                     <TableCell
-                      key={keyGen(year)}
+                      key={year}
                       editable={!!updateArticleValueCallback}
                       onBlur={(value: string) =>
                         updateValue(group, article, { year: +year, value: +value })

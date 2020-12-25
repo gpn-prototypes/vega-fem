@@ -10,7 +10,6 @@ import '@/styles/BlockWrapper/BlockWrapper.css';
 import '@/styles/VegaFormCustom/VegaFormCustom.css';
 
 import { CapexTableContainer } from '@/containers/CAPEX/CapexTableContainer';
-import keyGen from '@/helpers/keyGenerator';
 import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
 import Article from '@/types/Article';
@@ -32,7 +31,7 @@ export interface CapexSetWrapperProps {
   highlightArticleClear: () => void;
 }
 
-export const CapexSetWrapper = ({
+export const CapexSetWrapper: React.FC<CapexSetWrapperProps> = ({
   capexSet,
   updateCapexGlobalValue,
   addCapexSetGroup,
@@ -43,7 +42,7 @@ export const CapexSetWrapper = ({
   requestDeleteCapexGroup,
   highlightArticle,
   highlightArticleClear,
-}: CapexSetWrapperProps) => {
+}) => {
   const [isAddingGroup, setIsAddingGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [groups, setGroups] = useState(
@@ -123,7 +122,7 @@ export const CapexSetWrapper = ({
                     (globalValue: CapexSetGlobalValue, index: number) =>
                       index < 2 && (
                         <CapexGlobalValuesWrapper
-                          key={keyGen(index)}
+                          key={`cgv_${globalValue.id}`}
                           globalValue={globalValue}
                           updateCapexGlobalValue={updateCapexGlobalValue}
                         />
@@ -136,9 +135,9 @@ export const CapexSetWrapper = ({
                   className={cnVegaFormCustom('groups-row')}
                 >
                   {(groups ?? []).length > 0 &&
-                    groups.map((group, index) => (
+                    groups.map((group) => (
                       <GroupWrapper
-                        key={keyGen(index)}
+                        key={`group_${group.id}`}
                         group={group}
                         requestAddCapex={addCapex}
                         updateCapexValue={updateCapexValue}

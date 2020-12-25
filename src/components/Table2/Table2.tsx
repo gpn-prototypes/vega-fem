@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 import { Resizable } from 're-resizable';
 
-import keyGen from '../../helpers/keyGenerator';
 import { spreadValue } from '../../helpers/spreadValue';
 import { toLetters } from '../../helpers/toLetters';
 
@@ -78,7 +77,7 @@ export interface Table2Props {
   fillGroupsRowField?: string;
 }
 
-export const Table2 = ({
+export const Table2: React.FC<Table2Props> = ({
   leftSideComponent,
   valuesColumns,
   groups,
@@ -88,13 +87,11 @@ export const Table2 = ({
   containerHeight,
   fillGroupsRow,
   fillGroupsRowField,
-}: Table2Props) => {
+}) => {
   const [additionalColumnsWidth, setAdditionalColumnsWidth] = useState([minCellWidth] as number[]);
 
   useEffect(() => {
-    setAdditionalColumnsWidth(
-      (additionalColumns || [])?.map((column: TableAdditionalColumn) => minCellWidth),
-    );
+    setAdditionalColumnsWidth((additionalColumns || [])?.map(() => minCellWidth));
   }, [additionalColumns]);
 
   const onCellValueUpdate = useCallback(
@@ -161,7 +158,7 @@ export const Table2 = ({
               {additionalColumns?.map(
                 (column: TableAdditionalColumn, indexAdditionalColumn: number) => (
                   <Resizable
-                    key={keyGen(indexAdditionalColumn)}
+                    key={`${column.label}`}
                     defaultSize={{ width: 88, height: 30 }}
                     minWidth={88}
                     enable={resizeDirectionOnlyRight}
@@ -185,7 +182,7 @@ export const Table2 = ({
               )}
               {valuesColumns?.map((year, indexValue) => (
                 <Resizable
-                  key={keyGen(indexValue)}
+                  key={year}
                   defaultSize={{ width: 88, height: 30 }}
                   minWidth={88}
                   enable={resizeDirectionOnlyRight}
@@ -199,7 +196,6 @@ export const Table2 = ({
                   }
                 >
                   <TableCell2
-                    key={keyGen(indexValue)}
                     className={`
                       ${cnTableCell2('column-header')}
                       ${cnTableCell2('border-bottom')}
@@ -213,8 +209,8 @@ export const Table2 = ({
                 </Resizable>
               ))}
             </TableHeaderRow>
-            {groups?.map((group: TableGroup, index: number) => (
-              <React.Fragment key={keyGen(index)}>
+            {groups?.map((group: TableGroup) => (
+              <React.Fragment key={group.id}>
                 <TableHeaderRow className={`${cnTableHeaderRow('full-width')}`}>
                   {additionalColumns?.map(
                     (column: TableAdditionalColumn, additionalColumnsIndex: number) => {
@@ -222,7 +218,7 @@ export const Table2 = ({
                         return (
                           <TableCell2
                             format={spreadValue}
-                            key={keyGen(additionalColumnsIndex)}
+                            key={`a_${column.label}`}
                             width={additionalColumnsWidth[additionalColumnsIndex]}
                             className="additional-column-cell"
                           />
@@ -231,7 +227,7 @@ export const Table2 = ({
                       return (
                         <TableCell2
                           format={spreadValue}
-                          key={keyGen(additionalColumnsIndex)}
+                          key={`b_${column.label}`}
                           width={additionalColumnsWidth[additionalColumnsIndex]}
                           className={`
                             ${cnTableCell2('value')}
@@ -250,7 +246,7 @@ export const Table2 = ({
                       return (
                         <TableCell2
                           format={spreadValue}
-                          key={keyGen(valuesColumnsIndex)}
+                          key={`a_${year}`}
                           width={additionalColumnsWidth[valuesColumnsIndex]}
                           className="additional-column-cell"
                         />
@@ -259,7 +255,7 @@ export const Table2 = ({
                     return (
                       <TableCell2
                         format={spreadValue}
-                        key={keyGen(valuesColumnsIndex)}
+                        key={`b_${year}`}
                         width={additionalColumnsWidth[valuesColumnsIndex]}
                         className={`
                             ${cnTableCell2('value')}
@@ -279,16 +275,13 @@ export const Table2 = ({
                     );
                   })}
                 </TableHeaderRow>
-                {group?.articleList?.map((article: TableArticle, groupIndex: number) => (
-                  <TableHeaderRow
-                    className={`${cnTableHeaderRow('full-width')}`}
-                    key={keyGen(groupIndex)}
-                  >
+                {group?.articleList?.map((article: TableArticle) => (
+                  <TableHeaderRow className={`${cnTableHeaderRow('full-width')}`} key={article.id}>
                     {additionalColumns?.map(
                       (column: TableAdditionalColumn, additionalColumnsIndex: number) => (
                         <TableCell2
                           format={spreadValue}
-                          key={keyGen(additionalColumnsIndex)}
+                          key={column.label}
                           className={`
                             ${cnTableCell2('value')}
                             ${cnTableCell2('border-right')}
@@ -300,10 +293,10 @@ export const Table2 = ({
                         />
                       ),
                     )}
-                    {valuesColumns?.map((year: string, valuesColumnsIndex: number) => (
+                    {valuesColumns?.map((year: string) => (
                       <TableCell2
                         format={spreadValue}
-                        key={keyGen(valuesColumnsIndex)}
+                        key={year}
                         className={`${cnTableCell2('value')} ${cnTableCell2('border-right')}`}
                         editable
                         onBlur={(value: number) => onCellValueUpdate(article, group, year, value)}

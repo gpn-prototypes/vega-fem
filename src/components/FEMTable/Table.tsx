@@ -9,7 +9,6 @@ import Article, {
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 import { OPEXGroup, OPEXPresetGroup } from '@/types/OPEX/OPEXGroup';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
-import keyGen from '@/helpers/keyGenerator';
 import { toLetters } from '@/helpers/toLetters';
 
 import { TableCell } from './TableCell/TableCell';
@@ -190,10 +189,10 @@ export const Table = ({
         <thead>
           <tr>
             {headers.map((header: string | number) => (
-              <th key={keyGen(header)}>{header}</th>
+              <th key={header}>{header}</th>
             ))}
             {yearsRange.map((header: string | number, index: number) => (
-              <th key={keyGen(header)} className={cnTableWrapper('resizable-header')}>
+              <th key={header} className={cnTableWrapper('resizable-header')}>
                 <Text view="ghost" size="xs">
                   {toLetters(index + 1)}
                 </Text>
@@ -210,7 +209,7 @@ export const Table = ({
         </thead>
         <tbody>
           {groupList?.map((group: any, indexGroup: number) => (
-            <React.Fragment key={keyGen(Math.random())}>
+            <React.Fragment key={group.id}>
               <tr>
                 <td />
                 <td
@@ -224,13 +223,13 @@ export const Table = ({
                   {(group as CapexExpenseSetGroup)?.valueTotal ?? ''}
                 </td>
                 {yearsRange.map((year, index: number) => (
-                  <td key={keyGen(year)} className={cnTableWrapper('value')} />
+                  <td key={year} className={cnTableWrapper('value')} />
                 ))}
               </tr>
               {articleList(group).map((article: any, indexArticle: number) => {
                 if (visibleClass(indexGroup)) {
                   return (
-                    <tr key={keyGen(Math.random())}>
+                    <tr key={article.id}>
                       <td />
                       <td className={cnTableWrapper('sub-node')} title={article.caption}>
                         {article.caption}
@@ -238,7 +237,7 @@ export const Table = ({
                       <td className={cnTableWrapper('value')}>{article[secondaryColumn]}</td>
                       {yearsRange.map((year, index: number) => (
                         <TableCell
-                          key={keyGen(year)}
+                          key={year}
                           editable={!!updateArticleValueCallback}
                           onBlur={(value: string) =>
                             updateValue(group, article, { year: +year, value: +value })
