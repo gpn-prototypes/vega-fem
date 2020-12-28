@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_OPEX_CASE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
@@ -37,50 +36,28 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXChangeCaseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeOpexCase{
-              changeOpexCase(
-                caseId:"${opexCase.id}",
-                caption:"${opexCase.caption}",
-                yearStart:${opexCase.yearStart.toString()},
-                yearEnd:${opexCase.yearEnd.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexCase{
-                  __typename
-                  ... on OpexExpenseGroup{
-                    yearStart
-                    yearEnd
-                    id
-                    name
-                    caption
-                  }
-                  ...on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: CHANGE_OPEX_CASE,
+      variables: {
+        caseId: opexCase.id,
+        caption: opexCase.caption,
+        yearStart: opexCase.yearStart.toString(),
+        yearEnd: opexCase.yearEnd.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeOpexCase;
+        if (responseData && responseData.opexCase?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXChangeCaseSuccess(responseData.opexCase));
+        } else {
+          dispatch(OPEXChangeCaseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXChangeCaseError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.changeOpexCase;
-
-      if (response.status === 200 && responseData?.opexCase?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXChangeCaseSuccess(responseData.opexCase));
-      } else {
-        dispatch(OPEXChangeCaseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXChangeCaseError(e));
-    }
   };
 }

@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_AUTOEXPORT_EXPENSE_YEAR_VALUE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article, { ArticleValues } from '@/types/Article';
 
 export const OPEX_AUTOEXPORT_CHANGE_EXPENSE_YEAR_VALUE_INIT =
@@ -45,42 +44,27 @@ export function autoexportChangeExpenseYearValue(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAutoexportChangeExpenseYearValueInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation setOpexAutoexportExpenseYearValue{
-              setOpexAutoexportExpenseYearValue(
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: CHANGE_AUTOEXPORT_EXPENSE_YEAR_VALUE,
+      variables: {
+        expenseId: article.id?.toString(),
+        year: value.year?.toString(),
+        value: value.value?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.setOpexAutoexportExpenseYearValue;
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
+        } else {
+          dispatch(OPEXAutoexportChangeExpenseYearValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXAutoexportChangeExpenseYearValueError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.setOpexAutoexportExpenseYearValue;
-
-      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
-      } else {
-        dispatch(OPEXAutoexportChangeExpenseYearValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXAutoexportChangeExpenseYearValueError(e));
-    }
   };
 }

@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from './fetchCAPEX';
 
+import { CREATE_CAPEX_EXPENSE_GROUP } from '@/api/capex/mutations';
+import { mutate } from '@/api/graphql-request';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_EXPENSE_GROUP_ADD_INIT = 'CAPEX_EXPENSE_GROUP_ADD_INIT';
@@ -34,54 +33,35 @@ export const createCapexExpenseGroup = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(capexExpenseSetGroupAddInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation createCapexExpenseGroup{
-              createCapexExpenseGroup(
-                caption:"${newCapexSetGroup.caption}"
-              version:${currentVersionFromSessionStorage()}
-              ){
-                capexExpenseGroup{
-                  __typename
-                  ... on CapexExpenseGroup{
-                    id
-                    name
-                    caption
-                  }
-                  ... on Error {
-                      code
-                      message
-                      details
-                      payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: CREATE_CAPEX_EXPENSE_GROUP,
+      variables: {
+        caption: newCapexSetGroup.caption,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const createdCapexGroup = response.data?.createCapexExpenseGroup;
+
+        if (createdCapexGroup && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          const newGroup = createdCapexGroup?.capexExpenseGroup;
+
+          if (newGroup)
+            dispatch(
+              capexExpenseGroupAddSuccess({
+                ...newGroup,
+                ...{ valueTotal: 0 },
+                ...{ capexExpenseList: [] },
+              } as CapexExpenseSetGroup),
+            );
+        } else {
+          dispatch(capexExpenseGroupAddError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(capexExpenseGroupAddError(e));
       });
-
-      const body = await response.json();
-      const createdCapexGroup = body?.data?.createCapexExpenseGroup;
-
-      if (response.status === 200 && createdCapexGroup?.capexExpenseGroup?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        const newGroup = createdCapexGroup?.capexExpenseGroup;
-        if (newGroup)
-          dispatch(
-            capexExpenseGroupAddSuccess({
-              ...newGroup,
-              ...{ valueTotal: 0 },
-              ...{ capexExpenseList: [] },
-            } as CapexExpenseSetGroup),
-          );
-      } else {
-        dispatch(capexExpenseGroupAddError(body.message));
-      }
-    } catch (e) {
-      dispatch(capexExpenseGroupAddError(e));
-    }
   };
 };

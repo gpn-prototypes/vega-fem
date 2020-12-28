@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { DELETE_MKOS_EXPENSE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 
 export const OPEX_MKOS_DELETE_EXPENSE_INIT = 'OPEX_MKOS_DELETE_EXPENSE_INIT';
@@ -36,43 +35,26 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSDeleteExpenseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteOpexMkosExpense{
-              deleteOpexMkosExpense(
-                expenseId: 2,
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
-      });
-      const body = await response.json();
-      const responseData = body?.data?.deleteOpexMkosExpense;
+    mutate({
+      query: DELETE_MKOS_EXPENSE,
+      variables: {
+        expenseId: 2,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteOpexMkosExpense;
 
-      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSDeleteExpenseSuccess(article));
-      } else {
-        dispatch(OPEXMKOSDeleteExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXMKOSDeleteExpenseError(e));
-    }
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXMKOSDeleteExpenseSuccess(article));
+        } else {
+          dispatch(OPEXMKOSDeleteExpenseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXMKOSDeleteExpenseError(e));
+      });
   };
 }

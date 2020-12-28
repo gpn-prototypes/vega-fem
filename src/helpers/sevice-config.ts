@@ -22,9 +22,14 @@ export const serviceConfig: ServiceConfig = {
   fetchPolicy: 'no-cache',
 };
 
-export async function initServiceConfig({ identity, projectId }: ServiceInitProps): Promise<void> {
+export async function initServiceConfig({
+  identity,
+  client,
+  projectId,
+}: ServiceInitProps): Promise<void> {
   serviceConfig.identity = identity;
   serviceConfig.projectId = projectId;
+  serviceConfig.client = client;
 
   serviceConfig.identityToken = await serviceConfig.identity?.getToken();
 }

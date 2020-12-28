@@ -13,7 +13,12 @@ const ProjectContext = React.createContext<ProjectContextProps>({
   initialized: false,
 });
 
-const ProjectProvider: React.FC<ShellToolkit> = ({ children, identity, currentProject }) => {
+const ProjectProvider: React.FC<ShellToolkit> = ({
+  graphqlClient,
+  children,
+  identity,
+  currentProject,
+}) => {
   const [initialized, setInitialized] = useState(false);
 
   const projectId = currentProject?.get()?.vid || '';
@@ -21,6 +26,7 @@ const ProjectProvider: React.FC<ShellToolkit> = ({ children, identity, currentPr
   useEffect(() => {
     async function init() {
       await initServiceConfig({
+        client: graphqlClient,
         projectId,
         identity,
       });
@@ -29,7 +35,7 @@ const ProjectProvider: React.FC<ShellToolkit> = ({ children, identity, currentPr
     init();
 
     setInitialized(true);
-  }, [identity, projectId]);
+  }, [identity, graphqlClient, projectId]);
 
   return (
     <ProjectContext.Provider value={{ projectId, initialized }}>{children}</ProjectContext.Provider>

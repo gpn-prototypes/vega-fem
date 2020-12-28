@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_OPEX_CASE_EXPENSE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
@@ -40,56 +39,30 @@ export function caseChangeExpense(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXCaseChangeExpenseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeOpexCaseExpense{
-              changeOpexCaseExpense(
-                caseId: ${group.id?.toString()},
-                expenseId: ${article.id?.toString()},
-                name: "${article.name?.toString()}",
-                caption: "${article.caption?.toString()}",
-                unit: "${article.unit?.toString()}",
-                ${article.value ? `value:${article.value},` : ''},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on OpexExpense{
-                    id,
-                    name,
-                    caption,
-                    unit,
-                    valueTotal,
-                    value{
-                      year,
-                      value
-                    }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: CHANGE_OPEX_CASE_EXPENSE,
+      variables: {
+        caseId: group.id?.toString(),
+        expenseId: article.id?.toString(),
+        name: article.name?.toString(),
+        caption: article.caption?.toString(),
+        unit: article.unit?.toString(),
+        value: article.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeOpexCaseExpense;
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXCaseChangeExpenseSuccess(group, responseData.opexExpense));
+        } else {
+          dispatch(OPEXCaseChangeExpenseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXCaseChangeExpenseError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.changeOpexCaseExpense;
-
-      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXCaseChangeExpenseSuccess(group, responseData.opexExpense));
-      } else {
-        dispatch(OPEXCaseChangeExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXCaseChangeExpenseError(e));
-    }
   };
 }

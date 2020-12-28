@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_MACROPARAMETER_SET_GROUP } from '@/api/macroparameters';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
 export const MACROPARAM_SET_GROUP_CHANGE_INIT = 'MACROPARAM_SET_GROUP_CHANGE_INIT';
@@ -37,51 +36,34 @@ export const changeMacroparameterSetGroup = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(macroparameterSetGroupChangeInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation {
-              changeMacroparameterGroup(
-              macroparameterSetId:"${selected.toString()}"
-              macroparameterGroupId:"${newMacroparameterSetGroup.id}"
-              caption:"${newMacroparameterSetGroup.caption}"
-              version:${currentVersionFromSessionStorage()}){
-                macroparameterGroup{
-                  __typename
-                  ... on MacroparameterGroup{
-                    name
-                    id
-                    caption
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
-      });
+    mutate({
+      query: CHANGE_MACROPARAMETER_SET_GROUP,
+      variables: {
+        macroparameterSetId: selected?.id?.toString(),
+        macroparameterGroupId: newMacroparameterSetGroup?.id?.toString(),
+        caption: newMacroparameterSetGroup.caption,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeMacroparameterGroup;
 
-      const body = await response.json();
-      const responseData = body?.data?.changeMacroparameterGroup;
+        if (responseData && responseData?.macroparameterGroup?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          const newGroup = responseData?.macroparameterGroup;
 
-      if (response.ok && responseData?.macroparameterGroup?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        const newGroup = responseData?.macroparameterGroup;
-
-        if (newGroup) {
-          dispatch(macroparameterSetGroupChangeSuccess({ ...newGroup } as MacroparameterSetGroup));
+          if (newGroup) {
+            dispatch(
+              macroparameterSetGroupChangeSuccess({ ...newGroup } as MacroparameterSetGroup),
+            );
+          }
+        } else {
+          dispatch(macroparameterSetGroupChangeError('Error'));
         }
-      } else {
-        dispatch(macroparameterSetGroupChangeError(body.message));
-      }
-    } catch (e) {
-      dispatch(macroparameterSetGroupChangeError(e));
-    }
+      })
+      .catch((e) => {
+        dispatch(macroparameterSetGroupChangeError(e));
+      });
   };
 };

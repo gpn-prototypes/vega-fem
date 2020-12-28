@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_OPEX_CASE_EXPENSE_YEAR_VALUE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article, { ArticleValues } from '@/types/Article';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
@@ -47,47 +46,28 @@ export function opexChangeCaseExpenseYearValue(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXChangeCaseExpenseYearValueInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation setOpexCaseExpenseYearValue{
-              setOpexCaseExpenseYearValue(
-                caseId:${group.id},
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                totalValueByYear{
-                  year,
-                  value
-                }
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: CHANGE_OPEX_CASE_EXPENSE_YEAR_VALUE,
+      variables: {
+        caseId: group.id,
+        expenseId: article.id?.toString(),
+        year: value.year?.toString(),
+        value: value.value?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.setOpexCaseExpenseYearValue;
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
+        } else {
+          dispatch(OPEXChangeCaseExpenseYearValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXChangeCaseExpenseYearValueError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.setOpexCaseExpenseYearValue;
-
-      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
-      } else {
-        dispatch(OPEXChangeCaseExpenseYearValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXChangeCaseExpenseYearValueError(e));
-    }
   };
 }

@@ -1,9 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { query } from '@/api/graphql-request';
+import { CHANGE_OPEX_SET } from '@/api/opex';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
 
 export const OPEX_SET_CHANGE_INIT = 'OPEX_SET_CHANGE_INIT';
@@ -36,30 +35,19 @@ export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXSetChangeInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query:
-            '{opex{' +
-            'hasAutoexport,' +
-            'autoexport{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            'hasMkos,' +
-            'mkos{yearStart, yearEnd, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            'opexCaseList{yearStart, yearEnd, id, name, caption, opexExpenseList{id, name, caption, unit, valueTotal, value{year, value}}}' +
-            '}}',
-        }),
+    query({
+      query: CHANGE_OPEX_SET,
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        if (response?.data?.opex) {
+          dispatch(OPEXSetChangeSuccess(response.data?.opex));
+        } else {
+          dispatch(OPEXSetChangeError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXSetChangeError(e));
       });
-      const body = await response.json();
-
-      if (response.ok) {
-        dispatch(OPEXSetChangeSuccess(body.data?.opex));
-      } else {
-        dispatch(OPEXSetChangeError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXSetChangeError(e));
-    }
   };
 }

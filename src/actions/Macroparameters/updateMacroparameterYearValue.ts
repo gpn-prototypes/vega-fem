@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
+import { mutate } from '@/api/graphql-request';
+import { UPDATE_MACROPARAMETER_YEAR_VALUE } from '@/api/macroparameters';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Macroparameter, { ArticleValues } from '@/types/Article';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
@@ -42,45 +41,30 @@ export const requestUpdateMacroparameterYearValue = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(macroparameterUpdateYearValueInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation setMacroparameterYearValue{
-              setMacroparameterYearValue(
-                macroparameterSetId: ${selected.toString()}
-                macroparameterGroupId: ${group?.id?.toString()}
-                macroparameterId: ${macroparameter.id}
-                year: ${value.year}
-                value: ${value.value}
-                version:${currentVersionFromSessionStorage()}
-              ){
-                 macroparameter{
-                    __typename
-                    ... on Error{
-                      code
-                      message
-                      details
-                      payload
-                    }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: UPDATE_MACROPARAMETER_YEAR_VALUE,
+      variables: {
+        macroparameterSetId: selected?.id?.toString(),
+        macroparameterGroupId: group?.id?.toString(),
+        macroparameterId: macroparameter?.id?.toString(),
+        year: value.year,
+        value: value.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.setMacroparameterYearValue;
+
+        if (responseData && responseData?.macroparameter?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
+        } else {
+          dispatch(macroparameterUpdateYearValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(macroparameterUpdateYearValueError(e));
       });
-
-      const body = await response.json();
-      const responseData = body?.data?.setMacroparameterYearValue;
-
-      if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
-      } else {
-        dispatch(macroparameterUpdateYearValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(macroparameterUpdateYearValueError(e));
-    }
   };
 };

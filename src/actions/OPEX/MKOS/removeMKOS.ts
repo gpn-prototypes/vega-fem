@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { REMOVE_MKOS } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_MKOS_REMOVE_INIT = 'OPEX_MKOS_REMOVE_INIT';
@@ -36,35 +35,23 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSRemoveInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation removeOpexMkos{
-              removeOpexMkos(version:${currentVersionFromSessionStorage()} ){
-                __typename
-                ...on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-               }
-            }`,
-        }),
+    mutate({
+      query: REMOVE_MKOS,
+      variables: {
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        if (!response?.data?.removeOpexMkos) {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXMKOSRemoveSuccess(MKOS));
+        } else {
+          dispatch(OPEXMKOSRemoveError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXMKOSRemoveError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.removeOpexMkos;
-
-      if (response.status === 200 && responseData?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSRemoveSuccess(MKOS));
-      } else {
-        dispatch(OPEXMKOSRemoveError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXMKOSRemoveError(e));
-    }
   };
 }

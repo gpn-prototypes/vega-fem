@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from './fetchCAPEX';
 
+import { DELETE_CAPEX_EXPENSE_GROUP } from '@/api/capex';
+import { mutate } from '@/api/graphql-request';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
 export const CAPEX_EXPENSE_GROUP_DELETE_INIT = 'CAPEX_EXPENSE_GROUP_DELETE_INIT';
@@ -34,41 +33,25 @@ export const deleteCapexExpenseGroup = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(capexExpenseGroupDeleteInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteCapexExpenseGroup{
-            deleteCapexExpenseGroup(
-              capexExpenseGroupId:"${capexSetGroup.id}",
-              version:${currentVersionFromSessionStorage()}
-            ){
-              result{
-                __typename
-                ...on Result{
-                  vid
-                }
-                ... on Error{
-                  code
-                  message
-                }
-              }
-            }
-          }`,
-        }),
+    mutate({
+      query: DELETE_CAPEX_EXPENSE_GROUP,
+      variables: {
+        capexExpenseGroupId: capexSetGroup.id,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteCapexExpenseGroup;
+        if (responseData && responseData.result?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
+        } else {
+          dispatch(capexExpenseGroupDeleteError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(capexExpenseGroupDeleteError(e));
       });
-
-      const body = await response.json();
-      const responseData = body.data?.deleteCapexExpenseGroup;
-      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
-      } else {
-        dispatch(capexExpenseGroupDeleteError(body.message));
-      }
-    } catch (e) {
-      dispatch(capexExpenseGroupDeleteError(e));
-    }
   };
 };

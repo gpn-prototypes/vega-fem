@@ -1,9 +1,9 @@
+import { NetworkStatus } from '@apollo/client';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { FETCH_CAPEX } from '@/api/capex';
+import { query } from '@/api/graphql-request';
 import CapexSet from '@/types/CAPEX/CapexSet';
 
 export const CAPEX_FETCH = 'CAPEX_FETCH';
@@ -34,93 +34,19 @@ const capexError = (message: any): CapexesAction => ({
 export function fetchCapex(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(capexFetch());
-
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `{
-                capex{
-                  __typename
-                  ... on Capex{
-                    years
-                    yearStart
-                    capexGlobalValueList{
-                      __typename
-                      ... on CapexGlobalValueList{
-                        capexGlobalValueList{
-                          id
-                          name
-                          unit
-                          caption
-                          value
-                        }
-                      }
-                      ... on Error{
-                        code
-                        message
-                      }
-                    },
-                    capexExpenseGroupList{
-                      __typename
-                      ...on CapexExpenseGroupList{
-                        capexExpenseGroupList{
-                          id
-                          name
-                          caption
-                          valueTotal
-                          createdAt
-                          totalValueByYear{
-                            year
-                            value
-                          }
-                          capexExpenseList{
-                            __typename
-                            ... on CapexExpenseList{
-                                capexExpenseList{
-                                    id
-                                    name
-                                    caption
-                                    unit
-                                    valueTotal
-                                    createdAt
-                                    value{
-                                        year
-                                        value
-                                    }
-                                }
-                            }
-                            ...on Error{
-                                code
-                                message
-                            }
-                          }
-                        }
-                      }
-                      ...on Error{
-                        code
-                        message
-                      }
-                    }
-                  }
-                  ... on Error{
-                  code
-                  message
-                  }
-                }
-              }`,
-        }),
+    query({
+      query: FETCH_CAPEX,
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        if (response?.networkStatus === NetworkStatus.ready && response.data?.capex) {
+          dispatch(capexSuccess(response.data?.capex));
+        } else if (!response?.loading) {
+          dispatch(capexError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(capexError(e));
       });
-      const body = await response.json();
-
-      if (response.status === 200) {
-        dispatch(capexSuccess(body.data?.capex));
-      } else {
-        dispatch(capexError(body.message));
-      }
-    } catch (e) {
-      dispatch(capexError(e));
-    }
   };
 }
