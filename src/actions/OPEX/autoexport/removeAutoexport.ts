@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { REMOVE_AUTOEXPORT } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
 export const OPEX_AUTOEXPORT_REMOVE_INIT = 'OPEX_AUTOEXPORT_REMOVE_INIT';
@@ -38,35 +37,23 @@ export function autoexportRemove(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAutoexportRemoveInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation removeOpexAutoexport{
-              removeOpexAutoexport(version:${currentVersionFromSessionStorage()} ){
-                __typename
-                ...on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: REMOVE_AUTOEXPORT,
+      variables: {
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        if (!response?.data?.removeOpexAutoexport) {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXAutoexportRemoveSuccess(autoexport));
+        } else {
+          dispatch(OPEXAutoexportRemoveError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXAutoexportRemoveError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.removeOpexAutoexport;
-
-      if (response.status === 200 && responseData?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAutoexportRemoveSuccess(autoexport));
-      } else {
-        dispatch(OPEXAutoexportRemoveError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXAutoexportRemoveError(e));
-    }
   };
 }

@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from '../macroparameterSetList';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_MACROPARAMETER } from '@/api/macroparameters';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
@@ -40,60 +39,35 @@ export const requestChangeMacroparameter = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(changeMacroparameterInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeMacroparameter{
-              changeMacroparameter(
-                macroparameterSetId: ${selected.toString()}
-                macroparameterGroupId: ${group?.id?.toString()}
-                macroparameterId: ${macroparameter.id}
-                ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
-                ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
-                ${macroparameter.value ? `value:${macroparameter.value},` : ''}
-                version:${currentVersionFromSessionStorage()}
-              ){
-                macroparameter{
-                __typename
-                  ... on Macroparameter{
-                    name
-                    id
-                    caption
-                    unit
-                    value{
-                      year
-                      value
-                    }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
-      });
+    mutate({
+      query: CHANGE_MACROPARAMETER,
+      variables: {
+        macroparameterSetId: selected?.id?.toString(),
+        macroparameterGroupId: group?.id?.toString(),
+        macroparameterId: macroparameter?.id?.toString(),
+        caption: macroparameter.caption,
+        unit: macroparameter.unit,
+        value: macroparameter.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeMacroparameter;
 
-      const body = await response.json();
-      const responseData = body?.data?.changeMacroparameter;
+        if (responseData && responseData?.macroparameter?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          const updatedMacroparameter = responseData?.macroparameter;
 
-      if (response.status === 200 && responseData?.macroparameter?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        const updatedMacroparameter = responseData?.macroparameter;
-
-        if (updatedMacroparameter) {
-          dispatch(changeMacroparameterSuccess(updatedMacroparameter as Article, group));
+          if (updatedMacroparameter) {
+            dispatch(changeMacroparameterSuccess(updatedMacroparameter as Article, group));
+          }
+        } else {
+          dispatch(changeMacroparameterError('Error'));
         }
-      } else {
-        dispatch(changeMacroparameterError(body.message));
-      }
-    } catch (e) {
-      dispatch(changeMacroparameterError(e));
-    }
+      })
+      .catch((e) => {
+        dispatch(changeMacroparameterError(e));
+      });
   };
 };

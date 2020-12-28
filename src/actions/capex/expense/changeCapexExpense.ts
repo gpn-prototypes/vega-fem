@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { CHANGE_CAPEX_EXPENSE } from '@/api/capex';
+import { mutate } from '@/api/graphql-request';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article, { ArticleValues } from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
@@ -40,66 +39,36 @@ export const requestChangeCapexExpense = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(changeCapexExpenseInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeCapexExpense{
-            changeCapexExpense(
-              capexExpenseGroupId:"${group?.id}",
-              capexExpenseId:${capex.id},
-              ${capex.caption ? `caption:"${capex.caption}",` : ''}
-              ${capex.name ? `name:"${capex.name}",` : ''}
-              ${capex.unit ? `unit:"${capex.unit}",` : 'unit:""'}
-              ${capex.value ? `value:${capex.value},` : ''}
-              version: ${currentVersionFromSessionStorage()}
-            ){
-              capexExpense{
-                __typename
-                ... on CapexExpense{
-                  id
-                  name
-                  caption
-                  valueTotal
-                  unit
-                  value{
-                    year
-                    value
-                  }
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-              }
-              totalValueByYear{
-                year
-                value
-              }
-            }
-          }`,
-        }),
-      });
+    mutate({
+      query: CHANGE_CAPEX_EXPENSE,
+      variables: {
+        capexExpenseGroupId: `${group?.id}`,
+        capexExpenseId: `${capex.id}`,
+        caption: capex.caption,
+        name: capex.name,
+        unit: capex.unit,
+        value: capex.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeCapexExpense;
+        const groupTotalValueByYear = responseData?.totalValueByYear;
 
-      const body = await response.json();
-      const responseData = body?.data?.changeCapexExpense;
-      const groupTotalValueByYear = responseData?.totalValueByYear;
+        if (responseData && responseData?.capexExpense?.__typename !== 'Error') {
+          const newCapex = responseData.capexExpense;
 
-      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
-        const newCapex = responseData?.capexExpense;
-
-        if (newCapex) {
-          dispatch(changeCapexExpenseSuccess(newCapex as Article, group, groupTotalValueByYear));
-          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          if (newCapex) {
+            dispatch(changeCapexExpenseSuccess(newCapex as Article, group, groupTotalValueByYear));
+            sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          }
+        } else {
+          dispatch(changeCapexExpenseError('Error'));
         }
-      } else {
-        dispatch(changeCapexExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(changeCapexExpenseError(e));
-    }
+      })
+      .catch((e) => {
+        dispatch(changeCapexExpenseError(e));
+      });
   };
 };

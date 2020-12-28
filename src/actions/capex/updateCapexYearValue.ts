@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from './fetchCAPEX';
 
+import { UPDATE_CAPEX_YEAR_VALUE } from '@/api/capex/mutations';
+import { mutate } from '@/api/graphql-request';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article, { ArticleValues } from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
@@ -42,57 +41,32 @@ export const requestUpdateCapexYearValue = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(capexUpdateYearValueInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation setCapexExpenseYearValue {
-            setCapexExpenseYearValue(
-              capexExpenseGroupId: ${group?.id?.toString()}
-              capexExpenseId: ${capex.id}
-              year: ${value.year}
-              value: ${value.value}
-              version:${currentVersionFromSessionStorage()}
-            ) {
-              totalValueByYear{
-                year
-                value
-              }
-              capexExpense {
-                __typename
-                ... on CapexExpense {
-                  value {
-                    year
-                    value
-                  }
-                }
-                ... on Error {
-                  code
-                  message
-                  details
-                  payload
-                }
-              }
-            }
-          }`,
-        }),
+    mutate({
+      query: UPDATE_CAPEX_YEAR_VALUE,
+      variables: {
+        capexExpenseGroupId: group?.id?.toString(),
+        capexExpenseId: capex.id,
+        year: value.year,
+        value: value.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.setCapexExpenseYearValue;
+        const groupTotalValueByYear = responseData?.totalValueByYear;
+
+        if (responseData && groupTotalValueByYear?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(
+            capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
+          );
+        } else {
+          dispatch(capexUpdateYearValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(capexUpdateYearValueError(e));
       });
-
-      const body = await response.json();
-      const responseData = body?.data?.setCapexExpenseYearValue;
-      const groupTotalValueByYear = responseData?.totalValueByYear;
-
-      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(
-          capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
-        );
-      } else {
-        dispatch(capexUpdateYearValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(capexUpdateYearValueError(e));
-    }
   };
 };

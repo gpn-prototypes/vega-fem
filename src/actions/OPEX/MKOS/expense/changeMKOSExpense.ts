@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_MKOS_EXPENSE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 
 export const OPEX_MKOS_CHANGE_EXPENSE_INIT = 'OPEX_MKOS_CHANGE_EXPENSE_INIT';
@@ -36,55 +35,30 @@ export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, 
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSChangeExpenseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeOpexMkosExpense{
-              changeOpexMkosExpense(
-                expenseId: ${article.id?.toString()},
-                name: "${article.name?.toString()}",
-                caption: "${article.caption?.toString()}",
-                unit: "${article.unit?.toString()}",
-                ${article.value ? `value:${article.value},` : ''},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on OpexExpense{
-                    id,
-                    name,
-                    caption,
-                    unit,
-                    valueTotal,
-                    value{
-                      year,
-                      value
-                    }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
-      });
-      const body = await response.json();
-      const responseData = body?.data?.changeOpexMkosExpense;
+    mutate({
+      query: CHANGE_MKOS_EXPENSE,
+      variables: {
+        expenseId: article.id?.toString(),
+        name: article.name?.toString(),
+        caption: article.caption?.toString(),
+        unit: article.unit?.toString(),
+        value: article.value,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeOpexMkosExpense;
 
-      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeExpenseSuccess(responseData.opexExpense));
-      } else {
-        dispatch(OPEXMKOSChangeExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXMKOSChangeExpenseError(e));
-    }
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXMKOSChangeExpenseSuccess(responseData.opexExpense));
+        } else {
+          dispatch(OPEXMKOSChangeExpenseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXMKOSChangeExpenseError(e));
+      });
   };
 }

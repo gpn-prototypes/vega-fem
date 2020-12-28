@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from '../fetchCAPEX';
 
+import { DELETE_CAPEX_EXPENSE } from '@/api/capex';
+import { mutate } from '@/api/graphql-request';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 import CapexExpenseSetGroup from '@/types/CAPEX/CapexExpenseSetGroup';
 
@@ -36,45 +35,27 @@ export const requestDeleteCapexExpense = (
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(capexDeleteValueInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteCapexExpense{
-            deleteCapexExpense(
-              capexExpenseGroupId:"${group?.id?.toString()}",
-              capexExpenseId:"${capex.id}"
-              version: ${currentVersionFromSessionStorage()}
-            ){
-              result{
-                __typename
-                ... on Result{
-                  vid
-                }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
-              }
-            }
-        }`,
-        }),
+    mutate({
+      query: DELETE_CAPEX_EXPENSE,
+      variables: {
+        capexExpenseGroupId: group?.id?.toString(),
+        capexExpenseId: capex?.id?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteCapexExpense;
+
+        if (responseData && responseData?.result?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(capexDeleteValueSuccess(capex, group));
+        } else {
+          dispatch(capexDeleteValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(capexDeleteValueError(e));
       });
-
-      const body = await response.json();
-      const responseData = body.data?.deleteCapexExpense;
-
-      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(capexDeleteValueSuccess(capex, group));
-      } else {
-        dispatch(capexDeleteValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(capexDeleteValueError(e));
-    }
   };
 };

@@ -18,7 +18,7 @@ interface ProjectContextProps extends MatchedData {
 }
 
 interface ProjectProviderProps {
-  graphqlClient?: ApolloClient<NormalizedCacheObject>;
+  graphqlClient: ApolloClient<NormalizedCacheObject>;
   identity?: Identity;
 }
 
@@ -27,7 +27,7 @@ const ProjectContext = React.createContext<ProjectContextProps>({
   initialized: false,
 });
 
-const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, identity }) => {
+const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, graphqlClient, identity }) => {
   const [initialized, setInitialized] = useState(false);
   const matchedData = defaultTo<MatchedData>(
     useRouteMatch<MatchedData>(ROUTE_MATCH_PROJECT_ID)?.params,
@@ -39,6 +39,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, identity })
   useEffect(() => {
     async function init() {
       await initServiceConfig({
+        client: graphqlClient,
         projectId: matchedData.projectId,
         identity,
       });
@@ -47,7 +48,7 @@ const ProjectProvider: React.FC<ProjectProviderProps> = ({ children, identity })
     init();
 
     setInitialized(true);
-  }, [identity, matchedData]);
+  }, [identity, graphqlClient, matchedData]);
 
   return (
     <ProjectContext.Provider value={{ ...matchedData, identity, initialized }}>

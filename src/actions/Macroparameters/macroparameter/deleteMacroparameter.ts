@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from '../macroparameterSetList';
 
+import { mutate } from '@/api/graphql-request';
+import { DELETE_MACROPARAMETER } from '@/api/macroparameters';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
@@ -40,46 +39,27 @@ export const requestDeleteMacroparameter = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(macroparameterDeleteInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteMacroparameter{
-              deleteMacroparameter(
-                macroparameterSetId:"${selected.toString()}",
-                macroparameterGroupId:"${group?.id?.toString()}",
-                macroparameterId:"${macroparameter.id}"
-              version:${currentVersionFromSessionStorage()}
-            ){
-              result{
-                 __typename
-                 ... on Result{
-                   vid
-                 }
-                 ... on Error{
-                   code
-                   message
-                   details
-                   payload
-                 }
-               }
-             }
-          }`,
-        }),
+    mutate({
+      query: DELETE_MACROPARAMETER,
+      variables: {
+        macroparameterSetId: selected?.id?.toString(),
+        macroparameterGroupId: group?.id?.toString(),
+        macroparameterId: macroparameter?.id?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteMacroparameter;
+        if (responseData && responseData.result?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));
+        } else {
+          dispatch(macroparameterDeleteError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(macroparameterDeleteError(e));
       });
-
-      const body = await response.json();
-      const responseData = body.data?.deleteMacroparameter;
-
-      if (response.ok && responseData?.result?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));
-      } else {
-        dispatch(macroparameterDeleteError(body.message));
-      }
-    } catch (e) {
-      dispatch(macroparameterDeleteError(e));
-    }
   };
 };

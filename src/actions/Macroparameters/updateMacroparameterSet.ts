@@ -3,10 +3,9 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_MACROPARAMETER_SET } from '@/api/macroparameters';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MACROPARAM_SET_UPDATE_INIT = 'MACROPARAM_SET_UPDATE_INIT';
@@ -38,94 +37,34 @@ export const updateMacroparameterSet = (
     const { selected } = getState()?.macroparamsReducer;
     dispatch(macroparameterSetUpdateInitialized());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation changeMacroparameterSet{
-              changeMacroparameterSet(
-                macroparameterSetId:${selected.toString()},
-                category:${newMacroparameterSet.category}
-                caption: "${newMacroparameterSet.caption}"
-                name: "${newMacroparameterSet.name}"
-                years:${newMacroparameterSet.years}
-                yearStart:${newMacroparameterSet.yearStart}
-                allProjects:${newMacroparameterSet.allProjects}
-                version:${currentVersionFromSessionStorage()}
-              ){
-                macroparameterSet{
-                  __typename
-                  ...on MacroparameterSet{
-                    id
-                    name
-                    caption
-                    years
-                    yearStart
-                    category
-                    allProjects
-                    macroparameterGroupList{
-                      __typename
-                      ... on MacroparameterGroupList{
-                        macroparameterGroupList{
-                          id
-                          name
-                          caption
-                          macroparameterList{
-                            __typename
-                            ... on MacroparameterList{
-                              macroparameterList{
-                                id
-                                name
-                                caption
-                                unit
-                                value{
-                                  year
-                                  value
-                                }
-                              }
-                            }
-                            ... on Error{
-                              code
-                              message
-                              details
-                              payload
-                            }
-                          }
-                        }
-                      }
-                      ... on Error{
-                        code
-                        message
-                        details
-                        payload
-                      }
-                    }
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-          }`,
-        }),
-      });
-      const body = await response.json();
-      const responseData = body?.data?.changeMacroparameterSet;
+    mutate({
+      query: CHANGE_MACROPARAMETER_SET,
+      variables: {
+        macroparameterSetId: selected?.id?.toString(),
+        category: newMacroparameterSet.category,
+        caption: newMacroparameterSet.caption,
+        name: newMacroparameterSet.name,
+        years: newMacroparameterSet.years,
+        yearStart: newMacroparameterSet.yearStart,
+        allProjects: newMacroparameterSet.allProjects,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.changeMacroparameterSet;
 
-      if (response.status === 200 && responseData?.macroparameterSet?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(
-          macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
-        );
-      } else {
-        dispatch(macroparameterSetUpdateError(body.message));
-      }
-    } catch (e) {
-      dispatch(macroparameterSetUpdateError(e));
-    }
+        if (responseData && responseData?.macroparameterSet?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(
+            macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
+          );
+        } else {
+          dispatch(macroparameterSetUpdateError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(macroparameterSetUpdateError(e));
+      });
   };
 };

@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { DELETE_AUTOEXPORT_EXPENSE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 
 export const OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT = 'OPEX_AUTOEXPORT_DELETE_EXPENSE_INIT';
@@ -38,43 +37,25 @@ export function autoexportDeleteExpense(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXAutoexportDeleteExpenseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteOpexAutoexportExpense{
-              deleteOpexAutoexportExpense(
-                expenseId: 2,
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-          }`,
-        }),
+    mutate({
+      query: DELETE_AUTOEXPORT_EXPENSE,
+      variables: {
+        expenseId: 2,
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteOpexAutoexportExpense;
+        if (responseData && responseData.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
+        } else {
+          dispatch(OPEXAutoexportDeleteExpenseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXAutoexportDeleteExpenseError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.deleteOpexAutoexportExpense;
-
-      if (response.status === 200 && responseData?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
-      } else {
-        dispatch(OPEXAutoexportDeleteExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXAutoexportDeleteExpenseError(e));
-    }
   };
 }

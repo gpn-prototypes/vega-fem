@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { DELETE_OPEX_CASE_EXPENSE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article from '@/types/Article';
 import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 
@@ -40,44 +39,26 @@ export function caseDeleteExpense(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXCaseDeleteExpenseInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation deleteOpexCaseExpense{
-              deleteOpexCaseExpense(
-                caseId: ${group.id?.toString()},
-                expenseId: ${article.id?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                result{
-                  __typename
-                  ... on Result{
-                    vid
-                  }
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
+    mutate({
+      query: DELETE_OPEX_CASE_EXPENSE,
+      variables: {
+        caseId: group.id?.toString(),
+        expenseId: article.id?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.deleteOpexCaseExpense;
+        if (responseData && responseData.result?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
+        } else {
+          dispatch(OPEXCaseDeleteExpenseError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXCaseDeleteExpenseError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.deleteOpexCaseExpense;
-
-      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
-      } else {
-        dispatch(OPEXCaseDeleteExpenseError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXCaseDeleteExpenseError(e));
-    }
   };
 }

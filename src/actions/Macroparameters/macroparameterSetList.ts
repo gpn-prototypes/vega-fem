@@ -1,9 +1,8 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { query } from '@/api/graphql-request';
+import { MACROPARAMETER_SET_LIST } from '@/api/macroparameters';
 import MacroparameterSet from '@/types/Macroparameters/MacroparameterSet';
 
 export const MACROPARAMS_SET_LIST_FETCH = 'MACROPARAMS_SET_LIST_FETCH';
@@ -38,84 +37,21 @@ const macroparameterSetListError = (message: any): MacroparamsAction => ({
 export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(macroparameterSetListFetch());
-
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `{
-            macroparameterSetList{
-              __typename
-              ... on MacroparameterSetList{
-                macroparameterSetList{
-                  id
-                  name
-                  caption
-                  years
-                  yearStart
-                  category
-                  allProjects
-                  macroparameterGroupList{
-                    __typename
-                    ... on MacroparameterGroupList{
-                      macroparameterGroupList{
-                        id
-                        name
-                        caption
-                        macroparameterList{
-                          __typename
-                          ... on MacroparameterList{
-                            macroparameterList{
-                              id
-                              name
-                              caption
-                              unit
-                              value{
-                                year
-                                value
-                              }
-                            }
-                          }
-                          ... on Error{
-                            code
-                            message
-                            details
-                            payload
-                          }
-                        }
-                      }
-                    }
-                    ... on Error{
-                      code
-                      message
-                      details
-                      payload
-                    }
-                  }
-                }
-              }
-              ... on Error{
-                code
-                message
-                details
-                payload
-              }
-            }
-          }`,
-        }),
+    query({
+      query: MACROPARAMETER_SET_LIST,
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.macroparameterSetList;
+        if (responseData && responseData.result?.__typename !== 'Error') {
+          dispatch(macroparameterSetListSuccess(responseData));
+        } else {
+          dispatch(macroparameterSetListError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(macroparameterSetListError(e));
       });
-      const body = await response.json();
-      const responseData = body?.data?.macroparameterSetList;
-
-      if (response.status === 200 && responseData?.__typename !== 'Error') {
-        dispatch(macroparameterSetListSuccess(body.data?.macroparameterSetList));
-      } else {
-        dispatch(macroparameterSetListError(body.message));
-      }
-    } catch (e) {
-      dispatch(macroparameterSetListError(e));
-    }
   };
 }
 

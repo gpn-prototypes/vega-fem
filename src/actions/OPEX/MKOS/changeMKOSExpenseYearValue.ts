@@ -1,10 +1,9 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
+import { mutate } from '@/api/graphql-request';
+import { CHANGE_MKOS_EXPENSE_YEAR_VALUE } from '@/api/opex';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
-import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
-import headers from '@/helpers/headers';
-import { serviceConfig } from '@/helpers/sevice-config';
 import Article, { ArticleValues } from '@/types/Article';
 
 export const OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT = 'OPEX_MKOS_CHANGE_EXPENSE_YEAR_VALUE_INIT';
@@ -44,42 +43,28 @@ export function MKOSChangeExpenseYearValue(
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(OPEXMKOSChangeExpenseYearValueInit());
 
-    try {
-      const response = await fetch(`${graphqlRequestUrl}/${serviceConfig.projectId}`, {
-        method: 'POST',
-        headers: headers(),
-        body: JSON.stringify({
-          query: `mutation setOpexMkosExpenseYearValue{
-              setOpexMkosExpenseYearValue(
-                expenseId: ${article.id},
-                year:${value.year?.toString()},
-                value: ${value.value?.toString()},
-                version:${currentVersionFromSessionStorage()}
-              ){
-                opexExpense{
-                  __typename
-                  ... on Error{
-                    code
-                    message
-                    details
-                    payload
-                  }
-                }
-              }
-            }`,
-        }),
-      });
-      const body = await response.json();
-      const responseData = body?.data?.setOpexMkosExpenseYearValue;
+    mutate({
+      query: CHANGE_MKOS_EXPENSE_YEAR_VALUE,
+      variables: {
+        expenseId: article.id,
+        year: value.year?.toString(),
+        value: value.value?.toString(),
+        version: currentVersionFromSessionStorage(),
+      },
+      appendProjectId: true,
+    })
+      ?.then((response) => {
+        const responseData = response?.data?.setOpexMkosExpenseYearValue;
 
-      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
-        sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));
-      } else {
-        dispatch(OPEXMKOSChangeExpenseYearValueError(body.message));
-      }
-    } catch (e) {
-      dispatch(OPEXMKOSChangeExpenseYearValueError(e));
-    }
+        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
+          dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));
+        } else {
+          dispatch(OPEXMKOSChangeExpenseYearValueError('Error'));
+        }
+      })
+      .catch((e) => {
+        dispatch(OPEXMKOSChangeExpenseYearValueError(e));
+      });
   };
 }
