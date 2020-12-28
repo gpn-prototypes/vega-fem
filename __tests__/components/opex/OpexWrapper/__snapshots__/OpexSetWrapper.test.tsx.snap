@@ -683,10 +683,10 @@ exports[`OpexSetWrapper обустройство snapshot test 1`] = `
                           type="button"
                         />
                         <span
-                          className="Select-ControlValue"
-                          title="2018"
+                          className="Select-Placeholder"
+                          title="placeholder"
                         >
-                          2018
+                          
                         </span>
                       </div>
                     </div>
