@@ -29,11 +29,10 @@ export const serviceConfig: ServiceConfig = {
     maxAttempts: 20,
     errorTypename: 'UpdateProjectInnerDiff',
     mergeStrategy: {
-      default: 'local',
+      default: 'smart',
     },
     projectAccessor: {
       fromDiffError: (data: Record<string, unknown>) => {
-        console.log('from diff error', data);
         return {
           remote: data.remoteProject,
           local: {
@@ -47,7 +46,6 @@ export const serviceConfig: ServiceConfig = {
       }),
       toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => {
         setCurrentVersion(patched.version);
-        console.log('to vars', vars, patched);
         return {
           ...vars,
           ...patched,

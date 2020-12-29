@@ -1,7 +1,7 @@
 import { DocumentNode } from '@apollo/client';
 
 import { config } from '@/config.public';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { serviceConfig } from '@/helpers/service-config';
 
 export type QueryBody = {
   query: DocumentNode;

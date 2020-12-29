@@ -7,7 +7,7 @@ import { setAlertNotification } from './notifications';
 
 import { query } from '@/api/graphql-request';
 import { FETCH_VERSION } from '@/api/version';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { serviceConfig } from '@/helpers/service-config';
 
 export const VERSION_FETCH = 'VERSION_FETCH';
 export const VERSION_SUCCESS = 'VERSION_SUCCESS';

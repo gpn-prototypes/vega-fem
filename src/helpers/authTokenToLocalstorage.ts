@@ -1,5 +1,5 @@
 import { config } from '@/config.public';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { serviceConfig } from '@/helpers/service-config';
 
 type AuthHeader = {
   Authorization: string;
