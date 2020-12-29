@@ -45,7 +45,7 @@ export function autoexportRemove(
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (!response?.data?.removeOpexAutoexport) {
+        if (!response?.data?.project?.removeOpexAutoexport) {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportRemoveSuccess(autoexport));
         } else {

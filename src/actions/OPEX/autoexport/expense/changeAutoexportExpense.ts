@@ -50,7 +50,7 @@ export function autoexportChangeExpense(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexAutoexportExpense;
+        const responseData = response?.data?.project?.changeOpexAutoexportExpense;
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeExpenseSuccess(responseData.opexExpense));

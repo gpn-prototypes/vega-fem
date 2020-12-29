@@ -50,7 +50,7 @@ export const requestDeleteMacroparameter = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.deleteMacroparameter;
+        const responseData = response?.data?.project?.deleteMacroparameter;
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));

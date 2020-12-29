@@ -54,7 +54,7 @@ export const requestUpdateMacroparameterYearValue = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setMacroparameterYearValue;
+        const responseData = response?.data?.project?.setMacroparameterYearValue;
 
         if (responseData && responseData?.macroparameter?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

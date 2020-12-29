@@ -54,7 +54,7 @@ export function MKOSChangeExpenseYearValue(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setOpexMkosExpenseYearValue;
+        const responseData = response?.data?.project?.setOpexMkosExpenseYearValue;
 
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

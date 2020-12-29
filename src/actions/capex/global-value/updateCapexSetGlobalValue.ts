@@ -44,7 +44,7 @@ export const requestUpdateCapexGlobalValue = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.updateCapexGlobalValue;
+        const responseData = response?.data?.project?.updateCapexGlobalValue;
 
         if (responseData && responseData?.capexGlobalValue?.__typename !== 'Error') {
           const capexGlobalValue = responseData?.capexGlobalValue;

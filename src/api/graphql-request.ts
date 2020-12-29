@@ -15,7 +15,12 @@ export const getGraphqlUri = (projectId: string): string =>
   `${config.baseApiUrl}/graphql/${projectId}`;
 
 export function mutate(body: QueryBody) {
-  const context = body.appendProjectId ? { uri: getGraphqlUri(serviceConfig.projectId) } : {};
+  const context = body.appendProjectId
+    ? {
+        uri: getGraphqlUri(serviceConfig.projectId),
+        projectDiffResolving: serviceConfig.getDiffResolvingConfig(),
+      }
+    : {};
 
   return serviceConfig.client?.mutate({
     mutation: body.query,

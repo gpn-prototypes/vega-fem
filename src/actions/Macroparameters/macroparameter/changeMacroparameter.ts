@@ -53,7 +53,7 @@ export const requestChangeMacroparameter = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeMacroparameter;
+        const responseData = response?.data?.project?.changeMacroparameter;
 
         if (responseData && responseData?.macroparameter?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

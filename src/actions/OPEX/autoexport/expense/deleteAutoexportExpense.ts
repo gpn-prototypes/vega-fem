@@ -46,7 +46,7 @@ export function autoexportDeleteExpense(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.deleteOpexAutoexportExpense;
+        const responseData = response?.data?.project?.deleteOpexAutoexportExpense;
         if (responseData && responseData.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportDeleteExpenseSuccess(article));

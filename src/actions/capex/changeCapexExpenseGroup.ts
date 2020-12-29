@@ -43,7 +43,7 @@ export const changeCapexExpenseGroup = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const changedCapexGroup = response?.data?.changeCapexExpenseGroup;
+        const changedCapexGroup = response?.data?.project?.changeCapexExpenseGroup;
 
         if (changedCapexGroup && changedCapexGroup?.capexExpenseGroup?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

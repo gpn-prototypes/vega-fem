@@ -39,8 +39,8 @@ export function fetchCapex(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (response?.networkStatus === NetworkStatus.ready && response.data?.capex) {
-          dispatch(capexSuccess(response.data?.capex));
+        if (response?.networkStatus === NetworkStatus.ready && response.data?.project?.capex) {
+          dispatch(capexSuccess(response.data?.project?.capex));
         } else if (!response?.loading) {
           dispatch(capexError('Error'));
         }

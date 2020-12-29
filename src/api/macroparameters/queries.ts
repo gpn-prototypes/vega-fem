@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
-export const MACROPARAMETER_SET_LIST = gql`
-  query macroparameterSetList {
+export const macroparameterSetListFragment = gql`
+  fragment MacroparameterSetListFragment on ProjectInner {
     macroparameterSetList {
       __typename
       ... on MacroparameterSetList {
@@ -58,6 +58,16 @@ export const MACROPARAMETER_SET_LIST = gql`
         details
         payload
       }
+    }
+  }
+`;
+
+export const MACROPARAMETER_SET_LIST = gql`
+  ${macroparameterSetListFragment}
+
+  query macroparameterSetList {
+    project {
+      ...MacroparameterSetListFragment
     }
   }
 `;

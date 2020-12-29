@@ -39,7 +39,7 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setOpexSdf;
+        const responseData = response?.data?.project?.setOpexSdf;
         if (responseData && responseData?.opexSdf?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXSetChangeSdfSuccess(sdfFlag));

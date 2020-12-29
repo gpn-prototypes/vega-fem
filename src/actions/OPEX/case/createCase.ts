@@ -47,7 +47,7 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.createOpexCase;
+        const responseData = response?.data?.project?.createOpexCase;
 
         if (responseData && responseData.opexCase?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

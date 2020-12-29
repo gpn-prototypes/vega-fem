@@ -44,7 +44,7 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexMkos;
+        const responseData = response?.data?.project?.changeOpexMkos;
 
         if (responseData && responseData.mkos?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

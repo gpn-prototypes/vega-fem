@@ -53,7 +53,7 @@ export const requestUpdateCapexYearValue = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setCapexExpenseYearValue;
+        const responseData = response?.data?.project?.setCapexExpenseYearValue;
         const groupTotalValueByYear = responseData?.totalValueByYear;
 
         if (responseData && groupTotalValueByYear?.__typename !== 'Error') {

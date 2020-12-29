@@ -46,7 +46,7 @@ export function autoexportChange(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexAutoexport;
+        const responseData = response?.data?.project?.changeOpexAutoexport;
         if (responseData && responseData.autoexport?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeSuccess(responseData.autoexport));

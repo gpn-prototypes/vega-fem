@@ -48,7 +48,7 @@ export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexMkosExpense;
+        const responseData = response?.data?.project?.changeOpexMkosExpense;
 
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

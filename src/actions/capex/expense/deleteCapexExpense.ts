@@ -45,7 +45,7 @@ export const requestDeleteCapexExpense = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.deleteCapexExpense;
+        const responseData = response?.data?.project?.deleteCapexExpense;
 
         if (responseData && responseData?.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

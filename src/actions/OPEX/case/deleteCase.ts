@@ -44,7 +44,7 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.deleteOpexCase;
+        const responseData = response?.data?.project?.deleteOpexCase;
 
         if (responseData && responseData?.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

@@ -1,6 +1,10 @@
-import { ApolloClient, FetchPolicy, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, FetchPolicy, FetchResult, NormalizedCacheObject } from '@apollo/client';
+
+import { getCurrentVersion, setCurrentVersion } from './version';
 
 import { Identity } from '@/types';
+
+export type Data = FetchResult['data'];
 
 export interface ServiceConfig {
   client?: ApolloClient<NormalizedCacheObject>;
@@ -8,6 +12,7 @@ export interface ServiceConfig {
   projectId: string;
   fetchPolicy: FetchPolicy;
   identityToken?: string;
+  getDiffResolvingConfig: () => Data;
 }
 
 export interface ServiceInitProps {
@@ -20,6 +25,38 @@ export interface ServiceInitProps {
 export const serviceConfig: ServiceConfig = {
   projectId: '',
   fetchPolicy: 'no-cache',
+  getDiffResolvingConfig: () => ({
+    maxAttempts: 20,
+    errorTypename: 'UpdateProjectInnerDiff',
+    mergeStrategy: {
+      default: 'local',
+    },
+    projectAccessor: {
+      fromDiffError: (data: Record<string, unknown>) => {
+        console.log('from diff error', data);
+        return {
+          remote: data.remoteProject,
+          local: {
+            vid: serviceConfig.projectId,
+            version: getCurrentVersion(),
+          },
+        };
+      },
+      fromVariables: (vars: Record<string, any>) => ({
+        ...vars,
+      }),
+      toVariables: (vars: Record<string, unknown>, patched: Record<string, any>) => {
+        setCurrentVersion(patched.version);
+        console.log('to vars', vars, patched);
+        return {
+          ...vars,
+          ...patched,
+          vid: vars.vid,
+          version: patched.version,
+        };
+      },
+    },
+  }),
 };
 
 export async function initServiceConfig({

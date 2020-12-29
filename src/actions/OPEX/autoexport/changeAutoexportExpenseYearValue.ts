@@ -55,7 +55,7 @@ export function autoexportChangeExpenseYearValue(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setOpexAutoexportExpenseYearValue;
+        const responseData = response?.data?.project?.setOpexAutoexportExpenseYearValue;
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));

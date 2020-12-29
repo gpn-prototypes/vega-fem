@@ -42,7 +42,7 @@ export const createCapexExpenseGroup = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const createdCapexGroup = response.data?.createCapexExpenseGroup;
+        const createdCapexGroup = response.data?.project?.createCapexExpenseGroup;
 
         if (createdCapexGroup && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

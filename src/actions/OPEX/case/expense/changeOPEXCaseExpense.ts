@@ -53,7 +53,7 @@ export function caseChangeExpense(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexCaseExpense;
+        const responseData = response?.data?.project?.changeOpexCaseExpense;
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXCaseChangeExpenseSuccess(group, responseData.opexExpense));

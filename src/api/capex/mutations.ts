@@ -1,6 +1,10 @@
 import { gql } from '@apollo/client';
 
+import { capexFragment } from './queries';
+
 export const CHANGE_CAPEX_EXPENSE_GROUP = gql`
+  ${capexFragment}
+
   mutation changeCapexExpenseGroup(
     $capexExpenseGroupId: ID!
     $name: String
@@ -9,25 +13,50 @@ export const CHANGE_CAPEX_EXPENSE_GROUP = gql`
     $caption: String
     $version: Int!
   ) {
-    changeCapexExpenseGroup(
-      capexExpenseGroupId: $capexExpenseGroupId
-      name: $name
-      yearStart: $yearStart
-      years: $years
-      caption: $caption
-      version: $version
-    ) {
-      capexExpenseGroup {
-        __typename
-        ... on CapexExpenseGroup {
-          id
-          caption
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
         }
-        ... on Error {
-          code
-          message
-          details
-          payload
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        changeCapexExpenseGroup(
+          capexExpenseGroupId: $capexExpenseGroupId
+          name: $name
+          yearStart: $yearStart
+          years: $years
+          caption: $caption
+        ) {
+          capexExpenseGroup {
+            __typename
+            ... on CapexExpenseGroup {
+              id
+              caption
+            }
+            ... on Error {
+              code
+              message
+              details
+              payload
+            }
+          }
         }
       }
     }
@@ -35,20 +64,48 @@ export const CHANGE_CAPEX_EXPENSE_GROUP = gql`
 `;
 
 export const CREATE_CAPEX_EXPENSE_GROUP = gql`
+  ${capexFragment}
+
   mutation createCapexExpenseGroup($caption: String, $version: Int!) {
-    createCapexExpenseGroup(caption: $caption, version: $version) {
-      capexExpenseGroup {
-        __typename
-        ... on CapexExpenseGroup {
-          id
-          name
-          caption
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
         }
-        ... on Error {
-          code
-          message
-          details
-          payload
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        createCapexExpenseGroup(caption: $caption) {
+          capexExpenseGroup {
+            __typename
+            ... on CapexExpenseGroup {
+              id
+              name
+              caption
+            }
+            ... on Error {
+              code
+              message
+              details
+              payload
+            }
+          }
         }
       }
     }
@@ -56,16 +113,44 @@ export const CREATE_CAPEX_EXPENSE_GROUP = gql`
 `;
 
 export const DELETE_CAPEX_EXPENSE_GROUP = gql`
+  ${capexFragment}
+
   mutation deleteCapexExpenseGroup($capexExpenseGroupId: ID!, $version: Int!) {
-    deleteCapexExpenseGroup(capexExpenseGroupId: $capexExpenseGroupId, version: $version) {
-      result {
-        __typename
-        ... on Result {
-          vid
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
         }
-        ... on Error {
-          code
-          message
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        deleteCapexExpenseGroup(capexExpenseGroupId: $capexExpenseGroupId) {
+          result {
+            __typename
+            ... on Result {
+              vid
+            }
+            ... on Error {
+              code
+              message
+            }
+          }
         }
       }
     }
@@ -73,6 +158,8 @@ export const DELETE_CAPEX_EXPENSE_GROUP = gql`
 `;
 
 export const UPDATE_CAPEX_YEAR_VALUE = gql`
+  ${capexFragment}
+
   mutation setCapexExpenseYearValue(
     $capexExpenseGroupId: ID!
     $capexExpenseId: ID!
@@ -80,30 +167,55 @@ export const UPDATE_CAPEX_YEAR_VALUE = gql`
     $value: Float!
     $version: Int!
   ) {
-    setCapexExpenseYearValue(
-      capexExpenseGroupId: $capexExpenseGroupId
-      capexExpenseId: $capexExpenseId
-      year: $year
-      value: $value
-      version: $version
-    ) {
-      totalValueByYear {
-        year
-        value
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
       }
-      capexExpense {
-        __typename
-        ... on CapexExpense {
-          value {
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            ...CapexFragment
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        setCapexExpenseYearValue(
+          capexExpenseGroupId: $capexExpenseGroupId
+          capexExpenseId: $capexExpenseId
+          year: $year
+          value: $value
+        ) {
+          totalValueByYear {
             year
             value
           }
-        }
-        ... on Error {
-          code
-          message
-          details
-          payload
+          capexExpense {
+            __typename
+            ... on CapexExpense {
+              value {
+                year
+                value
+              }
+            }
+            ... on Error {
+              code
+              message
+              details
+              payload
+            }
+          }
         }
       }
     }

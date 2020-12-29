@@ -46,7 +46,7 @@ export const requestCreateCapexExpense = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.createCapexExpense;
+        const responseData = response?.data?.project?.createCapexExpense;
 
         if (responseData && responseData.capexExpense?.__typename !== 'Error') {
           const capex = responseData?.capexExpense;

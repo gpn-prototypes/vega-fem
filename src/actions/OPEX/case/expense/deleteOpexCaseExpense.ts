@@ -49,7 +49,7 @@ export function caseDeleteExpense(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.deleteOpexCaseExpense;
+        const responseData = response?.data?.project?.deleteOpexCaseExpense;
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXCaseDeleteExpenseSuccess(group, article));

@@ -47,7 +47,7 @@ export const addMacroparameterSetGroup = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.createMacroparameterGroup;
+        const responseData = response?.data?.project?.createMacroparameterGroup;
 
         if (responseData && responseData.macroparameterGroup?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

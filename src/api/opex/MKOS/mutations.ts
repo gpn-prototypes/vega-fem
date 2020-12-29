@@ -1,26 +1,66 @@
 import { gql } from '@apollo/client';
 
+import { mkosFragment } from '../queries';
+
 export const CHANGE_MKOS = gql`
+  ${mkosFragment}
+
   mutation changeOpexMkos($version: Int!, $yearEnd: Int, $yearStart: Int) {
-    changeOpexMkos(version: $version, yearEnd: $yearEnd, yearStart: $yearStart) {
-      mkos {
-        __typename
-        ... on OpexExpenseGroup {
-          yearStart
-          yearEnd
-          opexExpenseList {
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        changeOpexMkos(yearEnd: $yearEnd, yearStart: $yearStart) {
+          mkos {
             __typename
-            ... on OpexExpenseList {
+            ... on OpexExpenseGroup {
+              yearStart
+              yearEnd
               opexExpenseList {
-                id
-                name
-                caption
-                unit
-                valueTotal
-                description
-                value {
-                  year
-                  value
+                __typename
+                ... on OpexExpenseList {
+                  opexExpenseList {
+                    id
+                    name
+                    caption
+                    unit
+                    valueTotal
+                    description
+                    value {
+                      year
+                      value
+                    }
+                  }
+                }
+                ... on Error {
+                  code
+                  message
+                  details
+                  payload
                 }
               }
             }
@@ -32,37 +72,58 @@ export const CHANGE_MKOS = gql`
             }
           }
         }
-        ... on Error {
-          code
-          message
-          details
-          payload
-        }
       }
     }
   }
 `;
 
 export const CHANGE_MKOS_EXPENSE_YEAR_VALUE = gql`
+  ${mkosFragment}
+
   mutation setOpexMkosExpenseYearValue(
     $expenseId: ID!
     $value: Float!
     $version: Int!
     $year: Int!
   ) {
-    setOpexMkosExpenseYearValue(
-      expenseId: $expenseId
-      year: $year
-      value: $value
-      version: $version
-    ) {
-      opexExpense {
-        __typename
-        ... on Error {
-          code
-          message
-          details
-          payload
+    project(version: $version) {
+      __typename
+      ... on Error {
+        code
+        message
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        setOpexMkosExpenseYearValue(expenseId: $expenseId, year: $year, value: $value) {
+          opexExpense {
+            __typename
+            ... on Error {
+              code
+              message
+              details
+              payload
+            }
+          }
         }
       }
     }
@@ -70,14 +131,46 @@ export const CHANGE_MKOS_EXPENSE_YEAR_VALUE = gql`
 `;
 
 export const REMOVE_MKOS = gql`
+  ${mkosFragment}
+
   mutation removeOpexMkos($version: Int!) {
-    removeOpexMkos(version: $version) {
+    project(version: $version) {
       __typename
       ... on Error {
         code
         message
-        details
-        payload
+      }
+      ... on UpdateProjectInnerDiff {
+        remoteProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        localProject {
+          ... on ProjectInner {
+            vid
+            version
+            opex {
+              ...Mkos
+            }
+          }
+        }
+        updateMessage: message
+      }
+      ... on ProjectMutation {
+        removeOpexMkos {
+          __typename
+          ... on Error {
+            code
+            message
+            details
+            payload
+          }
+        }
       }
     }
   }

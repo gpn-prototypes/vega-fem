@@ -48,7 +48,7 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.changeOpexCase;
+        const responseData = response?.data?.project?.changeOpexCase;
         if (responseData && responseData.opexCase?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXChangeCaseSuccess(responseData.opexCase));

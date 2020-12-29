@@ -58,7 +58,7 @@ export function opexChangeCaseExpenseYearValue(
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.setOpexCaseExpenseYearValue;
+        const responseData = response?.data?.project?.setOpexCaseExpenseYearValue;
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
