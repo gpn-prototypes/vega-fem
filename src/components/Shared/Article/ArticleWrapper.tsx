@@ -36,6 +36,7 @@ export const ArticleWrapper: React.FC<ArticleWrapperProps> = ({
 }) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
   const [commonValue, setCommonValue] = useState(values ? values[0]?.value : '');
+  const [prevCommonValue, setPrevCommonValue] = useState(commonValue);
 
   const [spreaded, setSpreaded] = useState<boolean>(true);
 
@@ -52,7 +53,8 @@ export const ArticleWrapper: React.FC<ArticleWrapperProps> = ({
   };
 
   const blurHandle = useCallback(() => {
-    if (updateArticleValueCallback) {
+    if (updateArticleValueCallback && prevCommonValue !== commonValue) {
+      setPrevCommonValue(commonValue);
       updateArticleValueCallback({
         ...article,
         ...{
@@ -64,7 +66,7 @@ export const ArticleWrapper: React.FC<ArticleWrapperProps> = ({
     if (highlightArticleClear) {
       highlightArticleClear();
     }
-  }, [commonValue, updateArticleValueCallback, article, highlightArticleClear]);
+  }, [commonValue, prevCommonValue, updateArticleValueCallback, article, highlightArticleClear]);
 
   const onFocusHandler = useCallback(() => {
     if (onFocusCallback) {
