@@ -6,9 +6,9 @@ import './App.css';
 import '../styles/colors.css';
 
 import { fetchVersion } from '@/actions/fetchVersion';
-import { InProgress } from '@/components/InProgress';
 import { Main } from '@/components/Main/Main';
 import { Navigation } from '@/components/Navigation/Navigation';
+import { Notifications } from '@/components/Notifications';
 import { ProjectContext } from '@/providers';
 import { VersionState } from '@/reducers/versionReducer';
 
@@ -37,7 +37,7 @@ export const AppView = (): React.ReactElement => {
         </>
       )}
       ;
-      <InProgress />
+      <Notifications />
     </>
   );
 };

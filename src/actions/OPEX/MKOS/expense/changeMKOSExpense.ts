@@ -75,13 +75,11 @@ export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeOpexMkosExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.changeOpexMkosExpense.opexExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeExpenseSuccess(body.data?.changeOpexMkosExpense?.opexExpense));
+        dispatch(OPEXMKOSChangeExpenseSuccess(responseData.opexExpense));
       } else {
         dispatch(OPEXMKOSChangeExpenseError(body.message));
       }

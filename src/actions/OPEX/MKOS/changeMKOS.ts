@@ -87,10 +87,11 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeOpexMkos;
 
-      if (response.status === 200 && body.data.changeOpexMkos.mkos?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.mkos?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXMKOSChangeSuccess(body.data?.changeOpexMkos?.mkos));
+        dispatch(OPEXMKOSChangeSuccess(responseData.mkos));
       } else {
         dispatch(OPEXMKOSChangeError(body.message));
       }

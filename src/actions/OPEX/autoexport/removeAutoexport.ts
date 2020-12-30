@@ -45,6 +45,7 @@ export function autoexportRemove(
         body: JSON.stringify({
           query: `mutation removeOpexAutoexport{
               removeOpexAutoexport(version:${currentVersionFromSessionStorage()} ){
+                __typename
                 ...on Error{
                   code
                   message
@@ -56,8 +57,9 @@ export function autoexportRemove(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.removeOpexAutoexport;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportRemoveSuccess(autoexport));
       } else {

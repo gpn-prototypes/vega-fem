@@ -70,12 +70,13 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.createOpexCase;
 
-      if (response.status === 200 && body.data.createOpexCase.opexCase?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.opexCase?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           OPEXCreateCaseSuccess({
-            ...body.data?.createOpexCase?.opexCase,
+            ...responseData.opexCase,
             opexExpenseList: [],
           } as OPEXSetType),
         );

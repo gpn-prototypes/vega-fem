@@ -61,8 +61,9 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.setOpexSdf;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.opexSdf?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
       } else {

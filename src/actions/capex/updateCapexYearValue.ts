@@ -83,7 +83,7 @@ export const requestUpdateCapexYearValue = (
       const responseData = body?.data?.setCapexExpenseYearValue;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
-      if (response.status === 200 && responseData?.totalValueByYear.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),

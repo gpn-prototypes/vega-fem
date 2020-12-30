@@ -43,6 +43,7 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         body: JSON.stringify({
           query: `mutation removeOpexMkos{
               removeOpexMkos(version:${currentVersionFromSessionStorage()} ){
+                __typename
                 ...on Error{
                   code
                   message
@@ -54,8 +55,9 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.removeOpexMkos;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXMKOSRemoveSuccess(MKOS));
       } else {

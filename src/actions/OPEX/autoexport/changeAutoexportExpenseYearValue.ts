@@ -71,11 +71,9 @@ export function autoexportChangeExpenseYearValue(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.setOpexAutoexportExpenseYearValue;
 
-      if (
-        response.status === 200 &&
-        body.data.setOpexAutoexportExpenseYearValue.opexExpense?.__typename
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
       } else {

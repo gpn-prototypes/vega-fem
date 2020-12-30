@@ -71,7 +71,7 @@ export const addMacroparameterSetGroup = (
       const body = await response.json();
       const responseData = body?.data?.createMacroparameterGroup;
 
-      if (response.status === 200 && responseData.macroparameterGroup?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.macroparameterGroup?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = responseData?.macroparameterGroup;
 

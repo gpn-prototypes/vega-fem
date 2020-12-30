@@ -89,13 +89,11 @@ export function autoexportChange(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeOpexAutoexport;
 
-      if (
-        response.status === 200 &&
-        body.data.changeOpexAutoexport.autoexport?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.autoexport?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(OPEXAutoexportChangeSuccess(body.data?.changeOpexAutoexport?.autoexport));
+        dispatch(OPEXAutoexportChangeSuccess(responseData.autoexport));
       } else {
         dispatch(OPEXAutoexportChangeError(body.message));
       }

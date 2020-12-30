@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { Badge, Text } from '@gpn-prototypes/vega-ui';
+import { Badge, IconProcessing, Text } from '@gpn-prototypes/vega-ui';
 import bemCn from 'bem-cn';
 
 import './Navigation.css';
 
+import { setNotification } from '@/actions/notifications';
 import { ProjectContext } from '@/providers';
 
 export const cnNavigation = bemCn('Navigation');
@@ -16,6 +18,7 @@ export interface NavItem {
 }
 
 export const Navigation: React.FC = () => {
+  const dispatch = useDispatch();
   const { projectId } = useContext(ProjectContext);
 
   const prefix = `/projects/show/${projectId}/fem`;
@@ -49,6 +52,18 @@ export const Navigation: React.FC = () => {
       disabled: true,
     },
   ];
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(
+        setNotification({
+          message: 'Раздел находится в разработке',
+          status: 'warning',
+          icon: IconProcessing,
+        }),
+      );
+    }
+  }, [dispatch, projectId]);
 
   return (
     <div

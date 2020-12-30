@@ -66,7 +66,7 @@ export const createCapexExpenseGroup = (
       const body = await response.json();
       const createdCapexGroup = body?.data?.createCapexExpenseGroup;
 
-      if (response.status === 200 && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+      if (response.status === 200 && createdCapexGroup?.capexExpenseGroup?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = createdCapexGroup?.capexExpenseGroup;
         if (newGroup)

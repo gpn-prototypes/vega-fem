@@ -75,7 +75,7 @@ export const requestCreateCapexExpense = (
       const body = await response.json();
       const responseData = body?.data?.createCapexExpense;
 
-      if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
         const capex = responseData?.capexExpense;
 
         if (capex) {

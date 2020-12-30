@@ -65,11 +65,9 @@ export function autoexportDeleteExpense(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.deleteOpexAutoexportExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.deleteOpexAutoexportExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
       } else {

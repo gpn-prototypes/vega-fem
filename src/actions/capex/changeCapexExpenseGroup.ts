@@ -66,10 +66,9 @@ export const changeCapexExpenseGroup = (
       const body = await response.json();
       const changedCapexGroup = body?.data?.changeCapexExpenseGroup;
 
-      if (response.status === 200 && changedCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+      if (response.status === 200 && changedCapexGroup?.capexExpenseGroup?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         const newGroup = changedCapexGroup?.capexExpenseGroup;
-        if (newGroup) console.log(newGroup);
         dispatch(capexExpenseGroupChangeSuccess({ ...newGroup } as CapexExpenseSetGroup));
       } else {
         dispatch(capexExpenseGroupChangeError(body.message));

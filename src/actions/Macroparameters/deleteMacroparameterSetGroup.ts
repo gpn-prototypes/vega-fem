@@ -66,8 +66,9 @@ export const deleteMacroparameterSetGroup = (
       });
 
       const body = await response.json();
+      const responseData = body?.data?.deleteMacroparameterGroup;
 
-      if (response.ok) {
+      if (response.ok && responseData?.result?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(macroparameterSetGroupDeleteSuccess(macroparameterSetGroup));
       } else {

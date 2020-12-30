@@ -75,7 +75,7 @@ export const requestUpdateCapexGlobalValue = (
       const body = await response.json();
       const responseData = body?.data?.updateCapexGlobalValue;
 
-      if (response.ok && responseData?.capexGlobalValue.__typename !== 'Error') {
+      if (response.ok && responseData?.capexGlobalValue?.__typename !== 'Error') {
         const capexGlobalValue = responseData?.capexGlobalValue;
 
         if (capexGlobalValue) {

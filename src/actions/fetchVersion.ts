@@ -2,6 +2,7 @@ import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { clearStores } from './clear';
+import { setAlertNotification } from './notifications';
 
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -65,6 +66,14 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         sessionStorage.setItem('currentVersion', body.data.project.version);
         dispatch(VersionFetchSuccess(body.data?.project.version));
       } else {
+        const { errors } = body;
+        if (
+          Array.isArray(errors) &&
+          errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
+        ) {
+          const message = 'В url не корректный UUID проекта';
+          dispatch(setAlertNotification(message));
+        }
         dispatch(VersionFetchError(body.message));
       }
     } catch (e) {

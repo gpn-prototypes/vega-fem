@@ -63,8 +63,9 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.deleteOpexCase;
 
-      if (response.status === 200 && body.data.deleteOpexCase.result?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXDeleteCaseSuccess(opexCase));
       } else {

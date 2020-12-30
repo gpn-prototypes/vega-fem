@@ -116,7 +116,7 @@ export const updateMacroparameterSet = (
       const body = await response.json();
       const responseData = body?.data?.changeMacroparameterSet;
 
-      if (response.status === 200 && responseData.macroparameterSet?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.macroparameterSet?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(
           macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),

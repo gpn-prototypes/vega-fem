@@ -78,11 +78,9 @@ export function opexChangeCaseExpenseYearValue(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.setOpexCaseExpenseYearValue;
 
-      if (
-        response.status === 200 &&
-        body.data.setOpexCaseExpenseYearValue.opexExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXChangeCaseExpenseYearValueSuccess(group, article, value));
       } else {

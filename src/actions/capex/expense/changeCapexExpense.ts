@@ -88,7 +88,7 @@ export const requestChangeCapexExpense = (
       const responseData = body?.data?.changeCapexExpense;
       const groupTotalValueByYear = responseData?.totalValueByYear;
 
-      if (response.status === 200 && responseData.capexExpense?.__typename !== 'Error') {
+      if (response.status === 200 && responseData?.capexExpense?.__typename !== 'Error') {
         const newCapex = responseData?.capexExpense;
 
         if (newCapex) {

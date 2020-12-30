@@ -106,8 +106,9 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.macroparameterSetList;
 
-      if (response.status === 200) {
+      if (response.status === 200 && responseData?.__typename !== 'Error') {
         dispatch(macroparameterSetListSuccess(body.data?.macroparameterSetList));
       } else {
         dispatch(macroparameterSetListError(body.message));

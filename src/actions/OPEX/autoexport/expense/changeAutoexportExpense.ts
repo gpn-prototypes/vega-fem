@@ -77,15 +77,11 @@ export function autoexportChangeExpense(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.changeOpexAutoexportExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.changeOpexAutoexportExpense.opexExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(
-          OPEXAutoexportChangeExpenseSuccess(body.data?.changeOpexAutoexportExpense?.opexExpense),
-        );
+        dispatch(OPEXAutoexportChangeExpenseSuccess(responseData?.opexExpense));
       } else {
         dispatch(OPEXAutoexportChangeExpenseError(body.message));
       }

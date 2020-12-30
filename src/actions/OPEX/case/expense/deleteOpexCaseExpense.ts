@@ -68,11 +68,9 @@ export function caseDeleteExpense(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.deleteOpexCaseExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.deleteOpexCaseExpense.result?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
       } else {

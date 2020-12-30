@@ -77,15 +77,11 @@ export function addCaseExpense(
         }),
       });
       const body = await response.json();
+      const responseData = body?.data?.createOpexCaseExpense;
 
-      if (
-        response.status === 200 &&
-        body.data.createOpexCaseExpense.opexExpense?.__typename !== 'Error'
-      ) {
+      if (response.status === 200 && responseData?.opexExpense?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
-        dispatch(
-          OPEXAddCaseExpenseSuccess(caseGroup, body.data?.createOpexCaseExpense?.opexExpense),
-        );
+        dispatch(OPEXAddCaseExpenseSuccess(caseGroup, responseData.opexExpense));
       } else {
         dispatch(OPEXAddCaseExpenseError(body.message));
       }

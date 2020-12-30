@@ -60,11 +60,8 @@ export const deleteCapexExpenseGroup = (
       });
 
       const body = await response.json();
-
-      if (
-        response.status === 200 &&
-        body.data.deleteCapexExpenseGroup?.result.__typename !== 'Error'
-      ) {
+      const responseData = body.data?.deleteCapexExpenseGroup;
+      if (response.status === 200 && responseData?.result?.__typename !== 'Error') {
         sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
         dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
       } else {
