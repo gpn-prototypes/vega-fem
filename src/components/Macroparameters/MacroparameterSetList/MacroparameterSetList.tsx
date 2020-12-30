@@ -19,7 +19,7 @@ export const MacroparameterSetList = ({
 
   const scenarioList = macroparameterSetList?.map(
     (macroparameterSet: MacroparameterSet, index: number) => (
-      <NavigationList.Item key={keyGen(index)} active={selected?.id === macroparameterSet.id}>
+      <NavigationList.Item key={keyGen(index)} active={selected === macroparameterSet.id}>
         {(props) => (
           <button
             type="button"

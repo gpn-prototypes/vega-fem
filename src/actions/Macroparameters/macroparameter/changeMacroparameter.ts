@@ -46,36 +46,36 @@ export const requestChangeMacroparameter = (
         headers: headers(),
         body: JSON.stringify({
           query: `mutation changeMacroparameter{
-            changeMacroparameter(
-              macroparameterSetId: ${selected.id.toString()}
-              macroparameterGroupId: ${group?.id?.toString()}
-              macroparameterId: ${macroparameter.id}
-              ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
-              ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
-              ${macroparameter.value ? `value:${macroparameter.value},` : ''}
-              version:${currentVersionFromSessionStorage()}
-            ){
-              macroparameter{
-              __typename
-                ... on Macroparameter{
-                  name
-                  id
-                  caption
-                  unit
-                  value{
-                    year
-                    value
+              changeMacroparameter(
+                macroparameterSetId: ${selected.toString()}
+                macroparameterGroupId: ${group?.id?.toString()}
+                macroparameterId: ${macroparameter.id}
+                ${macroparameter.caption ? `caption:"${macroparameter.caption}",` : ''}
+                ${macroparameter.unit ? `unit:"${macroparameter.unit}",` : 'unit:""'}
+                ${macroparameter.value ? `value:${macroparameter.value},` : ''}
+                version:${currentVersionFromSessionStorage()}
+              ){
+                macroparameter{
+                __typename
+                  ... on Macroparameter{
+                    name
+                    id
+                    caption
+                    unit
+                    value{
+                      year
+                      value
+                    }
+                  }
+                  ... on Error{
+                    code
+                    message
+                    details
+                    payload
                   }
                 }
-                ... on Error{
-                  code
-                  message
-                  details
-                  payload
-                }
               }
-            }
-          }`,
+            }`,
         }),
       });
 

@@ -160,6 +160,8 @@ export const MacroparameterSetWrapper = ({
     }
   }, [allProjects, allProjectsHelper, requestSetUpdate]);
 
+  const handleGroupNameChange = ({ value }: any) => setNewGroupName(value);
+
   const isCollapsedCallback = (collapsed: Collapsed) => {
     setGroupsCollapsed((prev) =>
       prev?.map((prevCollapsedItem) => {
@@ -308,7 +310,7 @@ export const MacroparameterSetWrapper = ({
                           placeholder="Введите название группы статей"
                           maxLength={256}
                           value={newGroupName}
-                          onChange={(event: any) => setNewGroupName(event.e.target.value)}
+                          onChange={handleGroupNameChange}
                         />
                       </Form.Field>
                     </Form.Row>

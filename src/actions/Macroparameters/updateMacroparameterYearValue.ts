@@ -49,7 +49,7 @@ export const requestUpdateMacroparameterYearValue = (
         body: JSON.stringify({
           query: `mutation setMacroparameterYearValue{
               setMacroparameterYearValue(
-                macroparameterSetId: ${selected.id.toString()}
+                macroparameterSetId: ${selected.toString()}
                 macroparameterGroupId: ${group?.id?.toString()}
                 macroparameterId: ${macroparameter.id}
                 year: ${value.year}
