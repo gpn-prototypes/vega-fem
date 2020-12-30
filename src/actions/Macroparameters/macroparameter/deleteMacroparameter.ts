@@ -3,7 +3,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from '../macroparameterSetList';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -78,15 +77,9 @@ export const requestDeleteMacroparameter = (
         dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));
       } else {
         dispatch(macroparameterDeleteError(body.message));
-        if (responseData?.result?.__typename === 'Error') {
-          dispatch(setAlertNotification(responseData.result.message));
-        } else {
-          dispatch(setAlertNotification('Серверная ошибка'));
-        }
       }
     } catch (e) {
       dispatch(macroparameterDeleteError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

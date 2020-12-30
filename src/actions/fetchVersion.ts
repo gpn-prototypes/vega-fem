@@ -66,20 +66,18 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         sessionStorage.setItem('currentVersion', body.data.project.version);
         dispatch(VersionFetchSuccess(body.data?.project.version));
       } else {
-        let message = 'Серверная ошибка';
         const { errors } = body;
         if (
           Array.isArray(errors) &&
           errors.find((error) => error.message === 'badly formed hexadecimal UUID string')
         ) {
-          message = 'В url не корректный UUID проекта';
+          const message = 'В url не корректный UUID проекта';
+          dispatch(setAlertNotification(message));
         }
-        dispatch(setAlertNotification(message));
         dispatch(VersionFetchError(body.message));
       }
     } catch (e) {
       dispatch(VersionFetchError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

@@ -3,7 +3,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -80,15 +79,9 @@ export const changeMacroparameterSetGroup = (
         }
       } else {
         dispatch(macroparameterSetGroupChangeError(body.message));
-        if (responseData?.macroparameterGroup?.__typename === 'Error') {
-          dispatch(setAlertNotification(responseData.macroparameterGroup.message));
-        } else {
-          dispatch(setAlertNotification('Серверная ошибка'));
-        }
       }
     } catch (e) {
       dispatch(macroparameterSetGroupChangeError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

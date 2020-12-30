@@ -3,7 +3,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { MacroparamsAction } from './macroparameterSetList';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -79,15 +78,9 @@ export const requestUpdateMacroparameterYearValue = (
         dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
       } else {
         dispatch(macroparameterUpdateYearValueError(body.message));
-        if (responseData?.macroparameter?.__typename === 'Error') {
-          dispatch(setAlertNotification(responseData.macroparameter.message));
-        } else {
-          dispatch(setAlertNotification('Серверная ошибка'));
-        }
       }
     } catch (e) {
       dispatch(macroparameterUpdateYearValueError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

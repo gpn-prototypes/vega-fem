@@ -3,7 +3,6 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 import { CapexesAction } from './fetchCAPEX';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -73,15 +72,9 @@ export const changeCapexExpenseGroup = (
         dispatch(capexExpenseGroupChangeSuccess({ ...newGroup } as CapexExpenseSetGroup));
       } else {
         dispatch(capexExpenseGroupChangeError(body.message));
-        if (changedCapexGroup?.capexExpenseGroup?.__typename === 'Error') {
-          dispatch(setAlertNotification(changedCapexGroup.capexExpenseGroup.message));
-        } else {
-          dispatch(setAlertNotification('Серверная ошибка'));
-        }
       }
     } catch (e) {
       dispatch(capexExpenseGroupChangeError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 };

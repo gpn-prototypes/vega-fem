@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
 import { serviceConfig } from '@/helpers/sevice-config';
@@ -119,11 +118,9 @@ export function fetchCapex(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
         dispatch(capexSuccess(body.data?.capex));
       } else {
         dispatch(capexError(body.message));
-        dispatch(setAlertNotification('Серверная ошибка'));
       }
     } catch (e) {
       dispatch(capexError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }

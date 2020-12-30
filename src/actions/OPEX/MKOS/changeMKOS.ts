@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
-import { setAlertNotification } from '@/actions/notifications';
 import { currentVersionFromSessionStorage } from '@/helpers/currentVersionFromSessionStorage';
 import { graphqlRequestUrl } from '@/helpers/graphqlRequestUrl';
 import headers from '@/helpers/headers';
@@ -95,15 +94,9 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         dispatch(OPEXMKOSChangeSuccess(responseData.mkos));
       } else {
         dispatch(OPEXMKOSChangeError(body.message));
-        if (responseData?.mkos?.__typename === 'Error') {
-          dispatch(setAlertNotification(responseData.mkos.message));
-        } else {
-          dispatch(setAlertNotification('Серверная ошибка'));
-        }
       }
     } catch (e) {
       dispatch(OPEXMKOSChangeError(e));
-      dispatch(setAlertNotification('Серверная ошибка'));
     }
   };
 }
