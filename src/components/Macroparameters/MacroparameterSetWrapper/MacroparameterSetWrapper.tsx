@@ -41,7 +41,7 @@ export interface MacroparameterSetWrapperProps {
   highlightArticleClear: () => void;
 }
 
-export const MacroparameterSetWrapper = ({
+export const MacroparameterSetWrapper: React.FC<MacroparameterSetWrapperProps> = ({
   macroparameterSet,
   updateMacroparameterSet,
   addMacroparameterSetGroup,
@@ -52,7 +52,7 @@ export const MacroparameterSetWrapper = ({
   requestDeleteMacroparameterGroup,
   highlightArticle,
   highlightArticleClear,
-}: MacroparameterSetWrapperProps) => {
+}) => {
   const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
   const [allProjectsHelper, setAllProjectsHelper] = useState(false);
 
@@ -160,6 +160,9 @@ export const MacroparameterSetWrapper = ({
   }, [allProjects, allProjectsHelper, requestSetUpdate]);
 
   const handleGroupNameChange = ({ value }: any) => setNewGroupName(value);
+  const handleGroupAdd = (e: any) => {
+    addGroup(e, newGroupName);
+  };
 
   const isCollapsedCallback = (collapsed: Collapsed) => {
     setGroupsCollapsed((prev) =>
@@ -263,9 +266,10 @@ export const MacroparameterSetWrapper = ({
                 </Form.Row>
                 <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
                   {(groups ?? []).length > 0 &&
-                    groups.map((group, index) => (
+                    groups.map((group) => (
                       <GroupWrapper
-                        key={group.id}
+                        key={`${macroparameterSet.id}_${group.id}`}
+                        parentKey={`${macroparameterSet.id}_${group.id}`}
                         group={group}
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
@@ -318,8 +322,8 @@ export const MacroparameterSetWrapper = ({
                         size="s"
                         label="Добавить группу"
                         view="ghost"
-                        disabled={!newGroupName.length}
-                        onClick={(e) => addGroup(e, newGroupName)}
+                        disabled={!newGroupName?.length}
+                        onClick={handleGroupAdd}
                       />
                       <Button
                         size="s"

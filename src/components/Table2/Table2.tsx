@@ -158,7 +158,7 @@ export const Table2: React.FC<Table2Props> = ({
               {additionalColumns?.map(
                 (column: TableAdditionalColumn, indexAdditionalColumn: number) => (
                   <Resizable
-                    key={`${column.label}`}
+                    key={`additional_${column.label}`}
                     defaultSize={{ width: 88, height: 30 }}
                     minWidth={88}
                     enable={resizeDirectionOnlyRight}
@@ -218,7 +218,7 @@ export const Table2: React.FC<Table2Props> = ({
                         return (
                           <TableCell2
                             format={spreadValue}
-                            key={`a_${column.label}`}
+                            key={`${group.id}_ha_${column.label}`}
                             width={additionalColumnsWidth[additionalColumnsIndex]}
                             className="additional-column-cell"
                           />
@@ -227,7 +227,7 @@ export const Table2: React.FC<Table2Props> = ({
                       return (
                         <TableCell2
                           format={spreadValue}
-                          key={`b_${column.label}`}
+                          key={`${group.id}_hb_${column.label}`}
                           width={additionalColumnsWidth[additionalColumnsIndex]}
                           className={`
                             ${cnTableCell2('value')}
@@ -246,7 +246,7 @@ export const Table2: React.FC<Table2Props> = ({
                       return (
                         <TableCell2
                           format={spreadValue}
-                          key={`a_${year}`}
+                          key={`${group.id}_ya_${year}`}
                           width={additionalColumnsWidth[valuesColumnsIndex]}
                           className="additional-column-cell"
                         />
@@ -255,7 +255,7 @@ export const Table2: React.FC<Table2Props> = ({
                     return (
                       <TableCell2
                         format={spreadValue}
-                        key={`b_${year}`}
+                        key={`${group.id}_yb_${year}`}
                         width={additionalColumnsWidth[valuesColumnsIndex]}
                         className={`
                             ${cnTableCell2('value')}
@@ -276,12 +276,15 @@ export const Table2: React.FC<Table2Props> = ({
                   })}
                 </TableHeaderRow>
                 {group?.articleList?.map((article: TableArticle) => (
-                  <TableHeaderRow className={`${cnTableHeaderRow('full-width')}`} key={article.id}>
+                  <TableHeaderRow
+                    className={`${cnTableHeaderRow('full-width')}`}
+                    key={`${group.id}_header_row_${article.id}`}
+                  >
                     {additionalColumns?.map(
                       (column: TableAdditionalColumn, additionalColumnsIndex: number) => (
                         <TableCell2
                           format={spreadValue}
-                          key={column.label}
+                          key={`${group.id}_header_row_label_${article.id}_${column.label}`}
                           className={`
                             ${cnTableCell2('value')}
                             ${cnTableCell2('border-right')}
@@ -296,7 +299,7 @@ export const Table2: React.FC<Table2Props> = ({
                     {valuesColumns?.map((year: string) => (
                       <TableCell2
                         format={spreadValue}
-                        key={year}
+                        key={`${group.id}_cell_${article.id}_${year}`}
                         className={`${cnTableCell2('value')} ${cnTableCell2('border-right')}`}
                         editable
                         onBlur={(value: number) => onCellValueUpdate(article, group, year, value)}

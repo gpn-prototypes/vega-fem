@@ -101,7 +101,7 @@ export const GroupWrapper: React.FC<CapexSetWrapperGroupProps> = ({
         {capexes?.length > 0 &&
           capexes.map((article: Article) => (
             <ArticleWrapper
-              key={`article_${article.id}`}
+              key={`group_${group.id}_article_${article.id}`}
               article={article}
               fullWidth
               onFocusCallback={articleFocusHandler}

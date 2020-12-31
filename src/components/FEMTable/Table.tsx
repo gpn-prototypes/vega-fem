@@ -223,13 +223,13 @@ export const Table = ({
                   {(group as CapexExpenseSetGroup)?.valueTotal ?? ''}
                 </td>
                 {yearsRange.map((year, index: number) => (
-                  <td key={year} className={cnTableWrapper('value')} />
+                  <td key={group.id + '_' + year} className={cnTableWrapper('value')} />
                 ))}
               </tr>
               {articleList(group).map((article: any, indexArticle: number) => {
                 if (visibleClass(indexGroup)) {
                   return (
-                    <tr key={article.id}>
+                    <tr key={group.id + '_' + article.id}>
                       <td />
                       <td className={cnTableWrapper('sub-node')} title={article.caption}>
                         {article.caption}
@@ -237,7 +237,7 @@ export const Table = ({
                       <td className={cnTableWrapper('value')}>{article[secondaryColumn]}</td>
                       {yearsRange.map((year, index: number) => (
                         <TableCell
-                          key={year}
+                          key={`${group.id}_${article.id}_${year}`}
                           editable={!!updateArticleValueCallback}
                           onBlur={(value: string) =>
                             updateValue(group, article, { year: +year, value: +value })

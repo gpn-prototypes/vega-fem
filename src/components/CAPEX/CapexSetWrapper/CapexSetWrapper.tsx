@@ -137,7 +137,7 @@ export const CapexSetWrapper: React.FC<CapexSetWrapperProps> = ({
                   {(groups ?? []).length > 0 &&
                     groups.map((group) => (
                       <GroupWrapper
-                        key={`group_${group.id}`}
+                        key={`capex_group_${group.id}`}
                         group={group}
                         requestAddCapex={addCapex}
                         updateCapexValue={updateCapexValue}
