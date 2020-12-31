@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, IconAdd, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
+import { Form, IconSelect, Text } from '@gpn-prototypes/vega-ui';
 
 import { Collapsed } from '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper';
 
@@ -9,6 +9,7 @@ import { GroupWrapper } from './GroupWrapper';
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import '@/styles/VegaFormCustom/VegaFormCustom.css';
 
+import { GroupAddingForm } from '@/components/Shared/Group/GroupAddingForm';
 import { CapexTableContainer } from '@/containers/CAPEX/CapexTableContainer';
 import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
 import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
@@ -43,8 +44,6 @@ export const CapexSetWrapper: React.FC<CapexSetWrapperProps> = ({
   highlightArticle,
   highlightArticleClear,
 }) => {
-  const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
   const [groups, setGroups] = useState(
     (capexSet?.capexExpenseGroupList ?? []) as CapexExpenseSetGroup[],
   );
@@ -69,20 +68,13 @@ export const CapexSetWrapper: React.FC<CapexSetWrapperProps> = ({
     );
   }, [capexSet]);
 
-  const toggleCapexSetGroup = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsAddingGroup(!isAddingGroup);
-    setNewGroupName('');
-  };
-
   const requestGroupAdd = (groupName: string) => {
     addCapexSetGroup({
       caption: groupName,
     } as CapexExpenseSetGroup);
   };
 
-  const addGroup = (event: any, groupName: string): void => {
-    toggleCapexSetGroup(event);
+  const handleGroupAdd = (groupName: string): void => {
     requestGroupAdd(groupName);
   };
 
@@ -155,47 +147,13 @@ export const CapexSetWrapper: React.FC<CapexSetWrapperProps> = ({
                 </Form.Row>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
-                {!isAddingGroup && (
-                  <Button
-                    type="button"
-                    size="s"
-                    label="Добавить группу затрат"
-                    iconLeft={IconAdd}
-                    view="ghost"
-                    onClick={(e) => toggleCapexSetGroup(e)}
-                  />
-                )}
-                {isAddingGroup && (
-                  <div>
-                    <Text as="span" view="secondary" size="s">
-                      Название группы затрат
-                    </Text>
-                    <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                      <Form.Field>
-                        <TextField
-                          size="s"
-                          width="full"
-                          id="capexSetNewGroupName"
-                          placeholder="Введите название группы затрат"
-                          type="text"
-                          maxLength={256}
-                          value={newGroupName}
-                          onChange={(event: any) => setNewGroupName(event.e.target.value)}
-                        />
-                      </Form.Field>
-                    </Form.Row>
-                    <Form.Row className={cnVegaFormCustom('footer-action')}>
-                      <Button
-                        size="s"
-                        label="Добавить группу"
-                        view="ghost"
-                        disabled={!newGroupName.length}
-                        onClick={(e) => addGroup(e, newGroupName)}
-                      />
-                      <Button label="Отмена" size="s" view="clear" onClick={toggleCapexSetGroup} />
-                    </Form.Row>
-                  </div>
-                )}
+                <GroupAddingForm
+                  toggleButtonLabel="Добавить группу затрат"
+                  addButtonLabel="Добавить группу"
+                  placeholder="Введите название группы затрат"
+                  title="Название группы затрат"
+                  onAdd={handleGroupAdd}
+                />
               </Form.Row>
             </Form>
             <CapexTableContainer capexSet={capexSet} />
