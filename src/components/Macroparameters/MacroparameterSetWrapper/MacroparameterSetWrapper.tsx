@@ -216,7 +216,10 @@ export const MacroparameterSetWrapper: React.FC<MacroparameterSetWrapperProps> =
                     <BasicSelect
                       options={yearsOptions}
                       id="macroparameterSetYearStart"
-                      value={yearsOptions.find((i) => i.value === yearStart?.toString())}
+                      value={
+                        yearsOptions.find((i) => i.value === yearStart?.toString()) ||
+                        yearsOptions[0]
+                      }
                       getOptionLabel={(item: SelectOptions) => item.label}
                       onChange={(selectValue: SelectOptions | null) => {
                         setYearStart(selectValue ? +selectValue.value : undefined);

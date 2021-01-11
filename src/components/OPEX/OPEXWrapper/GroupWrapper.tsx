@@ -163,7 +163,7 @@ export const GroupWrapper: React.FC<GroupWrapperProps> = ({
             <BasicSelect
               options={yearsOptions}
               id="OPEXYearEnd"
-              value={yearsOptions.find((i) => i.value === yearEnd?.toString())}
+              value={yearsOptions.find((i) => i.value === yearEnd?.toString()) || yearsOptions[0]}
               getOptionLabel={(item: SelectOptions) => item.label}
               onChange={(selectValue: SelectOptions | null) => {
                 setYearEnd(selectValue?.value);
