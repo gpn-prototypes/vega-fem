@@ -63,8 +63,8 @@ export const requestChangeCapexExpense = (
             dispatch(changeCapexExpenseSuccess(newCapex as Article, group, groupTotalValueByYear));
             sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           }
-        } else {
-          dispatch(changeCapexExpenseError('Error'));
+        } else if (responseData?.capexExpense?.__typename === 'Error') {
+          dispatch(changeCapexExpenseError(responseData?.capexExpense));
         }
       })
       .catch((e) => {

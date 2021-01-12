@@ -43,10 +43,11 @@ export function fetchMacroparameterSetList(): ThunkAction<Promise<void>, {}, {},
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.macroparameterSetList;
+
         if (responseData && responseData.result?.__typename !== 'Error') {
           dispatch(macroparameterSetListSuccess(responseData));
-        } else {
-          dispatch(macroparameterSetListError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(macroparameterSetListError(responseData?.result));
         }
       })
       .catch((e) => {

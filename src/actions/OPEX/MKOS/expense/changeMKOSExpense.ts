@@ -53,8 +53,8 @@ export function MKOSChangeExpense(article: Article): ThunkAction<Promise<void>, 
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXMKOSChangeExpenseSuccess(responseData.opexExpense));
-        } else {
-          dispatch(OPEXMKOSChangeExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXMKOSChangeExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

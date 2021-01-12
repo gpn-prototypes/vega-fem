@@ -40,7 +40,7 @@ export const updateMacroparameterSet = (
     mutate({
       query: CHANGE_MACROPARAMETER_SET,
       variables: {
-        macroparameterSetId: selected?.id?.toString(),
+        macroparameterSetId: selected?.toString(),
         category: newMacroparameterSet.category,
         caption: newMacroparameterSet.caption,
         name: newMacroparameterSet.name,
@@ -59,8 +59,8 @@ export const updateMacroparameterSet = (
           dispatch(
             macroparameterSetUpdateSuccess(responseData?.macroparameterSet as MacroparameterSet),
           );
-        } else {
-          dispatch(macroparameterSetUpdateError('Error'));
+        } else if (responseData?.macroparameterSet?.__typename === 'Error') {
+          dispatch(macroparameterSetUpdateError(responseData?.macroparameterSet));
         }
       })
       .catch((e) => {

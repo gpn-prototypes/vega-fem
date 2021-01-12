@@ -50,8 +50,8 @@ export const requestDeleteCapexExpense = (
         if (responseData && responseData?.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(capexDeleteValueSuccess(capex, group));
-        } else {
-          dispatch(capexDeleteValueError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(capexDeleteValueError(responseData?.result));
         }
       })
       .catch((e) => {

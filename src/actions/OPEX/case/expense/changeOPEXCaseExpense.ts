@@ -54,11 +54,12 @@ export function caseChangeExpense(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.changeOpexCaseExpense;
+
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXCaseChangeExpenseSuccess(group, responseData.opexExpense));
-        } else {
-          dispatch(OPEXCaseChangeExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXCaseChangeExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

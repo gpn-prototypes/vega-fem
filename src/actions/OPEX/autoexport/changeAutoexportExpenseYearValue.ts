@@ -56,11 +56,12 @@ export function autoexportChangeExpenseYearValue(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.setOpexAutoexportExpenseYearValue;
+
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeExpenseYearValueSuccess(article, value));
-        } else {
-          dispatch(OPEXAutoexportChangeExpenseYearValueError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXAutoexportChangeExpenseYearValueError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

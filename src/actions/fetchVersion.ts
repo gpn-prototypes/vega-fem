@@ -1,4 +1,3 @@
-import { NetworkStatus } from '@apollo/client';
 import { AnyAction } from 'redux';
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
@@ -46,14 +45,12 @@ export function fetchVersion(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
     })
       ?.then((response) => {
         const responseData = response?.data?.project;
-        if (
-          response?.networkStatus === NetworkStatus.ready &&
-          responseData.__typename !== 'Error'
-        ) {
-          sessionStorage.setItem('currentVersion', response.data?.project.version);
-          dispatch(VersionFetchSuccess(response.data?.project.version));
-        } else {
-          dispatch(VersionFetchError('Error'));
+
+        if (responseData && responseData?.__typename !== 'Error') {
+          sessionStorage.setItem('currentVersion', responseData.version);
+          dispatch(VersionFetchSuccess(responseData.version));
+        } else if (responseData?.__typename === 'Error') {
+          dispatch(VersionFetchError(responseData));
         }
       })
       .catch((e) => {

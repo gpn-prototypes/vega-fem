@@ -39,7 +39,7 @@ export const deleteMacroparameterSetGroup = (
     mutate({
       query: DELETE_MACROPARAMETER_SET_GROUP,
       variables: {
-        macroparameterSetId: selected?.id?.toString(),
+        macroparameterSetId: selected?.toString(),
         macroparameterGroupId: macroparameterSetGroup?.id?.toString(),
         version: currentVersionFromSessionStorage(),
       },
@@ -47,11 +47,12 @@ export const deleteMacroparameterSetGroup = (
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteCapexExpenseGroup;
+
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(macroparameterSetGroupDeleteSuccess(macroparameterSetGroup));
-        } else {
-          dispatch(macroparameterSetGroupDeleteError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(macroparameterSetGroupDeleteError(responseData.result));
         }
       })
       .catch((e) => {

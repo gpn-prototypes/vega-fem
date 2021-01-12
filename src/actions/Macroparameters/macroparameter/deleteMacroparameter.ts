@@ -42,7 +42,7 @@ export const requestDeleteMacroparameter = (
     mutate({
       query: DELETE_MACROPARAMETER,
       variables: {
-        macroparameterSetId: selected?.id?.toString(),
+        macroparameterSetId: selected?.toString(),
         macroparameterGroupId: group?.id?.toString(),
         macroparameterId: macroparameter?.id?.toString(),
         version: currentVersionFromSessionStorage(),
@@ -51,11 +51,12 @@ export const requestDeleteMacroparameter = (
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteMacroparameter;
+
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(macroparameterDeleteSuccess(macroparameter as Article, group));
-        } else {
-          dispatch(macroparameterDeleteError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(macroparameterDeleteError(responseData?.result));
         }
       })
       .catch((e) => {

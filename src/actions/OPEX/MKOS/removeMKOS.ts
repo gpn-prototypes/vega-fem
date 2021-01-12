@@ -43,11 +43,13 @@ export function MKOSRemove(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (!response?.data?.project?.removeOpexMkos) {
+        const responseData = response?.data?.project?.removeOpexMkos;
+
+        if (!responseData) {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXMKOSRemoveSuccess(MKOS));
-        } else {
-          dispatch(OPEXMKOSRemoveError('Error'));
+        } else if (responseData?.__typename === 'Error') {
+          dispatch(OPEXMKOSRemoveError(responseData));
         }
       })
       .catch((e) => {

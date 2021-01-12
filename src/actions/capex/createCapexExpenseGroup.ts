@@ -44,7 +44,7 @@ export const createCapexExpenseGroup = (
       ?.then((response) => {
         const createdCapexGroup = response.data?.project?.createCapexExpenseGroup;
 
-        if (createdCapexGroup && createdCapexGroup?.capexExpenseGroup.__typename !== 'Error') {
+        if (createdCapexGroup && createdCapexGroup?.capexExpenseGroup?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           const newGroup = createdCapexGroup?.capexExpenseGroup;
 
@@ -56,8 +56,8 @@ export const createCapexExpenseGroup = (
                 ...{ capexExpenseList: [] },
               } as CapexExpenseSetGroup),
             );
-        } else {
-          dispatch(capexExpenseGroupAddError('Error'));
+        } else if (createdCapexGroup?.capexExpenseGroup?.__typename === 'Error') {
+          dispatch(capexExpenseGroupAddError(createdCapexGroup?.capexExpenseGroup));
         }
       })
       .catch((e) => {

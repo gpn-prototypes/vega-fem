@@ -44,7 +44,7 @@ export const requestUpdateMacroparameterYearValue = (
     mutate({
       query: UPDATE_MACROPARAMETER_YEAR_VALUE,
       variables: {
-        macroparameterSetId: selected?.id?.toString(),
+        macroparameterSetId: selected?.toString(),
         macroparameterGroupId: group?.id?.toString(),
         macroparameterId: macroparameter?.id?.toString(),
         year: value.year,
@@ -59,8 +59,8 @@ export const requestUpdateMacroparameterYearValue = (
         if (responseData && responseData?.macroparameter?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(macroparameterUpdateYearValueSuccess(macroparameter, group, value));
-        } else {
-          dispatch(macroparameterUpdateYearValueError('Error'));
+        } else if (responseData?.macroparameter?.__typename === 'Error') {
+          dispatch(macroparameterUpdateYearValueError(responseData?.macroparameter));
         }
       })
       .catch((e) => {

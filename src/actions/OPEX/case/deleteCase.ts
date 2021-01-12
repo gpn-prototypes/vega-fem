@@ -49,8 +49,8 @@ export function deleteCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
         if (responseData && responseData?.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXDeleteCaseSuccess(opexCase));
-        } else {
-          dispatch(OPEXDeleteCaseError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(OPEXDeleteCaseError(responseData?.result));
         }
       })
       .catch((e) => {

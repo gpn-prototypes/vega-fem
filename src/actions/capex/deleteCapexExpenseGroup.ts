@@ -43,11 +43,12 @@ export const deleteCapexExpenseGroup = (
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteCapexExpenseGroup;
+
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(capexExpenseGroupDeleteSuccess(capexSetGroup));
-        } else {
-          dispatch(capexExpenseGroupDeleteError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(capexExpenseGroupDeleteError(responseData?.result));
         }
       })
       .catch((e) => {

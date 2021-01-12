@@ -39,10 +39,12 @@ export function fetchOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (response?.data?.project?.opex) {
-          dispatch(OPEXSetSuccess(response?.data?.project?.opex));
-        } else {
-          dispatch(OPEXSetError('Error'));
+        const responseData = response?.data?.project?.opex;
+
+        if (responseData && responseData.__typename !== 'Error') {
+          dispatch(OPEXSetSuccess(responseData));
+        } else if (responseData?.__typename === 'Error') {
+          dispatch(OPEXSetError(responseData));
         }
       })
       .catch((e) => {

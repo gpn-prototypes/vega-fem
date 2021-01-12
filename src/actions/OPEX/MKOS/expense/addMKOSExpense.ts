@@ -50,8 +50,8 @@ export function addMKOSExpense(article: Article): ThunkAction<Promise<void>, {},
         if (responseData && responseData?.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAddMKOSExpenseSuccess(responseData?.opexExpense));
-        } else {
-          dispatch(OPEXAddMKOSExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXAddMKOSExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

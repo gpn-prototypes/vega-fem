@@ -51,11 +51,12 @@ export function autoexportChangeExpense(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.changeOpexAutoexportExpense;
+
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeExpenseSuccess(responseData.opexExpense));
-        } else {
-          dispatch(OPEXAutoexportChangeExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXAutoexportChangeExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

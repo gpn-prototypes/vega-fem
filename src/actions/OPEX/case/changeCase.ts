@@ -49,11 +49,12 @@ export function changeCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.changeOpexCase;
+
         if (responseData && responseData.opexCase?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXChangeCaseSuccess(responseData.opexCase));
-        } else {
-          dispatch(OPEXChangeCaseError('Error'));
+        } else if (responseData?.opexCase?.__typename === 'Error') {
+          dispatch(OPEXChangeCaseError(responseData?.opexCase));
         }
       })
       .catch((e) => {

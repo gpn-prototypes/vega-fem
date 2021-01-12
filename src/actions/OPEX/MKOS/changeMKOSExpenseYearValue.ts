@@ -59,8 +59,8 @@ export function MKOSChangeExpenseYearValue(
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXMKOSChangeExpenseYearValueSuccess(article, value));
-        } else {
-          dispatch(OPEXMKOSChangeExpenseYearValueError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXMKOSChangeExpenseYearValueError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

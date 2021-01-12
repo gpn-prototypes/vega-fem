@@ -49,8 +49,8 @@ export const changeCapexExpenseGroup = (
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           const newGroup = changedCapexGroup?.capexExpenseGroup;
           dispatch(capexExpenseGroupChangeSuccess({ ...newGroup } as CapexExpenseSetGroup));
-        } else {
-          dispatch(capexExpenseGroupChangeError('Error'));
+        } else if (changedCapexGroup?.capexExpenseGroup?.__typename === 'Error') {
+          dispatch(capexExpenseGroupChangeError(changedCapexGroup?.capexExpenseGroup));
         }
       })
       .catch((e) => {

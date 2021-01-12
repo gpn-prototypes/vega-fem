@@ -49,8 +49,8 @@ export function MKOSChange(MKOS: OPEXGroup): ThunkAction<Promise<void>, {}, {}, 
         if (responseData && responseData.mkos?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXMKOSChangeSuccess(responseData.mkos));
-        } else {
-          dispatch(OPEXMKOSChangeError('Error'));
+        } else if (responseData?.mkos?.__typename === 'Error') {
+          dispatch(OPEXMKOSChangeError(responseData?.mkos));
         }
       })
       .catch((e) => {

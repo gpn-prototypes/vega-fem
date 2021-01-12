@@ -47,11 +47,12 @@ export function autoexportChange(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.changeOpexAutoexport;
+
         if (responseData && responseData.autoexport?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportChangeSuccess(responseData.autoexport));
-        } else {
-          dispatch(OPEXAutoexportChangeError('Error'));
+        } else if (responseData?.autoexport?.__typename === 'Error') {
+          dispatch(OPEXAutoexportChangeError(responseData?.autoexport));
         }
       })
       .catch((e) => {

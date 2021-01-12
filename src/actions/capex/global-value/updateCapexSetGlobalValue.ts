@@ -53,8 +53,8 @@ export const requestUpdateCapexGlobalValue = (
             sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
             dispatch(capexUpdateGlobalValueSuccess(capexGlobalValue as CapexSetGlobalValue));
           }
-        } else {
-          dispatch(capexUpdateGlobalValueError('Error'));
+        } else if (responseData?.capexGlobalValue?.__typename === 'Error') {
+          dispatch(capexUpdateGlobalValueError(responseData?.capexGlobalValue));
         }
       })
       .catch((e) => {

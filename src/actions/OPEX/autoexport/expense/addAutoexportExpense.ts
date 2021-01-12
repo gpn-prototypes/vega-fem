@@ -48,11 +48,12 @@ export function addAutoexportExpense(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.createOpexAutoexportExpense;
+
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAddAutoexportExpenseSuccess(responseData.opexExpense));
-        } else {
-          dispatch(OPEXAddAutoexportExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXAddAutoexportExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

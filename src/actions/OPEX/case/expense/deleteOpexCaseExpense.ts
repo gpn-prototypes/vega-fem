@@ -50,11 +50,12 @@ export function caseDeleteExpense(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteOpexCaseExpense;
+
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXCaseDeleteExpenseSuccess(group, article));
-        } else {
-          dispatch(OPEXCaseDeleteExpenseError('Error'));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(OPEXCaseDeleteExpenseError(responseData?.result));
         }
       })
       .catch((e) => {

@@ -45,11 +45,13 @@ export function autoexportRemove(
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (!response?.data?.project?.removeOpexAutoexport) {
+        const responseData = response?.data?.project?.removeOpexAutoexport;
+
+        if (!responseData) {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportRemoveSuccess(autoexport));
-        } else {
-          dispatch(OPEXAutoexportRemoveError('Error'));
+        } else if (responseData?.__typename === 'Error') {
+          dispatch(OPEXAutoexportRemoveError(responseData));
         }
       })
       .catch((e) => {

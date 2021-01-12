@@ -57,8 +57,8 @@ export function createCase(opexCase: OPEXGroup): ThunkAction<Promise<void>, {}, 
               opexExpenseList: [],
             } as OPEXSetType),
           );
-        } else {
-          dispatch(OPEXCreateCaseError('Error'));
+        } else if (responseData?.opexCase?.__typename === 'Error') {
+          dispatch(OPEXCreateCaseError(responseData?.opexCase));
         }
       })
       .catch((e) => {

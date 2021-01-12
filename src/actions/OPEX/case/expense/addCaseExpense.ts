@@ -51,11 +51,12 @@ export function addCaseExpense(
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.createOpexCaseExpense;
+
         if (responseData && responseData.opexExpense?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAddCaseExpenseSuccess(caseGroup, responseData.opexExpense));
-        } else {
-          dispatch(OPEXAddCaseExpenseError('Error'));
+        } else if (responseData?.opexExpense?.__typename === 'Error') {
+          dispatch(OPEXAddCaseExpenseError(responseData?.opexExpense));
         }
       })
       .catch((e) => {

@@ -40,11 +40,12 @@ export function changeOPEXSdf(sdfFlag: boolean): ThunkAction<Promise<void>, {}, 
     })
       ?.then((response) => {
         const responseData = response?.data?.project?.setOpexSdf;
+
         if (responseData && responseData?.opexSdf?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXSetChangeSdfSuccess(sdfFlag));
-        } else {
-          dispatch(OPEXSetChangeSdfError('Error'));
+        } else if (responseData?.opexSdf?.__typename === 'Error') {
+          dispatch(OPEXSetChangeSdfError(responseData?.opexSdf));
         }
       })
       .catch((e) => {

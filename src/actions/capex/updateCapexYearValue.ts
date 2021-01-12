@@ -61,8 +61,8 @@ export const requestUpdateCapexYearValue = (
           dispatch(
             capexUpdateYearValueSuccess(capex as Article, group, value, groupTotalValueByYear),
           );
-        } else {
-          dispatch(capexUpdateYearValueError('Error'));
+        } else if (groupTotalValueByYear?.__typename === 'Error') {
+          dispatch(capexUpdateYearValueError(groupTotalValueByYear));
         }
       })
       .catch((e) => {

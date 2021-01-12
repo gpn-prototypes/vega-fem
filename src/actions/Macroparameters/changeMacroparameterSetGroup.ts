@@ -39,7 +39,7 @@ export const changeMacroparameterSetGroup = (
     mutate({
       query: CHANGE_MACROPARAMETER_SET_GROUP,
       variables: {
-        macroparameterSetId: selected?.id?.toString(),
+        macroparameterSetId: selected?.toString(),
         macroparameterGroupId: newMacroparameterSetGroup?.id?.toString(),
         caption: newMacroparameterSetGroup.caption,
         version: currentVersionFromSessionStorage(),
@@ -58,8 +58,8 @@ export const changeMacroparameterSetGroup = (
               macroparameterSetGroupChangeSuccess({ ...newGroup } as MacroparameterSetGroup),
             );
           }
-        } else {
-          dispatch(macroparameterSetGroupChangeError('Error'));
+        } else if (responseData?.macroparameterGroup?.__typename === 'Error') {
+          dispatch(macroparameterSetGroupChangeError(responseData?.macroparameterGroup));
         }
       })
       .catch((e) => {

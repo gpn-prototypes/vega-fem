@@ -55,8 +55,8 @@ export const requestCreateCapexExpense = (
             sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
             dispatch(createCapexExpenseSuccess(capex as Article, group));
           }
-        } else {
-          dispatch(createCapexExpenseError('Error'));
+        } else if (responseData?.capexExpense?.__typename === 'Error') {
+          dispatch(createCapexExpenseError(responseData?.capexExpense));
         }
       })
       .catch((e) => {

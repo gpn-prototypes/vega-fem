@@ -40,10 +40,12 @@ export function changeOPEXSet(): ThunkAction<Promise<void>, {}, {}, AnyAction> {
       appendProjectId: true,
     })
       ?.then((response) => {
-        if (response?.data?.project?.opex) {
-          dispatch(OPEXSetChangeSuccess(response.data?.project?.opex));
-        } else {
-          dispatch(OPEXSetChangeError('Error'));
+        const responseData = response?.data?.project?.opex;
+
+        if (responseData && responseData?.__typename !== 'Error') {
+          dispatch(OPEXSetChangeSuccess(responseData));
+        } else if (responseData?.__typename === 'Error') {
+          dispatch(OPEXSetChangeError(responseData));
         }
       })
       .catch((e) => {
