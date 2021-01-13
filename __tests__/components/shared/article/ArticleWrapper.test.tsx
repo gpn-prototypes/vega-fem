@@ -60,4 +60,48 @@ describe('ArticleWrapper', () => {
     fireEvent.blur(valueInput);
     expect(fakeUpdate).toBeCalledTimes(1);
   });
+
+  test('изменение годового значения макропараметра не приводит к изменению общего значения [VEGA-2958]', () => {
+    const fakeUpdate = jest.fn();
+    const fakeHighlightClear = jest.fn();
+    const { container } = render(
+      <ArticleWrapper
+        article={fakeArticle}
+        updateArticleValueCallback={fakeUpdate}
+        deleteArticleCallback={jest.fn()}
+        updateArticleCallback={jest.fn()}
+        highlightArticleClear={fakeHighlightClear}
+      />,
+    );
+
+    const valueInput: HTMLElement =
+      screen.getByPlaceholderText(/Значение/i) || screen.getByDisplayValue(/100/);
+
+    fireEvent.focus(valueInput);
+    fireEvent.blur(valueInput);
+
+    expect(valueInput).toHaveAttribute('value', '100');
+
+    render(
+      <ArticleWrapper
+        article={{ ...fakeArticle, value: [{ year: 2015, value: 150 }] }}
+        updateArticleValueCallback={fakeUpdate}
+        deleteArticleCallback={jest.fn()}
+        updateArticleCallback={jest.fn()}
+        highlightArticleClear={fakeHighlightClear}
+      />,
+      { container },
+    );
+
+    const valueInput2: HTMLElement =
+      screen.getByPlaceholderText(/Значение/i) || screen.getByDisplayValue(/100/);
+
+    fireEvent.focus(valueInput2);
+    fireEvent.blur(valueInput2);
+
+    expect(valueInput2).toHaveAttribute('value', '100');
+
+    expect(fakeUpdate).toBeCalledTimes(0);
+    expect(fakeHighlightClear).toBeCalledTimes(2);
+  });
 });
