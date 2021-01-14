@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  BasicSelect,
-  Button,
-  Checkbox,
-  Form,
-  IconAdd,
-  IconSelect,
-  Text,
-  TextField,
-} from '@gpn-prototypes/vega-ui';
+import { BasicSelect, Checkbox, Form, IconSelect, Text, TextField } from '@gpn-prototypes/vega-ui';
 
 import { Collapsed, GroupWrapper } from './GroupWrapper/GroupWrapper';
 import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/MacroparameterSetPlaceholder';
@@ -16,8 +7,8 @@ import { MacroparameterSetPlaceholder } from './MacroparameterSetPlaceholder/Mac
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import '@/styles/VegaFormCustom/VegaFormCustom.css';
 
+import { GroupAddingForm } from '@/components/Shared/Group/GroupAddingForm';
 import { MacroparameterTableContainer } from '@/containers/Macroparameters/MacroparameterTableContainer';
-import keyGen from '@/helpers/keyGenerator';
 import macroparameterSetCategoryOptions from '@/helpers/MacroparameterSetCategoryOptions';
 import { yearsRangeOptions } from '@/helpers/nearYearsRange';
 import { cnBlockWrapper } from '@/styles/BlockWrapper/cn-block-wrapper';
@@ -42,7 +33,7 @@ export interface MacroparameterSetWrapperProps {
   highlightArticleClear: () => void;
 }
 
-export const MacroparameterSetWrapper = ({
+export const MacroparameterSetWrapper: React.FC<MacroparameterSetWrapperProps> = ({
   macroparameterSet,
   updateMacroparameterSet,
   addMacroparameterSetGroup,
@@ -53,7 +44,7 @@ export const MacroparameterSetWrapper = ({
   requestDeleteMacroparameterGroup,
   highlightArticle,
   highlightArticleClear,
-}: MacroparameterSetWrapperProps) => {
+}) => {
   const [allProjects, setAllProjects] = useState(macroparameterSet.allProjects);
   const [allProjectsHelper, setAllProjectsHelper] = useState(false);
 
@@ -68,8 +59,6 @@ export const MacroparameterSetWrapper = ({
   /* help to call requestSetUpdate with updated category after Select choice */
   const [categoryHelper, setCategoryHelper] = useState(false);
 
-  const [isAddingGroup, setIsAddingGroup] = useState(false);
-  const [newGroupName, setNewGroupName] = useState('');
   const [groups, setGroups] = useState(
     macroparameterSet.macroparameterGroupList as MacroparameterSetGroup[],
   );
@@ -95,12 +84,6 @@ export const MacroparameterSetWrapper = ({
     );
   }, [macroparameterSet]);
 
-  const toggleMacroparameterSetGroup = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setIsAddingGroup(!isAddingGroup);
-    setNewGroupName('');
-  };
-
   const requestGroupAdd = (groupName: string) => {
     addMacroparameterSetGroup({
       name: groupName,
@@ -108,8 +91,7 @@ export const MacroparameterSetWrapper = ({
     } as MacroparameterSetGroup);
   };
 
-  const addGroup = (event: any, groupName: string): void => {
-    toggleMacroparameterSetGroup(event);
+  const handleGroupAdd = (groupName: string): void => {
     requestGroupAdd(groupName);
   };
 
@@ -159,8 +141,6 @@ export const MacroparameterSetWrapper = ({
       requestSetUpdate();
     }
   }, [allProjects, allProjectsHelper, requestSetUpdate]);
-
-  const handleGroupNameChange = ({ value }: any) => setNewGroupName(value);
 
   const isCollapsedCallback = (collapsed: Collapsed) => {
     setGroupsCollapsed((prev) =>
@@ -236,7 +216,10 @@ export const MacroparameterSetWrapper = ({
                     <BasicSelect
                       options={yearsOptions}
                       id="macroparameterSetYearStart"
-                      value={yearsOptions.find((i) => i.value === yearStart?.toString())}
+                      value={
+                        yearsOptions.find((i) => i.value === yearStart?.toString()) ||
+                        yearsOptions[0]
+                      }
                       getOptionLabel={(item: SelectOptions) => item.label}
                       onChange={(selectValue: SelectOptions | null) => {
                         setYearStart(selectValue ? +selectValue.value : undefined);
@@ -264,9 +247,10 @@ export const MacroparameterSetWrapper = ({
                 </Form.Row>
                 <Form.Row gap="none" space="none" className={cnVegaFormCustom('groups-row')}>
                   {(groups ?? []).length > 0 &&
-                    groups.map((group, index) => (
+                    groups.map((group) => (
                       <GroupWrapper
-                        key={keyGen(index)}
+                        key={`${macroparameterSet.id}_${group.id}`}
+                        parentKey={`${macroparameterSet.id}_${group.id}`}
                         group={group}
                         removeGroup={removeGroup}
                         requestAddMacroparameter={addMacroparameter}
@@ -285,52 +269,13 @@ export const MacroparameterSetWrapper = ({
                 </Form.Row>
               </Form.Row>
               <Form.Row col="1" gap="none" space="none" className={cnVegaFormCustom('footer')}>
-                {!isAddingGroup && (
-                  <Button
-                    type="button"
-                    size="s"
-                    label="Добавить группу статей"
-                    iconLeft={IconAdd}
-                    view="ghost"
-                    onClick={(e) => toggleMacroparameterSetGroup(e)}
-                  />
-                )}
-                {isAddingGroup && (
-                  <div>
-                    <Text as="span" view="secondary" size="s">
-                      Название группы статей
-                    </Text>
-                    <Form.Row col="1" gap="none" className={cnVegaFormCustom('footer-text-field')}>
-                      <Form.Field>
-                        <TextField
-                          size="s"
-                          width="full"
-                          id="macroparameterSetGroupName"
-                          type="text"
-                          placeholder="Введите название группы статей"
-                          maxLength={256}
-                          value={newGroupName}
-                          onChange={handleGroupNameChange}
-                        />
-                      </Form.Field>
-                    </Form.Row>
-                    <Form.Row className={cnVegaFormCustom('footer-action')}>
-                      <Button
-                        size="s"
-                        label="Добавить группу"
-                        view="ghost"
-                        disabled={!newGroupName.length}
-                        onClick={(e) => addGroup(e, newGroupName)}
-                      />
-                      <Button
-                        size="s"
-                        label="Отмена"
-                        view="clear"
-                        onClick={toggleMacroparameterSetGroup}
-                      />
-                    </Form.Row>
-                  </div>
-                )}
+                <GroupAddingForm
+                  toggleButtonLabel="Добавить группу статей"
+                  addButtonLabel="Добавить группу"
+                  placeholder="Введите название группы статей"
+                  title="Название группы статей"
+                  onAdd={handleGroupAdd}
+                />
               </Form.Row>
             </Form>
             <MacroparameterTableContainer macroparameterSet={macroparameterSet} />

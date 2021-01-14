@@ -11,7 +11,6 @@ import { GroupOptionsDropdown } from '../../Shared/GroupOptionsDropdown/GroupOpt
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import '../../Macroparameters/MacroparameterSetWrapper/GroupWrapper/GroupWrapper.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import { yearsRangeOptions } from '@/helpers/nearYearsRange';
 import { cnVegaFormCustom } from '@/styles/VegaFormCustom/cn-vega-form-custom';
 import Article from '@/types/Article';
@@ -36,7 +35,7 @@ export interface GroupWrapperProps {
 
 const yearsOptions = yearsRangeOptions(0, 15);
 
-export const GroupWrapper = ({
+export const GroupWrapper: React.FC<GroupWrapperProps> = ({
   group,
   groupName,
   isPreset,
@@ -164,7 +163,7 @@ export const GroupWrapper = ({
             <BasicSelect
               options={yearsOptions}
               id="OPEXYearEnd"
-              value={yearsOptions.find((i) => i.value === yearEnd?.toString())}
+              value={yearsOptions.find((i) => i.value === yearEnd?.toString()) || yearsOptions[0]}
               getOptionLabel={(item: SelectOptions) => item.label}
               onChange={(selectValue: SelectOptions | null) => {
                 setYearEnd(selectValue?.value);
@@ -175,10 +174,10 @@ export const GroupWrapper = ({
         )}
         {articles?.length > 0 &&
           articles.map(
-            (article: Article, index: any) =>
+            (article: Article) =>
               article && (
                 <ArticleWrapper
-                  key={keyGen(index)}
+                  key={`article_${article.id}`}
                   article={article}
                   fullWidth
                   updateArticleValueCallback={updateArticle}

@@ -11,7 +11,6 @@ import { cnGroupWrapper } from './cn-group-wrapper';
 import '@/styles/BlockWrapper/BlockWrapper.css';
 import './GroupWrapper.css';
 
-import keyGen from '@/helpers/keyGenerator';
 import Article from '@/types/Article';
 import MacroparameterSetGroup from '@/types/Macroparameters/MacroparameterSetGroup';
 
@@ -21,6 +20,7 @@ export interface Collapsed {
 }
 
 export interface MacroparameterSetWrapperGroupProps {
+  parentKey: string;
   group: MacroparameterSetGroup;
   removeGroup: (group: MacroparameterSetGroup) => void;
   requestAddMacroparameter: (macroparameter: Article, group: MacroparameterSetGroup) => void;
@@ -34,7 +34,8 @@ export interface MacroparameterSetWrapperGroupProps {
   isCollapsedCallback?: (collapsed: Collapsed) => void;
 }
 
-export const GroupWrapper = ({
+export const GroupWrapper: React.FC<MacroparameterSetWrapperGroupProps> = ({
+  parentKey,
   group,
   requestAddMacroparameter,
   updateMacroparameterValue,
@@ -45,8 +46,8 @@ export const GroupWrapper = ({
   highlightArticleClear,
   isCollapsed,
   isCollapsedCallback,
-}: MacroparameterSetWrapperGroupProps) => {
-  const [articles] = useState(group.macroparameterList as Article[]);
+}) => {
+  const articles: Article[] = group.macroparameterList || [];
 
   const [isCollapsedState, setIsCollapsedState] = useState(isCollapsed?.collapsed ?? true);
 
@@ -108,16 +109,15 @@ export const GroupWrapper = ({
         data-testid="groupWrapper-body"
         className={cnGroupWrapper('body', { hidden: isCollapsedState })}
       >
-        {articles?.length === 0 && (
+        {articles.length === 0 ? (
           <GroupPlaceholder
             text="Пока не добавлена ни одна статья"
             callback={openAddMacroparameterModal}
           />
-        )}
-        {articles?.length > 0 &&
-          articles.map((macroparameter, index) => (
+        ) : (
+          articles.map((macroparameter) => (
             <ArticleWrapper
-              key={keyGen(index)}
+              key={`${parentKey}_${macroparameter.id}`}
               article={macroparameter}
               updateArticleValueCallback={updateMacroparameterValueWithGroup}
               updateArticleCallback={updateMacroparameterValueWithGroup}
@@ -125,7 +125,8 @@ export const GroupWrapper = ({
               onFocusCallback={articleFocusHandler}
               highlightArticleClear={highlightArticleClear}
             />
-          ))}
+          ))
+        )}
       </div>
       <AddArticleModal isOpen={isOpen} close={close} callback={addMacroparameterToGroup} />
     </div>

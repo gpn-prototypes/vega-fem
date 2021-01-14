@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { ScrollSyncPane } from 'react-scroll-sync';
 import { Text } from '@gpn-prototypes/vega-ui';
 
-import keyGen from '../../../helpers/keyGenerator';
 import { cnTable2Wrapper } from '../cn-table2-wrapper';
 import { TableArticle, TableGroup } from '../Table2';
 import { cnTableCell2 } from '../TableCell2/cn-table-cell2';
@@ -68,8 +67,8 @@ export const FolderComponent: React.FC<FolderComponentProps> = ({
               {headerText}
             </TableCell2>
           </TableHeaderRow>
-          {groups?.map((group: TableGroup, index: number) => (
-            <React.Fragment key={keyGen(index)}>
+          {groups?.map((group: TableGroup) => (
+            <React.Fragment key={group.id}>
               <TableHeaderRow>
                 <TableCell2 className={cnTableCell2('first-column', { numerable: true })} />
                 <TableCell2
@@ -82,12 +81,12 @@ export const FolderComponent: React.FC<FolderComponentProps> = ({
                   </Text>
                 </TableCell2>
               </TableHeaderRow>
-              {group.articleList?.map((article: TableArticle, articleIndex: number) => (
+              {group.articleList?.map((article: TableArticle) => (
                 <TableHeaderRow
                   className={`${cnTableHeaderRow({
                     highlighted: isSelectedRow(group, article),
                   })}`}
-                  key={keyGen(articleIndex)}
+                  key={article.id}
                 >
                   <TableCell2 className={cnTableCell2('first-column', { numerable: true })} />
                   <TableCell2

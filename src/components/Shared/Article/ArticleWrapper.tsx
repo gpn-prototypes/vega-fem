@@ -25,7 +25,7 @@ export interface ArticleWrapperProps {
   highlightArticleClear?: () => void;
 }
 
-export const ArticleWrapper = ({
+export const ArticleWrapper: React.FC<ArticleWrapperProps> = ({
   article,
   updateArticleValueCallback,
   updateArticleCallback,
@@ -33,8 +33,11 @@ export const ArticleWrapper = ({
   fullWidth,
   onFocusCallback,
   highlightArticleClear,
-}: ArticleWrapperProps) => {
+}) => {
   const [values, setValues] = useState(article?.value as ArticleValues[]);
+  const [commonValue, setCommonValue] = useState(values ? values[0]?.value : '');
+  const [prevCommonValue, setPrevCommonValue] = useState(commonValue);
+
   const [spreaded, setSpreaded] = useState<boolean>(true);
 
   const editValues = (e: any): void => {
@@ -50,11 +53,12 @@ export const ArticleWrapper = ({
   };
 
   const blurHandle = useCallback(() => {
-    if (updateArticleValueCallback) {
+    if (updateArticleValueCallback && prevCommonValue !== commonValue) {
+      setPrevCommonValue(commonValue);
       updateArticleValueCallback({
         ...article,
         ...{
-          value: +validateValue(String(values[0]?.value)),
+          value: +validateValue(String(commonValue)),
         },
       });
       setSpreaded(true);
@@ -62,7 +66,7 @@ export const ArticleWrapper = ({
     if (highlightArticleClear) {
       highlightArticleClear();
     }
-  }, [values, updateArticleValueCallback, article, highlightArticleClear]);
+  }, [commonValue, prevCommonValue, updateArticleValueCallback, article, highlightArticleClear]);
 
   const onFocusHandler = useCallback(() => {
     if (onFocusCallback) {
@@ -95,12 +99,15 @@ export const ArticleWrapper = ({
               id={`article_${article?.name}_${article?.id}`}
               placeholder="Значение"
               rightSide={article?.unit}
-              value={values ? displayValue(values[0]?.value) : ''}
+              value={displayValue(commonValue)}
               onBlur={blurHandle}
-              onChange={(e: any) => editValues(e)}
-              onKeyDown={(e) => loseFocus(e)}
+              onChange={(e: any) => {
+                editValues(e);
+                setCommonValue(e.value);
+              }}
               onFocus={onFocusHandler}
               data-testid="input"
+              onKeyDown={(e) => loseFocus(e)}
             />
           </Form.Field>
           <Form.Field>

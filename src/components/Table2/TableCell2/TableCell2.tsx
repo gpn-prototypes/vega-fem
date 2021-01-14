@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, TextField } from '@gpn-prototypes/vega-ui';
 
 import { roundDecimal2Digits } from '../../../helpers/roundDecimal2Digits';
@@ -41,6 +41,10 @@ export const TableCell2 = ({
       setIsEditing(true);
     }
   };
+
+  useEffect(() => {
+    setInnerValue(value ?? '');
+  }, [value]);
 
   const onBlurHandler = () => {
     setIsEditing(false);
