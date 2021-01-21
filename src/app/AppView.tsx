@@ -29,7 +29,7 @@ export const AppView = (): React.ReactElement => {
   return (
     <>
       {isLoading ? (
-        <Loader size="m" />
+        <Loader size="m" data-testid="app-loader" />
       ) : (
         <>
           <Navigation />

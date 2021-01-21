@@ -11,7 +11,7 @@ import {
 } from '../actions/notifications';
 import { NotificationState } from '../types/Notification';
 
-const initialState: NotificationState = {
+export const initialState: NotificationState = {
   list: [],
 };
 

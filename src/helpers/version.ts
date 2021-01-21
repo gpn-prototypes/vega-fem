@@ -8,6 +8,7 @@ export function getCurrentVersion(): number {
 export function incrementVersion(): void {
   sessionStorage.setItem(sessionStorageKey, `${getCurrentVersion() + 1}`);
 }
+
 export function setCurrentVersion(version: number): void {
   sessionStorage.setItem(sessionStorageKey, `${version}`);
 }

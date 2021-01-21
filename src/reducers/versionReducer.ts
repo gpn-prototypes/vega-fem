@@ -5,7 +5,7 @@ import {
   VersionAction,
 } from '../actions/fetchVersion';
 
-const initialState = {
+export const initialState = {
   version: 0,
   errorMessage: {} as any,
 };
