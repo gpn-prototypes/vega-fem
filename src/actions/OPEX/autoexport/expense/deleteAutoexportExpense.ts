@@ -48,11 +48,11 @@ export function autoexportDeleteExpense(
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteOpexAutoexportExpense;
 
-        if (responseData && responseData.__typename !== 'Error') {
+        if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXAutoexportDeleteExpenseSuccess(article));
-        } else if (responseData?.__typename === 'Error') {
-          dispatch(OPEXAutoexportDeleteExpenseError(responseData));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(OPEXAutoexportDeleteExpenseError(responseData?.result));
         }
       })
       .catch((e) => {

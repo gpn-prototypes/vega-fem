@@ -33,7 +33,7 @@ export interface MacroparametersState {
   error?: any;
 }
 
-const initialState: MacroparametersState = {
+export const initialState: MacroparametersState = {
   macroparameterSetList: [],
   selected: '',
   focusedArticle: {},

@@ -46,7 +46,7 @@ export const deleteMacroparameterSetGroup = (
       appendProjectId: true,
     })
       ?.then((response) => {
-        const responseData = response?.data?.project?.deleteCapexExpenseGroup;
+        const responseData = response?.data?.project?.deleteMacroparameterGroup;
 
         if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);

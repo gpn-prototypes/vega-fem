@@ -27,7 +27,7 @@ import { OPEXGroup } from '@/types/OPEX/OPEXGroup';
 import OPEXSetType from '@/types/OPEX/OPEXSetType';
 import Role from '@/types/role';
 
-const initialState = {
+export const initialState = {
   opex: {} as OPEXSetType,
   selectedRole: { name: 'Обустройство' } as Role,
 };

@@ -46,11 +46,11 @@ export function MKOSDeleteExpense(article: Article): ThunkAction<Promise<void>, 
       ?.then((response) => {
         const responseData = response?.data?.project?.deleteOpexMkosExpense;
 
-        if (responseData && responseData.opexExpense?.__typename !== 'Error') {
+        if (responseData && responseData.result?.__typename !== 'Error') {
           sessionStorage.setItem('currentVersion', `${currentVersionFromSessionStorage() + 1}`);
           dispatch(OPEXMKOSDeleteExpenseSuccess(article));
-        } else if (responseData?.opexExpense?.__typename === 'Error') {
-          dispatch(OPEXMKOSDeleteExpenseError(responseData?.opexExpense));
+        } else if (responseData?.result?.__typename === 'Error') {
+          dispatch(OPEXMKOSDeleteExpenseError(responseData?.result));
         }
       })
       .catch((e) => {

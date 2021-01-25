@@ -3,20 +3,20 @@ import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
 
 import {
-  CHANGE_CAPEX_EXPENSE_ERROR,
-  CHANGE_CAPEX_EXPENSE_SUCCESS,
-  requestChangeCapexExpense,
-} from '@/actions/capex/expense/changeCapexExpense';
+  addCaseExpense,
+  OPEX_ADD_CASE_EXPENSE_ERROR,
+  OPEX_ADD_CASE_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/case/expense/addCaseExpense';
 import {
-  CREATE_CAPEX_EXPENSE_ERROR,
-  CREATE_CAPEX_EXPENSE_SUCCESS,
-  requestCreateCapexExpense,
-} from '@/actions/capex/expense/createCapexExpense';
+  caseChangeExpense,
+  OPEX_CASE_CHANGE_EXPENSE_ERROR,
+  OPEX_CASE_CHANGE_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/case/expense/changeOPEXCaseExpense';
 import {
-  DELETE_CAPEX_EXPENSE_ERROR,
-  DELETE_CAPEX_EXPENSE_SUCCESS,
-  requestDeleteCapexExpense,
-} from '@/actions/capex/expense/deleteCapexExpense';
+  caseDeleteExpense,
+  OPEX_CASE_DELETE_EXPENSE_ERROR,
+  OPEX_CASE_DELETE_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/case/expense/deleteOpexCaseExpense';
 import { mutate } from '@/api/graphql-request';
 import { initialState } from '@/reducers/capexReducer';
 
@@ -49,33 +49,25 @@ const mockError = {
   message: 'mock error',
 };
 
-describe('Capex expense actions', () => {
+describe('Opex case expense actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-
-  const mockId = 'mock id';
-
-  const groupMock = {
-    id: mockId,
-  };
-
   const successResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
+        createOpexCaseExpense: {
+          opexExpense: {
+            __typename: 'OpexExpense',
           },
         },
-        changeCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
+        changeOpexCaseExpense: {
+          opexExpense: {
+            __typename: 'OpexExpense',
           },
-          totalValueByYear: [],
         },
-        deleteCapexExpense: {
-          result: { capex: { id: mockId }, group: groupMock },
+        deleteOpexCaseExpense: {
+          result: { id: 'mock id' },
         },
       },
     },
@@ -84,17 +76,17 @@ describe('Capex expense actions', () => {
   const errorResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
+        createOpexCaseExpense: {
+          opexExpense: {
             ...mockError,
           },
         },
-        changeCapexExpense: {
-          capexExpense: {
+        changeOpexCaseExpense: {
+          opexExpense: {
             ...mockError,
           },
         },
-        deleteCapexExpense: {
+        deleteOpexCaseExpense: {
           result: {
             ...mockError,
           },
@@ -103,26 +95,30 @@ describe('Capex expense actions', () => {
     },
   };
 
-  describe('создание Capex Expense', () => {
-    const newCapexExpenseMock = {
+  const groupMock = {
+    id: 'mock id',
+  };
+
+  describe('создание OPEX Case Expense', () => {
+    const opexExpenseMock = {
       caption: 'mock caption',
       unit: 'mock unit',
     };
 
-    test('успешно создается Capex Expense', async () => {
+    test('успешно создается OPEX Case Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestCreateCapexExpense(newCapexExpenseMock, groupMock));
+      store.dispatch(addCaseExpense(opexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           payload: {
-            capex: successResponse.data.project.createCapexExpense.capexExpense,
-            group: groupMock,
+            caseGroup: groupMock,
+            expense: successResponse.data.project.createOpexCaseExpense.opexExpense,
           },
-          type: CREATE_CAPEX_EXPENSE_SUCCESS,
+          type: OPEX_ADD_CASE_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -132,41 +128,40 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestCreateCapexExpense(newCapexExpenseMock, groupMock));
+      store.dispatch(addCaseExpense(opexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: CREATE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_ADD_CASE_EXPENSE_ERROR,
         }),
       );
     });
   });
 
-  describe('редактирование Capex Expense', () => {
-    const capexExpenseMock = {
-      id: mockId,
+  describe('редактирование OPEX Case Expense', () => {
+    const opexExpenseMock = {
+      id: 'mock id',
       caption: 'mock caption',
       name: 'mock name',
       unit: 'mock unit',
       value: 'mock value',
     };
 
-    test('успешно редактируется Capex Expense', async () => {
+    test('успешно редактируется OPEX Case Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestChangeCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(caseChangeExpense(opexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           payload: {
-            capex: successResponse.data.project.changeCapexExpense.capexExpense,
             group: groupMock,
-            groupTotalValueByYear: [],
+            expense: successResponse.data.project.changeOpexCaseExpense.opexExpense,
           },
-          type: CHANGE_CAPEX_EXPENSE_SUCCESS,
+          type: OPEX_CASE_CHANGE_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -176,33 +171,36 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestChangeCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(caseChangeExpense(opexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: CHANGE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_CASE_CHANGE_EXPENSE_ERROR,
         }),
       );
     });
   });
 
-  describe('удаление Capex Expense', () => {
+  describe('удаление OPEX Case Expense', () => {
     const capexExpenseMock = {
-      id: mockId,
+      id: 'mock id',
     };
 
-    test('успешно удаляется Capex Expense', async () => {
+    test('успешно удаляется OPEX Autoexport Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestDeleteCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(caseDeleteExpense(capexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
-          payload: successResponse.data.project.deleteCapexExpense.result,
-          type: DELETE_CAPEX_EXPENSE_SUCCESS,
+          payload: {
+            group: groupMock,
+            expense: capexExpenseMock,
+          },
+          type: OPEX_CASE_DELETE_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -212,12 +210,12 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestDeleteCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(caseDeleteExpense(capexExpenseMock, groupMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: DELETE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_CASE_DELETE_EXPENSE_ERROR,
         }),
       );
     });

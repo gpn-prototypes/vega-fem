@@ -3,20 +3,20 @@ import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
 
 import {
-  CHANGE_CAPEX_EXPENSE_ERROR,
-  CHANGE_CAPEX_EXPENSE_SUCCESS,
-  requestChangeCapexExpense,
-} from '@/actions/capex/expense/changeCapexExpense';
+  addMKOSExpense,
+  OPEX_ADD_MKOS_EXPENSE_ERROR,
+  OPEX_ADD_MKOS_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/MKOS/expense/addMKOSExpense';
 import {
-  CREATE_CAPEX_EXPENSE_ERROR,
-  CREATE_CAPEX_EXPENSE_SUCCESS,
-  requestCreateCapexExpense,
-} from '@/actions/capex/expense/createCapexExpense';
+  MKOSChangeExpense,
+  OPEX_MKOS_CHANGE_EXPENSE_ERROR,
+  OPEX_MKOS_CHANGE_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/MKOS/expense/changeMKOSExpense';
 import {
-  DELETE_CAPEX_EXPENSE_ERROR,
-  DELETE_CAPEX_EXPENSE_SUCCESS,
-  requestDeleteCapexExpense,
-} from '@/actions/capex/expense/deleteCapexExpense';
+  MKOSDeleteExpense,
+  OPEX_MKOS_DELETE_EXPENSE_ERROR,
+  OPEX_MKOS_DELETE_EXPENSE_SUCCESS,
+} from '@/actions/OPEX/MKOS/expense/deleteMKOSExpense';
 import { mutate } from '@/api/graphql-request';
 import { initialState } from '@/reducers/capexReducer';
 
@@ -49,33 +49,25 @@ const mockError = {
   message: 'mock error',
 };
 
-describe('Capex expense actions', () => {
+describe('Opex MKOS expense actions', () => {
   beforeEach(() => {
     jest.resetAllMocks();
   });
-
-  const mockId = 'mock id';
-
-  const groupMock = {
-    id: mockId,
-  };
-
   const successResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
+        createOpexMkosExpense: {
+          opexExpense: {
+            __typename: 'OpexExpense',
           },
         },
-        changeCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
+        changeOpexMkosExpense: {
+          opexExpense: {
+            __typename: 'OpexExpense',
           },
-          totalValueByYear: [],
         },
-        deleteCapexExpense: {
-          result: { capex: { id: mockId }, group: groupMock },
+        deleteOpexMkosExpense: {
+          result: { id: 'mock id' },
         },
       },
     },
@@ -84,17 +76,17 @@ describe('Capex expense actions', () => {
   const errorResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
+        createOpexMkosExpense: {
+          opexExpense: {
             ...mockError,
           },
         },
-        changeCapexExpense: {
-          capexExpense: {
+        changeOpexMkosExpense: {
+          opexExpense: {
             ...mockError,
           },
         },
-        deleteCapexExpense: {
+        deleteOpexMkosExpense: {
           result: {
             ...mockError,
           },
@@ -103,26 +95,23 @@ describe('Capex expense actions', () => {
     },
   };
 
-  describe('создание Capex Expense', () => {
-    const newCapexExpenseMock = {
+  describe('создание OPEX MKOS Expense', () => {
+    const newOpexExpenseMock = {
       caption: 'mock caption',
       unit: 'mock unit',
     };
 
-    test('успешно создается Capex Expense', async () => {
+    test('успешно создается OPEX MKOS Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestCreateCapexExpense(newCapexExpenseMock, groupMock));
+      store.dispatch(addMKOSExpense(newOpexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
-          payload: {
-            capex: successResponse.data.project.createCapexExpense.capexExpense,
-            group: groupMock,
-          },
-          type: CREATE_CAPEX_EXPENSE_SUCCESS,
+          payload: successResponse.data.project.createOpexMkosExpense.opexExpense,
+          type: OPEX_ADD_MKOS_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -132,41 +121,37 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestCreateCapexExpense(newCapexExpenseMock, groupMock));
+      store.dispatch(addMKOSExpense(newOpexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: CREATE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_ADD_MKOS_EXPENSE_ERROR,
         }),
       );
     });
   });
 
-  describe('редактирование Capex Expense', () => {
-    const capexExpenseMock = {
-      id: mockId,
+  describe('редактирование OPEX MKOS Expense', () => {
+    const opexExpenseMock = {
+      id: 'mock id',
       caption: 'mock caption',
       name: 'mock name',
       unit: 'mock unit',
       value: 'mock value',
     };
 
-    test('успешно редактируется Capex Expense', async () => {
+    test('успешно редактируется OPEX Autoexport Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestChangeCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(MKOSChangeExpense(opexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
-          payload: {
-            capex: successResponse.data.project.changeCapexExpense.capexExpense,
-            group: groupMock,
-            groupTotalValueByYear: [],
-          },
-          type: CHANGE_CAPEX_EXPENSE_SUCCESS,
+          payload: successResponse.data.project.changeOpexMkosExpense.opexExpense,
+          type: OPEX_MKOS_CHANGE_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -176,33 +161,33 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestChangeCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(MKOSChangeExpense(opexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: CHANGE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_MKOS_CHANGE_EXPENSE_ERROR,
         }),
       );
     });
   });
 
-  describe('удаление Capex Expense', () => {
+  describe('удаление OPEX MKOS Expense', () => {
     const capexExpenseMock = {
-      id: mockId,
+      id: 'mock id',
     };
 
-    test('успешно удаляется Capex Expense', async () => {
+    test('успешно удаляется OPEX Autoexport Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestDeleteCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(MKOSDeleteExpense(capexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
-          payload: successResponse.data.project.deleteCapexExpense.result,
-          type: DELETE_CAPEX_EXPENSE_SUCCESS,
+          payload: successResponse.data.project.deleteOpexMkosExpense.result,
+          type: OPEX_MKOS_DELETE_EXPENSE_SUCCESS,
         }),
       );
     });
@@ -212,12 +197,12 @@ describe('Capex expense actions', () => {
 
       const store = mockStore(storeData);
 
-      store.dispatch(requestDeleteCapexExpense(capexExpenseMock, groupMock));
+      store.dispatch(MKOSDeleteExpense(capexExpenseMock));
 
       await waitFor(() =>
         expect(store.getActions()).toContainEqual({
           errorMessage: mockError,
-          type: DELETE_CAPEX_EXPENSE_ERROR,
+          type: OPEX_MKOS_DELETE_EXPENSE_ERROR,
         }),
       );
     });

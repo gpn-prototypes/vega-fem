@@ -1,3 +1,4 @@
+import { NetworkStatus } from '@apollo/client';
 import { waitFor } from '@testing-library/react';
 import configureMockStore from 'redux-mock-store';
 import thunkMiddleware from 'redux-thunk';
@@ -23,7 +24,7 @@ import {
   CAPEX_UPDATE_YEAR_VALUE_SUCCESS,
   requestUpdateCapexYearValue,
 } from '@/actions/capex/updateCapexYearValue';
-import { mutate } from '@/api/graphql-request';
+import { mutate, query } from '@/api/graphql-request';
 import { initialState } from '@/reducers/capexReducer';
 
 jest.mock('@/api/graphql-request', () => ({
@@ -49,6 +50,14 @@ const mockMutate = (response) => {
   });
 };
 
+const mockQuery = (response) => {
+  query.mockImplementation(() => {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(response));
+    });
+  });
+};
+
 const mockError = {
   __typename: 'Error',
   code: 'mock code',
@@ -64,16 +73,18 @@ describe('Capex actions', () => {
       project: {
         createCapexExpenseGroup: {
           capexExpenseGroup: {
-            __typename: 'CapexExpense',
+            __typename: 'CapexExpenseGroup',
+            capexExpenseList: [],
+            valueTotal: 0,
           },
         },
         changeCapexExpenseGroup: {
           capexExpenseGroup: {
-            __typename: 'CapexExpense',
+            __typename: 'CapexExpenseGroup',
           },
         },
         deleteCapexExpenseGroup: {
-          result: {},
+          result: { id: 'mock id' },
         },
         capex: {
           __typename: 'Capex',
@@ -120,27 +131,33 @@ describe('Capex actions', () => {
       caption: 'mock caption',
     };
 
-    test('успешно создается Capex Expense', () => {
+    test('успешно создается Capex Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(createCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_ADD_SUCCESS }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: successResponse.data.project.createCapexExpenseGroup.capexExpenseGroup,
+          type: CAPEX_EXPENSE_GROUP_ADD_SUCCESS,
+        }),
       );
     });
 
-    test('добавляет ошибку graphql в store', () => {
+    test('добавляет ошибку graphql в store', async () => {
       mockMutate(errorResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(createCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_ADD_ERROR }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_EXPENSE_GROUP_ADD_ERROR,
+        }),
       );
     });
   });
@@ -151,27 +168,33 @@ describe('Capex actions', () => {
       caption: 'mock caption',
     };
 
-    test('группа успешно редактируется', () => {
+    test('группа успешно редактируется', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(changeCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: successResponse.data.project.changeCapexExpenseGroup.capexExpenseGroup,
+          type: CAPEX_EXPENSE_GROUP_CHANGE_SUCCESS,
+        }),
       );
     });
 
-    test('добавляет ошибку graphql в store', () => {
+    test('добавляет ошибку graphql в store', async () => {
       mockMutate(errorResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(changeCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_CHANGE_ERROR }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_EXPENSE_GROUP_CHANGE_ERROR,
+        }),
       );
     });
   });
@@ -181,48 +204,64 @@ describe('Capex actions', () => {
       id: 'mock id',
     };
 
-    test('группа успешно удаляется', () => {
+    test('группа успешно удаляется', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(deleteCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_DELETE_SUCCESS }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: successResponse.data.project.deleteCapexExpenseGroup.result,
+          type: CAPEX_EXPENSE_GROUP_DELETE_SUCCESS,
+        }),
       );
     });
 
-    test('добавляет ошибку graphql в store', () => {
+    test('добавляет ошибку graphql в store', async () => {
       mockMutate(errorResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(deleteCapexExpenseGroup(capexExpenseGroupMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_EXPENSE_GROUP_DELETE_ERROR }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_EXPENSE_GROUP_DELETE_ERROR,
+        }),
       );
     });
   });
 
   describe('список Capex', () => {
-    test('список Capex успешно загружается', () => {
-      mockMutate(successResponse);
+    test('список Capex успешно загружается', async () => {
+      mockQuery({ networkStatus: NetworkStatus.ready, ...successResponse });
 
       const store = mockStore(storeData);
       store.dispatch(fetchCapex());
 
-      waitFor(() => expect(store.getActions()).toContainEqual({ type: CAPEX_SUCCESS }));
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: successResponse.data.project.capex,
+          type: CAPEX_SUCCESS,
+        }),
+      );
     });
 
-    test('добавляет ошибку graphql в store', () => {
-      mockMutate(errorResponse);
+    test('добавляет ошибку graphql в store', async () => {
+      mockQuery(errorResponse);
 
       const store = mockStore(storeData);
       store.dispatch(fetchCapex());
 
-      waitFor(() => expect(store.getActions()).toContainEqual({ type: CAPEX_ERROR }));
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_ERROR,
+        }),
+      );
     });
   });
 
@@ -240,27 +279,39 @@ describe('Capex actions', () => {
       value: 42,
     };
 
-    test('значение года успешно редактируется', () => {
+    test('значение года успешно редактируется', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(requestUpdateCapexYearValue(capexMock, groupMock, valueMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_UPDATE_YEAR_VALUE_SUCCESS }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: {
+            capex: capexMock,
+            group: groupMock,
+            value: valueMock,
+            groupTotalValueByYear:
+              successResponse.data.project.setCapexExpenseYearValue.totalValueByYear,
+          },
+          type: CAPEX_UPDATE_YEAR_VALUE_SUCCESS,
+        }),
       );
     });
 
-    test('добавляет ошибку graphql в store', () => {
+    test('добавляет ошибку graphql в store', async () => {
       mockMutate(errorResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(requestUpdateCapexYearValue(capexMock, groupMock, valueMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_UPDATE_YEAR_VALUE_ERROR }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_UPDATE_YEAR_VALUE_ERROR,
+        }),
       );
     });
   });

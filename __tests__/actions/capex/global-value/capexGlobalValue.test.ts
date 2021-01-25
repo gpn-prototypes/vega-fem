@@ -46,18 +46,10 @@ describe('Capex global value actions', () => {
   const successResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
+        updateCapexGlobalValue: {
+          capexGlobalValue: {
+            __typename: 'CapexGlobalValue',
           },
-        },
-        changeCapexExpense: {
-          capexExpense: {
-            __typename: 'CapexExpense',
-          },
-        },
-        deleteCapexExpense: {
-          result: {},
         },
       },
     },
@@ -66,18 +58,8 @@ describe('Capex global value actions', () => {
   const errorResponse = {
     data: {
       project: {
-        createCapexExpense: {
-          capexExpense: {
-            ...mockError,
-          },
-        },
-        changeCapexExpense: {
-          capexExpense: {
-            ...mockError,
-          },
-        },
-        deleteCapexExpense: {
-          result: {
+        updateCapexGlobalValue: {
+          capexGlobalValue: {
             ...mockError,
           },
         },
@@ -91,15 +73,18 @@ describe('Capex global value actions', () => {
       value: 'mock value',
     };
 
-    test('успешно создается Capex Expense', () => {
+    test('успешно создается Capex Expense', async () => {
       mockMutate(successResponse);
 
       const store = mockStore(storeData);
 
       store.dispatch(requestUpdateCapexGlobalValue(globalValueMock));
 
-      waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS }),
+      await waitFor(() =>
+        expect(store.getActions()).toContainEqual({
+          payload: successResponse.data.project.updateCapexGlobalValue.capexGlobalValue,
+          type: CAPEX_UPDATE_GLOBAL_VALUE_SUCCESS,
+        }),
       );
     });
 
@@ -111,7 +96,10 @@ describe('Capex global value actions', () => {
       store.dispatch(requestUpdateCapexGlobalValue(globalValueMock));
 
       waitFor(() =>
-        expect(store.getActions()).toContainEqual({ type: CAPEX_UPDATE_GLOBAL_VALUE_ERROR }),
+        expect(store.getActions()).toContainEqual({
+          errorMessage: mockError,
+          type: CAPEX_UPDATE_GLOBAL_VALUE_ERROR,
+        }),
       );
     });
   });
