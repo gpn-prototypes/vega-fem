@@ -1,5 +1,4 @@
 import React from 'react';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { Root } from '@gpn-prototypes/vega-ui';
 
 import { AppView } from './AppView';
@@ -7,19 +6,14 @@ import { AppView } from './AppView';
 import './App.css';
 
 import { Providers } from '@/providers';
-import { Identity } from '@/types';
+import { ShellToolkit } from '@/types';
 
-interface AppProps {
-  graphqlClient?: ApolloClient<NormalizedCacheObject>;
-  identity?: Identity;
-}
-
-export const App: React.FC<AppProps> = (props) => {
-  const { graphqlClient, identity } = props;
+export const App: React.FC<ShellToolkit> = (props) => {
+  const { graphqlClient, identity, currentProject } = props;
 
   return (
     <Root className="FEM__App" initialPortals={[{ name: 'modalRoot' }]} defaultTheme="dark">
-      <Providers graphqlClient={graphqlClient} identity={identity}>
+      <Providers graphqlClient={graphqlClient} identity={identity} currentProject={currentProject}>
         <AppView />
       </Providers>
     </Root>
