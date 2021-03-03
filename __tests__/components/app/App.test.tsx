@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { render } from '@testing-library/react';
 
 import { App } from '@/app/App';
-import { serviceConfig } from '@/helpers/sevice-config';
+import { serviceConfig } from '@/helpers/service-config';
 
 jest.mock('@/app/AppView', () => {
   return {

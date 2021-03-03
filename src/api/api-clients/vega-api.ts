@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
+import fetch from 'cross-fetch';
 
 import { authHeader } from '../../helpers/authTokenToLocalstorage';
 
